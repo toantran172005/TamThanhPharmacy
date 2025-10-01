@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="510.0" prefWidth="437.0" style="-fx-background-color: white;" stylesheets="/css/DangNhap.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DangNhapCtrl">
+   <center>
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="474.0" styleClass="hbox_decorate">
+         <top>
+            <Pane prefHeight="211.0" prefWidth="493.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="154.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../picture/trangChu/logo.jpg" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="132.0" layoutY="170.0" text="HIỆU THUỐC TAM THANH">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+               <styleClass>
+                  <String fx:value="pnl" />
+                  <String fx:value="boTren" />
+               </styleClass>
+            </Pane>
+         </top>
+         <center>
+            <Pane prefHeight="180.0" prefWidth="474.0" styleClass="pnl" BorderPane.alignment="CENTER">
+               <children>
+                  <Label id="lblTenDangNhap" layoutX="92.0" layoutY="34.0" text="Tên đăng nhập">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <TextField id="txtTenDangNhap" layoutX="92.0" layoutY="60.0" prefHeight="34.0" prefWidth="290.0" styleClass="txt" />
+                  <Label id="lblMatKhau" layoutX="92.0" layoutY="110.0" text="Mật khẩu">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                  </Label>
+                  <PasswordField id="btnMatKhau" layoutX="92.0" layoutY="142.0" prefHeight="35.0" prefWidth="291.0" styleClass="txt" />
+                  <ImageView fitHeight="40.0" fitWidth="33.0" layoutX="387.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../picture/dangNhap/user.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="387.0" layoutY="143.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../picture/dangNhap/eye.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </center>
+         <bottom>
+            <Pane prefHeight="126.0" prefWidth="473.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button id="btnDangNhap" fx:id="btnDangNhap" layoutX="91.0" layoutY="32.0" mnemonicParsing="false" onAction="#chuyenDenTrangChu" prefHeight="42.0" prefWidth="292.0" styleClass="txt" text="Đăng Nhập" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="16.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+               <styleClass>
+                  <String fx:value="pnl" />
+                  <String fx:value="boDuoi" />
+               </styleClass>
+            </Pane>
+         </bottom>
+      </BorderPane>
+   </center>
+</BorderPane>

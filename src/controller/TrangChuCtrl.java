@@ -8,18 +8,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 public class TrangChuCtrl {
 
 	@FXML
-	public VBox VBTrangChu, VBHangHoa, VBKhachHang, VBHoaDon;
-	@FXML
-	public VBox menuBar;
+	public 	VBox vbTrangChu, vbHangHoa, vbKhachHang, vbHoaDon;
 
-	public VBox VBHienTai;
+	public VBox vbHienTai;
 	public Label MenuConHienTai;
 	public static final PseudoClass SELECTED = PseudoClass.getPseudoClass("selected");
 	public boolean isSelected = false;
@@ -34,10 +31,10 @@ public class TrangChuCtrl {
 	}
 
 	public void setThuocTinhMainMenu() {
-		setMauClickVaMenuCon(VBTrangChu, List.of());
-		setMauClickVaMenuCon(VBHangHoa, List.of("Thuốc", "Thực phẩm chức năng", "Dược mỹ phẩm", "Nhập thuốc", "Đặt thuốc"));
-		setMauClickVaMenuCon(VBKhachHang, List.of("Khách hàng", "Khiếu nại & Hỗ trợ"));
-		setMauClickVaMenuCon(VBHoaDon, List.of("Hóa đơn", "Đổi - Trả"));
+		setMauClickVaMenuCon(vbTrangChu, List.of());
+		setMauClickVaMenuCon(vbHangHoa, List.of("Danh sách hàng hóa", "Nhập hàng hóa", "Đặt hàng hóa"));
+		setMauClickVaMenuCon(vbKhachHang, List.of("Danh sách khách hàng", "Khiếu nại & Hỗ trợ"));
+		setMauClickVaMenuCon(vbHoaDon, List.of("Danh sách hóa đơn", "Đổi - Trả"));
 	}
 
 	@SuppressWarnings("unused")
@@ -47,21 +44,21 @@ public class TrangChuCtrl {
 	}
 
 	public void menuChaClicked(VBox box, List<String> menuCon) {
-		if (VBHienTai != null && VBHienTai != box) {
-			VBHienTai.pseudoClassStateChanged(SELECTED, false);
+		if (vbHienTai != null && vbHienTai != box) {
+			vbHienTai.pseudoClassStateChanged(SELECTED, false);
 
-			if (!VBHienTai.getChildren().isEmpty()
-					&& VBHienTai.getChildren().get(VBHienTai.getChildren().size() - 1) instanceof VBox) {
-				VBHienTai.getChildren().remove(VBHienTai.getChildren().size() - 1);
+			if (!vbHienTai.getChildren().isEmpty()
+					&& vbHienTai.getChildren().get(vbHienTai.getChildren().size() - 1) instanceof VBox) {
+				vbHienTai.getChildren().remove(vbHienTai.getChildren().size() - 1);
 			}
 		}
 
-		if (VBHienTai == box && isSelected) {
+		if (vbHienTai == box && isSelected) {
 			if (!box.getChildren().isEmpty() && box.getChildren().get(box.getChildren().size() - 1) instanceof VBox) {
 				box.getChildren().remove(box.getChildren().size() - 1);
 			}
 			box.pseudoClassStateChanged(SELECTED, false);
-			VBHienTai = null;
+			vbHienTai = null;
 			isSelected = false;
 			return;
 		}
@@ -78,7 +75,7 @@ public class TrangChuCtrl {
 
 		box.getChildren().add(subMenu);
 
-		VBHienTai = box;
+		vbHienTai = box;
 		isSelected = true;
 	}
 
@@ -99,29 +96,23 @@ public class TrangChuCtrl {
 
 	public void menuConClick(Label lbl) {
 		switch (lbl.getId()) {
-		case "Thuốc":
-			doiCenterPane("/FXML/Thuoc.fxml");
+		case "Danh sách hàng hóa":
+			doiCenterPane("/FXML/DanhSachHH.fxml");
 			break;
-		case "Thực phẩm chức năng":
-			doiCenterPane("/FXML/ThucPhamChucNang.fxml");
-			break;
-		case "Dược mỹ phẩm":
+		case "Nhập hàng hóa":
 			
 			break;
-		case "Nhập thuốc":
+		case "Đặt hàng hóa":
 			
 			break;
-		case "Đặt thuốc":
-			
-			break;
-		case "Khách hàng":
+		case "Danh sách khách hàng":
 			
 			break;
 		case "Khiếu nại & Hỗ trợ":
 			
 			break;
-		case "Hóa đơn":
-			
+		case "Danh sách hóa đơn":
+			doiCenterPane("/FXML/DanhSachHD.fxml");
 			break;
 		case "Đổi - Trả":
 			
