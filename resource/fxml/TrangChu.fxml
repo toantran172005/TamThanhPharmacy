@@ -68,7 +68,7 @@
          <left>
             <HBox prefHeight="54.0" prefWidth="354.0" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fx:id="imgLogo" fitHeight="47.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true" styleClass="classChoCursor">
+                  <ImageView fx:id="imgLogo" fitHeight="47.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../picture/trangChu/logo.jpg" />
                      </image>
@@ -76,17 +76,13 @@
                         <Insets left="10.0" top="5.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Label fx:id="lblTenHieuThuoc" prefHeight="30.0" prefWidth="232.0" text="Hiệu Thuốc Tam Thanh">
+                  <Label fx:id="lblTenHieuThuoc" prefHeight="30.0" prefWidth="232.0" styleClass="classChoBold" text="Hiệu Thuốc Tam Thanh">
                      <font>
                         <Font size="20.0" />
                      </font>
                      <HBox.margin>
                         <Insets left="10.0" top="15.0" />
                      </HBox.margin>
-                     <styleClass>
-                        <String fx:value="classChoBold" />
-                        <String fx:value="classChoCursor" />
-                     </styleClass>
                   </Label>
                </children>
             </HBox>

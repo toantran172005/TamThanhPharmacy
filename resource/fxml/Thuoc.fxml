@@ -69,7 +69,7 @@
                   <Insets left="5.0" />
                </HBox.margin>
             </HBox>
-            <HBox fx:id="HBTaoMoi" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="hbox_decorate">
+            <HBox fx:id="HBTaoMoiThuoc" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="hbox_decorate">
                <children>
                   <ImageView fitHeight="23.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -92,7 +92,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </HBox>
-            <HBox fx:id="HBNhapFile" alignment="CENTER_LEFT" layoutX="528.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="49.0" prefWidth="130.0" styleClass="hbox_decorate">
+            <HBox fx:id="HBNhapFileThuoc" alignment="CENTER_LEFT" layoutX="528.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="49.0" prefWidth="130.0" styleClass="hbox_decorate">
                <children>
                   <ImageView fitHeight="23.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -115,7 +115,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </HBox>
-            <HBox fx:id="HBXuatFile" alignment="CENTER_LEFT" layoutX="621.0" layoutY="10.0" prefHeight="108.0" styleClass="hbox_decorate">
+            <HBox fx:id="HBXuatFileThuoc" alignment="CENTER_LEFT" layoutX="621.0" layoutY="10.0" prefHeight="108.0" styleClass="hbox_decorate">
                <children>
                   <ImageView fitHeight="23.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -142,7 +142,7 @@
       </HBox>
    </top>
    <center>
-      <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="1064.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tableThuoc" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="1064.0" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn prefWidth="75.0" text="Mã thuốc" />
           <TableColumn prefWidth="75.0" text="Tên thuốc" />
