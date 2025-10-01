@@ -8,8 +8,6 @@ public class ThuocCtrl {
 	@FXML
 	public ComboBox<String> cbLocThuoc;
 	
-	
-	
 	public void initialize() {
 		
 		cbLocThuoc.getItems().addAll(
