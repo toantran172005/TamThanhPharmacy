@@ -3,14 +3,17 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 
-public class ThuocCtrl {
+public class DanhSachHHCtrl {
 
 	@FXML
-	public ComboBox<String> cbLocThuoc;
+	public ComboBox<String> cbbLocHH;
 	
 	public void initialize() {
-		
-		cbLocThuoc.getItems().addAll(
+		setItemComboBox();
+	}
+	
+	public void setItemComboBox() {
+		cbbLocHH.getItems().addAll(
 		        "Thuốc kê đơn",
 		        "Thuốc không kê đơn",
 		        "Thực phẩm chức năng",
