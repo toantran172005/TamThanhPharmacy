@@ -70,7 +70,7 @@
                   <Insets left="5.0" />
                </HBox.margin>
             </HBox>
-            <HBox fx:id="hbTaoMoiHH" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="hbox_decorate">
+            <HBox fx:id="hbTaoMoiHH" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                <children>
                   <ImageView fitHeight="23.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -92,8 +92,12 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+               <styleClass>
+                  <String fx:value="hbox_decorate" />
+                  <String fx:value="hbox-menu" />
+               </styleClass>
             </HBox>
-            <HBox fx:id="hbNhapFileHH" alignment="CENTER_LEFT" layoutX="528.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="49.0" prefWidth="130.0" styleClass="hbox_decorate">
+            <HBox fx:id="hbNhapFileHH" alignment="CENTER_LEFT" layoutX="528.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="49.0" prefWidth="130.0">
                <children>
                   <ImageView fitHeight="23.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -115,8 +119,12 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+               <styleClass>
+                  <String fx:value="hbox_decorate" />
+                  <String fx:value="hbox-menu" />
+               </styleClass>
             </HBox>
-            <HBox fx:id="hbXuatFileHH" alignment="CENTER_LEFT" layoutX="621.0" layoutY="10.0" prefHeight="108.0" styleClass="hbox_decorate">
+            <HBox fx:id="hbXuatFileHH" alignment="CENTER_LEFT" layoutX="621.0" layoutY="10.0" prefHeight="108.0">
                <children>
                   <ImageView fitHeight="23.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -138,6 +146,10 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
+               <styleClass>
+                  <String fx:value="hbox_decorate" />
+                  <String fx:value="hbox-menu" />
+               </styleClass>
             </HBox>
          </children>
       </HBox>
