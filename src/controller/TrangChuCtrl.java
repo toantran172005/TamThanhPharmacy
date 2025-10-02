@@ -97,7 +97,7 @@ public class TrangChuCtrl {
 	public void menuConClick(Label lbl) {
 		switch (lbl.getId()) {
 		case "Danh sách hàng hóa":
-			doiCenterPane("/FXML/DanhSachHH.fxml");
+			doiCenterPane("/fxml/DanhSachHH.fxml");
 			break;
 		case "Nhập hàng hóa":
 			
@@ -106,13 +106,13 @@ public class TrangChuCtrl {
 			
 			break;
 		case "Danh sách khách hàng":
-			
+			doiCenterPane("/fxml/DanhSachKH.fxml");
 			break;
 		case "Khiếu nại & Hỗ trợ":
 			
 			break;
 		case "Danh sách hóa đơn":
-			doiCenterPane("/FXML/DanhSachHD.fxml");
+			doiCenterPane("/fxml/DanhSachHD.fxml");
 			break;
 		case "Đổi - Trả":
 			

@@ -2,6 +2,16 @@
 	-fx-background-color: #07afff;
 }
 
+#btnDangNhap:hover {
+	-fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-transition: all 0.1s ease;
+}
+
+#btnDangNhap:pressed {
+    -fx-background-color: #0096e6;
+}
+
 .txt{
 	-fx-border-color: black;
 	-fx-border-width: 1.0;         
