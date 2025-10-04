@@ -28,7 +28,7 @@ public class DangNhapCtrl {
 		Stage stage = (Stage)btnDangNhap.getScene().getWindow();
 		Parent root = null;
 		try {
-			root = FXMLLoader.load(getClass().getResource("/fxml/TrangChuNV.fxml"));
+			root = FXMLLoader.load(getClass().getResource("/fxml/TrangChuQL.fxml"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -38,8 +38,6 @@ public class DangNhapCtrl {
 		stage.setScene(scene);	
 		stage.setMaximized(true);
         stage.setResizable(true);
-
-		
 	}
 	
 	@FXML public void initialize() {
