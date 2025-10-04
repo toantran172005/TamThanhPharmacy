@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="mainPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="712.0" prefWidth="1148.0" styleClass="whiteBackground" stylesheets="/css/TrangChuNV.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TrangChuNVCtrl">
+<BorderPane fx:id="mainPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="712.0" prefWidth="1148.0" styleClass="whiteBackground" stylesheets="/css/TrangChuQl.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TrangChuQLCtrl">
    <top>
       <BorderPane fx:id="topPane" prefHeight="20.0" prefWidth="923.0" styleClass="whiteBackground" BorderPane.alignment="CENTER">
          <right>
@@ -230,6 +230,38 @@
                                  </children>
                               </HBox>
                            </children>
+                        </VBox>
+                        <VBox fx:id="vbNhanVien" layoutX="15.0" layoutY="258.0">
+                           <children>
+                              <HBox fx:id="hbHoaDon1" prefHeight="57.0" prefWidth="154.0" styleClass="classChoCursor">
+                                 <children>
+                                    <ImageView fx:id="imgHoaDon3" fitHeight="38.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true" styleClass="classChoCursor">
+                                       <image>
+                                          <Image url="@../picture/trangChu/nhanVien.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <Label fx:id="lblHoaDon2" styleClass="classChoCursor" text="Nhân Viên">
+                                       <HBox.margin>
+                                          <Insets left="10.0" top="15.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font size="21.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </VBox>
+                        <VBox fx:id="vbKhuyenMai" layoutX="10.0" layoutY="315.0">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
                         </VBox>
                      </children>
                   </VBox>

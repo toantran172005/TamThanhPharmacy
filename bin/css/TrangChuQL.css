@@ -1,0 +1,89 @@
+.classChoBold{ 
+  -fx-font-weight: bold;
+}
+
+.classChoCursor {
+  -fx-cursor: hand;
+}
+
+.whiteBackground {
+	 -fx-background-color: #ffffff;
+}
+
+.scroll-pane {
+    -fx-background-color: white;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: white;
+}
+
+
+.hbox_menu {
+    -fx-background-color: #ffffff;     
+    -fx-background-radius: 10;
+    -fx-border-color: #e0e0e0;  
+    -fx-border-radius: 10;   
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2); 
+}
+
+.hbox_menu:hover {
+    -fx-background-color: lightgray;
+}
+
+.hbox_menu:selected {
+	-fx-background-color: #07afff;
+}
+
+.submenu_label {
+    -fx-padding: 8 5 8 20;
+    -fx-cursor: hand;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-background-color: transparent;
+}
+
+.submenu_label:hover {
+    -fx-background-color: lightgray;
+    -fx-background-radius: 10;
+}
+
+.submenu_label:selected {
+    -fx-background-color: lightgray;
+    -fx-background-radius: 10;
+}
+
+.classBorder {
+	-fx-border-color: darkgray; 
+    -fx-border-width: 1;
+    -fx-border-style: solid;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

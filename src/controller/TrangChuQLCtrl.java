@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.util.List;
+
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,10 +12,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-public class TrangChuNVCtrl {
+public class TrangChuQLCtrl {
 
 	@FXML
-	public VBox vbTrangChu, vbThuoc, vbKeThuoc, vbKhachHang, vbHoaDon;
+	public VBox vbTrangChu, vbThuoc, vbKeThuoc, vbKhachHang, vbHoaDon, vbNhanVien;
 
 	public VBox vbHienTai;
 	public Label MenuConHienTai;
@@ -32,12 +33,14 @@ public class TrangChuNVCtrl {
 
 	public void setThuocTinhMainMenu() {
 		setMauClickVaMenuCon(vbTrangChu, List.of());
-		setMauClickVaMenuCon(vbThuoc,
-				List.of("Tìm kiếm thuốc", "Thêm thuốc", "Cập nhật thuốc"));
+		setMauClickVaMenuCon(vbThuoc, List.of("Tìm kiếm thuốc", "Thêm thuốc", "Cập nhật thuốc", "Khuyến mãi thuốc",
+				"Nhập thuốc", "Đặt thuốc", "Thống kê thuốc", "Thuế"));
 		setMauClickVaMenuCon(vbKeThuoc, List.of("Danh sách kệ", "Thêm kệ thuốc", "Cập nhật kệ"));
-		setMauClickVaMenuCon(vbKhachHang,
-				List.of("Tìm kiếm khách hàng", "Thêm khách hàng", "Cập nhật khách hàng", "Khiếu nại & Hỗ trợ"));
-		setMauClickVaMenuCon(vbHoaDon, List.of("Tìm kiếm hóa đơn", "Lập hóa đơn", "Đổi - Trả"));
+		setMauClickVaMenuCon(vbKhachHang, List.of("Tìm kiếm khách hàng", "Thêm khách hàng", "Cập nhật khách hàng",
+				"Khiếu nại & Hỗ trợ", "Thống kê khách hàng"));
+		setMauClickVaMenuCon(vbHoaDon,
+				List.of("Tìm kiếm hóa đơn", "Lập hóa đơn", "Khuyến mãi hóa đơn", "Đổi - Trả", "Thống kê hóa đơn"));
+		setMauClickVaMenuCon(vbNhanVien, List.of("Tìm kiếm nhân viên", "Thêm nhân viên", "Cập nhật nhân viên"));
 	}
 
 	@SuppressWarnings("unused")
@@ -98,68 +101,101 @@ public class TrangChuNVCtrl {
 	}
 
 	public void menuConClick(Label lbl) {
-	    String text = lbl.getText().trim();
+		String text = lbl.getText().trim();
 
-	    switch (text) {
-	        // ===== THUỐC =====
-	        case "Tìm kiếm thuốc":
+		switch (text) {
+		// ===== THUỐC =====
+		case "Tìm kiếm thuốc":
 
-	            break;
-	        case "Thêm thuốc":
+			break;
+		case "Thêm thuốc":
+			break;
+		case "Cập nhật thuốc":
 
-	            break;
-	        case "Cập nhật thuốc":
+			break;
+		case "Khuyến mãi":
 
-	            break;
+			break;
+		case "Nhập thuốc":
 
-	        // ===== KỆ THUỐC =====
-	        case "Danh sách kệ":
+			break;
+		case "Đặt thuốc":
 
-	            break;
-	        case "Thêm kệ thuốc":
+			break;
+		case "Thống kê thuốc":
 
-	            break;
-	        case "Cập nhật kệ":
+			break;
+		case "Thuế":
 
-	            break;
+			break;
 
-	        // ===== KHÁCH HÀNG =====
-	        case "Tìm kiếm khách hàng":
+		// ===== KỆ THUỐC =====
+		case "Danh sách kệ":
 
-	            break;
-	        case "Thêm khách hàng":
+			break;
+		case "Thêm kệ thuốc":
 
-	            break;
-	        case "Cập nhật khách hàng":
+			break;
+		case "Cập nhật kệ":
 
-	            break;
-	        case "Khiếu nại & Hỗ trợ":
+			break;
 
-	            break;
+		// ===== KHÁCH HÀNG =====
+		case "Tìm kiếm khách hàng":
 
-	        // ===== HÓA ĐƠN =====
-	        case "Tìm kiếm hóa đơn":
+			break;
+		case "Thêm khách hàng":
 
-	            break;
-	        case "Lập hóa đơn":
+			break;
+		case "Cập nhật khách hàng":
 
-	            break;
-	        case "Đổi - Trả":
+			break;
+		case "Khiếu nại & Hỗ trợ":
 
-	            break;
+			break;
+		case "Thống kê khách hàng":
 
-	        default:
-	            System.out.println("⚠ Menu chưa xử lý: " + text);
-	            break;
-	    }
+			break;
 
-	    if (MenuConHienTai != null) {
-	        MenuConHienTai.pseudoClassStateChanged(SELECTED, false);
-	    }
-	    lbl.pseudoClassStateChanged(SELECTED, true);
-	    MenuConHienTai = lbl;
+		// ===== HÓA ĐƠN =====
+		case "Tìm kiếm hóa đơn":
+
+			break;
+		case "Lập hóa đơn":
+
+			break;
+		case "Khuyến mãi hóa đơn":
+
+			break;
+		case "Đổi - Trả":
+
+			break;
+		case "Thống kê hóa đơn":
+
+			break;
+
+		// ===== NHÂN VIÊN =====
+		case "Tìm kiếm nhân viên":
+
+			break;
+		case "Thêm nhân viên":
+
+			break;
+		case "Cập nhật nhân viên":
+
+			break;
+
+		default:
+			System.out.println("⚠ Menu chưa xử lý: " + text);
+			break;
+		}
+
+		if (MenuConHienTai != null) {
+			MenuConHienTai.pseudoClassStateChanged(SELECTED, false);
+		}
+		lbl.pseudoClassStateChanged(SELECTED, true);
+		MenuConHienTai = lbl;
 	}
-
 
 	public void quayLaiTrangChu() {
 		mainPane.setCenter(mainPaneCenter);
