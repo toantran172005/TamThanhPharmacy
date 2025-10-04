@@ -11,10 +11,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-public class TrangChuCtrl {
+public class TrangChuNVCtrl {
 
 	@FXML
-	public 	VBox vbTrangChu, vbHangHoa, vbKhachHang, vbHoaDon;
+	public VBox vbTrangChu, vbThuoc, vbKeThuoc, vbKhachHang, vbHoaDon;
 
 	public VBox vbHienTai;
 	public Label MenuConHienTai;
@@ -32,14 +32,17 @@ public class TrangChuCtrl {
 
 	public void setThuocTinhMainMenu() {
 		setMauClickVaMenuCon(vbTrangChu, List.of());
-		setMauClickVaMenuCon(vbHangHoa, List.of("Danh sách hàng hóa", "Nhập hàng hóa", "Đặt hàng hóa"));
-		setMauClickVaMenuCon(vbKhachHang, List.of("Danh sách khách hàng", "Khiếu nại & Hỗ trợ"));
-		setMauClickVaMenuCon(vbHoaDon, List.of("Danh sách hóa đơn", "Đổi - Trả"));
+		setMauClickVaMenuCon(vbThuoc,
+				List.of("Tìm kiếm", "Thêm thuốc", "Cập nhập thuốc", "Nhập thuốc", "Đặt thuốc", "Thống kê"));
+		setMauClickVaMenuCon(vbKeThuoc, List.of("Danh sách kệ", "Thêm kệ thuốc", "Cập nhật kệ"));
+		setMauClickVaMenuCon(vbKhachHang,
+				List.of("Tìm kiếm", "Thêm khách hàng", "Cập nhật khách hàng", "Khiếu nại & Hỗ trợ", "Thống kê"));
+		setMauClickVaMenuCon(vbHoaDon, List.of("Tìm kiếm", "Lập hóa đơn", "Đổi - Trả", "Thống kê"));
 	}
 
 	@SuppressWarnings("unused")
 	public void setMauClickVaMenuCon(VBox box, List<String> menuCon) {
-		box.getStyleClass().add("vbox-menu");
+		box.getStyleClass().add("hbox_menu");
 		box.setOnMouseClicked(e -> menuChaClicked(box, menuCon));
 	}
 
@@ -82,7 +85,7 @@ public class TrangChuCtrl {
 	public Label taoMenuCon(String name) {
 		Label lbl = new Label(name);
 		lbl.setId(name);
-		lbl.getStyleClass().add("submenu-label");
+		lbl.getStyleClass().add("submenu_label");
 		lbl.setStyle("-fx-padding: 8 5 8 10; -fx-cursor: hand; -fx-font-size: 15px; -fx-font-weight: bold;");
 		lbl.setMaxWidth(Double.MAX_VALUE);
 
@@ -97,25 +100,25 @@ public class TrangChuCtrl {
 	public void menuConClick(Label lbl) {
 		switch (lbl.getId()) {
 		case "Danh sách hàng hóa":
-			doiCenterPane("/fxml/DanhSachHH.fxml");
+
 			break;
 		case "Nhập hàng hóa":
-			
+
 			break;
 		case "Đặt hàng hóa":
-			
+
 			break;
 		case "Danh sách khách hàng":
-			doiCenterPane("/fxml/DanhSachKH.fxml");
+
 			break;
 		case "Khiếu nại & Hỗ trợ":
-			
+
 			break;
 		case "Danh sách hóa đơn":
-			doiCenterPane("/fxml/DanhSachHD.fxml");
+
 			break;
 		case "Đổi - Trả":
-			
+
 			break;
 		}
 
@@ -131,12 +134,17 @@ public class TrangChuCtrl {
 		mainPane.setCenter(mainPaneCenter);
 	}
 
-	public void doiCenterPane(String fxmlPath) {
+	public <T> T doiCenterPane(String fxmlPath) {
 		try {
-			Parent newContent = FXMLLoader.load(getClass().getResource(fxmlPath));
-			mainPane.setCenter(newContent);
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+			Parent root = loader.load();
+
+			mainPane.setCenter(root);
+
+			return loader.getController();
 		} catch (IOException e) {
 			e.printStackTrace();
+			return null;
 		}
 	}
 }
