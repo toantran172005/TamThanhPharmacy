@@ -14,11 +14,11 @@ public class DangNhapCtrl {
 	
 	@FXML public Button btnDangNhap;
 	
-	public void chuyenDenTrangChu() {
+	public void chuyenDenTrangChuNhanVien() {
 		Stage stage = (Stage)btnDangNhap.getScene().getWindow();
 		Parent root = null;
 		try {
-			root = FXMLLoader.load(getClass().getResource("/fxml/TrangChu.fxml"));
+			root = FXMLLoader.load(getClass().getResource("/fxml/TrangChuNV.fxml"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

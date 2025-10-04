@@ -19,7 +19,7 @@
 }
 
 
-.vbox-menu {
+.hbox_menu {
     -fx-background-color: #ffffff;     
     -fx-background-radius: 10;
     -fx-border-color: #e0e0e0;  
@@ -27,15 +27,15 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2); 
 }
 
-.vbox-menu:hover {
+.hbox_menu:hover {
     -fx-background-color: lightgray;
 }
 
-.vbox-menu:selected {
+.hbox_menu:selected {
 	-fx-background-color: #07afff;
 }
 
-.submenu-label {
+.submenu_label {
     -fx-padding: 8 5 8 20;
     -fx-cursor: hand;
     -fx-font-size: 15px;
@@ -43,12 +43,12 @@
     -fx-background-color: transparent;
 }
 
-.submenu-label:hover {
+.submenu_label:hover {
     -fx-background-color: lightgray;
     -fx-background-radius: 10;
 }
 
-.submenu-label:selected {
+.submenu_label:selected {
     -fx-background-color: lightgray;
     -fx-background-radius: 10;
 }

@@ -69,7 +69,7 @@
          <bottom>
             <Pane prefHeight="126.0" prefWidth="473.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button id="btnDangNhap" fx:id="btnDangNhap" layoutX="91.0" layoutY="32.0" mnemonicParsing="false" onAction="#chuyenDenTrangChu" prefHeight="42.0" prefWidth="292.0" styleClass="txt" text="Đăng Nhập" textFill="WHITE">
+                  <Button id="btnDangNhap" fx:id="btnDangNhap" layoutX="91.0" layoutY="32.0" mnemonicParsing="false" onAction="#chuyenDenTrangChuNhanVien" prefHeight="42.0" prefWidth="292.0" styleClass="txt" text="Đăng Nhập" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>

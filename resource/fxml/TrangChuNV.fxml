@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="mainPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="712.0" prefWidth="1148.0" styleClass="whiteBackground" stylesheets="/css/TrangChu.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TrangChuCtrl">
+<BorderPane fx:id="mainPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="712.0" prefWidth="1148.0" styleClass="whiteBackground" stylesheets="/css/TrangChuNV.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TrangChuNVCtrl">
    <top>
       <BorderPane fx:id="topPane" prefHeight="20.0" prefWidth="923.0" styleClass="whiteBackground" BorderPane.alignment="CENTER">
          <right>
