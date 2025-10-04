@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="510.0" prefWidth="437.0" style="-fx-background-color: white;" stylesheets="/css/DangNhap.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DangNhapCtrl">
+<BorderPane prefHeight="713.0" prefWidth="1153.0" style="-fx-background-color: white;" stylesheets="/css/DangNhap.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DangNhapCtrl">
    <center>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="527.0" prefWidth="474.0" styleClass="hbox_decorate">
          <top>
@@ -43,19 +43,28 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <TextField id="txtTenDangNhap" layoutX="92.0" layoutY="60.0" prefHeight="34.0" prefWidth="290.0" styleClass="txt" />
+                  <TextField id="txtTenDangNhap" layoutX="92.0" layoutY="60.0" prefHeight="34.0" prefWidth="290.0" styleClass="txt">
+                     <font>
+                        <Font size="15.0" />
+                     </font></TextField>
                   <Label id="lblMatKhau" layoutX="92.0" layoutY="110.0" text="Mật khẩu">
                      <font>
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <PasswordField id="btnMatKhau" fx:id="txpPassClose" layoutX="92.0" layoutY="141.0" prefHeight="34.0" prefWidth="290.0" styleClass="txt" />
+                  <PasswordField id="btnMatKhau" fx:id="txpPassClose" layoutX="92.0" layoutY="141.0" prefHeight="34.0" prefWidth="290.0" styleClass="txt">
+                     <font>
+                        <Font size="15.0" />
+                     </font></PasswordField>
                   <ImageView fitHeight="40.0" fitWidth="33.0" layoutX="387.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../picture/dangNhap/user.png" />
                      </image>
                   </ImageView>
-                  <TextField fx:id="txtPassOpen" layoutX="92.0" layoutY="141.0" prefHeight="34.0" prefWidth="290.0" styleClass="txt" visible="false" />
+                  <TextField fx:id="txtPassOpen" layoutX="92.0" layoutY="141.0" prefHeight="34.0" prefWidth="290.0" styleClass="txt" visible="false">
+                     <font>
+                        <Font size="15.0" />
+                     </font></TextField>
                   <ImageView fx:id="imgEye" fitHeight="34.0" fitWidth="40.0" layoutX="387.0" layoutY="141.0" onMouseClicked="#hienMatKhau" pickOnBounds="true" preserveRatio="true" />
                </children>
             </Pane>

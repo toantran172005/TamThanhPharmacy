@@ -37,21 +37,29 @@
                   </VBox>
                   <HBox prefHeight="50.0" prefWidth="95.0">
                      <children>
-                        <ImageView id="imgThongTin" fx:id="imgTaiKhoan" fitHeight="41.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true" styleClass="classChoCursor">
+                        <ImageView fx:id="imgTaiKhoan" fitHeight="41.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../picture/trangChu/user.png" />
                            </image>
                            <HBox.margin>
                               <Insets right="10.0" top="10.0" />
                            </HBox.margin>
+                           <styleClass>
+                              <String fx:value="imgThongTin" />
+                              <String fx:value="classChoCursor" />
+                           </styleClass>
                         </ImageView>
-                        <ImageView id="imgDangXuat" fx:id="imgDangXuat" fitHeight="24.0" fitWidth="34.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" styleClass="classChoCursor">
+                        <ImageView fx:id="imgDangXuat" fitHeight="24.0" fitWidth="34.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#dangXuat" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../picture/trangChu/signOut.png" />
                            </image>
                            <HBox.margin>
                               <Insets right="20.0" top="20.0" />
                            </HBox.margin>
+                           <styleClass>
+                              <String fx:value="imgDangXuat" />
+                              <String fx:value="classChoCursor" />
+                           </styleClass>
                         </ImageView>
                      </children>
                   </HBox>

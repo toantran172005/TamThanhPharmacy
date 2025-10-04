@@ -8,15 +8,22 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class TrangChuQLCtrl {
 
 	@FXML
 	public VBox vbTrangChu, vbThuoc, vbKeThuoc, vbKhachHang, vbHoaDon, vbNhanVien;
-
+	
+	@FXML 
+	public ImageView imgDangXuat;
+	
 	public VBox vbHienTai;
 	public Label MenuConHienTai;
 	public static final PseudoClass SELECTED = PseudoClass.getPseudoClass("selected");
@@ -98,6 +105,23 @@ public class TrangChuQLCtrl {
 		});
 
 		return lbl;
+	}
+	
+	public void dangXuat() {
+		Stage stage = (Stage) imgDangXuat.getScene().getWindow();
+		Parent root = null;
+		try {
+			root = FXMLLoader.load(getClass().getResource("/fxml/DangNhap.fxml"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        StackPane container = new StackPane(root);
+        Scene scene = new Scene(container);		
+		stage.setScene(scene);		
+		stage.setMaximized(false); 
+		stage.centerOnScreen();     
+		stage.setResizable(true);
 	}
 
 	public void menuConClick(Label lbl) {

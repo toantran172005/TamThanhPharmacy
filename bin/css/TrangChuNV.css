@@ -61,6 +61,36 @@
     -fx-background-radius: 10;
 }
 
+.imgDangXuat{
+	-fx-image: url("/picture/trangChu/signOut.png");
+}
+
+.imgDangXuat:hover{
+	-fx-image: url("/picture/trangChu/log-out.png");
+	-fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-transition: all 0.1s ease;
+}
+
+.imgDangXuat:pressed {
+    -fx-scale-x: 0.9;
+    -fx-scale-y: 0.9;
+    -fx-transition: all 0.1s ease;
+}
+
+.imgThongTin:hover {
+	-fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-transition: all 0.1s ease;
+}
+
+.imgThongTin:pressed{
+	-fx-scale-x: 0.9;
+    -fx-scale-y: 0.9;
+    -fx-transition: all 0.1s ease;
+}
+
+
 
 
 
