@@ -49,20 +49,14 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </Label>
-                  <PasswordField id="btnMatKhau" layoutX="92.0" layoutY="142.0" prefHeight="35.0" prefWidth="291.0" styleClass="txt" />
+                  <PasswordField id="btnMatKhau" fx:id="txpPassClose" layoutX="92.0" layoutY="141.0" prefHeight="34.0" prefWidth="290.0" styleClass="txt" />
                   <ImageView fitHeight="40.0" fitWidth="33.0" layoutX="387.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../picture/dangNhap/user.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="36.0" fitWidth="34.0" layoutX="387.0" layoutY="143.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../picture/dangNhap/eye.png" />
-                     </image>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </ImageView>
+                  <TextField fx:id="txtPassOpen" layoutX="92.0" layoutY="141.0" prefHeight="34.0" prefWidth="290.0" styleClass="txt" visible="false" />
+                  <ImageView fx:id="imgEye" fitHeight="34.0" fitWidth="40.0" layoutX="387.0" layoutY="141.0" onMouseClicked="#hienMatKhau" pickOnBounds="true" preserveRatio="true" />
                </children>
             </Pane>
          </center>
