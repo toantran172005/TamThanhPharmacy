@@ -21,6 +21,7 @@ public class Main extends Application {
 	        primaryStage.show();
 	        Image icons = new Image("/picture/trangChu/logo.jpg");
 	        primaryStage.getIcons().add(icons);
+	        primaryStage.setTitle("Hệ Thống Quản Lý Hiệu Thuốc");
 	    } catch(Exception e) {
 	        e.printStackTrace();
 	    }
