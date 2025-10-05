@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1050.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CapNhatThongTinCtrl">
+   <top>
+      <HBox prefHeight="60.0" prefWidth="799.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="60.0" prefWidth="488.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="17.0" style="-fx-font-weight: bold;" text="TÀI KHOẢN">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane prefHeight="60.0" prefWidth="559.0">
+               <children>
+                  <ImageView fx:id="imgQuayLai" fitHeight="30.0" fitWidth="30.0" layoutX="459.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
+               </children></Pane>
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <VBox prefHeight="614.0" prefWidth="846.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="70.0" prefWidth="799.0">
+               <children>
+                  <Label layoutX="374.0" layoutY="22.0" style="-fx-font-weight: bold;" text="CẬP NHẬT THÔNG TIN TÀI KHOẢN">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <HBox prefHeight="576.0" prefWidth="1050.0">
+               <children>
+                  <Pane prefHeight="458.0" prefWidth="430.0">
+                     <children>
+                        <ImageView fx:id="imgNhanVien" fitHeight="293.0" fitWidth="304.0" layoutX="63.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label layoutX="63.0" layoutY="432.0" text="Chức vụ">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblChucVu" layoutX="63.0" layoutY="462.0" style="-fx-font-weight: bold;" text="Nhân viên bán hàng">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="btnChonAnhNV" layoutX="161.0" layoutY="367.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="109.0" text="Chọn ảnh">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="458.0" prefWidth="618.0">
+                     <children>
+                        <Label layoutX="25.0" layoutY="56.0" text="Tên nhân viên">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="28.0" layoutY="166.0" text="Tên đăng nhập">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="26.0" layoutY="278.0" text="Giới tính">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="26.0" layoutY="379.0" text="Email">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="339.0" layoutY="56.0" text="Điện thoại">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="331.0" layoutY="166.0" text="Mã NV">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="331.0" layoutY="278.0" text="Ngày sinh">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="328.0" layoutY="379.0" text="Ngày vào làm">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtTenNhanVien" layoutX="25.0" layoutY="85.0" prefHeight="31.0" prefWidth="210.0" text="Trần Thanh Toàn">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="txtSdtNV" layoutX="335.0" layoutY="85.0" prefHeight="31.0" prefWidth="210.0" text="0987654321">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="txtTenDangNhap" disable="true" layoutX="25.0" layoutY="192.0" prefHeight="31.0" prefWidth="210.0" text="0987654321">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextField>
+                        <TextField fx:id="txtMaNV" disable="true" layoutX="335.0" layoutY="194.0" prefHeight="31.0" prefWidth="210.0" text="TTNV001">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextField>
+                        <ComboBox fx:id="cmbGioiTinh" layoutX="25.0" layoutY="303.0" prefHeight="31.0" prefWidth="210.0" />
+                        <DatePicker fx:id="dtpNgaySinh" layoutX="331.0" layoutY="303.0" prefHeight="31.0" prefWidth="210.0" />
+                        <TextField fx:id="txtEmail" layoutX="26.0" layoutY="409.0" prefHeight="31.0" prefWidth="210.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextField>
+                        <DatePicker fx:id="dtpNgayVaoLam" disable="true" layoutX="329.0" layoutY="409.0" prefHeight="31.0" prefWidth="210.0" />
+                        <Button fx:id="btnCapNhat" layoutX="332.0" layoutY="485.0" mnemonicParsing="false" text="Cập nhật">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </padding>
+                        </Button>
+                        <Button fx:id="btnKhioiPhuc" layoutX="149.0" layoutY="485.0" mnemonicParsing="false" text="Khôi phục">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                           </padding>
+                        </Button>
+                     </children>
+                  </Pane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

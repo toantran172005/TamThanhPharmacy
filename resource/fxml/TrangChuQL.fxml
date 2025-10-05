@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="mainPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="712.0" prefWidth="1148.0" styleClass="whiteBackground" stylesheets="/css/TrangChuQl.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TrangChuQLCtrl">
+   <top>
+      <BorderPane fx:id="topPane" prefHeight="20.0" prefWidth="923.0" styleClass="whiteBackground" BorderPane.alignment="CENTER">
+         <right>
+            <HBox prefHeight="90.0" prefWidth="225.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="48.0" prefWidth="130.0">
+                     <children>
+                        <Label fx:id="lblTenNV" prefHeight="38.0" prefWidth="133.0" styleClass="classChoBold" text="Trần Thanh Toàn">
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="lblChucVu" layoutX="28.0" layoutY="10.0" prefHeight="51.0" prefWidth="144.0" text="Nhân Viên Bán Hàng">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+                  <HBox prefHeight="50.0" prefWidth="95.0">
+                     <children>
+                        <ImageView fx:id="imgTaiKhoan" fitHeight="41.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../picture/trangChu/user.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets right="10.0" top="10.0" />
+                           </HBox.margin>
+                           <styleClass>
+                              <String fx:value="imgThongTin" />
+                              <String fx:value="classChoCursor" />
+                           </styleClass>
+                        </ImageView>
+                        <ImageView fx:id="imgDangXuat" fitHeight="24.0" fitWidth="34.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#dangXuat" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../picture/trangChu/signOut.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets right="20.0" top="20.0" />
+                           </HBox.margin>
+                           <styleClass>
+                              <String fx:value="imgDangXuat" />
+                              <String fx:value="classChoCursor" />
+                           </styleClass>
+                        </ImageView>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </right>
+         <bottom>
+            <Separator prefWidth="200.0" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets top="15.0" />
+               </BorderPane.margin>
+            </Separator>
+         </bottom>
+         <left>
+            <HBox prefHeight="54.0" prefWidth="354.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fx:id="imgLogo" fitHeight="47.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../picture/trangChu/logo.jpg" />
+                     </image>
+                     <HBox.margin>
+                        <Insets left="10.0" top="5.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label fx:id="lblTenHieuThuoc" prefHeight="30.0" prefWidth="268.0" styleClass="classChoBold" text="HIỆU THUỐC TAM THANH">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" top="15.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+         </left>
+      </BorderPane>
+   </top>
+   <left>
+      <BorderPane styleClass="whiteBackground">
+         <center>
+            <ScrollPane fx:id="leftPane" prefHeight="642.0" prefWidth="233.0">
+               <content>
+                  <VBox prefHeight="631.0" prefWidth="228.0">
+                     <children>
+                        <VBox fx:id="vbTrangChu" prefHeight="57.0" prefWidth="149.0">
+                           <VBox.margin>
+                              <Insets left="5.0" top="5.0" />
+                           </VBox.margin>
+                           <children>
+                              <HBox fx:id="hbTrangChu" onMouseClicked="#quayLaiTrangChu" prefHeight="57.0" prefWidth="199.0" styleClass="classChoCursor">
+                                 <children>
+                                    <ImageView fx:id="imgTrangChu" fitHeight="29.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true" styleClass="classChoCursor">
+                                       <image>
+                                          <Image url="@../picture/trangChu/dashboard.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <Label fx:id="lblTrangChu" styleClass="classChoCursor" text="Trang Chủ">
+                                       <HBox.margin>
+                                          <Insets left="10.0" top="10.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font size="21.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="vbThuoc" prefHeight="18.0" prefWidth="199.0">
+                           <VBox.margin>
+                              <Insets left="5.0" top="5.0" />
+                           </VBox.margin>
+                           <children>
+                              <HBox fx:id="hbThuoc" prefHeight="56.0" prefWidth="127.0" styleClass="classChoCursor">
+                                 <children>
+                                    <ImageView fx:id="imgKeThuoc" fitHeight="41.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true" styleClass="classChoCursor">
+                                       <image>
+                                          <Image url="@../picture/trangChu/addMedicine.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <Label fx:id="lblHangHoa" styleClass="classChoCursor" text="Thuốc">
+                                       <HBox.margin>
+                                          <Insets left="10.0" top="10.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font size="21.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="vbKeThuoc">
+                           <children>
+                              <HBox fx:id="hbKeThuoc" prefHeight="57.0" prefWidth="154.0" styleClass="classChoCursor">
+                                 <children>
+                                    <ImageView fx:id="imgHoaDon2" fitHeight="38.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true" styleClass="classChoCursor">
+                                       <image>
+                                          <Image url="@../picture/trangChu/shelf.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <Label fx:id="lblHoaDon1" styleClass="classChoCursor" text="Kệ Thuốc">
+                                       <HBox.margin>
+                                          <Insets left="10.0" top="15.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font size="21.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </VBox>
+                        <VBox fx:id="vbKhachHang">
+                           <VBox.margin>
+                              <Insets left="5.0" top="5.0" />
+                           </VBox.margin>
+                           <children>
+                              <HBox fx:id="hbKhachHang" prefHeight="58.0" prefWidth="158.0" styleClass="classChoCursor">
+                                 <children>
+                                    <ImageView fx:id="imgKhachHang" fitHeight="43.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" styleClass="classChoCursor">
+                                       <image>
+                                          <Image url="@../picture/trangChu/customer.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <Label fx:id="lblKhachHang" styleClass="classChoCursor" text="Khách Hàng">
+                                       <HBox.margin>
+                                          <Insets left="10.0" top="17.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font size="21.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="vbHoaDon">
+                           <VBox.margin>
+                              <Insets left="5.0" top="5.0" />
+                           </VBox.margin>
+                           <children>
+                              <HBox fx:id="hbHoaDon" prefHeight="57.0" prefWidth="154.0" styleClass="classChoCursor">
+                                 <children>
+                                    <ImageView fx:id="imgHoaDon" fitHeight="38.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true" styleClass="classChoCursor">
+                                       <image>
+                                          <Image url="@../picture/trangChu/order.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <Label fx:id="lblHoaDon" styleClass="classChoCursor" text="Hóa Đơn">
+                                       <HBox.margin>
+                                          <Insets left="10.0" top="15.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font size="21.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox fx:id="vbNhanVien" layoutX="15.0" layoutY="258.0">
+                           <children>
+                              <HBox fx:id="hbHoaDon1" prefHeight="57.0" prefWidth="154.0" styleClass="classChoCursor">
+                                 <children>
+                                    <ImageView fx:id="imgHoaDon3" fitHeight="38.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true" styleClass="classChoCursor">
+                                       <image>
+                                          <Image url="@../picture/trangChu/nhanVien.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <Label fx:id="lblHoaDon2" styleClass="classChoCursor" text="Nhân Viên">
+                                       <HBox.margin>
+                                          <Insets left="10.0" top="15.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font size="21.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </VBox>
+                        <VBox fx:id="vbKhuyenMai" layoutX="10.0" layoutY="315.0">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+         </center>
+         <right>
+            <Separator orientation="VERTICAL" prefHeight="642.0" prefWidth="0.0" BorderPane.alignment="CENTER" />
+         </right>
+      </BorderPane>
+   </left>
+   <center>
+      <BorderPane fx:id="centerPane" prefHeight="631.0" prefWidth="756.0" BorderPane.alignment="CENTER">
+         <top>
+            <BorderPane fx:id="trangChuimgPane" prefHeight="454.0" prefWidth="885.0" BorderPane.alignment="CENTER">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+               <center>
+                  <ImageView fitHeight="411.0" fitWidth="771.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                     <image>
+                        <Image url="@../picture/trangChu/AnhTrangChu.png" />
+                     </image>
+                  </ImageView>
+               </center>
+            </BorderPane>
+         </top>
+         <bottom>
+            <VBox alignment="CENTER" prefHeight="129.0" prefWidth="886.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label prefHeight="17.0" prefWidth="198.0" styleClass="classChoBold" text="Thao Tác Nhanh">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <HBox alignment="CENTER" prefHeight="64.0" prefWidth="782.0">
+                     <children>
+                        <HBox fx:id="hbThemKhachHang" alignment="CENTER" prefHeight="64.0" prefWidth="237.0">
+                           <children>
+                              <ImageView fx:id="imgKhachHang1" fitHeight="43.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" styleClass="classChoCursor">
+                                 <image>
+                                    <Image url="@../picture/trangChu/addCustomer.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets top="5.0" />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Label fx:id="lblKhachHang1" styleClass="classChoCursor" text="Thêm Khách Hàng">
+                                 <font>
+                                    <Font size="19.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                           <styleClass>
+                              <String fx:value="classBorder" />
+                              <String fx:value="classChoCursor" />
+                           </styleClass>
+                        </HBox>
+                        <HBox fx:id="hbThemHoaDon" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="64.0" prefWidth="237.0">
+                           <children>
+                              <ImageView fx:id="imgHoaDon1" fitHeight="38.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true" styleClass="classChoCursor">
+                                 <image>
+                                    <Image url="@../picture/trangChu/addOrder.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets right="5.0" top="5.0" />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Label fx:id="lblKhachHang11" styleClass="classChoCursor" text="Thêm Hóa Đơn">
+                                 <font>
+                                    <Font size="19.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="10.0" top="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="30.0" />
+                           </HBox.margin>
+                           <styleClass>
+                              <String fx:value="classBorder" />
+                              <String fx:value="classChoCursor" />
+                           </styleClass>
+                        </HBox>
+                        <HBox fx:id="hbThemThuoc" alignment="CENTER" layoutX="247.0" layoutY="10.0" prefHeight="64.0" prefWidth="237.0">
+                           <children>
+                              <ImageView fx:id="imgKhachHang111" fitHeight="43.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" styleClass="classChoCursor">
+                                 <image>
+                                    <Image url="@../picture/trangChu/addMedicine.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets top="5.0" />
+                                 </HBox.margin>
+                              </ImageView>
+                              <Label fx:id="lblKhachHang111" styleClass="classChoCursor" text="Thêm Thuốc">
+                                 <font>
+                                    <Font size="19.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="10.0" top="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="30.0" />
+                           </HBox.margin>
+                           <styleClass>
+                              <String fx:value="classBorder" />
+                              <String fx:value="classChoCursor" />
+                           </styleClass>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="10.0" right="5.0" top="5.0" />
+               </BorderPane.margin>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+         </bottom>
+      </BorderPane>
+   </center>
+</BorderPane>

@@ -1,0 +1,10 @@
+
+.boTronVien {
+	-fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+
+.cmb .list-cell {
+	-fx-font-size: 16px;
+    -fx-text-fill: #333333;
+}
