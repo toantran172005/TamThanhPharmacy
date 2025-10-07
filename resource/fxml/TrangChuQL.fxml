@@ -266,7 +266,32 @@
                               <Insets top="5.0" />
                            </VBox.margin>
                         </VBox>
-                        <VBox fx:id="vbKhuyenMai" layoutX="10.0" layoutY="315.0">
+                        <VBox fx:id="vbKhuyenMai" layoutX="10.0" layoutY="325.0">
+                           <children>
+                              <HBox fx:id="hbHoaDon11" prefHeight="57.0" prefWidth="154.0" styleClass="classChoCursor">
+                                 <children>
+                                    <ImageView fx:id="imgHoaDon31" fitHeight="38.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true" styleClass="classChoCursor">
+                                       <image>
+                                          <Image url="@../picture/trangChu/voucher.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets bottom="5.0" left="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <Label fx:id="lblHoaDon21" styleClass="classChoCursor" text="Khuyến Mãi">
+                                       <HBox.margin>
+                                          <Insets left="10.0" top="15.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font size="21.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>

@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 public class TrangChuQLCtrl {
 
 	@FXML
-	public VBox vbTrangChu, vbThuoc, vbKeThuoc, vbKhachHang, vbHoaDon, vbNhanVien;
+	public VBox vbTrangChu, vbThuoc, vbKeThuoc, vbKhachHang, vbHoaDon, vbNhanVien, vbKhuyenMai;
 	
 	@FXML 
 	public ImageView imgDangXuat;
@@ -52,6 +52,7 @@ public class TrangChuQLCtrl {
 		setMauClickVaMenuCon(vbHoaDon,
 				List.of("Tìm kiếm hóa đơn", "Lập hóa đơn", "Khuyến mãi hóa đơn", "Đổi - Trả", "Thống kê hóa đơn"));
 		setMauClickVaMenuCon(vbNhanVien, List.of("Tìm kiếm nhân viên", "Thêm nhân viên"));
+		setMauClickVaMenuCon(vbKhuyenMai, List.of("Tìm kiếm khuyến mãi", "Thêm khuyến mãi"));
 	}
 
 	@SuppressWarnings("unused")
