@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<BorderPane stylesheets="/css/DoiTraHoaDon.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DoiTraHoaDonCtrl">
+   <top>
+      <VBox prefHeight="123.0" prefWidth="1133.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="56.0" prefWidth="1133.0">
+               <children>
+                  <Label text="ĐỔI TRẢ HÓA ĐƠN">
+                     <font>
+                        <Font name="System Bold" size="30.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="49.0" prefWidth="1133.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="465.0">
+                     <children>
+                        <Label prefHeight="30.0" prefWidth="190.0" text="Số điện thoại:">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <TextField prefHeight="31.0" prefWidth="256.0" promptText="Nhập số điện thoại..." styleClass="boTronVien">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="42.0" prefWidth="454.0">
+                     <children>
+                        <Label prefHeight="30.0" prefWidth="190.0" text="Tên khách hàng:">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <TextField prefHeight="31.0" prefWidth="236.0" promptText="Nhập tên khách hàng..." styleClass="boTronVien">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="50.0" />
+                     </HBox.margin>
+                  </HBox>
+               </children>
+            </HBox>
+            <Separator prefWidth="200.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Separator>
+            <HBox alignment="CENTER" prefHeight="37.0" prefWidth="1133.0">
+               <children>
+                  <Label text="Danh Sách Hóa Đơn">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   <center>
+      <TableView prefHeight="436.0" prefWidth="1133.0" BorderPane.alignment="CENTER">
+        <columns>
+            <TableColumn prefWidth="48.0">
+               <graphic>
+                  <CheckBox mnemonicParsing="false" />
+               </graphic>
+            </TableColumn>
+          <TableColumn prefWidth="128.0" text="Mã hóa đơn" />
+            <TableColumn prefWidth="146.0" text="Tên nhân viên" />
+            <TableColumn prefWidth="155.0" text="Tên khách hàng" />
+            <TableColumn prefWidth="201.0" text="Số điện thoại" />
+          <TableColumn prefWidth="134.0" text="Ngày lập" />
+            <TableColumn prefWidth="184.0" text="Tổng tiền" />
+            <TableColumn prefWidth="111.0" text="Hoạt động" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </center>
+   <bottom>
+      <BorderPane prefHeight="451.0" prefWidth="1133.0" BorderPane.alignment="CENTER">
+         <top>
+            <HBox alignment="CENTER" prefHeight="23.0" prefWidth="1133.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="Chi Tiết Hóa Đơn">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </top>
+         <center>
+            <TableView prefHeight="401.0" prefWidth="1133.0" BorderPane.alignment="CENTER">
+              <columns>
+                <TableColumn prefWidth="67.0">
+                     <graphic>
+                        <CheckBox mnemonicParsing="false" />
+                     </graphic>
+                  </TableColumn>
+                <TableColumn prefWidth="132.0" text="Mã thuốc" />
+                  <TableColumn prefWidth="146.0" text="Tên thuốc" />
+                  <TableColumn prefWidth="149.0" text="Kệ thuốc" />
+                  <TableColumn prefWidth="139.0" text="Dạng thuốc" />
+                  <TableColumn prefWidth="115.0" text="Đơn vị" />
+                  <TableColumn prefWidth="83.0" text="Hạn sử dụng" />
+                  <TableColumn prefWidth="102.0" text="Thuế VAT" />
+                  <TableColumn prefWidth="85.0" text="Trạng thái" />
+                  <TableColumn prefWidth="105.0" text="Hoạt động" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </center>
+         <bottom>
+            <VBox prefHeight="194.0" prefWidth="1205.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="69.0" prefWidth="1205.0">
+                     <children>
+                        <Label text="Lý do đổi trả:">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <TextArea prefHeight="69.0" prefWidth="356.0" promptText="Nhập lý do đổi trả...">
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextArea>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="20.0" prefHeight="69.0" prefWidth="1205.0">
+                     <children>
+                        <Label text="Tiền hoàn:">
+                           <font>
+                              <Font name="System Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <TextField promptText="Tiền hoàn..." styleClass="boTronVien">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="50.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="89.0" prefHeight="51.0" prefWidth="1205.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="51.0" prefWidth="230.0">
+                           <children>
+                              <ImageView fitHeight="36.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../picture/hoaDon/accept.png" />
+                                 </image>
+                              </ImageView>
+                              <Label text="Xác nhận đổi trả">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <styleClass>
+                              <String fx:value="hbox_decorate" />
+                              <String fx:value="hbox-menu" />
+                           </styleClass>
+                        </HBox>
+                        <HBox alignment="CENTER" layoutX="498.0" layoutY="10.0" prefHeight="51.0" prefWidth="230.0">
+                           <children>
+                              <ImageView fitHeight="36.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../picture/hoaDon/cancel.png" />
+                                 </image>
+                              </ImageView>
+                              <Label text="Hủy">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="50.0" />
+                           </HBox.margin>
+                           <styleClass>
+                              <String fx:value="hbox_decorate" />
+                              <String fx:value="hbox-menu" />
+                           </styleClass>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+         </bottom>
+      </BorderPane>
+   </bottom>
+</BorderPane>

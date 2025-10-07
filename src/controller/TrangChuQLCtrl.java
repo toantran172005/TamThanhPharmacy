@@ -185,10 +185,10 @@ public class TrangChuQLCtrl {
         	doiCenterPane("/fxml/LapHoaDon.fxml");
 			break;
 		case "Khuyến mãi hóa đơn":
-
+			doiCenterPane("/fxml/KhuyenMaiHoaDon.fxml");;
 			break;
 		case "Đổi - Trả":
-
+			doiCenterPane("/fxml/DoiTraHoaDon.fxml");
 			break;
 		case "Thống kê hóa đơn":
 

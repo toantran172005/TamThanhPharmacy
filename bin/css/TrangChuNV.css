@@ -32,7 +32,7 @@
 }
 
 .hbox_menu:selected {
-	-fx-background-color: #07afff;
+	-fx-background-color: #00ADFE;
 }
 
 .submenu_label {

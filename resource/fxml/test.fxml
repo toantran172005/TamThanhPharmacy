@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <VBox>
+         <children>
+            <Label text="Quản Lý Khuyến Mãi - Bán Thuốc" />
+            <Label text="Tìm Kiếm Khuyến Mãi" />
+            <HBox>
+               <children>
+                  <Label text="Tên Khuyến Mãi:" />
+                  <TextField />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Label text="Mã Khuyến Mãi:" />
+                  <TextField />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Label text="Từ Ngày:" />
+                  <DatePicker />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Label text="Đến Ngày:" />
+                  <DatePicker />
+               </children>
+            </HBox>
+            <Button text="Tìm Kiếm" />
+         </children>
+      </VBox>
+   </top>
+   <left>
+      <VBox>
+         <children>
+            <Label text="Danh Sách Khuyến Mãi" />
+            <TableView prefHeight="500.0">
+               <columns>
+                  <TableColumn text="Mã KM" />
+                  <TableColumn text="Tên Khuyến Mãi" />
+                  <TableColumn text="Loại KM" />
+                  <TableColumn text="Giá Trị (%)" />
+                  <TableColumn text="Áp Dụng Cho" />
+                  <TableColumn text="Từ Ngày" />
+                  <TableColumn text="Đến Ngày" />
+                  <TableColumn text="Trạng Thái" />
+               </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <VBox>
+         <children>
+            <Label text="Tạo Khuyến Mãi Mới" />
+            <HBox>
+               <children>
+                  <Label text="Mã KM:" />
+                  <TextField />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Label text="Tên KM:" />
+                  <TextField />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Label text="Loại:" />
+                  <ComboBox />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Label text="Giá Trị (%):" />
+                  <TextField />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Label text="Áp Dụng Cho Thuốc:" />
+                  <TextField />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Label text="Từ Ngày:" />
+                  <DatePicker />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Label text="Đến Ngày:" />
+                  <DatePicker />
+               </children>
+            </HBox>
+            <HBox>
+               <children>
+                  <Label text="Mô Tả:" />
+                  <TextArea prefHeight="100.0" prefWidth="300.0" />
+               </children>
+            </HBox>
+            <Button text="Lưu Khuyến Mãi Mới" />
+         </children>
+      </VBox>
+   </center>
+   <bottom>
+      <HBox>
+         <children>
+            <Button text="Sửa" />
+            <Button text="Xóa" />
+            <Button text="Kích Hoạt" />
+            <Button text="Hủy" />
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>
