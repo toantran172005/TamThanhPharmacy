@@ -28,7 +28,7 @@ public class DangNhapCtrl {
 		Stage stage = (Stage)btnDangNhap.getScene().getWindow();
 		Parent root = null;
 		try {
-			root = FXMLLoader.load(getClass().getResource("/fxml/TrangChuQL.fxml"));
+			root = FXMLLoader.load(getClass().getResource("/fxml/TrangChuNV.fxml"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -51,7 +51,6 @@ public class DangNhapCtrl {
 //		icon mặc định
 		imgEye.setImage(matDong);
 	}
-	
 	
 	@FXML private void hienMatKhau() {
 		int conTro = doiMat ? txtPassOpen.getCaretPosition() : txpPassClose.getCaretPosition();

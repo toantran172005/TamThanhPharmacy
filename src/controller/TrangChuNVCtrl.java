@@ -2,13 +2,18 @@ package controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -117,14 +122,14 @@ public class TrangChuNVCtrl {
 	        	doiCenterPane("/fxml/TimKiemThuoc.fxml");
 	            break;
 	        case "Thêm thuốc":
-
+	        	doiCenterPane("/fxml/ThemThuoc.fxml");
 	            break;
 	        // ===== KỆ THUỐC =====
 	        case "Danh sách kệ":
-
+	        	doiCenterPane("/fxml/DanhSachKeThuoc.fxml");
 	            break;
 	        case "Thêm kệ thuốc":
-
+	        	doiCenterPane("/fxml/ThemKeThuoc.fxml");
 	            break;
 
 	        // ===== KHÁCH HÀNG =====
@@ -164,18 +169,31 @@ public class TrangChuNVCtrl {
 	public void dangXuat() {
 		Stage stage = (Stage) imgDangXuat.getScene().getWindow();
 		Parent root = null;
-		try {
-			root = FXMLLoader.load(getClass().getResource("/fxml/DangNhap.fxml"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        StackPane container = new StackPane(root);
-        Scene scene = new Scene(container);		
-		stage.setScene(scene);		
-		stage.setMaximized(false); 
-		stage.centerOnScreen();     
-		stage.setResizable(true);
+		
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("Xác nhận đăng xuất");
+		alert.setHeaderText("Bạn có chắc chắn muốn đăng xuất?");
+		alert.setContentText("Nhấn OK để xác nhận hoặc Cancel để ở lại.");
+		
+		Stage stageAlert = (Stage) alert.getDialogPane().getScene().getWindow();
+		stageAlert.getIcons().add(new Image("/picture/trangChu/logo.jpg"));
+		
+		Optional<ButtonType> ketQua = alert.showAndWait();
+		
+		if(ketQua.isPresent() && ketQua.get() == ButtonType.OK) {
+			try {
+				root = FXMLLoader.load(getClass().getResource("/fxml/DangNhap.fxml"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        StackPane container = new StackPane(root);
+	        Scene scene = new Scene(container);		
+			stage.setScene(scene);		
+			stage.setMaximized(false); 
+			stage.centerOnScreen();     
+			stage.setResizable(true);
+		} 
 	}
 
 
