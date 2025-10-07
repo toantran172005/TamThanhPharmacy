@@ -44,8 +44,8 @@ public class TrangChuNVCtrl {
 	public void setThuocTinhMainMenu() {
 		setMauClickVaMenuCon(vbTrangChu, List.of());
 		setMauClickVaMenuCon(vbThuoc,
-				List.of("Tìm kiếm thuốc", "Thêm thuốc", "Cập nhật thuốc"));
-		setMauClickVaMenuCon(vbKeThuoc, List.of("Danh sách kệ", "Thêm kệ thuốc", "Cập nhật kệ"));
+				List.of("Tìm kiếm thuốc", "Thêm thuốc"));
+		setMauClickVaMenuCon(vbKeThuoc, List.of("Danh sách kệ", "Thêm kệ thuốc"));
 		setMauClickVaMenuCon(vbKhachHang,
 				List.of("Tìm kiếm khách hàng", "Thêm khách hàng","Khiếu nại & Hỗ trợ"));
 		setMauClickVaMenuCon(vbHoaDon, List.of("Tìm kiếm hóa đơn", "Lập hóa đơn", "Đổi - Trả"));
@@ -119,18 +119,11 @@ public class TrangChuNVCtrl {
 	        case "Thêm thuốc":
 
 	            break;
-	        case "Cập nhật thuốc":
-
-	            break;
-
 	        // ===== KỆ THUỐC =====
 	        case "Danh sách kệ":
 
 	            break;
 	        case "Thêm kệ thuốc":
-
-	            break;
-	        case "Cập nhật kệ":
 
 	            break;
 
@@ -147,10 +140,10 @@ public class TrangChuNVCtrl {
 
 	        // ===== HÓA ĐƠN =====
 	        case "Tìm kiếm hóa đơn":
-
+	        	doiCenterPane("/fxml/TimKiemHD.fxml");
 	            break;
 	        case "Lập hóa đơn":
-
+	        	doiCenterPane("/fxml/LapHoaDon.fxml");
 	            break;
 	        case "Đổi - Trả":
 
