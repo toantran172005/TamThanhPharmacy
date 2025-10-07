@@ -114,7 +114,7 @@ public class TrangChuNVCtrl {
 	    switch (text) {
 	        // ===== THUỐC =====
 	        case "Tìm kiếm thuốc":
-
+	        	doiCenterPane("/fxml/TimKiemThuoc.fxml");
 	            break;
 	        case "Thêm thuốc":
 

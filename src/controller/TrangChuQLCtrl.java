@@ -135,7 +135,7 @@ public class TrangChuQLCtrl {
 		switch (text) {
 		// ===== THUỐC =====
 		case "Tìm kiếm thuốc":
-
+			doiCenterPane("/fxml/TimKiemThuoc.fxml");
 			break;
 		case "Thêm thuốc":
 			
@@ -192,7 +192,7 @@ public class TrangChuQLCtrl {
 			doiCenterPane("/fxml/DoiTraHoaDon.fxml");
 			break;
 		case "Thống kê hóa đơn":
-
+			doiCenterPane("/fxml/ThongKeHoaDon.fxml");
 			break;
 
 		// ===== NHÂN VIÊN =====
@@ -200,7 +200,7 @@ public class TrangChuQLCtrl {
 
 			break;
 		case "Thêm nhân viên":
-
+			doiCenterPane("/fxml/ThemNhanVien.fxml");
 			break;
 		default:
 			System.out.println("⚠ Menu chưa xử lý: " + text);
