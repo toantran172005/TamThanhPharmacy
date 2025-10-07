@@ -28,7 +28,7 @@
                </font>
             </Label>
             <Separator prefWidth="200.0" />
-            <HBox prefHeight="76.0" prefWidth="838.0">
+            <HBox alignment="CENTER" prefHeight="76.0" prefWidth="838.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="146.0" prefWidth="398.0">
                      <children>
@@ -78,7 +78,7 @@
                   </HBox>
                </children>
             </HBox>
-            <HBox prefHeight="82.0" prefWidth="1027.0">
+            <HBox alignment="CENTER" prefHeight="82.0" prefWidth="1027.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="567.0">
                      <children>
