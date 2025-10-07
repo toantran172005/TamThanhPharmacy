@@ -1,22 +1,3 @@
-.hbox_decorate {
-    -fx-background-color: #ffffff;     
-    -fx-border-color: #e0e0e0;         
-    -fx-border-radius: 10;             
-    -fx-background-radius: 10;          
-    -fx-padding: 10;                                
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2); 
-}
-
-.boTronVien {
-	-fx-background-radius: 8;
-    -fx-border-radius: 8;
-}
-
-.cbLocThuoc .list-cell {
-	-fx-font-size: 16px;
-    -fx-text-fill: #333333;
-}
-
 .hbox-menu:hover {
     -fx-background-color: lightgray;
 }
@@ -26,4 +7,29 @@
     -fx-scale-x: 0.9;
     -fx-scale-y: 0.9;
     -fx-transition: all 0.1s ease;
+}
+
+.hbox_decorate {
+    -fx-background-color: #ffffff;     
+    -fx-border-color: #e0e0e0;         
+    -fx-border-radius: 10;             
+    -fx-background-radius: 10;          
+    -fx-padding: 10;                                
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2); 
+}
+
+
+.boTronVien {
+	-fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+
+.comboBox .list-cell {
+	-fx-font-size: 16px;
+    -fx-text-fill: #333333;
+}
+
+.comboBox:editable > .text-field {
+    -fx-font-size: 15px;
+    -fx-padding: 6px 10px;
 }

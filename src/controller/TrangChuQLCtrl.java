@@ -44,14 +44,14 @@ public class TrangChuQLCtrl {
 
 	public void setThuocTinhMainMenu() {
 		setMauClickVaMenuCon(vbTrangChu, List.of());
-		setMauClickVaMenuCon(vbThuoc, List.of("Tìm kiếm thuốc", "Thêm thuốc", "Cập nhật thuốc", "Khuyến mãi thuốc",
+		setMauClickVaMenuCon(vbThuoc, List.of("Tìm kiếm thuốc", "Thêm thuốc", "Khuyến mãi thuốc",
 				"Nhập thuốc", "Đặt thuốc", "Thống kê thuốc", "Thuế"));
-		setMauClickVaMenuCon(vbKeThuoc, List.of("Danh sách kệ", "Thêm kệ thuốc", "Cập nhật kệ"));
+		setMauClickVaMenuCon(vbKeThuoc, List.of("Danh sách kệ", "Thêm kệ thuốc"));
 		setMauClickVaMenuCon(vbKhachHang, List.of("Tìm kiếm khách hàng", "Thêm khách hàng",
 				"Khiếu nại & Hỗ trợ", "Thống kê khách hàng"));
 		setMauClickVaMenuCon(vbHoaDon,
 				List.of("Tìm kiếm hóa đơn", "Lập hóa đơn", "Khuyến mãi hóa đơn", "Đổi - Trả", "Thống kê hóa đơn"));
-		setMauClickVaMenuCon(vbNhanVien, List.of("Tìm kiếm nhân viên", "Thêm nhân viên", "Cập nhật nhân viên"));
+		setMauClickVaMenuCon(vbNhanVien, List.of("Tìm kiếm nhân viên", "Thêm nhân viên"));
 	}
 
 	@SuppressWarnings("unused")
@@ -137,11 +137,9 @@ public class TrangChuQLCtrl {
 
 			break;
 		case "Thêm thuốc":
+			
 			break;
-		case "Cập nhật thuốc":
-
-			break;
-		case "Khuyến mãi":
+		case "Khuyến mãi thuốc":
 
 			break;
 		case "Nhập thuốc":
@@ -164,9 +162,6 @@ public class TrangChuQLCtrl {
 		case "Thêm kệ thuốc":
 
 			break;
-		case "Cập nhật kệ":
-
-			break;
 
 		// ===== KHÁCH HÀNG =====
 		case "Tìm kiếm khách hàng":
@@ -184,10 +179,10 @@ public class TrangChuQLCtrl {
 
 		// ===== HÓA ĐƠN =====
 		case "Tìm kiếm hóa đơn":
-
+			doiCenterPane("/fxml/TimKiemHD.fxml");
 			break;
 		case "Lập hóa đơn":
-
+        	doiCenterPane("/fxml/LapHoaDon.fxml");
 			break;
 		case "Khuyến mãi hóa đơn":
 
@@ -206,10 +201,6 @@ public class TrangChuQLCtrl {
 		case "Thêm nhân viên":
 
 			break;
-		case "Cập nhật nhân viên":
-
-			break;
-
 		default:
 			System.out.println("⚠ Menu chưa xử lý: " + text);
 			break;

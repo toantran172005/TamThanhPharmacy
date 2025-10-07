@@ -16,7 +16,7 @@ public class Main extends Application {
 	    try {
 	        Parent root = FXMLLoader.load(getClass().getResource("/fxml/DangNhap.fxml"));
 	        StackPane container = new StackPane(root);
-	        Scene scene = new Scene(container); 
+	        Scene scene = new Scene(container);
 	        primaryStage.setScene(scene);
 	        primaryStage.show();
 	        Image icons = new Image("/picture/trangChu/logo.jpg");
