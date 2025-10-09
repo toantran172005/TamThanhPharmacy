@@ -189,7 +189,7 @@ public class TrangChuQLCtrl {
 			doiCenterPane("/fxml/ThemKhachHang.fxml");
 			break;
 		case "Khiếu nại & Hỗ trợ":
-
+			moTrang("/fxml/DanhSachKhieuNaiVaHoTroKH.fxml", DanhSachKhieuNaiVaHoTroHKCtrl.class);
 			break;
 		case "Thống kê khách hàng":
 
@@ -298,6 +298,31 @@ public class TrangChuQLCtrl {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public <T> T moTrang(String fxmlPath, Class<T> controllerClass) {
+		try {
+		    FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+		    Parent root = loader.load();
+
+		    // Lấy controller của FXML
+		    T controller = loader.getController();
+
+		    // Nếu controller có setTrangChuNVCtrl thì tự động gán
+		    try {
+		        controllerClass.getMethod("setTrangChuQLCtrl", TrangChuQLCtrl.class).invoke(controller, this);
+		    } 
+		    catch (NoSuchMethodException ignore) {
+		         
+		    }
+
+		    mainPane.setCenter(root);
+		    return controller;
+		} 
+		catch (IOException | ReflectiveOperationException e) {
+		    e.printStackTrace();
+		    return null;
 		}
 	}
 }

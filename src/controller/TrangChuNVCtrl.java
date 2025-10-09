@@ -126,7 +126,7 @@ public class TrangChuNVCtrl {
 	            break;
 	        // ===== KỆ THUỐC =====
 	        case "Danh sách kệ":
-	        	doiCenterPane("/fxml/DanhSachKeThuoc.fxml");
+	        	moTrangDanhSachKeThuoc();
 	            break;
 	        case "Thêm kệ thuốc":
 	        	doiCenterPane("/fxml/ThemKeThuoc.fxml");
@@ -245,4 +245,36 @@ public class TrangChuNVCtrl {
 		    return null;
 		}
 	}
+	
+	// ========== MỞ TRANG DANH SÁCH KỆ THUỐC ==========
+		public void moTrangDanhSachKeThuoc() {
+			try {
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DanhSachKeThuoc.fxml"));
+				Parent root = loader.load();
+
+				// lấy controller của ThongTin.fxml
+				DanhSachKeThuocCtrl controller = loader.getController();
+				controller.setTrangChuNVCtrl(this);
+
+				mainPane.setCenter(root);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		// ========== MỞ TRANG ChI TIẾT KỆ THUỐC ==========
+		public void setTrangChiTietKeThuoc() {
+			try {
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ChiTietKeThuoc.fxml"));
+				Parent root = loader.load();
+
+				// lấy controller của ChiTietKeThuoc.fxml
+				ChiTietKeThuocCtrl controller = loader.getController();
+				controller.setTrangChuNVCtrl(this);
+				mainPane.setCenter(root);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 }
