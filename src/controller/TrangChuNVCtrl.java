@@ -140,7 +140,7 @@ public class TrangChuNVCtrl {
 	        	doiCenterPane("/fxml/ThemKhachHang.fxml");
 	            break;
 	        case "Khiếu nại & Hỗ trợ":
-
+	        	moTrang("/fxml/DanhSachKhieuNaiVaHoTroKH.fxml", DanhSachKhieuNaiVaHoTroHKCtrl.class);
 	            break;
 
 	        // ===== HÓA ĐƠN =====
@@ -216,23 +216,33 @@ public class TrangChuNVCtrl {
 	}
 	
 	// ========== MỞ TRANG THÔNG TIN ==========
-		public void setTrangTaiKhoan() {
-		    try {
-		        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ThongTin.fxml"));
-		        Parent root = loader.load();
-
-		        // lấy controller của ThongTin.fxml
-		        ThongTinCtrl controller = loader.getController();
-		        controller.setTrangChuNVCtrl(this);
-
-		        mainPane.setCenter(root);
-		    } 
-		    catch (IOException e) {
-		        e.printStackTrace();
-		    }
-		}
+	public void moTrangTT(ImageView imgTaiKhoan) {
+		imgTaiKhoan.setOnMouseClicked(e -> moTrang("/fxml/ThongTin.fxml", ThongTinCtrl.class));
+	}
 		
-		public void moTrangTT(ImageView imgTaiKhoan) {
-		    imgTaiKhoan.setOnMouseClicked(e -> setTrangTaiKhoan());
+		
+	public <T> T moTrang(String fxmlPath, Class<T> controllerClass) {
+		try {
+		    FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+		    Parent root = loader.load();
+
+		    // Lấy controller của FXML
+		    T controller = loader.getController();
+
+		    // Nếu controller có setTrangChuNVCtrl thì tự động gán
+		    try {
+		        controllerClass.getMethod("setTrangChuNVCtrl", TrangChuNVCtrl.class).invoke(controller, this);
+		    } 
+		    catch (NoSuchMethodException ignore) {
+		         
+		    }
+
+		    mainPane.setCenter(root);
+		    return controller;
+		} 
+		catch (IOException | ReflectiveOperationException e) {
+		    e.printStackTrace();
+		    return null;
 		}
+	}
 }
