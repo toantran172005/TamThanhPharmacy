@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -17,32 +17,35 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="833.0" prefWidth="1102.0" stylesheets="/css/ThongKeHoaDon.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ThongKeHoaDonCtrl">
+<BorderPane prefHeight="951.0" prefWidth="1102.0" stylesheets="/css/ThongKeHoaDon.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ThongKeHoaDonCtrl">
 	<top>
-		<VBox prefHeight="85.0" prefWidth="1102.0" BorderPane.alignment="CENTER">
+		<VBox prefHeight="85.0" prefWidth="1102.0" spacing="20.0" BorderPane.alignment="CENTER">
 			<children>
 				<HBox alignment="CENTER" prefHeight="42.0" prefWidth="1102.0">
 					<children>
 						<Label text="THỐNG KÊ HÓA ĐƠN">
 							<font>
-								<Font name="System Bold" size="25.0" />
+								<Font name="System Bold" size="18.0" />
 							</font>
 						</Label>
 					</children>
 				</HBox>
-				<HBox prefHeight="45.0" prefWidth="1102.0">
+				<HBox prefHeight="45.0" prefWidth="1102.0" spacing="30.0">
 					<children>
 						<HBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="289.0">
 							<children>
 								<Label text="Từ ngày:">
 									<font>
-										<Font name="System Bold" size="20.0" />
+										<Font name="System Bold" size="15.0" />
 									</font>
 								</Label>
 								<DatePicker prefHeight="37.0" prefWidth="182.0" promptText="Ngày bắt đầu...">
 									<HBox.margin>
 										<Insets left="15.0" />
 									</HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
 								</DatePicker>
 							</children>
 						</HBox>
@@ -50,19 +53,22 @@
 							<children>
 								<Label text="Đến ngày:">
 									<font>
-										<Font name="System Bold" size="20.0" />
+										<Font name="System Bold" size="15.0" />
 									</font>
 								</Label>
 								<DatePicker prefHeight="37.0" prefWidth="178.0" promptText="Ngày kết thúc...">
 									<HBox.margin>
 										<Insets left="15.0" />
 									</HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
 								</DatePicker>
 							</children>
 						</HBox>
-						<HBox alignment="CENTER" prefHeight="49.0" prefWidth="158.0">
+						<HBox alignment="CENTER" prefHeight="49.0" prefWidth="158.0" styleClass="btn">
 							<HBox.margin>
-								<Insets left="15.0" />
+								<Insets />
 							</HBox.margin>
 							<children>
 								<ImageView fitHeight="34.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
@@ -79,10 +85,9 @@
 									</HBox.margin>
 								</Label>
 							</children>
-                     <styleClass>
-                        <String fx:value="hbox_decorate" />
-                        <String fx:value="hbox-menu" />
-                     </styleClass>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
 						</HBox>
 					</children>
                <VBox.margin>
@@ -93,7 +98,7 @@
 		</VBox>
 	</top>
 	<center>
-		<VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+		<VBox BorderPane.alignment="CENTER">
 			<children>
 				<TitledPane animated="false" text="Tổng Quan Doanh Thu">
 					<content>
@@ -103,7 +108,7 @@
 									<children>
 										<Label text="Tổng doanh thu">
 											<font>
-												<Font name="System Bold" size="17.0" />
+												<Font name="System Bold" size="15.0" />
 											</font>
 										</Label>
 										<Label text="0 VND">
@@ -117,7 +122,7 @@
 									<children>
 										<Label text="Tổng hóa đơn">
 											<font>
-												<Font name="System Bold" size="17.0" />
+												<Font name="System Bold" size="15.0" />
 											</font>
 										</Label>
 										<Label text="0 ">
@@ -131,7 +136,7 @@
 									<children>
 										<Label text="Doanh thu TB/Hóa Đơn">
 											<font>
-												<Font name="System Bold" size="17.0" />
+												<Font name="System Bold" size="15.0" />
 											</font>
 										</Label>
 										<Label text="0 ">
@@ -148,7 +153,7 @@
 						<Font size="15.0" />
 					</font>
 				</TitledPane>
-				<TitledPane animated="false" prefHeight="276.0" prefWidth="1102.0" text="Biểu Đồ Doanh Thu Theo Ngày">
+				<TitledPane animated="false" text="Biểu Đồ Doanh Thu Theo Ngày">
 					<content>
 						<BorderPane prefHeight="263.0" prefWidth="1100.0">
 							<center>
@@ -161,7 +166,7 @@
                               </CategoryAxis>
 									</xAxis>
 									<yAxis>
-										<NumberAxis label="Doanh thu (VND)" prefHeight="130.0" prefWidth="53.0">
+										<NumberAxis label="Doanh thu (VND)" prefHeight="143.0" prefWidth="53.0">
                                  <tickLabelFont>
                                     <Font size="12.0" />
                                  </tickLabelFont>
@@ -178,7 +183,7 @@
 						<Insets top="20.0" />
 					</VBox.margin>
 				</TitledPane>
-            <TitledPane animated="false" prefHeight="293.0" prefWidth="1102.0" text="Top 10 Khách Hàng Mua Nhiều Nhất">
+            <TitledPane animated="false" text="Top 10 Khách Hàng Mua Nhiều Nhất">
                <font>
                   <Font size="15.0" />
                </font>
@@ -204,76 +209,79 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </TitledPane>
-            <HBox alignment="CENTER" prefHeight="33.0" prefWidth="1102.0">
+            <HBox alignment="CENTER" prefHeight="97.0" prefWidth="1102.0" spacing="50.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="234.0">
+                  <HBox alignment="CENTER" prefHeight="49.0" prefWidth="207.0" spacing="15.0" styleClass="btn">
                      <children>
-                        <ImageView fitHeight="28.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="25.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../picture/hoaDon/export.png" />
                            </image>
                         </ImageView>
                         <Label text="Xuất Excel Top Khách">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="15.0" />
                            </font>
                            <HBox.margin>
-                              <Insets left="10.0" />
+                              <Insets />
                            </HBox.margin>
                         </Label>
                      </children>
-                     <styleClass>
-                        <String fx:value="hbox-menu" />
-                        <String fx:value="hbox_decorate" />
-                     </styleClass>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </HBox>
-                  <HBox alignment="CENTER" layoutX="451.0" layoutY="10.0" prefHeight="50.0" prefWidth="341.0">
+                  <HBox alignment="CENTER" layoutX="451.0" layoutY="10.0" prefHeight="49.0" prefWidth="286.0" spacing="15.0" styleClass="btn">
                      <children>
-                        <ImageView fitHeight="28.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../picture/hoaDon/money.png" />
                            </image>
-                        </ImageView>
-                        <Label prefHeight="27.0" prefWidth="275.0" text="In Báo Cáo Thống Kê Doanh Thu">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin>
+                        </ImageView>
+                        <Label prefHeight="44.0" prefWidth="221.0" text="In Báo Cáo Thống Kê Doanh Thu">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </Label>
                      </children>
                      <HBox.margin>
-                        <Insets left="50.0" />
+                        <Insets />
                      </HBox.margin>
-                     <styleClass>
-                        <String fx:value="hbox-menu" />
-                        <String fx:value="hbox_decorate" />
-                     </styleClass>
                   </HBox>
-                  <HBox alignment="CENTER" layoutX="536.0" layoutY="10.0" prefHeight="33.0" prefWidth="149.0">
+                  <HBox alignment="CENTER" layoutX="536.0" layoutY="10.0" prefHeight="49.0" prefWidth="127.0" spacing="15.0" styleClass="btn">
                      <children>
                         <ImageView fitHeight="28.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../picture/hoaDon/return.png" />
                            </image>
-                        </ImageView>
-                        <Label prefHeight="27.0" prefWidth="83.0" text="Làm mới">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin>
+                        </ImageView>
+                        <Label prefHeight="27.0" prefWidth="83.0" text="Làm mới">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
                         </Label>
                      </children>
-                     <styleClass>
-                        <String fx:value="hbox-menu" />
-                        <String fx:value="hbox_decorate" />
-                     </styleClass>
                      <HBox.margin>
-                        <Insets left="50.0" />
+                        <Insets />
                      </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </HBox>
                </children>
                <VBox.margin>

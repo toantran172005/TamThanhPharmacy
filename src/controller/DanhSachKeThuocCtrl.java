@@ -14,6 +14,7 @@ public class DanhSachKeThuocCtrl {
 	@FXML public ComboBox<String> cbbLoaiKe;
 	@FXML public Button btnChiTiet;
 	public TrangChuQLCtrl Ql;
+	public TrangChuNVCtrl NV;
 	
 	@FXML public void initialize() {
 		cbbTrangThai.getItems().addAll("Hoạt động","Ngừng hoạt động");
@@ -27,7 +28,17 @@ public class DanhSachKeThuocCtrl {
 		this.Ql = trangChuQLCtrl;
 	}
 	
-	@FXML public void moTrangChiTiet() {
-		Ql.setTrangChiTietKeThuoc();
+	public void setTrangChuNVCtrl(TrangChuNVCtrl trangChuNVCtrl) {
+		this.NV = trangChuNVCtrl;
+		
 	}
+	
+	@FXML public void moTrangChiTiet() {
+		if(Ql != null) {
+			Ql.setTrangChiTietKeThuoc();
+		} else if(NV != null) {
+			NV.setTrangChiTietKeThuoc();
+		}
+	}
+
 }

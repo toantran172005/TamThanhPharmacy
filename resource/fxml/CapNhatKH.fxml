@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
@@ -14,11 +13,11 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="642.0" prefWidth="868.0" stylesheets="/css/CapNhatKH.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CapNhatKHCtrl">
    <center>
-      <VBox alignment="TOP_CENTER" prefHeight="642.0" prefWidth="698.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefHeight="642.0" prefWidth="698.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
             <Label text="CẬP NHẬT KHÁCH HÀNG">
                <font>
-                  <Font name="System Bold" size="30.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
                <VBox.margin>
                   <Insets top="40.0" />
@@ -26,12 +25,12 @@
             </Label>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <VBox.margin>
-                  <Insets top="20.0" />
+                  <Insets />
                </VBox.margin>
                <children>
                   <Label text="Tên khách hàng:">
                      <font>
-                        <Font name="System Bold" size="20.0" />
+                        <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
                   <TextField prefHeight="25.0" prefWidth="321.0" promptText="Nhập tên...">
@@ -39,7 +38,7 @@
                         <Insets left="30.0" />
                      </HBox.margin>
                      <font>
-                        <Font size="16.0" />
+                        <Font size="15.0" />
                      </font>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -51,7 +50,7 @@
                <children>
                   <Label text="Số điện thoại:">
                      <font>
-                        <Font name="System Bold" size="20.0" />
+                        <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
                   <TextField prefHeight="25.0" prefWidth="321.0" promptText="Nhập số điện thoại...">
@@ -59,7 +58,7 @@
                         <Insets left="55.0" />
                      </HBox.margin>
                      <font>
-                        <Font size="16.0" />
+                        <Font size="15.0" />
                      </font>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -71,7 +70,7 @@
                <children>
                   <Label text="Tuổi:">
                      <font>
-                        <Font name="System Bold" size="20.0" />
+                        <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
                   <TextField prefHeight="25.0" prefWidth="321.0" promptText="Nhập tuổi...">
@@ -79,7 +78,7 @@
                         <Insets left="135.0" />
                      </HBox.margin>
                      <font>
-                        <Font size="16.0" />
+                        <Font size="15.0" />
                      </font>
                      <cursor>
                         <Cursor fx:constant="HAND" />
@@ -87,18 +86,18 @@
                   </TextField>
                </children>
             </HBox>
-            <HBox alignment="CENTER" layoutX="10.0" layoutY="315.0" prefHeight="37.0" prefWidth="868.0">
+            <HBox alignment="CENTER" layoutX="10.0" layoutY="315.0" prefHeight="37.0" prefWidth="868.0" spacing="100.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="48.0" prefWidth="169.0">
+                  <HBox alignment="CENTER" prefHeight="38.0" prefWidth="132.0" styleClass="btn">
                      <children>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../picture/khachHang/return.png" />
                            </image>
                         </ImageView>
-                        <Label text="Khôi phục">
+                        <Label text="Làm mới">
                            <font>
-                              <Font name="System Bold" size="20.0" />
+                              <Font name="System Bold" size="15.0" />
                            </font>
                            <HBox.margin>
                               <Insets left="10.0" />
@@ -108,21 +107,17 @@
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
-                     <styleClass>
-                        <String fx:value="hbox_decorate" />
-                        <String fx:value="hbox-menu" />
-                     </styleClass>
                   </HBox>
-                  <HBox alignment="CENTER" layoutX="344.0" layoutY="10.0" prefHeight="41.0" prefWidth="168.0">
+                  <HBox alignment="CENTER" layoutX="344.0" layoutY="10.0" prefHeight="38.0" prefWidth="139.0" styleClass="btn">
                      <children>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="19.0" fitWidth="19.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../picture/khachHang/addUser.png" />
                            </image>
                         </ImageView>
                         <Label text="Cập nhật">
                            <font>
-                              <Font name="System Bold" size="20.0" />
+                              <Font name="System Bold" size="15.0" />
                            </font>
                            <HBox.margin>
                               <Insets left="10.0" />
@@ -130,15 +125,11 @@
                         </Label>
                      </children>
                      <HBox.margin>
-                        <Insets left="50.0" />
+                        <Insets />
                      </HBox.margin>
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
-                     <styleClass>
-                        <String fx:value="hbox_decorate" />
-                        <String fx:value="hbox-menu" />
-                     </styleClass>
                   </HBox>
                </children>
             </HBox>
