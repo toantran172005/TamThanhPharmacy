@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="710.0" prefWidth="1050.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ThongTinCtrl">
+   <top>
+      <HBox prefHeight="60.0" prefWidth="1050.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="60.0" prefWidth="525.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="17.0" style="-fx-font-weight: bold;" text="TÀI KHOẢN">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane prefHeight="60.0" prefWidth="598.0">
+               <children>
+                  <Button fx:id="btnChinhSuaTT" layoutX="439.0" layoutY="15.0" mnemonicParsing="false" text="Chỉnh sửa">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Button>
+               </children>
+            </Pane>
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <VBox prefHeight="687.0" prefWidth="893.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="70.0" prefWidth="799.0">
+               <children>
+                  <Label layoutX="422.0" layoutY="22.0" style="-fx-font-weight: bold;" text="THÔNG TIN TÀI KHOẢN">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <HBox prefHeight="583.0" prefWidth="1050.0">
+               <children>
+                  <Pane prefHeight="458.0" prefWidth="430.0">
+                     <children>
+                        <ImageView fx:id="imgNhanVien" fitHeight="293.0" fitWidth="304.0" layoutX="52.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label layoutX="52.0" layoutY="373.0" text="Chức vụ">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblChucVu" layoutX="52.0" layoutY="403.0" style="-fx-font-weight: bold;" text="Nhân viên bán hàng">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="458.0" prefWidth="618.0">
+                     <children>
+                        <Label layoutX="144.0" layoutY="62.0" text="Tên nhân viên">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblTenNhanVien" layoutX="143.0" layoutY="88.0" style="-fx-font-weight: bold;" text="Trần Thanh Toàn">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="140.0" layoutY="163.0" text="Tên đăng nhập">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblTrenDangNhap" layoutX="144.0" layoutY="191.0" style="-fx-font-weight: bold;" text="0987654321">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="147.0" layoutY="274.0" text="Giới tính">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblGioiTinh" layoutX="149.0" layoutY="299.0" style="-fx-font-weight: bold;" text="Nam">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="148.0" layoutY="369.0" text="Email">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblEmail" layoutX="148.0" layoutY="393.0" style="-fx-font-weight: 300;" text="Chưa có">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="409.0" layoutY="65.0" text="Điện thoại">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblSdtNV" layoutX="410.0" layoutY="91.0" style="-fx-font-weight: bold;" text="0987654321">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="409.0" layoutY="160.0" text="Mã NV">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblMaNV" layoutX="411.0" layoutY="188.0" style="-fx-font-weight: bold;" text="TTNV001">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="410.0" layoutY="272.0" text="Ngày sinh">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblNgaySinh" layoutX="415.0" layoutY="299.0" style="-fx-font-weight: 300;" text="Chưa có">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="408.0" layoutY="368.0" text="Ngày vào làm">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblNgayVaoLam" layoutX="412.0" layoutY="392.0" style="-fx-font-weight: bold;" text="11/10/2020">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
