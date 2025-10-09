@@ -48,13 +48,12 @@ public class TrangChuQLCtrl {
 
 	public void setThuocTinhMainMenu() {
 		setMauClickVaMenuCon(vbTrangChu, List.of());
-		setMauClickVaMenuCon(vbThuoc, List.of("Tìm kiếm thuốc", "Thêm thuốc", "Khuyến mãi thuốc", "Nhập thuốc",
-				"Đặt thuốc", "Thống kê thuốc", "Thuế"));
+		setMauClickVaMenuCon(vbThuoc,
+				List.of("Tìm kiếm thuốc", "Thêm thuốc", "Nhập thuốc", "Đặt thuốc", "Thống kê thuốc", "Thuế"));
 		setMauClickVaMenuCon(vbKeThuoc, List.of("Danh sách kệ", "Thêm kệ thuốc"));
 		setMauClickVaMenuCon(vbKhachHang,
 				List.of("Tìm kiếm khách hàng", "Thêm khách hàng", "Khiếu nại & Hỗ trợ", "Thống kê khách hàng"));
-		setMauClickVaMenuCon(vbHoaDon,
-				List.of("Tìm kiếm hóa đơn", "Lập hóa đơn", "Khuyến mãi hóa đơn", "Đổi - Trả", "Thống kê hóa đơn"));
+		setMauClickVaMenuCon(vbHoaDon, List.of("Tìm kiếm hóa đơn", "Lập hóa đơn", "Đổi - Trả", "Thống kê hóa đơn"));
 		setMauClickVaMenuCon(vbNhanVien, List.of("Tìm kiếm nhân viên", "Thêm nhân viên"));
 		setMauClickVaMenuCon(vbKhuyenMai, List.of("Tìm kiếm khuyến mãi", "Thêm khuyến mãi"));
 	}
@@ -157,9 +156,6 @@ public class TrangChuQLCtrl {
 		case "Thêm thuốc":
 			doiCenterPane("/fxml/ThemThuoc.fxml");
 			break;
-		case "Khuyến mãi thuốc":
-
-			break;
 		case "Nhập thuốc":
 
 			break;
@@ -201,9 +197,6 @@ public class TrangChuQLCtrl {
 			break;
 		case "Lập hóa đơn":
 			doiCenterPane("/fxml/LapHoaDon.fxml");
-			break;
-		case "Khuyến mãi hóa đơn":
-
 			break;
 		case "Đổi - Trả":
 			doiCenterPane("/fxml/DoiTraHoaDon.fxml");
@@ -300,29 +293,27 @@ public class TrangChuQLCtrl {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public <T> T moTrang(String fxmlPath, Class<T> controllerClass) {
 		try {
-		    FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-		    Parent root = loader.load();
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+			Parent root = loader.load();
 
-		    // Lấy controller của FXML
-		    T controller = loader.getController();
+			// Lấy controller của FXML
+			T controller = loader.getController();
 
-		    // Nếu controller có setTrangChuNVCtrl thì tự động gán
-		    try {
-		        controllerClass.getMethod("setTrangChuQLCtrl", TrangChuQLCtrl.class).invoke(controller, this);
-		    } 
-		    catch (NoSuchMethodException ignore) {
-		         
-		    }
+			// Nếu controller có setTrangChuNVCtrl thì tự động gán
+			try {
+				controllerClass.getMethod("setTrangChuQLCtrl", TrangChuQLCtrl.class).invoke(controller, this);
+			} catch (NoSuchMethodException ignore) {
 
-		    mainPane.setCenter(root);
-		    return controller;
-		} 
-		catch (IOException | ReflectiveOperationException e) {
-		    e.printStackTrace();
-		    return null;
+			}
+
+			mainPane.setCenter(root);
+			return controller;
+		} catch (IOException | ReflectiveOperationException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 }
