@@ -11,6 +11,10 @@
 	-fx-transition: all 0.1s ease;
 }
 
+.btn:hover {
+    -fx-background-color: lightgray;
+}
+
 .text-field {
     -fx-background-color: #ffffff;
     -fx-background-radius: 8;

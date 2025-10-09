@@ -11,6 +11,10 @@
 	-fx-transition: all 0.1s ease;
 }
 
+.btn:hover {
+    -fx-background-color: lightgray;
+}
+
 .tbl{
 	-fx-background-color: white;
     -fx-border-color: #e0e0e0;
