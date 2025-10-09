@@ -2,6 +2,7 @@
 
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
@@ -16,19 +17,25 @@
    <top>
       <BorderPane fx:id="topPane" prefHeight="20.0" prefWidth="923.0" styleClass="whiteBackground" BorderPane.alignment="CENTER">
          <right>
-            <HBox prefHeight="90.0" prefWidth="225.0" BorderPane.alignment="CENTER">
+            <HBox prefHeight="57.0" prefWidth="239.0" BorderPane.alignment="CENTER">
                <children>
-                  <VBox alignment="TOP_CENTER" prefHeight="48.0" prefWidth="130.0">
+                  <VBox alignment="TOP_CENTER" prefHeight="57.0" prefWidth="161.0">
                      <children>
-                        <Label fx:id="lblTenNV" prefHeight="38.0" prefWidth="133.0" styleClass="classChoBold" text="Trần Thanh Toàn">
+                        <Label fx:id="lblTenNV" prefHeight="21.0" prefWidth="143.0" styleClass="classChoBold" text="Trần Thanh Toàn">
                            <VBox.margin>
                               <Insets top="15.0" />
                            </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
                         </Label>
-                        <Label fx:id="lblChucVu" layoutX="28.0" layoutY="10.0" prefHeight="51.0" prefWidth="144.0" text="Nhân Viên Bán Hàng">
+                        <Label fx:id="lblChucVu" layoutX="28.0" layoutY="10.0" prefHeight="21.0" prefWidth="153.0" text="Nhân Viên Bán Hàng">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
                         </Label>
                      </children>
                      <HBox.margin>
@@ -37,7 +44,7 @@
                   </VBox>
                   <HBox prefHeight="50.0" prefWidth="95.0">
                      <children>
-                        <ImageView fx:id="imgTaiKhoan" fitHeight="41.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="imgTaiKhoan" fitHeight="45.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../picture/trangChu/user.png" />
                            </image>
@@ -48,8 +55,11 @@
                               <String fx:value="imgThongTin" />
                               <String fx:value="classChoCursor" />
                            </styleClass>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </ImageView>
-                        <ImageView fx:id="imgDangXuat" fitHeight="24.0" fitWidth="34.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#dangXuat" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="imgDangXuat" fitHeight="25.0" fitWidth="25.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#dangXuat" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../picture/trangChu/signOut.png" />
                            </image>
@@ -60,6 +70,9 @@
                               <String fx:value="classChoCursor" />
                               <String fx:value="imgDangXuat" />
                            </styleClass>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </ImageView>
                      </children>
                   </HBox>
@@ -278,7 +291,7 @@
                   </Label>
                   <HBox alignment="CENTER" prefHeight="64.0" prefWidth="782.0">
                      <children>
-                        <HBox fx:id="hbThemKhachHang" alignment="CENTER" prefHeight="64.0" prefWidth="237.0">
+                        <HBox fx:id="hbThemKhachHang" alignment="CENTER" prefHeight="64.0" prefWidth="237.0" styleClass="btn">
                            <children>
                               <ImageView fx:id="imgKhachHang1" fitHeight="43.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" styleClass="classChoCursor">
                                  <image>
@@ -300,12 +313,11 @@
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>
-                           <styleClass>
-                              <String fx:value="classBorder" />
-                              <String fx:value="classChoCursor" />
-                           </styleClass>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </HBox>
-                        <HBox fx:id="hbThemHoaDon" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="64.0" prefWidth="237.0">
+                        <HBox fx:id="hbThemHoaDon" alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="64.0" prefWidth="237.0" styleClass="btn">
                            <children>
                               <ImageView fx:id="imgHoaDon1" fitHeight="38.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true" styleClass="classChoCursor">
                                  <image>
@@ -327,12 +339,11 @@
                            <HBox.margin>
                               <Insets left="30.0" />
                            </HBox.margin>
-                           <styleClass>
-                              <String fx:value="classBorder" />
-                              <String fx:value="classChoCursor" />
-                           </styleClass>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </HBox>
-                        <HBox fx:id="hbThemThuoc" alignment="CENTER" layoutX="247.0" layoutY="10.0" prefHeight="64.0" prefWidth="237.0">
+                        <HBox fx:id="hbThemThuoc" alignment="CENTER" layoutX="247.0" layoutY="10.0" prefHeight="64.0" prefWidth="237.0" styleClass="btn">
                            <children>
                               <ImageView fx:id="imgKhachHang111" fitHeight="43.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" styleClass="classChoCursor">
                                  <image>
@@ -354,10 +365,9 @@
                            <HBox.margin>
                               <Insets left="30.0" />
                            </HBox.margin>
-                           <styleClass>
-                              <String fx:value="classBorder" />
-                              <String fx:value="classChoCursor" />
-                           </styleClass>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </HBox>
                      </children>
                      <VBox.margin>

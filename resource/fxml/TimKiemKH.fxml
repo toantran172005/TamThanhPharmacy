@@ -10,6 +10,8 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -119,21 +121,40 @@
                         </TextField>
                      </children>
                   </HBox>
-                  <VBox prefHeight="63.0" prefWidth="328.0">
+                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="72.0" prefWidth="328.0" spacing="20.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="122.0" styleClass="boTronVien" text="Làm mới">
+                        <Button mnemonicParsing="false" prefHeight="44.0" prefWidth="149.0" text="Xem chi tiết">
                            <font>
-                              <Font name="System Bold" size="16.0" />
+                              <Font name="System Bold" size="15.0" />
                            </font>
-                           <VBox.margin>
-                              <Insets left="285.0" />
-                           </VBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../picture/khachHang/find.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Button layoutX="10.0" layoutY="19.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="130.0" text="Làm mới">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../picture/khachHang/refresh.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
                      </children>
-                  </VBox>
+                  </HBox>
                </children>
                <BorderPane.margin>
                   <Insets right="20.0" />
