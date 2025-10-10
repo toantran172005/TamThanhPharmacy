@@ -117,7 +117,7 @@ public class TrangChuNVCtrl {
 		switch (text) {
 		// ===== THUỐC =====
 		case "Tìm kiếm thuốc":
-			doiCenterPane("/fxml/TimKiemThuoc.fxml");
+			moTrang("/fxml/TimKiemThuoc.fxml", TimKiemThuocCtrl.class);
 			break;
 		case "Thêm thuốc":
 			doiCenterPane("/fxml/ThemThuoc.fxml");
@@ -143,7 +143,7 @@ public class TrangChuNVCtrl {
 
 		// ===== HÓA ĐƠN =====
 		case "Tìm kiếm hóa đơn":
-			doiCenterPane("/fxml/TimKiemHD.fxml");
+			moTrang("/fxml/TimKiemHD.fxml", TimKiemHDCtrl.class);
 			break;
 		case "Lập hóa đơn":
 			doiCenterPane("/fxml/LapHoaDon.fxml");

@@ -14,6 +14,9 @@ public class TimKiemThuocCtrl {
 	@FXML public Button btnXemChiTiet;
 	@FXML public Button btnLamMoi;
 	
+	private TrangChuNVCtrl trangChuNVCtrl;  // tham chiếu controller cha
+    private TrangChuQLCtrl trangChuQLCtrl; 
+	
 	public void initialize() {
 		setItemComboBoxTrangThai();
 		setItemComboBoxLoaiThuoc();
@@ -23,6 +26,8 @@ public class TimKiemThuocCtrl {
 
 		Image imageLamMoi = new Image(getClass().getResourceAsStream("/picture/thuoc/refresh.png"));
         imgLamMoi.setImage(imageLamMoi);
+        
+        btnXemChiTiet.setOnMouseClicked(e -> moTrangChiTietThuoc());
         
 	}
 	
@@ -38,5 +43,26 @@ public class TimKiemThuocCtrl {
 		        "Đang kinh doanh",
 		        "Ngừng kinh doanh"
 		    );
+	}
+	
+	public void setTrangChuNVCtrl(TrangChuNVCtrl ctrl) {
+		this.trangChuNVCtrl = ctrl;
+	}
+		    
+	public void setTrangChuQLCtrl(TrangChuQLCtrl ctrl) {
+		this.trangChuQLCtrl = ctrl;
+	}
+		
+	// ========== MỞ TRANG CHI TIẾT THUỐC ==========
+	private void moTrangChiTietThuoc() {
+		if (trangChuNVCtrl != null) {
+			trangChuNVCtrl.moTrang("/fxml/ChiTietThuoc.fxml", ChiTietThuocCtrl.class);
+	    } 
+	    else if (trangChuQLCtrl != null) {
+	    	trangChuQLCtrl.moTrang("/fxml/ChiTietThuoc.fxml", ChiTietThuocCtrl.class);
+	    } 
+	    else {
+	        System.out.println("⚠ Không có tham chiếu TrangChu");
+	    }
 	}
 }
