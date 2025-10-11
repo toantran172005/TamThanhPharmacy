@@ -117,7 +117,7 @@
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../picture/trangChu/signOut.png" />
+                              <Image url="@../picture/thuoc/return.png" />
                            </image>
                         </ImageView>
                      </graphic>

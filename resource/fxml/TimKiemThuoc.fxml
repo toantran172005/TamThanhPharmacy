@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -16,7 +17,7 @@
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="555.0" prefWidth="1102.0" stylesheets="/css/TimKiemThuoc.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TimKiemThuocCtrl">
    <center>
-      <TableView fx:id="tblThuoc" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="1064.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="tblThuoc" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="1064.0" styleClass="tbl" BorderPane.alignment="CENTER">
         <columns>
             <TableColumn prefWidth="32.79995805025101">
                <graphic>
@@ -46,7 +47,7 @@
          <children>
             <HBox prefHeight="65.0" prefWidth="1102.0">
                <children>
-                  <HBox prefHeight="58.0" prefWidth="575.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="58.0" prefWidth="575.0">
                      <children>
                         <Label text="Tên thuốc: ">
                            <font>
@@ -55,7 +56,7 @@
                            <HBox.margin>
                               <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
                            </HBox.margin></Label>
-                        <TextField fx:id="txtTenThuoc" prefHeight="34.0" prefWidth="190.0" styleClass="text-file">
+                        <TextField fx:id="txtTenThuoc" prefHeight="34.0" prefWidth="190.0" promptText="Tên thuốc..." styleClass="text-file">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -64,7 +65,7 @@
                            </HBox.margin></TextField>
                      </children>
                   </HBox>
-                  <HBox prefHeight="58.0" prefWidth="597.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="58.0" prefWidth="597.0">
                      <children>
                         <Label text="Mã thuốc:">
                            <font>
@@ -73,7 +74,7 @@
                            <HBox.margin>
                               <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
                            </HBox.margin></Label>
-                        <TextField fx:id="txtMaThuoc" prefHeight="34.0" prefWidth="190.0" styleClass="text-file">
+                        <TextField fx:id="txtMaThuoc" prefHeight="34.0" prefWidth="190.0" promptText="Mã thuốc..." styleClass="text-file">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -86,7 +87,7 @@
             </HBox>
             <HBox prefHeight="67.0" prefWidth="1102.0">
                <children>
-                  <HBox prefHeight="48.0" prefWidth="345.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="48.0" prefWidth="345.0">
                      <children>
                         <Label prefHeight="22.0" prefWidth="94.0" text="Loại thuốc: ">
                            <font>
@@ -103,7 +104,7 @@
                         </ComboBox>
                      </children>
                   </HBox>
-                  <HBox prefHeight="48.0" prefWidth="346.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="331.0">
                      <children>
                         <Label prefHeight="22.0" prefWidth="113.0" text="Trạng thái KD: ">
                            <font>
@@ -120,7 +121,7 @@
                         </ComboBox>
                      </children>
                   </HBox>
-                  <HBox prefHeight="27.0" prefWidth="150.0">
+                  <HBox alignment="CENTER" prefHeight="47.0" prefWidth="359.0" spacing="60.0">
                      <padding>
                         <Insets left="10.0" />
                      </padding>
@@ -130,29 +131,28 @@
                      <children>
                         <Button fx:id="btnXemChiTiet" mnemonicParsing="false" prefHeight="37.0" prefWidth="140.0" styleClass="btn" text="Xem chi tiết">
                            <graphic>
-                              <ImageView fx:id="imgXemChiTiet" fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" styleClass="img" />
+                              <ImageView fx:id="imgXemChiTiet" fitHeight="29.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" styleClass="img">
+                                 <image>
+                                    <Image url="@../picture/khachHang/find.png" />
+                                 </image>
+                              </ImageView>
                            </graphic>
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </Button>
-                     </children>
-                  </HBox>
-                  <HBox prefHeight="20.0" prefWidth="150.0">
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="20.0" top="10.0" />
-                     </HBox.margin>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                     <children>
-                        <Button fx:id="btnLamMoi" mnemonicParsing="false" prefHeight="37.0" prefWidth="140.0" styleClass="btn" text="Làm mới">
+                        <Button fx:id="btnLamMoi" alignment="CENTER" mnemonicParsing="false" prefHeight="38.0" prefWidth="131.0" styleClass="btn" text="Làm mới">
                            <graphic>
-                              <ImageView fx:id="imgLamMoi" fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" styleClass="img" />
+                              <ImageView fx:id="imgLamMoi" fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true" styleClass="img">
+                                 <image>
+                                    <Image url="@../picture/khachHang/return.png" />
+                                 </image>
+                              </ImageView>
                            </graphic>
                            <font>
                               <Font name="System Bold" size="15.0" />
-                           </font></Button>
+                           </font>
+                        </Button>
                      </children>
                   </HBox>
                </children></HBox>

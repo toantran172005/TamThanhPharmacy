@@ -59,16 +59,6 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label prefHeight="21.0" prefWidth="100.0" text="Mã thuốc:">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </Label>
-                        <TextField prefHeight="34.0" prefWidth="184.0" promptText="Mã thuốc..." />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                     <children>
                         <Label prefHeight="21.0" prefWidth="100.0" text="Tên thuốc:">
                            <font>
                               <Font name="System Bold" size="15.0" />
@@ -151,7 +141,6 @@
                         <ComboBox prefHeight="34.0" prefWidth="175.0" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" visible="false" />
                </children>
             </VBox>
          </children>
@@ -179,7 +168,7 @@
                <graphic>
                   <ImageView fitHeight="27.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../picture/keThuoc/edit.png" />
+                        <Image url="@../picture/thuoc/healthcare.png" />
                      </image>
                   </ImageView>
                </graphic>

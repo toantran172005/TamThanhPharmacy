@@ -157,16 +157,16 @@ public class TrangChuQLCtrl {
 			doiCenterPane("/fxml/ThemThuoc.fxml");
 			break;
 		case "Nhập thuốc":
-
+			doiCenterPane("/fxml/NhapThuoc.fxml");
 			break;
 		case "Đặt thuốc":
-
+			doiCenterPane("/fxml/DatThuoc.fxml");
 			break;
 		case "Thống kê thuốc":
-
+			doiCenterPane("/fxml/ThongKeThuoc.fxml");
 			break;
 		case "Thuế":
-
+			doiCenterPane("/fxml/Thue.fxml");
 			break;
 
 		// ===== KỆ THUỐC =====

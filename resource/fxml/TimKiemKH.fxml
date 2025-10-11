@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -17,9 +16,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="509.0" prefWidth="1058.0" stylesheets="/css/TimKiemKH.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TimKiemKHCtrl">
+<BorderPane prefHeight="509.0" prefWidth="1058.0" stylesheets="/css/TimKiemKH.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TimKiemKHCtrl">
    <center>
-      <TableView fx:id="tblKhachHang" BorderPane.alignment="CENTER">
+      <TableView fx:id="tblKhachHang" styleClass="tbl" BorderPane.alignment="CENTER">
          <columns>
             <TableColumn prefWidth="40.80001908540726">
                <graphic>
@@ -49,18 +48,18 @@
                      <children>
                         <Label alignment="CENTER" prefHeight="27.0" prefWidth="151.0" text="Tên khách hàng:">
                            <font>
-                              <Font name="System Bold" size="18.0" />
+                              <Font name="System Bold" size="15.0" />
                            </font>
                            <HBox.margin>
-                              <Insets left="4.0" />
+                              <Insets />
                            </HBox.margin>
                         </Label>
-                        <TextField prefHeight="31.0" prefWidth="261.0" promptText="Nhập tên..." styleClass="boTronVien">
+                        <TextField prefHeight="31.0" prefWidth="255.0" promptText="Nhập tên...">
                            <font>
                               <Font size="15.0" />
                            </font>
                            <HBox.margin>
-                              <Insets left="5.0" />
+                              <Insets />
                            </HBox.margin>
                            <cursor>
                               <Cursor fx:constant="HAND" />
@@ -68,27 +67,23 @@
                         </TextField>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="69.0" prefWidth="366.0">
+                  <HBox alignment="CENTER" prefHeight="69.0" prefWidth="366.0">
                      <children>
-                        <Label text="Trạng thái:">
+                        <Label prefHeight="21.0" prefWidth="99.0" text="Trạng thái:">
                            <font>
-                              <Font name="System Bold" size="18.0" />
+                              <Font name="System Bold" size="15.0" />
                            </font>
                            <HBox.margin>
-                              <Insets left="35.0" />
+                              <Insets />
                            </HBox.margin>
                         </Label>
-                        <ComboBox fx:id="cmbTrangThai" prefHeight="35.0" prefWidth="212.0" promptText="Trạng thái">
+                        <ComboBox fx:id="cmbTrangThai" prefHeight="21.0" prefWidth="200.0" promptText="Trạng thái">
                            <HBox.margin>
-                              <Insets left="55.0" />
+                              <Insets />
                            </HBox.margin>
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
-                           <styleClass>
-                              <String fx:value="cmb" />
-                              <String fx:value="boTronVien" />
-                           </styleClass>
                         </ComboBox>
                      </children>
                   </HBox>
@@ -99,13 +94,13 @@
             </VBox>
          </left>
          <right>
-            <VBox prefHeight="123.0" prefWidth="386.0" BorderPane.alignment="CENTER">
+            <VBox prefHeight="123.0" prefWidth="487.0" BorderPane.alignment="CENTER">
                <children>
                   <HBox alignment="CENTER" prefHeight="72.0" prefWidth="328.0">
                      <children>
                         <Label text="Số điện thoại:">
                            <font>
-                              <Font name="System Bold" size="18.0" />
+                              <Font name="System Bold" size="15.0" />
                            </font>
                         </Label>
                         <TextField prefHeight="31.0" prefWidth="255.0" promptText="Số điện thoại..." styleClass="boTronVien">
@@ -121,9 +116,9 @@
                         </TextField>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="72.0" prefWidth="328.0" spacing="20.0">
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="72.0" prefWidth="328.0" spacing="20.0">
                      <children>
-                        <Button layoutX="10.0" layoutY="19.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="130.0" text="Làm mới">
+                        <Button layoutX="10.0" layoutY="19.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="129.0" styleClass="btn" text="Làm mới">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>

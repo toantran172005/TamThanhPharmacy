@@ -46,14 +46,14 @@
                         </TextField>
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="58.0" prefWidth="176.0" spacing="30.0">
+                  <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="61.0" prefWidth="399.0" spacing="30.0">
                      <children>
                         <Button mnemonicParsing="false" prefHeight="44.0" prefWidth="159.0" styleClass="btn" text="Xem chi tiết">
                            <font>
-                              <Font size="15.0" />
+                              <Font name="System Bold" size="15.0" />
                            </font>
                            <graphic>
-                              <ImageView fitHeight="30.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../picture/khuyenMai/find.png" />
                                  </image>
@@ -63,24 +63,17 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" layoutX="441.0" layoutY="10.0" prefHeight="58.0" prefWidth="176.0" spacing="30.0">
-                     <children>
-                        <Button mnemonicParsing="false" prefHeight="44.0" prefWidth="162.0" styleClass="btn" text="Tạo khuyến mãi">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
+                        <Button fx:id="btnTaoKhuyenMai" mnemonicParsing="false" onAction="#hienThiTrangTaoKhuyenMai" prefHeight="44.0" prefWidth="180.0" styleClass="btn" text="Tạo khuyến mãi">
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../picture/khuyenMai/plus.png" />
+                                    <Image url="@../picture/khieuNaiVaHoTroKH/plus.png" />
                                  </image>
                               </ImageView>
                            </graphic>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
                         </Button>
                      </children>
                   </HBox>
@@ -99,7 +92,6 @@
             </TableColumn>
           <TableColumn prefWidth="125.0" text="Mã khuyến mãi" />
           <TableColumn prefWidth="121.0" text="Tên khuyến mãi" />
-            <TableColumn prefWidth="130.0" text="Loại khuyến mãi" />
             <TableColumn prefWidth="105.0" text="Phương thức KM" />
             <TableColumn prefWidth="154.0" text="Mức khuyến mãi" />
             <TableColumn prefWidth="124.0" text="Ngày bắt đầu" />
