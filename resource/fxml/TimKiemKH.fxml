@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="509.0" prefWidth="1058.0" stylesheets="/css/TimKiemKH.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TimKiemKHCtrl">
+<BorderPane stylesheets="/css/TimKiemKH.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TimKiemKHCtrl">
    <center>
       <TableView fx:id="tblKhachHang" styleClass="tbl" BorderPane.alignment="CENTER">
          <columns>
@@ -40,9 +40,9 @@
       </TableView>
    </center>
    <top>
-      <BorderPane BorderPane.alignment="CENTER">
-         <left>
-            <VBox prefHeight="123.0" prefWidth="465.0" BorderPane.alignment="CENTER">
+      <HBox spacing="100.0">
+         <children>
+            <VBox prefHeight="123.0" prefWidth="465.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="73.0" prefWidth="366.0">
                      <children>
@@ -88,13 +88,8 @@
                      </children>
                   </HBox>
                </children>
-               <BorderPane.margin>
-                  <Insets left="20.0" />
-               </BorderPane.margin>
             </VBox>
-         </left>
-         <right>
-            <VBox prefHeight="123.0" prefWidth="487.0" BorderPane.alignment="CENTER">
+            <VBox prefHeight="123.0" prefWidth="487.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="72.0" prefWidth="328.0">
                      <children>
@@ -136,11 +131,8 @@
                      </children>
                   </HBox>
                </children>
-               <BorderPane.margin>
-                  <Insets right="20.0" />
-               </BorderPane.margin>
             </VBox>
-         </right>
-      </BorderPane>
+         </children>
+      </HBox>
    </top>
 </BorderPane>

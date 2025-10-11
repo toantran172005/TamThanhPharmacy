@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="812.0" prefWidth="1159.0" stylesheets="/css/DanhSachKhuyenMai.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DanhSachKhuyenMaiCtrl">
+<BorderPane stylesheets="/css/DanhSachKhuyenMai.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DanhSachKhuyenMaiCtrl">
    <top>
       <VBox prefHeight="151.0" prefWidth="1002.0" spacing="30.0" BorderPane.alignment="CENTER">
          <children>
@@ -67,7 +67,7 @@
                   </HBox>
                   <HBox alignment="CENTER" layoutX="441.0" layoutY="10.0" prefHeight="58.0" prefWidth="176.0" spacing="30.0">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="44.0" prefWidth="162.0" styleClass="btn" text="Tạo khuyến mãi">
+                        <Button fx:id="btnTaoKM" mnemonicParsing="false" onAction="#hienThiTrangTaoKM" prefHeight="44.0" prefWidth="162.0" styleClass="btn" text="Tạo khuyến mãi">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -90,7 +90,7 @@
       </VBox>
    </top>
    <center>
-      <TableView prefHeight="661.0" prefWidth="1117.0" styleClass="tbl" BorderPane.alignment="CENTER">
+      <TableView styleClass="tbl" BorderPane.alignment="CENTER">
         <columns>
             <TableColumn prefWidth="55.0">
                <graphic>

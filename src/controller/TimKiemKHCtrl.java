@@ -1,6 +1,7 @@
 package controller;
 
 import dao.KhachHangDAO;
+import entity.KhachHang;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -12,8 +13,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import model.KhachHang;
-
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 
 public class TimKiemKHCtrl {

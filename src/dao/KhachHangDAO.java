@@ -5,9 +5,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import database.KetNoiDatabase;
+import entity.KhachHang;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.KhachHang;
 
 public class KhachHangDAO {
 	
