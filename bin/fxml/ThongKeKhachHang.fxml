@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="644.0" prefWidth="1000.0" stylesheets="/css/ThongKeKhachHang.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ThongKeKhachHangCtrl">
+   <top>
+      <Label prefHeight="53.0" prefWidth="218.0" text="THỐNG KÊ KHÁCH HÀNG" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+   </top>
+   <center>
+      <VBox prefHeight="634.0" prefWidth="861.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="186.0" prefWidth="811.0">
+               <children>
+                  <VBox prefHeight="182.0" prefWidth="469.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                           <children>
+                              <Label prefWidth="150.0" text="Thời gian thống kê: ">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="cmbThoiGianTK" prefHeight="26.0" prefWidth="200.0" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                           <children>
+                              <HBox prefHeight="50.0" prefWidth="150.0" />
+                              <DatePicker prefWidth="200.0" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="182.0" prefWidth="526.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                           <children>
+                              <Label prefWidth="150.0" text="Loại thống kê: ">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="cmbLoaiTK" prefWidth="200.0" styleClass="combo-box" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                           <children>
+                              <Label prefWidth="150.0" text="Thống kê theo top:">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="cmbTopTK" prefWidth="200.0" styleClass="combo-box" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="350.0" prefWidth="811.0">
+               <children>
+                  <TableView prefHeight="346.0" prefWidth="1061.0" styleClass="tbl">
+                    <columns>
+                      <TableColumn prefWidth="75.0" text="STT" />
+                      <TableColumn prefWidth="136.80001068115234" text="Mã khách hàng" />
+                        <TableColumn prefWidth="171.99993896484375" text="Tên khách hàng" />
+                        <TableColumn prefWidth="145.60006713867188" text="Số điện thoại" />
+                        <TableColumn prefWidth="131.99993896484375" text="Số lần mua" />
+                        <TableColumn prefWidth="155.9998779296875" text="Tổng số tiền" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+   <bottom>
+      <HBox prefHeight="63.0" prefWidth="811.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="63.0" prefWidth="498.0">
+               <children>
+                  <Button fx:id="btnInThongKe" mnemonicParsing="false" styleClass="btn" text="In thống kê">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" styleClass="img">
+                           <image>
+                              <Image url="@../picture/khachHang/print.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="63.0" prefWidth="506.0">
+               <children>
+                  <Button fx:id="btnLamMoi" alignment="CENTER" mnemonicParsing="false" styleClass="btn" text="Làm mới">
+                     <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" styleClass="img">
+                           <image>
+                              <Image url="@../picture/khachHang/refresh.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children></HBox>
+   </bottom>
+</BorderPane>
