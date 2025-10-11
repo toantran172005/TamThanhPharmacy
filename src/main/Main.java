@@ -1,5 +1,6 @@
 package main;
-	
+
+import database.KetNoiDatabase;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -14,6 +15,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 	    try {
+	    	KetNoiDatabase.getConnection();
 	        Parent root = FXMLLoader.load(getClass().getResource("/fxml/DangNhap.fxml"));
 	        StackPane container = new StackPane(root);
 	        Scene scene = new Scene(container);
