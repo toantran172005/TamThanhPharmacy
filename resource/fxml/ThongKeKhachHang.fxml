@@ -13,90 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane stylesheets="/css/ThongKeKhachHang.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ThongKeKhachHangCtrl">
-   <top>
-      <HBox alignment="CENTER" BorderPane.alignment="CENTER">
-         <children>
-            <Label prefHeight="53.0" prefWidth="218.0" text="THỐNG KÊ KHÁCH HÀNG">
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
-   </top>
-   <center>
-      <VBox prefHeight="634.0" prefWidth="861.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox prefHeight="186.0" prefWidth="811.0">
-               <children>
-                  <VBox prefHeight="182.0" prefWidth="469.0">
-                     <children>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                           <children>
-                              <Label prefWidth="150.0" text="Thời gian thống kê: ">
-                                 <font>
-                                    <Font name="System Bold" size="15.0" />
-                                 </font>
-                              </Label>
-                              <ComboBox fx:id="cmbThoiGianTK" prefHeight="26.0" prefWidth="200.0" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                           <children>
-                              <HBox prefHeight="50.0" prefWidth="150.0" />
-                              <DatePicker prefWidth="200.0" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <VBox prefHeight="182.0" prefWidth="526.0">
-                     <children>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                           <children>
-                              <Label prefWidth="150.0" text="Loại thống kê: ">
-                                 <font>
-                                    <Font name="System Bold" size="15.0" />
-                                 </font>
-                              </Label>
-                              <ComboBox fx:id="cmbLoaiTK" prefWidth="200.0" styleClass="combo-box" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
-                           <children>
-                              <Label prefWidth="150.0" text="Thống kê theo top:">
-                                 <font>
-                                    <Font name="System Bold" size="15.0" />
-                                 </font>
-                              </Label>
-                              <ComboBox fx:id="cmbTopTK" prefWidth="200.0" styleClass="combo-box" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-            <HBox prefHeight="350.0" prefWidth="811.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <TableView prefHeight="346.0" prefWidth="1061.0" styleClass="tbl">
-                    <columns>
-                      <TableColumn prefWidth="75.0" text="STT" />
-                      <TableColumn prefWidth="136.80001068115234" text="Mã khách hàng" />
-                        <TableColumn prefWidth="171.99993896484375" text="Tên khách hàng" />
-                        <TableColumn prefWidth="145.60006713867188" text="Số điện thoại" />
-                        <TableColumn prefWidth="131.99993896484375" text="Số lần mua" />
-                        <TableColumn prefWidth="155.9998779296875" text="Tổng số tiền" />
-                    </columns>
-                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                     </columnResizePolicy>
-                  </TableView>
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-   </center>
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="644.0" prefWidth="1000.0" stylesheets="/css/ThongKeKhachHang.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ThongKeKhachHangCtrl">
    <bottom>
       <HBox prefHeight="63.0" prefWidth="811.0" BorderPane.alignment="CENTER">
          <children>
@@ -132,7 +49,80 @@
                   </Button>
                </children>
             </HBox>
-         </children>
-      </HBox>
+         </children></HBox>
    </bottom>
+   <top>
+      <VBox prefHeight="215.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label prefHeight="53.0" prefWidth="218.0" text="THỐNG KÊ KHÁCH HÀNG">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="66.0" prefWidth="501.0" spacing="20.0">
+                     <children>
+                        <Label prefWidth="150.0" text="Thời gian thống kê: ">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="cmbThoiGianTK" prefHeight="26.0" prefWidth="200.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="66.0" prefWidth="510.0" spacing="20.0">
+                     <children>
+                        <Label prefWidth="150.0" text="Loại thống kê: ">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="cmbLoaiTK" prefWidth="200.0" styleClass="combo-box" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="67.0" prefWidth="501.0" spacing="20.0">
+                     <children>
+                        <HBox prefHeight="50.0" prefWidth="150.0" />
+                        <DatePicker prefWidth="200.0" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="67.0" prefWidth="516.0" spacing="20.0">
+                     <children>
+                        <Label prefWidth="150.0" text="Thống kê theo top:">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="cmbTopTK" prefWidth="200.0" styleClass="combo-box" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   <center>
+      <TableView prefHeight="346.0" prefWidth="1061.0" styleClass="tbl" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn prefWidth="75.0" text="STT" />
+          <TableColumn prefWidth="136.80001068115234" text="Mã khách hàng" />
+            <TableColumn prefWidth="171.99993896484375" text="Tên khách hàng" />
+            <TableColumn prefWidth="145.60006713867188" text="Số điện thoại" />
+            <TableColumn prefWidth="131.99993896484375" text="Số lần mua" />
+            <TableColumn prefWidth="155.9998779296875" text="Tổng số tiền" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </center>
 </BorderPane>

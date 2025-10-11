@@ -19,5 +19,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/mssql-jdbc-13.2.0.jre11.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/iText"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

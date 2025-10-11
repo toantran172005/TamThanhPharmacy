@@ -55,7 +55,7 @@ public class TrangChuQLCtrl {
 				List.of("Tìm kiếm khách hàng", "Thêm khách hàng", "Khiếu nại & Hỗ trợ", "Thống kê khách hàng"));
 		setMauClickVaMenuCon(vbHoaDon, List.of("Tìm kiếm hóa đơn", "Lập hóa đơn", "Đổi - Trả", "Thống kê hóa đơn"));
 		setMauClickVaMenuCon(vbNhanVien, List.of("Tìm kiếm nhân viên", "Thêm nhân viên"));
-		setMauClickVaMenuCon(vbKhuyenMai, List.of("Danh sách khuyến mãi", "Thêm khuyến mãi"));
+		setMauClickVaMenuCon(vbKhuyenMai, List.of("Danh sách khuyến mãi"));
 	}
 
 	@SuppressWarnings("unused")
@@ -157,16 +157,16 @@ public class TrangChuQLCtrl {
 			doiCenterPane("/fxml/ThemThuoc.fxml");
 			break;
 		case "Nhập thuốc":
-
+			doiCenterPane("/fxml/NhapThuoc.fxml");
 			break;
 		case "Đặt thuốc":
-
+			doiCenterPane("/fxml/DatThuoc.fxml");
 			break;
 		case "Thống kê thuốc":
-
+			doiCenterPane("/fxml/ThongKeThuoc.fxml");
 			break;
 		case "Thuế":
-
+			doiCenterPane("/fxml/Thue.fxml");
 			break;
 
 		// ===== KỆ THUỐC =====
@@ -216,9 +216,6 @@ public class TrangChuQLCtrl {
 		// ===== Khuyến mãi=====
 		case "Danh sách khuyến mãi":
 			doiCenterPane("/fxml/DanhSachKhuyenMai.fxml");
-			break;
-		case "Thêm khuyến mãi":
-
 			break;
 
 		default:
