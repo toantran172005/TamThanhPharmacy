@@ -1,14 +1,13 @@
 package entity;
 
-import javafx.beans.property.BooleanProperty;
-
 public class KhachHang {
-	private BooleanProperty selected;
 	private String maKH;
 	private String tenKH;
 	private String sdt;
 	private int tuoi;
 	private boolean trangThai;
+	private int tongDonHang;
+	private double tongTien;
 
 	public KhachHang() {
 		super();
@@ -24,12 +23,28 @@ public class KhachHang {
 		this.trangThai = trangThai;
 	}
 
-	public BooleanProperty getSelected() {
-		return selected;
+	public KhachHang(String maKH, String tenKH, int tongDonHang, double tongTien) {
+		super();
+		this.maKH = maKH;
+		this.tenKH = tenKH;
+		this.tongDonHang = tongDonHang;
+		this.tongTien = tongTien;
 	}
 
-	public void setSelected(BooleanProperty selected) {
-		this.selected = selected;
+	public int getTongDonHang() {
+		return tongDonHang;
+	}
+
+	public void setTongDonHang(int tongDonHang) {
+		this.tongDonHang = tongDonHang;
+	}
+
+	public double getTongTien() {
+		return tongTien;
+	}
+
+	public void setTongTien(double tongTien) {
+		this.tongTien = tongTien;
 	}
 
 	public String getMaKH() {
@@ -72,6 +87,10 @@ public class KhachHang {
 		this.trangThai = trangThai;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "KhachHang [" + "maKH=" + maKH + ", tenKH=" + tenKH + ", sdt=" + sdt + ", tuoi=" + tuoi + ", trangThai="
+				+ trangThai + "]";
+	}
 
 }

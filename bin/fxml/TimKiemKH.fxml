@@ -54,7 +54,7 @@
                               <Insets />
                            </HBox.margin>
                         </Label>
-                        <TextField prefHeight="31.0" prefWidth="255.0" promptText="Nhập tên...">
+                        <TextField fx:id="txtTenKH" prefHeight="31.0" prefWidth="255.0" promptText="Nhập tên...">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -98,7 +98,7 @@
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </Label>
-                        <TextField prefHeight="31.0" prefWidth="255.0" promptText="Số điện thoại..." styleClass="boTronVien">
+                        <TextField fx:id="txtSdt" prefHeight="31.0" prefWidth="255.0" promptText="Số điện thoại..." styleClass="boTronVien">
                            <HBox.margin>
                               <Insets left="10.0" />
                            </HBox.margin>
@@ -113,7 +113,22 @@
                   </HBox>
                   <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="72.0" prefWidth="328.0" spacing="20.0">
                      <children>
-                        <Button layoutX="10.0" layoutY="19.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="129.0" styleClass="btn" text="Làm mới">
+                        <Button layoutX="10.0" layoutY="19.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="144.0" styleClass="btn" text="Xem chi tiết">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../picture/khachHang/find.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Button layoutX="189.0" layoutY="21.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="129.0" styleClass="btn" text="Làm mới">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
