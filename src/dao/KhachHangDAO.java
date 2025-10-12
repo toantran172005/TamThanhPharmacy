@@ -14,6 +14,7 @@ public class KhachHangDAO {
 	public ObservableList<KhachHang> layListKhachHang() {
 
 		ObservableList<KhachHang> list = FXCollections.observableArrayList();
+		
 		String query = "SELECT \r\n"
 				+ "    maKH, \r\n"
 				+ "    tenKH, \r\n"
@@ -24,7 +25,7 @@ public class KhachHangDAO {
 				+ "ORDER BY \r\n"
 				+ "    TRY_CAST(REPLACE(maKH, 'TTKH', '') AS INT);\r\n"
 				+ "";
-
+		
 		try (Connection con = KetNoiDatabase.getConnection();
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(query);) {
@@ -36,12 +37,12 @@ public class KhachHangDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return list;
 	}
 	
 	public ObservableList<KhachHang> layListKHThongKe() {
 		ObservableList<KhachHang> list = FXCollections.observableArrayList();
+		
 		String query = "SELECT \r\n"
 				+ "    KH.maKH,\r\n"
 				+ "    KH.tenKH,\r\n"

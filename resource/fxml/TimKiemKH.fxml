@@ -128,7 +128,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button layoutX="189.0" layoutY="21.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="129.0" styleClass="btn" text="Làm mới">
+                        <Button fx:id="btnLamMoi" layoutX="189.0" layoutY="21.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="129.0" styleClass="btn" text="Làm mới">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>

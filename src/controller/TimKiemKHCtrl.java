@@ -22,7 +22,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ReadOnlyDoubleWrapper;
 
 public class TimKiemKHCtrl {
 
@@ -50,11 +49,14 @@ public class TimKiemKHCtrl {
 	public TableColumn<KhachHang, String> colTrangThai;
 	@FXML
 	public TableColumn<KhachHang, Void> colHoatDong;
+	@FXML
+	public Button btnLamMoi;
 
 	@FXML
 	public TextField txtTenKH, txtSdt;
 
 	public KhachHangDAO khDAO = new KhachHangDAO();
+	public ToolCtrl toolCtrl = new ToolCtrl();
 
 	public ObservableList<KhachHang> listKH = FXCollections.observableArrayList();
 
@@ -71,10 +73,10 @@ public class TimKiemKHCtrl {
 	public void setUpTextFieldVaButton() {
 		txtTenKH.setOnAction(event -> timTheoTen()); // txt tìm kiếm theo tên khách hàng
 		txtSdt.setOnAction(event -> timTheoSDT()); // txt tìm kiếm theo số điện thoại
+		btnLamMoi.setOnAction(event -> lamMoiBang()); // btn làm mới lại table
 	}
 
 	public void setDataChoTable(ObservableList<KhachHang> list) {
-
 		// Checkbox
 		colSelect.setCellFactory(CheckBoxTableCell.forTableColumn(index -> {
 			KhachHang kh = tblKhachHang.getItems().get(index);
@@ -93,7 +95,7 @@ public class TimKiemKHCtrl {
 		colTenKH.setCellValueFactory(new PropertyValueFactory<>("tenKH"));
 		colSdt.setCellValueFactory(cellData -> {
 			KhachHang kh = cellData.getValue();
-			return new SimpleStringProperty(chuyenSoDienThoai(kh.getSdt()));
+			return new SimpleStringProperty(toolCtrl.chuyenSoDienThoai(kh.getSdt()));
 		});
 		colTuoi.setCellValueFactory(new PropertyValueFactory<>("tuoi"));
 		colTrangThai.setCellValueFactory(cellData -> {
@@ -136,8 +138,14 @@ public class TimKiemKHCtrl {
 		});
 	}
 	
+	public void lamMoiBang() {
+		setDataChoTable(listKH);
+		txtTenKH.setText("");
+		txtSdt.setText("");
+	}
+	
 	public void timTheoSDT() {
-		String sdt = chuyenSoDienThoai(txtSdt.getText().trim().toLowerCase());
+		String sdt = toolCtrl.chuyenSoDienThoai(txtSdt.getText().trim().toLowerCase());
 
 		if (sdt.isEmpty()) {
 			setDataChoTable(listKH);
@@ -174,13 +182,7 @@ public class TimKiemKHCtrl {
 				break;
 			}
 		}
-		return dinhDangVND(tempKH.getTongTien());
-	}
-
-	public static String dinhDangVND(double amount) {
-		Locale localeVN = new Locale("vi", "VN");
-		NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(localeVN);
-		return currencyFormatter.format(amount);
+		return toolCtrl.dinhDangVND(tempKH.getTongTien());
 	}
 
 	public String setTrangThai(KhachHang kh) {
@@ -201,20 +203,6 @@ public class TimKiemKHCtrl {
 		return tempKH.getTongDonHang();
 	}
 
-	public String chuyenSoDienThoai(String sdt) {
-		if (sdt == null || sdt.isEmpty())
-			return sdt;
-
-		sdt = sdt.trim();
-
-		if (sdt.startsWith("+84-")) {
-			return "0" + sdt.substring(4);
-		} else if (sdt.startsWith("0")) {
-			return "+84-" + sdt.substring(1);
-		}
-
-		return sdt;
-	}
 
 	public void setItemCmbTrangThai() {
 		cmbTrangThai.getItems().addAll("Hoạt động", "Ngừng hoạt động");

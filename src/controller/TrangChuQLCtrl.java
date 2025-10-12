@@ -199,7 +199,7 @@ public class TrangChuQLCtrl {
 			doiCenterPane("/fxml/LapHoaDon.fxml");
 			break;
 		case "Đổi - Trả":
-			doiCenterPane("/fxml/DoiTraHoaDon.fxml");
+			doiCenterPane("/fxml/PhieuDoiTra.fxml");
 			break;
 		case "Thống kê hóa đơn":
 			doiCenterPane("/fxml/ThongKeHoaDon.fxml");

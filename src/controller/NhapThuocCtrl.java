@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 public class NhapThuocCtrl {
 	
 	@FXML Button btnThemTep;
-	ThongBaoCtrl thongBao = new ThongBaoCtrl();
+	ToolCtrl thongBao = new ToolCtrl();
 	
 	@FXML public void chonTep() {
 		FileChooser fileChon = new FileChooser();

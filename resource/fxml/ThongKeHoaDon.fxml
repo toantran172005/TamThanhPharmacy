@@ -156,7 +156,7 @@
       						<Font size="15.0" />
       					</font>
       				</TitledPane>
-      				<TitledPane animated="false" prefHeight="390.0" prefWidth="1102.0" text="Biểu Đồ Doanh Thu Theo Ngày">
+      				<TitledPane animated="false" text="Biểu Đồ Doanh Thu Theo Ngày">
       					<content>
       						<BorderPane prefHeight="263.0" prefWidth="1100.0">
       							<center>
