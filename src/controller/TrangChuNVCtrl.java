@@ -149,7 +149,7 @@ public class TrangChuNVCtrl {
 			doiCenterPane("/fxml/LapHoaDon.fxml");
 			break;
 		case "Đổi - Trả":
-			doiCenterPane("/fxml/DoiTraHoaDon.fxml");
+			doiCenterPane("/fxml/PhieuDoiTra.fxml");
 			break;
 
 		default:

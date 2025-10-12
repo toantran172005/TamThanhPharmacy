@@ -22,7 +22,7 @@ public class PhieuDatThuocCtrl {
 	
 	@FXML Button btnLuuTep;
 	@FXML TableView<String> tblPhieuDatThuoc; //Sửa lại thành đối tượng
-	ThongBaoCtrl thongBao = new ThongBaoCtrl();
+	ToolCtrl thongBao = new ToolCtrl();
 	
 	@FXML public void luuTep() {
 		Stage stage = (Stage) btnLuuTep.getScene().getWindow();

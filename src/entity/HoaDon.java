@@ -1,13 +1,13 @@
 package entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class HoaDon {
 	private String maHD;
 	private KhachHang khachHang;
 	private NhanVien nhanVien;
 	private String loaiTT;
-	private LocalDateTime ngayLap;
+	private LocalDate ngayLap;
 	private String diaChiHT;
 	private String tenHT;
 	private String ghiChu;
@@ -18,7 +18,7 @@ public class HoaDon {
 		// TODO Auto-generated constructor stub
 	}
 
-	public HoaDon(String maHD, KhachHang khachHang, NhanVien nhanVien, String loaiTT, LocalDateTime ngayLap,
+	public HoaDon(String maHD, KhachHang khachHang, NhanVien nhanVien, String loaiTT, LocalDate ngayLap,
 			String diaChiHT, String tenHT, String ghiChu, String hotline) {
 		super();
 		this.maHD = maHD;
@@ -64,11 +64,11 @@ public class HoaDon {
 		this.loaiTT = loaiTT;
 	}
 
-	public LocalDateTime getNgayLap() {
+	public LocalDate getNgayLap() {
 		return ngayLap;
 	}
 
-	public void setNgayLap(LocalDateTime ngayLap) {
+	public void setNgayLap(LocalDate ngayLap) {
 		this.ngayLap = ngayLap;
 	}
 

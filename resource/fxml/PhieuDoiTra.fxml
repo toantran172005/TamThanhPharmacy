@@ -15,13 +15,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane stylesheets="/css/DoiTraHoaDon.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DoiTraHoaDonCtrl">
+<BorderPane stylesheets="/css/PhieuDoiTra.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PhieuDoiTraCtrl">
    <top>
       <VBox prefHeight="123.0" prefWidth="1133.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="56.0" prefWidth="1133.0">
                <children>
-                  <Label text="ĐỔI TRẢ HÓA ĐƠN">
+                  <Label text="PHIẾU ĐỔI TRẢ">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -79,7 +79,7 @@
             </Separator>
             <HBox alignment="CENTER" prefHeight="37.0" prefWidth="1133.0">
                <children>
-                  <Label text="Danh Sách Hóa Đơn">
+                  <Label text="DANH SÁCH HÓA ĐƠN">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
@@ -118,7 +118,7 @@
          <top>
             <HBox alignment="CENTER" prefHeight="23.0" prefWidth="1133.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label text="Chi Tiết Hóa Đơn">
+                  <Label text="CHI TIẾT HÓA ĐƠN">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
