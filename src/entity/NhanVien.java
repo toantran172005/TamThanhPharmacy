@@ -1,0 +1,134 @@
+package entity;
+
+import java.util.Date;
+
+public class NhanVien {
+	private String maNV;
+	private String tenNV;
+	private String chucVu;
+	private Date ngaySinh;
+	private Boolean gioiTinh;
+	private String sdt;
+	private Date ngayVaoLam;
+	private Double luong;
+	private Thue thue;
+	private Boolean trangThai;
+	private String anh;
+
+	public NhanVien() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public NhanVien(String maNV, String tenNV, String chucVu, Date ngaySinh, Boolean gioiTinh, String sdt,
+			Date ngayVaoLam, Double luong, Thue thue, Boolean trangThai, String anh) {
+		super();
+		this.maNV = maNV;
+		this.tenNV = tenNV;
+		this.chucVu = chucVu;
+		this.ngaySinh = ngaySinh;
+		this.gioiTinh = gioiTinh;
+		this.sdt = sdt;
+		this.ngayVaoLam = ngayVaoLam;
+		this.luong = luong;
+		this.thue = thue;
+		this.trangThai = trangThai;
+		this.anh = anh;
+	}
+
+	public String getMaNV() {
+		return maNV;
+	}
+
+	public void setMaNV(String maNV) {
+		this.maNV = maNV;
+	}
+
+	public String getTenNV() {
+		return tenNV;
+	}
+
+	public void setTenNV(String tenNV) {
+		this.tenNV = tenNV;
+	}
+
+	public String getChucVu() {
+		return chucVu;
+	}
+
+	public void setChucVu(String chucVu) {
+		this.chucVu = chucVu;
+	}
+
+	public Date getNgaySinh() {
+		return ngaySinh;
+	}
+
+	public void setNgaySinh(Date ngaySinh) {
+		this.ngaySinh = ngaySinh;
+	}
+
+	public Boolean isGioiTinh() {
+		return gioiTinh;
+	}
+
+	public void setGioiTinh(Boolean gioiTinh) {
+		this.gioiTinh = gioiTinh;
+	}
+
+	public String getSdt() {
+		return sdt;
+	}
+
+	public void setSdt(String sdt) {
+		this.sdt = sdt;
+	}
+
+	public Date getNgayVaoLam() {
+		return ngayVaoLam;
+	}
+
+	public void setNgayVaoLam(Date ngayVaoLam) {
+		this.ngayVaoLam = ngayVaoLam;
+	}
+
+	public Double getLuong() {
+		return luong;
+	}
+
+	public void setLuong(Double luong) {
+		this.luong = luong;
+	}
+
+	public Thue getThue() {
+		return thue;
+	}
+
+	public void setThue(Thue thue) {
+		this.thue = thue;
+	}
+
+	public Boolean isTrangThai() {
+		return trangThai;
+	}
+
+	public void setTrangThai(Boolean trangThai) {
+		this.trangThai = trangThai;
+	}
+
+	public String getAnh() {
+		return anh;
+	}
+
+	public void setAnh(String anh) {
+		this.anh = anh;
+	}
+
+	@Override
+	public String toString() {
+		return "NhanVien [" + "maNV=" + maNV + ", tenNV=" + tenNV + ", chucVu=" + chucVu + ", ngaySinh=" + ngaySinh
+				+ ", gioiTinh=" + gioiTinh + ", sdt=" + sdt + ", ngayVaoLam=" + ngayVaoLam + ", luong=" + luong
+				+ ", thue=" + thue + ", trangThai=" + trangThai + ", anh=" + anh + "]";
+	}
+
+}

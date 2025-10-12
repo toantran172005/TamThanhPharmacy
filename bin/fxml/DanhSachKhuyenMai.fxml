@@ -99,7 +99,6 @@
             </TableColumn>
           <TableColumn prefWidth="125.0" text="Mã khuyến mãi" />
           <TableColumn prefWidth="121.0" text="Tên khuyến mãi" />
-            <TableColumn prefWidth="130.0" text="Loại khuyến mãi" />
             <TableColumn prefWidth="105.0" text="Phương thức KM" />
             <TableColumn prefWidth="154.0" text="Mức khuyến mãi" />
             <TableColumn prefWidth="124.0" text="Ngày bắt đầu" />

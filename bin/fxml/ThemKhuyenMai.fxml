@@ -27,7 +27,7 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label prefHeight="21.0" prefWidth="140.0" text="Tên khuyễn mãi:">
+                        <Label prefHeight="21.0" prefWidth="140.0" text="Tên khuyến mãi:">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
