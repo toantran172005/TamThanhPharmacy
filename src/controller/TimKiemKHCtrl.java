@@ -1,6 +1,7 @@
 package controller;
 
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Locale;
 
 import dao.KhachHangDAO;
@@ -13,14 +14,19 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import javafx.beans.property.BooleanProperty;
 
 public class TimKiemKHCtrl {
@@ -50,46 +56,40 @@ public class TimKiemKHCtrl {
 	@FXML
 	public TableColumn<KhachHang, Void> colHoatDong;
 	@FXML
-	public Button btnLamMoi;
+	public Button btnLamMoi, btnXemChiTiet;
 
 	@FXML
 	public TextField txtTenKH, txtSdt;
+
+	public TrangChuQLCtrl trangChuQLCtrl;
+	public TrangChuNVCtrl trangChuNVCtrl;
 
 	public KhachHangDAO khDAO = new KhachHangDAO();
 	public ToolCtrl toolCtrl = new ToolCtrl();
 
 	public ObservableList<KhachHang> listKH = FXCollections.observableArrayList();
 
-	public ObservableList<KhachHang> listKHThongKe = FXCollections.observableArrayList();
+	public ObservableList<KhachHang> listKHThongKe = FXCollections.observableArrayList(); // gồm mã, tên, tổng đơn, tổng tiền
 
 	public void initialize() {
 		listKH = khDAO.layListKhachHang();
 		listKHThongKe = khDAO.layListKHThongKe();
 		setItemCmbTrangThai();
-		setDataChoTable(listKH);
+		locTheoTrangThai();
 		setUpTextFieldVaButton();
 	}
-	
+
 	public void setUpTextFieldVaButton() {
 		txtTenKH.setOnAction(event -> timTheoTen()); // txt tìm kiếm theo tên khách hàng
 		txtSdt.setOnAction(event -> timTheoSDT()); // txt tìm kiếm theo số điện thoại
 		btnLamMoi.setOnAction(event -> lamMoiBang()); // btn làm mới lại table
+		btnXemChiTiet.setOnAction(event -> chuyenDenTrangChiTiet());
+		cmbTrangThai.setOnAction(event -> locTheoTrangThai());
 	}
 
 	public void setDataChoTable(ObservableList<KhachHang> list) {
 		// Checkbox
-		colSelect.setCellFactory(CheckBoxTableCell.forTableColumn(index -> {
-			KhachHang kh = tblKhachHang.getItems().get(index);
-			BooleanProperty selected = new SimpleBooleanProperty(false);
-
-			selected.addListener((obs, oldVal, newVal) -> {
-				// xử lý khi tick checkbox
-
-			});
-
-			return selected;
-		}));
-
+		setUpColCheckBox();
 		// Các cột data
 		colMaKH.setCellValueFactory(new PropertyValueFactory<>("maKH"));
 		colTenKH.setCellValueFactory(new PropertyValueFactory<>("tenKH"));
@@ -117,60 +117,158 @@ public class TimKiemKHCtrl {
 		tblKhachHang.setItems(list);
 	}
 
-	private void setupColHoatDong() {
+	public void setUpColCheckBox() {
+		colSelect.setCellValueFactory(cellData -> cellData.getValue().selectedProperty());
+		colSelect.setCellFactory(tc -> {
+			CheckBoxTableCell<KhachHang, Boolean> cell = new CheckBoxTableCell<>() {
+				@Override
+				public void updateItem(Boolean item, boolean empty) {
+					super.updateItem(item, empty);
+					if (!empty) {
+						TableRow<KhachHang> row = getTableRow();
+						if (row != null) {
+							KhachHang kh = row.getItem();
+							if (kh != null) {
+								kh.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+									if (isNowSelected) {
+										tblKhachHang.getSelectionModel().select(kh);
+									} else {
+										tblKhachHang.getSelectionModel()
+												.clearSelection(tblKhachHang.getItems().indexOf(kh));
+									}
+								});
+							}
+						}
+					}
+				}
+			};
+			return cell;
+		});
+
+		tblKhachHang.setRowFactory(tv -> {
+			TableRow<KhachHang> row = new TableRow<>();
+			row.setOnMouseClicked(event -> {
+				if (!row.isEmpty() && event.getClickCount() == 1) {
+					KhachHang kh = row.getItem();
+					kh.setSelected(!kh.isSelected());
+				}
+			});
+			return row;
+		});
+	}
+
+	public void setupColHoatDong() {
 		colHoatDong.setCellFactory(column -> new TableCell<KhachHang, Void>() {
-			private final Button btn = new Button("Xóa");
+			private final Button btn = new Button();
 
 			{
-				btn.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 6;");
+				btn.getStyleClass().add("btnXoaVaHoanTac");
 				btn.setCursor(javafx.scene.Cursor.HAND);
-				btn.setOnAction(event -> { // Xử lý khi nhấn nút xóa
+				btn.setOnAction(event -> {
 					KhachHang kh = getTableView().getItems().get(getIndex());
 
+					if (kh.isTrangThai()) { // xử lý xóa 
+
+					} else { // xử lý hoàn tác 
+
+					}
+
+					getTableView().refresh();
 				});
 			}
 
 			@Override
 			protected void updateItem(Void item, boolean empty) {
 				super.updateItem(item, empty);
-				setGraphic(empty ? null : btn);
+
+				if (empty) {
+					setGraphic(null);
+				} else {
+					KhachHang kh = getTableView().getItems().get(getIndex());
+					if (kh != null) {
+						btn.setText(kh.isTrangThai() ? "Xóa" : "Hoàn Tác");
+					}
+					setGraphic(btn);
+				}
 			}
 		});
 	}
-	
+
 	public void lamMoiBang() {
-		setDataChoTable(listKH);
+		listKH = khDAO.layListKhachHang();
+		locTheoTrangThai();
 		txtTenKH.setText("");
 		txtSdt.setText("");
 	}
-	
-	public void timTheoSDT() {
-		String sdt = toolCtrl.chuyenSoDienThoai(txtSdt.getText().trim().toLowerCase());
 
-		if (sdt.isEmpty()) {
+	public void chuyenDenTrangChiTiet() {
+
+		List<KhachHang> danhSachChon = tblKhachHang.getItems()
+		        .stream()
+		        .filter(KhachHang::isSelected)
+		        .toList();
+
+		if (danhSachChon.isEmpty()) {
+		    toolCtrl.hienThiThongBao("Lỗi", "Vui lòng chọn 1 khách hàng để xem chi tiết.", false);
+		    return;
+		}
+
+		if (danhSachChon.size() > 1) {
+		    toolCtrl.hienThiThongBao("Lỗi", "Chỉ được chọn 1 khách hàng để xem chi tiết.", false);
+		    return;
+		}
+
+		KhachHang khachHang = danhSachChon.get(0);
+
+		if (trangChuQLCtrl != null) {
+	        ChiTietKhachHangCtrl ctKHCtrl = trangChuQLCtrl.doiCenterPane("/fxml/ChiTietKhachHang.fxml");
+	        ctKHCtrl.hienThiThongTin(khachHang);
+	        ctKHCtrl.setTrangChuQLCtrl(trangChuQLCtrl);
+
+	    } else if (trangChuNVCtrl != null) {
+	        ChiTietKhachHangCtrl ctKHCtrl = trangChuNVCtrl.doiCenterPane("/fxml/ChiTietKhachHang.fxml");
+	        ctKHCtrl.hienThiThongTin(khachHang);
+	        ctKHCtrl.setTrangChuNVCtrl(trangChuNVCtrl);
+
+	    } else {
+	        toolCtrl.hienThiThongBao("Lỗi hệ thống",
+	                "Controller cha chưa được set. Vui lòng kiểm tra cách load FXML.", false);
+	    }
+
+	}
+
+	public void locTheoTrangThai() {
+		String trangThai = cmbTrangThai.getValue();
+
+		if (trangThai == null || trangThai.isEmpty()) {
+			return;
+		}
+
+		if (trangThai.equals("Tất cả")) {
 			setDataChoTable(listKH);
 			return;
 		}
 
-		// Lọc danh sách theo tên (không phân biệt hoa thường)
-		ObservableList<KhachHang> listLoc = listKH.filtered(kh -> kh.getSdt().toLowerCase().contains(sdt));
+		ObservableList<KhachHang> listLoc = listKH.filtered(kh -> {
+			if (trangThai.equals("Hoạt động")) {
+				return kh.isTrangThai();
+			} else if (trangThai.equals("Ngừng hoạt động")) {
+				return !kh.isTrangThai();
+			}
+			return true;
+		});
+		setDataChoTable(listLoc);
+	}
 
-		// Cập nhật bảng
+	public void timTheoSDT() {
+		String sdt = toolCtrl.chuyenSoDienThoai(txtSdt.getText().trim().toLowerCase());
+		ObservableList<KhachHang> listLoc = listKH.filtered(kh -> kh.getSdt().toLowerCase().contains(sdt));
 		setDataChoTable(listLoc);
 	}
 
 	public void timTheoTen() {
 		String tenNhap = txtTenKH.getText().trim().toLowerCase();
-
-		if (tenNhap.isEmpty()) {
-			setDataChoTable(listKH);
-			return;
-		}
-
-		// Lọc danh sách theo tên (không phân biệt hoa thường)
 		ObservableList<KhachHang> listLoc = listKH.filtered(kh -> kh.getTenKH().toLowerCase().contains(tenNhap));
-
-		// Cập nhật bảng
 		setDataChoTable(listLoc);
 	}
 
@@ -186,9 +284,8 @@ public class TimKiemKHCtrl {
 	}
 
 	public String setTrangThai(KhachHang kh) {
-		Boolean trangThai = kh.isTrangThai();
-		@SuppressWarnings("unlikely-arg-type")
-		String display = "0".equals(trangThai) ? "Ngừng hoạt động" : "Hoạt động";
+		Boolean trangThai = true;
+		String display = !trangThai.equals(kh.isTrangThai()) ? "Ngừng hoạt động" : "Hoạt động";
 		return display;
 	}
 
@@ -203,9 +300,17 @@ public class TimKiemKHCtrl {
 		return tempKH.getTongDonHang();
 	}
 
-
 	public void setItemCmbTrangThai() {
-		cmbTrangThai.getItems().addAll("Hoạt động", "Ngừng hoạt động");
+		cmbTrangThai.getItems().addAll("Tất cả", "Hoạt động", "Ngừng hoạt động");
+		cmbTrangThai.setValue("Hoạt động");
+	}
+
+	public void setTrangChuQLCtrl(TrangChuQLCtrl trangChuQLCtrl) {
+		this.trangChuQLCtrl = trangChuQLCtrl;
+	}
+
+	public void setTrangChuNVCtrl(TrangChuNVCtrl trangChuNVCtrl) {
+		this.trangChuNVCtrl = trangChuNVCtrl;
 	}
 
 }

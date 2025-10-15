@@ -1,7 +1,6 @@
 /fxml/
-/controller/
 /css/
-/dao/
+/controller/
 /entity/
-/database/
-/main/
+/picture/
+/dao/
