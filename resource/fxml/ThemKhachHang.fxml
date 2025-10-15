@@ -33,7 +33,7 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <TextField prefHeight="25.0" prefWidth="321.0" promptText="Nhập tên...">
+                  <TextField fx:id="txtTenKH" prefHeight="25.0" prefWidth="321.0" promptText="Nhập tên...">
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin>
@@ -53,7 +53,7 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <TextField prefHeight="25.0" prefWidth="321.0" promptText="Nhập số điện thoại...">
+                  <TextField fx:id="txtSdt" prefHeight="25.0" prefWidth="321.0" promptText="Nhập số điện thoại...">
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin>
@@ -73,7 +73,7 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <TextField prefHeight="25.0" prefWidth="321.0" promptText="Nhập tuổi...">
+                  <TextField fx:id="txtTuoi" prefHeight="25.0" prefWidth="321.0" promptText="Nhập tuổi...">
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin>
@@ -88,7 +88,7 @@
             </HBox>
             <HBox alignment="CENTER" layoutX="10.0" layoutY="315.0" prefHeight="37.0" prefWidth="868.0" spacing="100.0">
                <children>
-                  <HBox alignment="CENTER" prefHeight="38.0" prefWidth="140.0" styleClass="btn">
+                  <HBox fx:id="hbLamMoi" alignment="CENTER" prefHeight="38.0" prefWidth="140.0" styleClass="btn">
                      <children>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -108,7 +108,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </HBox>
-                  <HBox alignment="CENTER" layoutX="344.0" layoutY="10.0" prefHeight="38.0" prefWidth="140.0" styleClass="btn">
+                  <HBox fx:id="hbThem" alignment="CENTER" layoutX="344.0" layoutY="10.0" prefHeight="38.0" prefWidth="140.0" styleClass="btn">
                      <children>
                         <ImageView fitHeight="26.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
                            <image>

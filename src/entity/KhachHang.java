@@ -1,6 +1,10 @@
 package entity;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 public class KhachHang {
+	private BooleanProperty selected = new SimpleBooleanProperty(false);
 	private String maKH;
 	private String tenKH;
 	private String sdt;
@@ -29,6 +33,18 @@ public class KhachHang {
 		this.tenKH = tenKH;
 		this.tongDonHang = tongDonHang;
 		this.tongTien = tongTien;
+	}
+
+	public boolean isSelected() {
+		return selected.get();
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected.set(selected);
+	}
+
+	public BooleanProperty selectedProperty() {
+		return selected;
 	}
 
 	public int getTongDonHang() {
