@@ -8,9 +8,6 @@ public class ThongKeKhachHangCtrl {
 	
 	
 	public void initialize() {
-		 
-	}
-	
 
-	
+	}
 }

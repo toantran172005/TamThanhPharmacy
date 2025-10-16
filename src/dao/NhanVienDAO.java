@@ -37,10 +37,9 @@ public class NhanVienDAO {
                         rs.getString("chucVu"),
 
                         // ✅ Dùng hàm ToolCtrl để chuyển đổi
-                        ToolCtrl.sqlDateSangLocalDate(rs.getDate("ngaySinh")),
-                        rs.getBoolean("gioiTinh"),
+                        toolCtrl.sqlDateSangLocalDate(rs.getDate("ngaySinh")),                        rs.getBoolean("gioiTinh"),
                         rs.getString("sdt"),
-                        ToolCtrl.sqlDateSangLocalDate(rs.getDate("ngayVaoLam")),
+                        toolCtrl.sqlDateSangLocalDate(rs.getDate("ngayVaoLam")),
 
                         rs.getDouble("luong"),
                         thue,

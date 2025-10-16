@@ -30,7 +30,7 @@ public class NhapThuocCtrl {
 	
 	//Lưu dữ liệu về database
 	@FXML public int luuDuLieu(){
-			thongBao.hienThiThongBaoThatBai("Lưu thất bại!","Lỗi gì ai bécc ^.^", "404");
+			thongBao.hienThiThongBao("Lưu thất bại!","Lỗi gì ai bécc ^.^", false);
 			//hienThiThongBaoThanhCong("Lưu thành công nhé fen ^>^");
 			
 			return 1;

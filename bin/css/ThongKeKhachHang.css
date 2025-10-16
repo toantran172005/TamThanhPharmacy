@@ -1,29 +1,86 @@
-.combo-box {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #cccccc;     
-    -fx-border-radius: 8;          
-    -fx-background-radius: 8;
-    -fx-padding: 3 3 3 3;                
+.axis-label {
+    -fx-font-size: 15px;
 }
 
-.combo-box:hover {
-    -fx-border-color: #3b82f6;    
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0.5, 0, 1);
+.chart-axis {
+    -fx-tick-label-font-size: 13px;
+    -fx-tick-label-fill: #333;
 }
 
-.combo-box:focused {
-    -fx-border-color: #3b82f6;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0.5, 0, 2);
+.btn{
+	-fx-background-color: white;
+	-fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 18, 0.5, 0, 0);
+	-fx-border-radius: 8px;  
 }
 
-.combo-box .list-cell {
-    -fx-padding: 5 10 5 10;
+.btn:pressed{
+	-fx-scale-x: 0.9;
+	-fx-scale-y: 0.9;
+	-fx-transition: all 0.1s ease;
+}
+
+.btn:hover {
+    -fx-background-color: lightgray;
+}
+
+.date-picker {
+    -fx-font-size: 15px;   
+    -fx-pref-height: 36px;    
+    -fx-pref-width: 160px;   
+}
+
+.date-picker > .text-field {
+    -fx-font-size: 15px;
+    -fx-padding: 6 10 6 10;  
+}
+
+/* ==== TitledPane hiện đại, đồng bộ với TableView ==== */
+.titled-pane {
     -fx-background-color: white;
-    -fx-text-fill: black;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 5;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+    -fx-text-fill: #333;
 }
 
-.combo-box .list-cell:hover {
-    -fx-background-color: #f0f0f0;
+/* Header của TitledPane */
+.titled-pane > .title {
+    -fx-background-color: linear-gradient(to right, #e3f2fd, #bbdefb);
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-border-radius: 8px 8px 0 0;
+    -fx-padding: 10 12 10 15;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-text-fill: #1565c0;
+    -fx-cursor: hand;
+}
+
+/* Khi hover vào header */
+.titled-pane > .title:hover {
+    -fx-background-color: linear-gradient(to right, #bbdefb, #90caf9);
+}
+
+/* Khi pane được mở */
+.titled-pane:expanded > .title {
+    -fx-background-color: linear-gradient(to right, #bbdefb, #64b5f6);
+    -fx-text-fill: #0d47a1;
+}
+
+/* Vùng nội dung bên trong */
+.titled-pane > *.content {
+    -fx-background-color: white;
+    -fx-padding: 10 15 15 15;
+    -fx-background-radius: 0 0 8px 8px;
+    -fx-border-radius: 0 0 8px 8px;
+}
+
+/* Nếu muốn ẩn viền mặc định giữa các titled-pane trong Accordion */
+.accordion > .titled-pane {
+    -fx-border-color: transparent;
+    -fx-background-insets: 0;
 }
 
 
@@ -51,4 +108,32 @@
     -fx-text-fill: #333;
     -fx-font-size: 13px;
     -fx-padding: 8 0 8 8;
+}
+
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;     
+    -fx-border-radius: 8;          
+    -fx-background-radius: 8;
+    -fx-padding: 3 3 3 3;                
+}
+
+.combo-box:hover {
+    -fx-border-color: #3b82f6;    
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 5, 0.5, 0, 1);
+}
+
+.combo-box:focused {
+    -fx-border-color: #3b82f6;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 6, 0.5, 0, 2);
+}
+
+.combo-box .list-cell {
+    -fx-padding: 5 10 5 10;
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #f0f0f0;
 }

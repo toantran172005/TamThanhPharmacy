@@ -140,7 +140,8 @@ public class TrangChuNVCtrl {
 
 		// ===== KHÁCH HÀNG =====
 		case "Tìm kiếm khách hàng":
-			doiCenterPane("/fxml/TimKiemKH.fxml");
+			TimKiemKHCtrl tkKHCtrl = doiCenterPane("/fxml/TimKiemKH.fxml");
+			tkKHCtrl.setTrangChuNVCtrl(this);
 			break;
 		case "Thêm khách hàng":
 			doiCenterPane("/fxml/ThemKhachHang.fxml");

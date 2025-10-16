@@ -67,10 +67,10 @@ public class PhieuDatThuocCtrl {
                 
                 document.close();
                 
-                thongBao.hienThiThongBaoThanhCong("Lưu thành công");
+                thongBao.hienThiThongBao("Lưu thành công", null, false);
 
 			} catch (Exception e) {
-				thongBao.hienThiThongBaoThatBai("Lưu thất bại" ,"Ai béc lỗi gì đâu", "101");
+				thongBao.hienThiThongBao("Lưu thất bại" ,"Ai béc lỗi gì đâu", false);
 			}
 		 }
 	}

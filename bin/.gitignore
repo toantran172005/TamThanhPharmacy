@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /controller/
 /css/
 /dao/
@@ -11,3 +12,11 @@
 /main/
 /mssql-jdbc-13.2.0.jre11.jar
 /picture/
+=======
+/fxml/
+/css/
+/controller/
+/entity/
+/picture/
+/dao/
+>>>>>>> c4ea1889cf8d5f2b3b3d17c16a33f4d4ac21b544
