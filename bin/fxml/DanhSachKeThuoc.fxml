@@ -8,7 +8,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -24,12 +23,17 @@
                <children>
                   <HBox alignment="BOTTOM_CENTER" prefHeight="79.0" prefWidth="402.0">
                      <children>
-                        <Label prefHeight="30.0" prefWidth="122.0" text="Mã kệ:">
+                        <Label prefHeight="30.0" prefWidth="122.0" text="Sức chứa:">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </Label>
-                        <TextField prefHeight="34.0" prefWidth="181.0" promptText="Mã kệ..." />
+                        <ComboBox fx:id="cmbSucChua" prefHeight="25.0" prefWidth="181.0">
+                           <styleClass>
+                              <String fx:value="combo-box" />
+                              <String fx:value="arrow" />
+                           </styleClass>
+                        </ComboBox>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
@@ -68,7 +72,7 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="407.0" spacing="30.0">
                      <children>
-                        <Button fx:id="btnChiTiet" mnemonicParsing="false" onAction="#moTrangChiTiet" prefHeight="48.0" prefWidth="137.0" styleClass="btn" text="Xem chi tiết">
+                        <Button fx:id="btnXemCT" mnemonicParsing="false" prefHeight="48.0" prefWidth="137.0" styleClass="btn" text="Xem chi tiết">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>

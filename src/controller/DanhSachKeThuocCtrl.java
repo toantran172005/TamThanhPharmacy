@@ -1,5 +1,9 @@
 package controller;
 
+import java.util.ArrayList;
+
+import com.itextpdf.text.List;
+
 import dao.KeThuocDAO;
 import entity.KeThuoc;
 import javafx.beans.property.SimpleStringProperty;
@@ -18,27 +22,25 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class DanhSachKeThuocCtrl {
 
 	@FXML
-	public ComboBox<String> cmbTrangThai;
+	public ComboBox<String> cmbTrangThai, cmbLoaiKe, cmbSucChua;
 	@FXML
-	public ComboBox<String> cmbLoaiKe;
+	public Button btnXemCT, btnLamMoi;
 	@FXML
-	public Button btnChiTiet, btnLamMoi;
+	public TableColumn<KeThuoc, Boolean> colSelect;
 	@FXML
-	private TableColumn<KeThuoc, Boolean> colSelect;
+	public TableColumn<KeThuoc, String> colMaKe;
 	@FXML
-	private TableColumn<KeThuoc, String> colMaKe;
+	public TableColumn<KeThuoc, String> colLoaiKe;
 	@FXML
-	private TableColumn<KeThuoc, String> colLoaiKe;
+	public TableColumn<KeThuoc, Integer> colSucChua;
 	@FXML
-	private TableColumn<KeThuoc, Integer> colSucChua;
+	public TableColumn<KeThuoc, String> colMoTa;
 	@FXML
-	private TableColumn<KeThuoc, String> colMoTa;
+	public TableColumn<KeThuoc, String> colTrangThai;
 	@FXML
-	private TableColumn<KeThuoc, String> colTrangThai;
+	public TableColumn<KeThuoc, Void> colHoatDong;
 	@FXML
-	private TableColumn<KeThuoc, Void> colHoatDong;
-	@FXML
-	private TableView<KeThuoc> tblKeThuoc;
+	public TableView<KeThuoc> tblKeThuoc;
 
 	public TrangChuQLCtrl Ql;
 	public TrangChuNVCtrl NV;
@@ -51,6 +53,15 @@ public class DanhSachKeThuocCtrl {
 		listKeThuoc = ktDAO.layListKeThuoc();
 		setItemComboBox();
 		setDataChoTable(listKeThuoc);
+		setUpTextFieldVaButton();
+	}
+
+	public void setUpTextFieldVaButton() {
+
+		btnLamMoi.setOnAction(event -> lamMoiBang());
+		cmbTrangThai.setOnAction(event -> locTatCa());
+		cmbLoaiKe.setOnAction(event -> locTatCa());
+		cmbSucChua.setOnAction(event -> locTatCa());
 	}
 
 	public void setDataChoTable(ObservableList<KeThuoc> list) {
@@ -111,10 +122,10 @@ public class DanhSachKeThuocCtrl {
 			return row;
 		});
 	}
-	
+
 	public void setupColHoatDong() {
 		colHoatDong.setCellFactory(column -> new TableCell<KeThuoc, Void>() {
-			private final Button btn = new Button();
+			public final Button btn = new Button();
 
 			{
 				btn.getStyleClass().add("btnXoaVaHoanTac");
@@ -122,7 +133,7 @@ public class DanhSachKeThuocCtrl {
 				btn.setOnAction(event -> {
 					KeThuoc kh = getTableView().getItems().get(getIndex());
 
-					if (kh.isTrangThai()) { // xử lý xóa 
+					if (kh.isTrangThai()) { // xử lý xóa
 
 					} else { // xử lý hoàn tác
 
@@ -149,6 +160,59 @@ public class DanhSachKeThuocCtrl {
 		});
 	}
 
+	public void lamMoiBang() {
+		listKeThuoc = ktDAO.layListKeThuoc();
+		setGiaTriMacDinh();
+		locTatCa();
+	}
+	
+	public void setGiaTriMacDinh() {
+		cmbLoaiKe.setValue("Tất cả");
+		cmbSucChua.setValue("Tất cả");
+		cmbTrangThai.setValue("Tất cả");
+	}
+
+	public void locTatCa() {
+	    String loaiKe = cmbLoaiKe.getValue();
+	    String mucChon = cmbSucChua.getValue();
+	    String trangThai = cmbTrangThai.getValue();
+
+	    ObservableList<KeThuoc> listLoc = listKeThuoc.filtered(kt -> {
+	        boolean hopLoai = true;
+	        boolean hopSucChua = true;
+	        boolean hopTrangThai = true;
+
+	        //  Lọc theo loại kệ 
+	        if (loaiKe != null && !loaiKe.equals("Tất cả")) {
+	            hopLoai = kt.getLoaiKe().equalsIgnoreCase(loaiKe);
+	        }
+
+	        //  Lọc theo sức chứa 
+	        if (mucChon != null && !mucChon.equals("Tất cả")) {
+	            try {
+	                int gioiHan = Integer.parseInt(mucChon.replace("<", "").trim());
+	                hopSucChua = kt.getSucChua() < gioiHan;
+	            } catch (NumberFormatException e) {
+	                hopSucChua = true;
+	            }
+	        }
+
+	        //  Lọc theo trạng thái 
+	        if (trangThai != null && !trangThai.equals("Tất cả")) {
+	            if (trangThai.equals("Hoạt động")) {
+	                hopTrangThai = kt.isTrangThai();
+	            } else if (trangThai.equals("Ngừng hoạt động")) {
+	                hopTrangThai = !kt.isTrangThai();
+	            }
+	        }
+
+	        return hopLoai && hopSucChua && hopTrangThai;
+	    });
+
+	    setDataChoTable(listLoc);
+	}
+
+
 	public String setTrangThai(KeThuoc kt) {
 		Boolean trangThai = true;
 		String display = !trangThai.equals(kt.isTrangThai()) ? "Ngừng hoạt động" : "Hoạt động";
@@ -161,6 +225,31 @@ public class DanhSachKeThuocCtrl {
 		cmbLoaiKe.getItems().addAll("Tất cả", "Thuốc kê đơn", "Thuốc không kê đơn", "Tim mạch", "Thần kinh",
 				"Dược mỹ phẩm", "Thực phẩm chức năng", "Tiểu đường", "Kháng sinh");
 		cmbLoaiKe.setValue("Tất cả");
+		khoiTaoComboSucChua();
+	}
+	
+	public void khoiTaoComboSucChua() {
+	    int max = listKeThuoc.stream()
+	            .mapToInt(KeThuoc::getSucChua)
+	            .max()
+	            .orElse(0);
+
+	    // Danh sách mặc định
+	    ArrayList<String> mucSucChua = new ArrayList<>();
+	    mucSucChua.add("Tất cả");
+	    mucSucChua.add("< 100");
+	    mucSucChua.add("< 200");
+	    mucSucChua.add("< 300");
+	    mucSucChua.add("< 400");
+
+	    int muc = 500;
+	    while (muc <= (max + 100)) {
+	        mucSucChua.add("< " + muc);
+	        muc += 100;
+	    }
+
+	    cmbSucChua.getItems().setAll(mucSucChua);
+	    cmbSucChua.setValue("Tất cả");
 	}
 
 	public void setTrangChuQLCtrl(TrangChuQLCtrl trangChuQLCtrl) {
@@ -170,15 +259,6 @@ public class DanhSachKeThuocCtrl {
 	public void setTrangChuNVCtrl(TrangChuNVCtrl trangChuNVCtrl) {
 		this.NV = trangChuNVCtrl;
 
-	}
-
-	@FXML
-	public void moTrangChiTiet() {
-		if (Ql != null) {
-			Ql.setTrangChiTietKeThuoc();
-		} else if (NV != null) {
-			NV.setTrangChiTietKeThuoc();
-		}
 	}
 
 }
