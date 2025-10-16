@@ -3,7 +3,11 @@ package entity;
 import java.time.LocalDate;
 import java.util.Date;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 public class NhanVien {
+	private BooleanProperty selected = new SimpleBooleanProperty(false);
 	private String maNV;
 	private String tenNV;
 	private String chucVu;
@@ -35,6 +39,18 @@ public class NhanVien {
 		this.thue = thue;
 		this.trangThai = trangThai;
 		this.anh = anh;
+	}
+	
+	public boolean isSelected() {
+		return selected.get();
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected.set(selected);
+	}
+
+	public BooleanProperty selectedProperty() {
+		return selected;
 	}
 
 	public String getMaNV() {

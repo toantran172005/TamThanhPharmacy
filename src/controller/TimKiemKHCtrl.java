@@ -113,7 +113,6 @@ public class TimKiemKHCtrl {
 		// Cột hoạt động
 		setupColHoatDong();
 		// Đưa data lên table
-		tblKhachHang.setEditable(true);
 		tblKhachHang.setItems(list);
 	}
 

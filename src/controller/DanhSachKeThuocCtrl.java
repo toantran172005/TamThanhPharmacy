@@ -79,7 +79,6 @@ public class DanhSachKeThuocCtrl {
 		// Cột hoạt động
 		setupColHoatDong();
 		// Đưa data lên table
-		tblKeThuoc.setEditable(true);
 		tblKeThuoc.setItems(list);
 	}
 
