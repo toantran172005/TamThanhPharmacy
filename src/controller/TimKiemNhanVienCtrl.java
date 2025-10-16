@@ -18,6 +18,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
@@ -34,6 +35,8 @@ import java.util.Optional;
 import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
 
 import dao.NhanVienDAO;
+import entity.NhanVien;
+import entity.NhanVien;
 import entity.NhanVien;
 
 public class TimKiemNhanVienCtrl {
@@ -65,8 +68,6 @@ public class TimKiemNhanVienCtrl {
 
 	public void initialize() {
 		setItemComboBoxTrangThai();
-		btnXemChiTiet.setOnMouseClicked(e -> moTrangChiTietNhanVien());
-
 		setDataChoTable(listNV);
 		setAction();
 	}
@@ -77,11 +78,11 @@ public class TimKiemNhanVienCtrl {
 	}
 	
 	public void setAction() {
-		txtMaNV.setOnAction(event -> timTheoMaNV()); // txt tìm kiếm theo mã nhân viên
-		txtTenNV.setOnAction(event -> timTheoTenNV()); // txt tìm kiếm theo tên nhân viên
+		txtMaNV.setOnAction(event -> locNhanVien()); // txt tìm kiếm theo mã nhân viên
+		txtTenNV.setOnAction(event -> locNhanVien()); // txt tìm kiếm theo tên nhân viên
 		btnLamMoi.setOnAction(event -> lamMoiBang()); // btn làm mới lại table
-		cmbTrangThai.setOnAction(event -> timTheoTrangThai()); 
-		setCheckBox();
+		cmbTrangThai.setOnAction(event -> locNhanVien()); 
+		btnXemChiTiet.setOnMouseClicked(e -> moTrangChiTietNhanVien());
 	}
 
 	public void setTrangChuNVCtrl(TrangChuNVCtrl ctrl) {
@@ -93,53 +94,43 @@ public class TimKiemNhanVienCtrl {
 	}
 	
 	public void lamMoiBang() {
-		setDataChoTable(listNV);
 		txtMaNV.setText("");
 		txtTenNV.setText("");
 		cmbTrangThai.setValue("Còn làm");
+		locNhanVien();
 	}
 	
-	public void timTheoMaNV() {
-		String maNV = txtMaNV.getText().trim().toLowerCase();
-
-		if (maNV.isEmpty()) {
-			setDataChoTable(listNV);
-			return;
-		}
-
-		// Lọc danh sách theo mã
-		ObservableList<NhanVien> listLoc  = listNV.filtered(nv -> nv.getMaNV().toLowerCase().contains(maNV));
-
-		// Cập nhật bảng
-		setDataChoTable(listLoc);
-	}
-
-	public void timTheoTenNV() {
-		String timTenNV = txtTenNV.getText().trim().toLowerCase();
-
-		if (timTenNV.isEmpty()) {
-			setDataChoTable(listNV);
-			return;
-		}
-
-		// Lọc danh sách theo tên (không phân biệt hoa thường)
-		ObservableList<NhanVien> listLoc = listNV.filtered(nv -> nv.getTenNV().toLowerCase().contains(timTenNV));
-
-		// Cập nhật bảng
-		setDataChoTable(listLoc);
-	}
-	
-	public void timTheoTrangThai() {
+	public void locNhanVien() {
+	    String maNV = txtMaNV.getText().trim().toLowerCase();
+	    String tenNV = txtTenNV.getText().trim().toLowerCase();
 	    String trangThaiChon = cmbTrangThai.getValue();
-	    if (trangThaiChon == null || trangThaiChon.isEmpty()) {
-	        setDataChoTable(listNV);
-	        return;
-	    }
 
-	    boolean isConLam = trangThaiChon.equals("Còn làm");
-	    ObservableList<NhanVien> listLoc = listNV.filtered(nv -> nv.isTrangThai() == isConLam);
+	    // Bắt đầu từ toàn bộ danh sách
+	    ObservableList<NhanVien> listLoc = listNV.filtered(nv -> {
+	        boolean hopLe = true;
+
+	        // --- Lọc theo mã NV ---
+	        if (!maNV.isEmpty()) {
+	            hopLe = hopLe && nv.getMaNV().toLowerCase().contains(maNV);
+	        }
+
+	        // --- Lọc theo tên NV ---
+	        if (!tenNV.isEmpty()) {
+	            hopLe = hopLe && nv.getTenNV().toLowerCase().contains(tenNV);
+	        }
+
+	        // --- Lọc theo trạng thái ---
+	        if (trangThaiChon != null && !trangThaiChon.equals("Tất cả")) {
+	            boolean isConLam = trangThaiChon.equals("Còn làm");
+	            hopLe = hopLe && (nv.isTrangThai() == isConLam);
+	        }
+
+	        return hopLe;
+	    });
+
 	    setDataChoTable(listLoc);
 	}
+
 
 	// ========== MỞ TRANG CHI TIẾT NHÂN VIÊN ==========
 	private void moTrangChiTietNhanVien() {
@@ -181,6 +172,8 @@ public class TimKiemNhanVienCtrl {
 
 	// ========== LOAD DỮ LIỆU NHÂN VIÊN TỪ DATABASE ==========
 	public void setDataChoTable(ObservableList<NhanVien> listNV) {
+		// Checkbox
+		setUpColCheckBox();
 
 		// Data
 		colMaNV.setCellValueFactory(new PropertyValueFactory<>("maNV"));
@@ -191,51 +184,59 @@ public class TimKiemNhanVienCtrl {
 		});
 		colGioiTinh.setCellValueFactory(cellData -> {
 			NhanVien nv = cellData.getValue();
-			return new ReadOnlyObjectWrapper(setGioiTinh(nv));
+			return new SimpleStringProperty(setGioiTinh(nv));
 		});
 		colChucVu.setCellValueFactory(new PropertyValueFactory<>("chucVu"));
 
 		colTrangThai.setCellValueFactory(cellData -> {
 			NhanVien nv = cellData.getValue();
-			return new ReadOnlyObjectWrapper(setTrangThai(nv));
+			return new SimpleStringProperty(setTrangThai(nv));
 		});
 
 		setupColHoatDong();
-
 		tblNhanVien.setItems(listNV);
 	}
 	
-	// ========== SET CHECKBOX TRONG TABLE ==========
-	public void setCheckBox() {
-		tblNhanVien.setEditable(true);
-		colSelect.setEditable(true);
-		
-		// ========== THÊM CHECKBOX TRÊN HEADER ==========
-		CheckBox selectAllCheckBox = new CheckBox();
-	    colSelect.setGraphic(selectAllCheckBox);
-	    colSelect.setSortable(false); // không cho sắp xếp cột này
-
-	    selectAllCheckBox.setOnAction(e -> {
-	        boolean selected = selectAllCheckBox.isSelected();
-	        for (NhanVien nv : tblNhanVien.getItems()) {
-	            selectedMap.putIfAbsent(nv, new SimpleBooleanProperty(false));
-	            selectedMap.get(nv).set(selected);
-	        }
-	        tblNhanVien.refresh(); //Hiển thị tất cả các check sau khi chọn
-	    });
-
-	    // ========== GÁN CHECKBOX TỪNG DÒNG ==========
-		colSelect.setCellValueFactory(cellData -> {
-			NhanVien nv = cellData.getValue();
-			selectedMap.putIfAbsent(nv, new SimpleBooleanProperty(false));
-			return selectedMap.get(nv);
+	public void setUpColCheckBox() {
+		colSelect.setCellValueFactory(cellData -> cellData.getValue().selectedProperty());
+		colSelect.setCellFactory(tc -> {
+			CheckBoxTableCell<NhanVien, Boolean> cell = new CheckBoxTableCell<>() {
+				@Override
+				public void updateItem(Boolean item, boolean empty) {
+					super.updateItem(item, empty);
+					if (!empty) {
+						TableRow<NhanVien> row = getTableRow();
+						if (row != null) {
+							NhanVien kh = row.getItem();
+							if (kh != null) {
+								kh.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+									if (isNowSelected) {
+										tblNhanVien.getSelectionModel().select(kh);
+									} else {
+										tblNhanVien.getSelectionModel()
+												.clearSelection(tblNhanVien.getItems().indexOf(kh));
+									}
+								});
+							}
+						}
+					}
+				}
+			};
+			return cell;
 		});
 
-		colSelect.setCellFactory(CheckBoxTableCell.forTableColumn(index -> {
-			NhanVien nv = tblNhanVien.getItems().get(index);
-			return selectedMap.get(nv);
-		}));
+		tblNhanVien.setRowFactory(tv -> {
+			TableRow<NhanVien> row = new TableRow<>();
+			row.setOnMouseClicked(event -> {
+				if (!row.isEmpty() && event.getClickCount() == 1) {
+					NhanVien kh = row.getItem();
+					kh.setSelected(!kh.isSelected());
+				}
+			});
+			return row;
+		});
 	}
+	
 	
 	// ========== SET GIỚI TÍNH CHO NHÂN VIÊN ==========
 	public String setGioiTinh(NhanVien nv) {
@@ -252,44 +253,43 @@ public class TimKiemNhanVienCtrl {
 	}
 
 	// ========== SETUP CỘT HOẠT ĐỘNG TRONG TABLE ==========
-	private void setupColHoatDong() {
-		colHoatDong.setCellFactory(col -> new TableCell<>() {
-			Image imgXoa = new Image(getClass().getResourceAsStream("/picture/nhanVien/trash.png"));
-			private final ImageView imgDelete = new ImageView(imgXoa);
-			private final Button btnXoa = new Button();
-			private final HBox box = new HBox(10, btnXoa);
+	public void setupColHoatDong() {
+		colHoatDong.setCellFactory(column -> new TableCell<NhanVien, Void>() {
+			private final Button btn = new Button();
 
 			{
-				// Căn giữa các nút trong ô
-				box.setAlignment(Pos.CENTER);
+				btn.getStyleClass().add("btnXoaVaHoanTac");
+				btn.setCursor(javafx.scene.Cursor.HAND);
+				btn.setOnAction(event -> {
+					NhanVien kh = getTableView().getItems().get(getIndex());
 
-				// Kích thước icon
-				imgDelete.setFitWidth(16);
-				imgDelete.setFitHeight(16);
+					if (kh.isTrangThai()) { // xử lý xóa 
 
-				// Gán icon cho nút
-				btnXoa.setGraphic(imgDelete);
+					} else { // xử lý hoàn tác 
 
-				// Ẩn nền để chỉ thấy icon
-				btnXoa.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
-
-				btnXoa.setOnAction(event -> {
-					NhanVien nv = getTableView().getItems().get(getIndex());
-					Alert confirm = new Alert(AlertType.CONFIRMATION, "Bạn có chắc muốn xóa nhân viên này?");
-					Optional<ButtonType> result = confirm.showAndWait();
-					if (result.isPresent() && result.get() == ButtonType.OK) {
-						xoaNhanVien(nv);
 					}
+
+					getTableView().refresh();
 				});
 			}
 
 			@Override
 			protected void updateItem(Void item, boolean empty) {
 				super.updateItem(item, empty);
-				setGraphic(empty ? null : box);
+
+				if (empty) {
+					setGraphic(null);
+				} else {
+					NhanVien kh = getTableView().getItems().get(getIndex());
+					if (kh != null) {
+						btn.setText(kh.isTrangThai() ? "Xóa" : "Hoàn Tác");
+					}
+					setGraphic(btn);
+				}
 			}
 		});
 	}
+
 
 	// ========== XOÁ NHÂN VIÊN ==========
 	private void xoaNhanVien(NhanVien nv) {

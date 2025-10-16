@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="810.0" stylesheets="/css/TimKiemNhanVien.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TimKiemNhanVienCtrl">
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="810.0" stylesheets="/css/TimKiemNhanVien.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TimKiemNhanVienCtrl">
    <top>
       <VBox prefHeight="138.0" prefWidth="810.0" BorderPane.alignment="CENTER">
          <children>
@@ -27,7 +27,7 @@
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtMaNV" styleClass="text-field">
+                        <TextField fx:id="txtMaNV" promptText="Mã nhân viên..." styleClass="text-field">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -41,7 +41,7 @@
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtTenNV" styleClass="text-field">
+                        <TextField fx:id="txtTenNV" promptText="Tên nhân viên..." styleClass="text-field">
                            <font>
                               <Font size="15.0" />
                            </font>
