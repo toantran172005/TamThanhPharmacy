@@ -1,6 +1,22 @@
+<<<<<<< HEAD
+/controller/
+/css/
+/dao/
+/database/
+/entity/
+/font/
+/fxml/
+/itextpdf-5.5.13.3-javadoc.jar
+/itextpdf-5.5.13.3-sources.jar
+/itextpdf-5.5.13.3.jar
+/main/
+/mssql-jdbc-13.2.0.jre11.jar
+/picture/
+=======
 /fxml/
 /css/
 /controller/
 /entity/
 /picture/
 /dao/
+>>>>>>> c4ea1889cf8d5f2b3b3d17c16a33f4d4ac21b544

@@ -16,6 +16,12 @@ public class Thue {
 		this.maThue = maThue;
 	}
 
+	public Thue(String maThue, Double tyLeThue) {
+		super();
+		this.maThue = maThue;
+		this.tyLeThue = tyLeThue;
+	}
+
 	public Thue(String maThue, String loaiThue, Double tiLeThue, String moTa) {
 		super();
 		this.maThue = maThue;

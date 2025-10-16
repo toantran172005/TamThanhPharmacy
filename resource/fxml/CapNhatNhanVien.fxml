@@ -53,7 +53,7 @@
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lbTrangThai" text="Label">
+                        <Label fx:id="lblTrangThai" text="Label">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -93,7 +93,7 @@
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <ComboBox fx:id="cmbChucVu" prefHeight="30.0" prefWidth="149.0" styleClass="combo-box" />
+                              <ComboBox fx:id="cmbChucVu" prefWidth="149.0" styleClass="combo-box" />
                               <Label text="Số điện thoại: ">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
@@ -140,19 +140,19 @@
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <ComboBox fx:id="cmbGioiTinh" prefHeight="30.0" prefWidth="150.0" styleClass="combo-box" />
+                              <ComboBox fx:id="cmbGioiTinh" prefWidth="150.0" styleClass="combo-box" />
                               <Label text="Ngày sinh: ">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <DatePicker fx:id="dtpNgaySinh" disable="true" prefHeight="30.0" prefWidth="175.0" styleClass="combo-box" />
+                              <DatePicker fx:id="dtpNgaySinh" disable="true" editable="true" />
                               <Label text="Ngày vào làm: ">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <DatePicker fx:id="dtpNgayVaoLam" disable="true" prefHeight="30.0" styleClass="combo-box" />
+                              <DatePicker fx:id="dtpNgayVaoLam" disable="true" editable="true" />
                               <Label text="Email: ">
                                  <font>
                                     <Font name="System Bold" size="15.0" />

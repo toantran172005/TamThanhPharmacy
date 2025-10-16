@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -80,7 +81,13 @@ public class ToolCtrl {
 		Optional<ButtonType> ketQua = alert.showAndWait();
 		return ketQua.isPresent() && ketQua.get() == ButtonType.OK;
 	}
-
+	
+	public String dinhDangLocalDate(LocalDate date) {
+	    if (date == null) return "";
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+	    return date.format(formatter);
+	}
+	
 	// hàm đổi từ localdate sang date
 	public java.sql.Date localDateSangSqlDate(LocalDate localDate) {
 		return (localDate != null) ? java.sql.Date.valueOf(localDate) : null;
@@ -157,9 +164,10 @@ public class ToolCtrl {
 	            cotKhoa = "maPhieu"; // Phieu_KhieuNai_HoTroKH
 	            break;
 	        case "T":
-	            cotKhoa = "maThue"; // Thue
+	            cotKhoa = "maThue";
 	            break;
 	        default:
+	            // Mặc định: nếu tên bảng có nhiều từ viết hoa → ma + viết tắt, ngược lại ma + tên bảng
 	            if (tenBang.contains("_") || tenBang.matches(".*[A-Z].*[A-Z].*")) {
 	                cotKhoa = "ma" + tenBangVietTat;
 	            } else {
@@ -198,6 +206,17 @@ public class ToolCtrl {
 	        return null;
 	    }
 	}
+	
+	// ========== CHUYỂN CHUỖI TIỀN VỀ SỐ ==========
+		public double chuyenTienSangSo(String text) {
+		    if (text == null || text.isEmpty()) return 0;
+		    text = text.replaceAll("[^\\d.]", ""); // bỏ ký tự thừa
+		    try {
+		        return Double.parseDouble(text);
+		    } catch (NumberFormatException e) {
+		        return 0;
+		    }
+		}
 
 
 }

@@ -15,6 +15,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -44,6 +45,10 @@ public class TrangChuQLCtrl {
 		mainPaneCenter = mainPane.getCenter();
 		setThuocTinhMainMenu();
 		moTrangTT(imgTaiKhoan);
+	}
+	
+	public void moTrangDaTai(Parent root) {
+	    mainPane.setCenter(root);
 	}
 
 	public void setThuocTinhMainMenu() {
