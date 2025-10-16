@@ -75,16 +75,16 @@ public class TimKiemKHCtrl {
 		listKH = khDAO.layListKhachHang();
 		listKHThongKe = khDAO.layListKHThongKe();
 		setItemCmbTrangThai();
-		locTheoTrangThai();
+		locTatCa();
 		setUpTextFieldVaButton();
 	}
 
 	public void setUpTextFieldVaButton() {
-		txtTenKH.setOnAction(event -> timTheoTen()); // txt tìm kiếm theo tên khách hàng
-		txtSdt.setOnAction(event -> timTheoSDT()); // txt tìm kiếm theo số điện thoại
+		txtTenKH.setOnAction(event -> locTatCa()); // txt tìm kiếm theo tên khách hàng
+		txtSdt.setOnAction(event -> locTatCa()); // txt tìm kiếm theo số điện thoại
 		btnLamMoi.setOnAction(event -> lamMoiBang()); // btn làm mới lại table
 		btnXemChiTiet.setOnAction(event -> chuyenDenTrangChiTiet());
-		cmbTrangThai.setOnAction(event -> locTheoTrangThai());
+		cmbTrangThai.setOnAction(event -> locTatCa());
 	}
 
 	public void setDataChoTable(ObservableList<KhachHang> list) {
@@ -196,7 +196,12 @@ public class TimKiemKHCtrl {
 
 	public void lamMoiBang() {
 		listKH = khDAO.layListKhachHang();
-		locTheoTrangThai();
+		setGiaTriMacDinh();
+		locTatCa();
+	}
+	
+	public void setGiaTriMacDinh() {
+		cmbTrangThai.setValue("Hoạt động");
 		txtTenKH.setText("");
 		txtSdt.setText("");
 	}
@@ -237,40 +242,41 @@ public class TimKiemKHCtrl {
 
 	}
 
-	public void locTheoTrangThai() {
-		String trangThai = cmbTrangThai.getValue();
+	public void locTatCa() {
+	    String trangThai = cmbTrangThai.getValue();
+	    String sdt = toolCtrl.chuyenSoDienThoai(txtSdt.getText().trim().toLowerCase());
+	    String tenNhap = txtTenKH.getText().trim().toLowerCase();
 
-		if (trangThai == null || trangThai.isEmpty()) {
-			return;
-		}
+	    ObservableList<KhachHang> listLoc = listKH.filtered(kh -> {
+	        boolean hopTrangThai = true;
+	        boolean hopSdt = true;
+	        boolean hopTen = true;
 
-		if (trangThai.equals("Tất cả")) {
-			setDataChoTable(listKH);
-			return;
-		}
+	        //  Lọc theo trạng thái 
+	        if (trangThai != null && !trangThai.equals("Tất cả")) {
+	            if (trangThai.equals("Hoạt động")) {
+	                hopTrangThai = kh.isTrangThai();
+	            } else if (trangThai.equals("Ngừng hoạt động")) {
+	                hopTrangThai = !kh.isTrangThai();
+	            }
+	        }
 
-		ObservableList<KhachHang> listLoc = listKH.filtered(kh -> {
-			if (trangThai.equals("Hoạt động")) {
-				return kh.isTrangThai();
-			} else if (trangThai.equals("Ngừng hoạt động")) {
-				return !kh.isTrangThai();
-			}
-			return true;
-		});
-		setDataChoTable(listLoc);
+	        //  Lọc theo số điện thoại 
+	        if (!sdt.isEmpty()) {
+	            hopSdt = kh.getSdt() != null && kh.getSdt().toLowerCase().contains(sdt);
+	        }
+
+	        //  Lọc theo tên khách hàng 
+	        if (!tenNhap.isEmpty()) {
+	            hopTen = kh.getTenKH() != null && kh.getTenKH().toLowerCase().contains(tenNhap);
+	        }
+
+	        return hopTrangThai && hopSdt && hopTen;
+	    });
+
+	    setDataChoTable(listLoc);
 	}
 
-	public void timTheoSDT() {
-		String sdt = toolCtrl.chuyenSoDienThoai(txtSdt.getText().trim().toLowerCase());
-		ObservableList<KhachHang> listLoc = listKH.filtered(kh -> kh.getSdt().toLowerCase().contains(sdt));
-		setDataChoTable(listLoc);
-	}
-
-	public void timTheoTen() {
-		String tenNhap = txtTenKH.getText().trim().toLowerCase();
-		ObservableList<KhachHang> listLoc = listKH.filtered(kh -> kh.getTenKH().toLowerCase().contains(tenNhap));
-		setDataChoTable(listLoc);
-	}
 
 	public String tinhTongTien(KhachHang kh) {
 		KhachHang tempKH = null;

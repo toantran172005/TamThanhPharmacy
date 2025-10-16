@@ -157,10 +157,9 @@ public class ToolCtrl {
 	            cotKhoa = "maPhieu"; // Phieu_KhieuNai_HoTroKH
 	            break;
 	        case "T":
-	            cotKhoa = "maThue";
+	            cotKhoa = "maThue"; // Thue
 	            break;
 	        default:
-	            // Mặc định: nếu tên bảng có nhiều từ viết hoa → ma + viết tắt, ngược lại ma + tên bảng
 	            if (tenBang.contains("_") || tenBang.matches(".*[A-Z].*[A-Z].*")) {
 	                cotKhoa = "ma" + tenBangVietTat;
 	            } else {
