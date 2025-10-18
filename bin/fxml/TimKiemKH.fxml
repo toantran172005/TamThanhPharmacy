@@ -123,7 +123,7 @@
                   </HBox>
                   <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="72.0" prefWidth="328.0" spacing="20.0">
                      <children>
-                        <Button fx:id="btnXemChiTiet1" layoutX="10.0" layoutY="19.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="144.0" styleClass="btn" text="Lịch sử xóa">
+                        <Button fx:id="btnLichSuXoa" layoutX="10.0" layoutY="19.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="144.0" styleClass="btn" text="Lịch sử xóa">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -138,7 +138,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="btnXoaNhieu" layoutX="189.0" layoutY="21.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="129.0" styleClass="btn" text="Xóa">
+                        <Button fx:id="btnXoaTatCa" layoutX="189.0" layoutY="21.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="129.0" styleClass="btn" text="Xóa tất cả">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>

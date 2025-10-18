@@ -64,7 +64,7 @@ public class Thue {
 
 	@Override
 	public String toString() {
-		return "Thue [maThue=" + maThue + ", loaiThue=" + loaiThue + ", tiLeThue=" + tyLeThue + ", moTa=" + moTa + "]";
+		return loaiThue + " - " + tyLeThue + "%";
 	}
 
 }

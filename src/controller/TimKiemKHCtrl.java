@@ -48,7 +48,7 @@ public class TimKiemKHCtrl {
 	@FXML
 	public TableColumn<KhachHang, Void> colHoatDong;
 	@FXML
-	public Button btnLamMoi, btnXemChiTiet;
+	public Button btnLamMoi, btnXemChiTiet, btnLichSuXoa, btnXoaTatCa;
 
 	@FXML
 	public TextField txtTenKH, txtSdt;
@@ -71,6 +71,7 @@ public class TimKiemKHCtrl {
 	}
 
 	public void setUpTextFieldVaButton() {
+		btnXoaTatCa.setVisible(false);
 		txtTenKH.setOnAction(event -> locTatCa()); // txt tìm kiếm theo tên khách hàng
 		txtSdt.setOnAction(event -> locTatCa()); // txt tìm kiếm theo số điện thoại
 		btnLamMoi.setOnAction(event -> lamMoiBang()); // btn làm mới lại table
@@ -226,6 +227,12 @@ public class TimKiemKHCtrl {
 	        boolean hopTrangThai = true;
 	        boolean hopSdt = true;
 	        boolean hopTen = true;
+	        
+	        if(btnLichSuXoa.getText().equals("Lịch sử xóa")) {
+	        	 hopTrangThai = kh.isTrangThai();
+	        } else {
+	        	hopTrangThai = !kh.isTrangThai();
+	        }
 
 	        //  Lọc theo số điện thoại 
 	        if (!sdt.isEmpty()) {
