@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ThongKeHoaDonCtrl">
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1127.0" prefWidth="1104.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ThongKeHoaDonCtrl">
    <content>
       <BorderPane prefHeight="951.0" prefWidth="1102.0" stylesheets="/css/ThongKeHoaDon.css">
       	<top>
@@ -156,7 +156,7 @@
       						<Font size="15.0" />
       					</font>
       				</TitledPane>
-      				<TitledPane animated="false" text="Biểu Đồ Doanh Thu Theo Ngày">
+      				<TitledPane animated="false" prefHeight="463.0" prefWidth="1102.0" text="Biểu Đồ Doanh Thu Theo Ngày">
       					<content>
       						<BorderPane prefHeight="263.0" prefWidth="1100.0">
       							<center>
@@ -186,7 +186,7 @@
       						<Insets top="20.0" />
       					</VBox.margin>
       				</TitledPane>
-                  <TitledPane animated="false" text="Top 10 Khách Hàng Mua Nhiều Nhất">
+                  <TitledPane animated="false" prefHeight="397.0" prefWidth="1102.0" text="Top 10 Khách Hàng Mua Nhiều Nhất">
                      <font>
                         <Font size="15.0" />
                      </font>
