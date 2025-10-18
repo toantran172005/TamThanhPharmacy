@@ -80,21 +80,6 @@
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </Button>
-                              <Button fx:id="btnTaoKM" mnemonicParsing="false" onAction="#hienThiTrangTaoKM" prefHeight="44.0" prefWidth="162.0" styleClass="btn" text="Tạo khuyến mãi">
-                                 <font>
-                                    <Font name="System Bold" size="15.0" />
-                                 </font>
-                                 <graphic>
-                                    <ImageView fitHeight="24.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../picture/khuyenMai/plus.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                              </Button>
                               <Button fx:id="btnLamMoi" mnemonicParsing="false" styleClass="btn" text="Làm mới">
                                  <graphic>
                                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">

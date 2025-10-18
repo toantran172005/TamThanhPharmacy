@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.example.yourpackage.PromotionController" 
+      spacing="15" prefWidth="700" prefHeight="600">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Tạo Khuyến Mãi Mới" VBox.vgrow="NEVER">
+        <font>
+            <Font name="System Bold" size="22.0" />
+        </font>
+    </Label>
+
+    <GridPane hgap="10" vgap="10" VBox.vgrow="NEVER">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="500.0" />
+        </columnConstraints>
+
+        <Label text="Tên khuyến mãi:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+        <TextField fx:id="txtName" promptText="VD: Giảm giá cuối tuần" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+        <Label text="Mã khuyến mãi (Code):" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+        <TextField fx:id="txtCode" promptText="VD: ENDWEEK10" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+        
+        <Label text="Mức giảm:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+        <TextField fx:id="txtDiscount" promptText="Nhập % hoặc số tiền (VD: 10% hoặc 20000)" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+        <Label text="Ngày bắt đầu:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+        <DatePicker fx:id="dateStart" prefWidth="Infinity" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+        <Label text="Ngày kết thúc:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+        <DatePicker fx:id="dateEnd" prefWidth="Infinity" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+        <Label text="Mô tả:" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+        <TextArea fx:id="txtDescription" prefHeight="80.0" promptText="Mô tả chi tiết chương trình..." GridPane.rowIndex="5" GridPane.columnIndex="1" />
+    </GridPane>
+
+    <Label text="Chọn Thuốc Áp Dụng">
+        <font>
+            <Font name="System Bold" size="16.0" />
+        </font>
+        <VBox.margin>
+            <Insets top="10" bottom="5" />
+        </VBox.margin>
+    </Label>
+
+    <TextField fx:id="txtSearchDrug" promptText="Tìm kiếm thuốc theo tên hoặc mã..." />
+
+    <TableView fx:id="tblDrugs" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colSelect" text="Chọn" prefWidth="60" style="-fx-alignment: CENTER;"/>
+            
+            <TableColumn fx:id="colDrugId" text="Mã Thuốc" prefWidth="100" />
+            <TableColumn fx:id="colDrugName" text="Tên Thuốc" prefWidth="250" />
+            <TableColumn fx:id="colDrugUnit" text="Đơn Vị" prefWidth="80" />
+            <TableColumn fx:id="colDrugPrice" text="Giá Bán" prefWidth="120" />
+        </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+        </columnResizePolicy>
+    </TableView>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button fx:id="btnCancel" text="Hủy Bỏ" onAction="#handleCancel" style="-fx-background-color: #f4f4f4; -fx-border-color: #ccc;"/>
+        <Button fx:id="btnSave" text="Lưu Khuyến Mãi" onAction="#handleSave" style="-fx-background-color: #0078D7; -fx-text-fill: white; -fx-font-weight: bold;"/>
+    </HBox>
+
+</VBox>

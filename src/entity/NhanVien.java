@@ -1,15 +1,20 @@
 package entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 public class NhanVien {
+	private BooleanProperty selected = new SimpleBooleanProperty(false);
 	private String maNV;
 	private String tenNV;
 	private String chucVu;
-	private Date ngaySinh;
+	private LocalDate ngaySinh;
 	private Boolean gioiTinh;
 	private String sdt;
-	private Date ngayVaoLam;
+	private LocalDate ngayVaoLam;
 	private Double luong;
 	private Thue thue;
 	private Boolean trangThai;
@@ -20,8 +25,8 @@ public class NhanVien {
 		// TODO Auto-generated constructor stub
 	}
 
-	public NhanVien(String maNV, String tenNV, String chucVu, Date ngaySinh, Boolean gioiTinh, String sdt,
-			Date ngayVaoLam, Double luong, Thue thue, Boolean trangThai, String anh) {
+	public NhanVien(String maNV, String tenNV, String chucVu, LocalDate ngaySinh, Boolean gioiTinh, String sdt,
+			LocalDate ngayVaoLam, Double luong, Thue thue, Boolean trangThai, String anh) {
 		super();
 		this.maNV = maNV;
 		this.tenNV = tenNV;
@@ -34,6 +39,18 @@ public class NhanVien {
 		this.thue = thue;
 		this.trangThai = trangThai;
 		this.anh = anh;
+	}
+	
+	public boolean isSelected() {
+		return selected.get();
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected.set(selected);
+	}
+
+	public BooleanProperty selectedProperty() {
+		return selected;
 	}
 
 	public String getMaNV() {
@@ -60,11 +77,11 @@ public class NhanVien {
 		this.chucVu = chucVu;
 	}
 
-	public Date getNgaySinh() {
+	public LocalDate getNgaySinh() {
 		return ngaySinh;
 	}
 
-	public void setNgaySinh(Date ngaySinh) {
+	public void setNgaySinh(LocalDate ngaySinh) {
 		this.ngaySinh = ngaySinh;
 	}
 
@@ -84,11 +101,11 @@ public class NhanVien {
 		this.sdt = sdt;
 	}
 
-	public Date getNgayVaoLam() {
+	public LocalDate getNgayVaoLam() {
 		return ngayVaoLam;
 	}
 
-	public void setNgayVaoLam(Date ngayVaoLam) {
+	public void setNgayVaoLam(LocalDate ngayVaoLam) {
 		this.ngayVaoLam = ngayVaoLam;
 	}
 

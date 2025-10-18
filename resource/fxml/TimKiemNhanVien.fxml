@@ -2,7 +2,6 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -14,110 +13,139 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="810.0" stylesheets="/css/TimKiemNhanVien.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TimKiemNhanVienCtrl">
-   <top>
-      <VBox prefHeight="138.0" prefWidth="810.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox prefHeight="55.0" prefWidth="810.0">
-               <children>
-                  <HBox alignment="CENTER" prefHeight="55.0" prefWidth="405.0" spacing="20.0">
-                     <children>
-                        <Label text="Mã nhân viên: ">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="txtMaNV" styleClass="text-field">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </TextField>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="405.0" spacing="20.0">
-                     <children>
-                        <Label text="Tên nhân viên: ">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="txtTenNV" styleClass="text-field">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </TextField>
-                     </children>
-                  </HBox>
-               </children>
-            </HBox>
-            <HBox prefHeight="55.0" prefWidth="810.0">
-               <children>
-                  <HBox alignment="CENTER" prefHeight="55.0" prefWidth="428.0" spacing="20.0">
-                     <children>
-                        <Label text="Trạng thái: ">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </Label>
-                        <ComboBox fx:id="cmbTrangThai" prefHeight="26.0" prefWidth="184.0" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="55.0" prefWidth="206.0" spacing="20.0">
-                     <children>
-                        <Button fx:id="btnXemChiTiet" alignment="CENTER" mnemonicParsing="false" styleClass="btn" text="Xem chi tiết">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" styleClass="img">
-                                 <image>
-                                    <Image url="@../picture/khachHang/find.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="55.0" prefWidth="195.0">
-                     <children>
-                        <Button mnemonicParsing="false" styleClass="btn" text="Làm mới">
-                           <graphic>
-                              <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" styleClass="img">
-                                 <image>
-                                    <Image url="@../picture/khachHang/refresh.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </Button>
-                     </children>
-                  </HBox>
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-   </top>
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="622.0" prefWidth="810.0" stylesheets="/css/TimKiemNhanVien.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.TimKiemNhanVienCtrl">
    <center>
-      <TableView prefHeight="490.0" prefWidth="810.0" styleClass="tbl" BorderPane.alignment="CENTER">
+      <TableView fx:id="tblNhanVien" prefHeight="490.0" prefWidth="810.0" styleClass="tbl" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn prefWidth="37.599974036216736">
+          <TableColumn fx:id="colSelect" editable="false" prefWidth="37.599974036216736">
                <graphic>
                   <CheckBox mnemonicParsing="false" />
                </graphic>
             </TableColumn>
-          <TableColumn prefWidth="133.60004425048828" text="Mã nhân viên" />
-            <TableColumn prefWidth="160.800048828125" text="Tên nhân viên" />
-            <TableColumn prefWidth="127.20001220703125" text="Số điện thoại" />
-            <TableColumn prefWidth="75.99996948242188" text="Giới tính" />
-            <TableColumn prefWidth="103.20001220703125" text="Chức vụ" />
-            <TableColumn prefWidth="92.79998779296875" text="Trạng thái" />
-            <TableColumn prefWidth="75.0" text="Hoạt động" />
+          <TableColumn fx:id="colMaNV" prefWidth="133.60004425048828" text="Mã nhân viên" />
+            <TableColumn fx:id="colTenNV" prefWidth="160.800048828125" text="Tên nhân viên" />
+            <TableColumn fx:id="colSdt" prefWidth="127.20001220703125" text="Số điện thoại" />
+            <TableColumn fx:id="colGioiTinh" prefWidth="75.99996948242188" text="Giới tính" />
+            <TableColumn fx:id="colChucVu" prefWidth="103.20001220703125" text="Chức vụ" />
+            <TableColumn fx:id="colHoatDong" prefWidth="75.0" text="Hoạt động" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
    </center>
+   <top>
+      <HBox prefHeight="120.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="100.0" prefWidth="440.0">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="60.0" prefWidth="405.0" spacing="20.0">
+                     <children>
+                        <Label text="Mã nhân viên: ">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtMaNV" promptText="Mã nhân viên..." styleClass="text-field">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="60.0" prefWidth="810.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="441.0" spacing="20.0">
+                           <children>
+                              <Label text="Tên nhân viên: ">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txtTenNV" promptText="Tên nhân viên..." styleClass="text-field">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox prefHeight="100.0" prefWidth="370.0">
+               <children>
+                  <HBox prefHeight="60.0" prefWidth="810.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="55.0" prefWidth="206.0" spacing="20.0">
+                           <children>
+                              <Button fx:id="btnXemChiTiet" alignment="CENTER" mnemonicParsing="false" styleClass="btn" text="Xem chi tiết">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                                 <graphic>
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" styleClass="img">
+                                       <image>
+                                          <Image url="@../picture/khachHang/find.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="55.0" prefWidth="195.0">
+                           <children>
+                              <Button fx:id="btnLamMoi" mnemonicParsing="false" styleClass="btn" text="Làm mới">
+                                 <graphic>
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" styleClass="img">
+                                       <image>
+                                          <Image url="@../picture/khachHang/refresh.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Button fx:id="btnLichSuXoa" mnemonicParsing="false" styleClass="btn" text="Lịch sử xoá">
+                                 <graphic>
+                                    <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../picture/nhanVien/document.png" />
+                                       </image></ImageView>
+                                 </graphic>
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Button>
+                           </children></HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Button fx:id="btnXoa" mnemonicParsing="false" styleClass="btn" text="Xoá tất cả">
+                                 <graphic>
+                                    <ImageView fx:id="imgXoaNhieu" fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../picture/nhanVien/trash.png" />
+                                       </image></ImageView>
+                                 </graphic>
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Button>
+                           </children></HBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </top>
 </BorderPane>

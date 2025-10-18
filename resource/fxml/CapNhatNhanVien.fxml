@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="635.0" prefWidth="842.0" stylesheets="/css/CapNhatNhanVien.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CapNhatNhanVienCtrl">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="635.0" prefWidth="842.0" stylesheets="/css/CapNhatNhanVien.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CapNhatNhanVienCtrl">
    <top>
       <Label prefHeight="68.0" prefWidth="198.0" text="CẬP NHẬT NHÂN VIÊN" BorderPane.alignment="CENTER">
          <font>
@@ -53,7 +53,7 @@
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </Label>
-                        <Label fx:id="lbTrangThai" text="Label">
+                        <Label fx:id="lblTrangThai" text="Label">
                            <font>
                               <Font size="15.0" />
                            </font>
@@ -93,7 +93,7 @@
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <ComboBox fx:id="cmbChucVu" prefHeight="30.0" prefWidth="149.0" styleClass="combo-box" />
+                              <ComboBox fx:id="cmbChucVu" prefHeight="26.0" prefWidth="202.0" promptText="Chức vụ ...." styleClass="combo-box" />
                               <Label text="Số điện thoại: ">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
@@ -140,19 +140,19 @@
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <ComboBox fx:id="cmbGioiTinh" prefHeight="30.0" prefWidth="150.0" styleClass="combo-box" />
+                              <ComboBox fx:id="cmbGioiTinh" prefWidth="150.0" styleClass="combo-box" />
                               <Label text="Ngày sinh: ">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <DatePicker fx:id="dtpNgaySinh" disable="true" prefHeight="30.0" prefWidth="175.0" styleClass="combo-box" />
+                              <DatePicker fx:id="dtpNgaySinh" disable="true" />
                               <Label text="Ngày vào làm: ">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <DatePicker fx:id="dtpNgayVaoLam" disable="true" prefHeight="30.0" styleClass="combo-box" />
+                              <DatePicker fx:id="dtpNgayVaoLam" disable="true" />
                               <Label text="Email: ">
                                  <font>
                                     <Font name="System Bold" size="15.0" />

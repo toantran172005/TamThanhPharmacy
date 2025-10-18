@@ -206,6 +206,17 @@ public class ToolCtrl {
 	        return null;
 	    }
 	}
+	
+	// ========== CHUYỂN CHUỖI TIỀN VỀ SỐ ==========
+		public double chuyenTienSangSo(String text) {
+		    if (text == null || text.isEmpty()) return 0;
+		    text = text.replaceAll("[^\\d.]", ""); // bỏ ký tự thừa
+		    try {
+		        return Double.parseDouble(text);
+		    } catch (NumberFormatException e) {
+		        return 0;
+		    }
+		}
 
 
 }

@@ -1,11 +1,5 @@
-/controller/
-/dao/
-/database/
-/entity/
-/itextpdf-5.5.13.3-javadoc.jar
-/itextpdf-5.5.13.3-sources.jar
-/itextpdf-5.5.13.3.jar
-/main/
-/mssql-jdbc-13.2.0.jre11.jar
-/picture/
+/model/
 /fxml/
+/controller/
+/css/
+/entity/

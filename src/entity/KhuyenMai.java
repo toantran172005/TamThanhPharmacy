@@ -1,6 +1,7 @@
 package entity;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -98,6 +99,25 @@ public class KhuyenMai {
 
 	public void setTrangThai(boolean trangThai) {
 		this.trangThai = trangThai;
+	}
+	
+	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(maKM);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		KhuyenMai other = (KhuyenMai) obj;
+		return Objects.equals(maKM, other.maKM);
 	}
 
 	@Override

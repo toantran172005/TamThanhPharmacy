@@ -4,13 +4,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.swing.text.TabableView;
-import javax.tools.Tool;
-
 import dao.KhuyenMaiDAO;
+import entity.KhachHang;
 import entity.KhuyenMai;
-import entity.KhuyenMai;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -54,7 +50,8 @@ public class DanhSachKhuyenMaiCtrl {
 	public TableColumn<KhuyenMai, Void> colHoatDong;
 	
 	@FXML
-	public Button btnTaoKM;
+	public Button btnThem;
+	
 	@FXML
 	public Button btnXemChiTiet;
 	@FXML
@@ -63,7 +60,9 @@ public class DanhSachKhuyenMaiCtrl {
 	@FXML 
 	public DatePicker dpNgay;
 	
-	public TrangChuQLCtrl trangChuQLCtrl;
+	public TrangChuQLCtrl trangChuQLCtrl = new TrangChuQLCtrl();
+	public TextField txtTenKM;
+	
 	public KhuyenMaiDAO kmDao = new KhuyenMaiDAO();
 	public ToolCtrl tool = new ToolCtrl();
 	
@@ -88,6 +87,10 @@ public class DanhSachKhuyenMaiCtrl {
 		btnLamMoi.setOnAction(event->{
 			lamMoiBang();
 		});
+		
+		btnXemChiTiet.setOnAction(event -> {
+			chuyenDenChiTietKM();
+		});
 	}
 	
 	public void setItemsChoCombobox() {
@@ -96,32 +99,57 @@ public class DanhSachKhuyenMaiCtrl {
 	}
 
 	public void chuyenDenChiTietKM() {
-		
+		List<KhuyenMai> danhSachChon = tblKhuyenMai.getItems()
+		        .stream()
+		        .filter(KhuyenMai::isSelected)
+		        .toList();
+
+		if (danhSachChon.isEmpty()) {
+		    tool.hienThiThongBao("Lỗi", "Vui lòng chọn 1 khách hàng để xem chi tiết.", false);
+		    return;
+		}
+
+		if (danhSachChon.size() > 1) {
+		    tool.hienThiThongBao("Lỗi", "Chỉ được chọn 1 khách hàng để xem chi tiết.", false);
+		    return;
+		}
+
+		KhuyenMai km = danhSachChon.get(0);
+
+		if (trangChuQLCtrl != null) {
+	        ChiTietKhuyenMaiCtrl ctKMCtrl = trangChuQLCtrl.doiCenterPane("/fxml/ChiTietKhuyenMaiThuoc.fxml");
+	        ctKMCtrl.hienThiThongTin(km);
+	        ctKMCtrl.setTrangChuQLCtrl(trangChuQLCtrl);
+
+	    } else {
+	        tool.hienThiThongBao("Lỗi hệ thống",
+	                "Controller cha chưa được set. Vui lòng kiểm tra cách load FXML.", false);
+	    }
 	}
 	
-	public void hienThiTrangTaoKM() {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ThemKhuyenMai.fxml"));
-			Parent root = loader.load();
-			Stage stage = new Stage();
-			stage.setTitle("Thêm khuyến mãi");
-			stage.setScene(new Scene(root));
-			stage.sizeToScene();
-			stage.centerOnScreen();
-			stage.setResizable(false);
-			
-			//stage.initModality(Modality.APPLICATION_MODAL); //Chặn thao tác trên màn hình chính khi pop up đang mở
-			
-			Stage currentStage = (Stage) btnTaoKM.getScene().getWindow();
-			stage.initOwner(currentStage);
-			
-			stage.showAndWait();
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	public void hienThiTrangTaoKM() {
+//		try {
+//			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ThemKhuyenMai.fxml"));
+//			Parent root = loader.load();
+//			Stage stage = new Stage();
+//			stage.setTitle("Thêm khuyến mãi");
+//			stage.setScene(new Scene(root));
+//			stage.sizeToScene();
+//			stage.centerOnScreen();
+//			stage.setResizable(false);
+//			
+//			//stage.initModality(Modality.APPLICATION_MODAL); //Chặn thao tác trên màn hình chính khi pop up đang mở
+//			
+//			Stage currentStage = (Stage) btnTaoKM.getScene().getWindow();
+//			stage.initOwner(currentStage);
+//			
+//			stage.showAndWait();
+//			
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 	
 	public void setDataChoTable(ObservableList<KhuyenMai> list) {
 		// Checkbox
@@ -154,6 +182,11 @@ public class DanhSachKhuyenMaiCtrl {
 	//Hàm lọc dữ liệu theo ngày
 	public void locTheoNgay() {
 		LocalDate ngay = dpNgay.getValue();
+		
+		if(ngay == null) {
+			setDataChoTable(listKM);
+			return;
+		}
 		ObservableList<KhuyenMai> listLoc = listKM.filtered(km -> 
         (ngay.isAfter(km.getNgayBD()) || ngay.isEqual(km.getNgayBD())) &&
         (ngay.isBefore(km.getNgayKT()) || ngay.isEqual(km.getNgayKT()))
@@ -187,6 +220,7 @@ public class DanhSachKhuyenMaiCtrl {
 		});
 		setDataChoTable(listLoc);
 	}
+
 
 	public void setUpColCheckBox() {
 		colSelect.setCellValueFactory(cellData -> cellData.getValue().selectedProperty());
@@ -305,7 +339,6 @@ public class DanhSachKhuyenMaiCtrl {
 		setDataChoTable(listKM);
 		cmbTrangThai.setValue("Tất cả");
 		dpNgay.setValue(null);
-	
 	}
 	
 	public String setTrangThai(KhuyenMai km) {
@@ -319,5 +352,5 @@ public class DanhSachKhuyenMaiCtrl {
 	public void setTrangChuQLCtrl(TrangChuQLCtrl trangChuQLCtrl) {
 		this.trangChuQLCtrl = trangChuQLCtrl;
 	}
-	
+
 }

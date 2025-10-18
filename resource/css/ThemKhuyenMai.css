@@ -15,6 +15,36 @@
     -fx-background-color: lightgray;
 }
 
+.tbl{
+	-fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 8.0px;
+    -fx-background-radius: 8.0px;
+    -fx-effect: dropshadow(gaussian, rgba(0.0,0.0,0.0,0.15), 6.0, 0.0, 0.0, 2.0);
+    -fx-padding: 5.0;
+}
+
+.tbl .table-cell {
+    -fx-alignment: CENTER;
+    -fx-font-size: 15.0px;
+}
+
+.tbl .column-header-background {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #90caf9 transparent;
+    -fx-border-width: 0.0 0.0 2.0 0.0;
+}
+
+.tbl .column-header {
+    -fx-background-color: transparent;
+}
+
+.tbl .column-header .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+    -fx-font-size: 13.0px;
+    -fx-padding: 8.0 0.0 8.0 8.0;
+}
 
 .combo-box {
     -fx-background-color: #ffffff;
@@ -61,3 +91,66 @@
     -fx-background-color: #f8fafc;
     -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.3), 8, 0.3, 0, 0);
 }
+
+.date-picker {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 8.0;
+    -fx-background-radius: 8.0;
+    -fx-padding: 3.0 3.0 3.0 3.0;
+}
+
+/* Khi hover DatePicker */
+.date-picker:hover {
+    -fx-border-color: #3b82f6;
+    -fx-effect: dropshadow(gaussian, rgba(0.0,0.0,0.0,0.15), 5.0, 0.5, 0.0, 1.0);
+}
+
+/* Khi DatePicker được focus */
+.date-picker:focused {
+    -fx-border-color: #3b82f6;
+    -fx-effect: dropshadow(gaussian, rgba(0.0,0.0,0.0,0.2), 6.0, 0.5, 0.0, 2.0);
+}
+
+/* Ô hiển thị ngày */
+.date-picker .text-field {
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+    -fx-padding: 5.0 10.0 5.0 10.0;
+    -fx-background-radius: 8.0;
+    -fx-border-radius: 8.0;
+}
+
+/* Nút chọn lịch (calendar icon button) */
+.date-picker .arrow-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0 5 0 5;
+    -fx-cursor: hand;
+}
+
+/* Hover nút calendar */
+.date-picker .arrow-button:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 0 8.0 8.0 0;
+}
+
+/* Popup của DatePicker */
+.date-picker-popup {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 8.0;
+    -fx-background-radius: 8.0;
+    -fx-effect: dropshadow(gaussian, rgba(0.0,0.0,0.0,0.15), 8.0, 0.5, 0.0, 2.0);
+}
+
+/* Ô ngày trong lịch khi hover */
+.date-cell:hover {
+    -fx-background-color: #00ADFE;
+}
+
+/* Ô ngày khi được chọn */
+.date-cell:selected {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
+}
+
