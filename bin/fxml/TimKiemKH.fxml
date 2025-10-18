@@ -89,7 +89,7 @@
                <children>
                   <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="72.0" prefWidth="328.0" spacing="20.0">
                      <children>
-                        <Button fx:id="btnXemChiTiet" layoutX="10.0" layoutY="19.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="144.0" styleClass="btn" text="Xem chi tiết">
+                        <Button fx:id="btnXemChiTiet" layoutX="10.0" layoutY="19.0" mnemonicParsing="false" styleClass="btn" text="Xem chi tiết">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -104,7 +104,7 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="btnLamMoi" layoutX="189.0" layoutY="21.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="129.0" styleClass="btn" text="Làm mới">
+                        <Button fx:id="btnLamMoi" layoutX="189.0" layoutY="21.0" mnemonicParsing="false" styleClass="btn" text="Làm mới">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -123,7 +123,7 @@
                   </HBox>
                   <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="72.0" prefWidth="328.0" spacing="20.0">
                      <children>
-                        <Button fx:id="btnLichSuXoa" layoutX="10.0" layoutY="19.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="144.0" styleClass="btn" text="Lịch sử xóa">
+                        <Button fx:id="btnLichSuXoa" layoutX="10.0" layoutY="19.0" mnemonicParsing="false" styleClass="btn" text="Lịch sử xóa">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -138,12 +138,12 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </Button>
-                        <Button fx:id="btnXoaTatCa" layoutX="189.0" layoutY="21.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="129.0" styleClass="btn" text="Xóa tất cả">
+                        <Button fx:id="btnXoaTatCa" layoutX="189.0" layoutY="21.0" mnemonicParsing="false" styleClass="btn" text="Xóa tất cả">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
                            <graphic>
-                              <ImageView fitHeight="25.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="imgXoaTatCa" fitHeight="25.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../picture/khachHang/trash.png" />
                                  </image>

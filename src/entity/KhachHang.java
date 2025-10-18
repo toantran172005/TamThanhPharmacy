@@ -11,10 +11,12 @@ public class KhachHang {
 	private String sdt;
 	private int tuoi;
 	private boolean trangThai;
+	@SuppressWarnings("unused")
 	private int tongDonHang;
+	@SuppressWarnings("unused")
 	private double tongTien;
 	
-//	private KhachHangDAO khDAO = new KhachHangDAO();
+	public KhachHangDAO khDAO = new KhachHangDAO();
 
 	public KhachHang() {
 		super();
@@ -30,12 +32,12 @@ public class KhachHang {
 		this.trangThai = trangThai;
 	}
 
-	public KhachHang(String maKH, String tenKH, int tongDonHang, double tongTien) {
+	public KhachHang(String maKH, String tenKH, int tuoi, String sdt) {
 		super();
 		this.maKH = maKH;
 		this.tenKH = tenKH;
-		this.tongDonHang = tongDonHang;
-		this.tongTien = tongTien;
+		this.sdt = sdt;
+		this.tuoi = tuoi;
 	}
 
 	public boolean isSelected() {
@@ -51,19 +53,11 @@ public class KhachHang {
 	}
 
 	public int getTongDonHang() {
-		return tongDonHang;
-	}
-
-	public void setTongDonHang(int tongDonHang) {
-		this.tongDonHang = tongDonHang;
+		return khDAO.layTongDonHang(this.maKH);
 	}
 
 	public double getTongTien() {
-		return tongTien;
-	}
-
-	public void setTongTien(double tongTien) {
-		this.tongTien = tongTien;
+		return khDAO.layTongTien(this.maKH);
 	}
 
 	public String getMaKH() {

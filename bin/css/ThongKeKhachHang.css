@@ -1,10 +1,21 @@
-.axis-label {
+.chart-x-axis .axis-label {
     -fx-font-size: 15px;
 }
 
-.chart-axis {
-    -fx-tick-label-font-size: 13px;
-    -fx-tick-label-fill: #333;
+
+.chart-x-axis .tick-label {
+    -fx-font-size: 15px;  
+}
+
+.chart-y-axis .axis-label {
+    -fx-font-size: 15px;
+}
+
+.chart-y-axis .tick-label {
+    -fx-font-size: 15px;
+}
+.chart-title {
+    -fx-font-size: 18px;
 }
 
 .btn{
@@ -23,6 +34,7 @@
 .btn:hover {
     -fx-background-color: lightgray;
 }
+
 .date-picker {
     -fx-background-color: #ffffff;
     -fx-border-color: #cccccc;
@@ -135,19 +147,25 @@
 }
 
 
+
 .tbl{
 	-fx-background-color: white;
     -fx-border-color: #e0e0e0;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0, 0, 2);
-    -fx-padding: 5;
+    -fx-border-radius: 8.0px;
+    -fx-background-radius: 8.0px;
+    -fx-effect: dropshadow(gaussian, rgba(0.0,0.0,0.0,0.15), 6.0, 0.0, 0.0, 2.0);
+    -fx-padding: 5.0;
+}
+
+.tbl .table-cell {
+    -fx-alignment: CENTER;
+    -fx-font-size: 15.0px;
 }
 
 .tbl .column-header-background {
     -fx-background-color: transparent;
     -fx-border-color: transparent transparent #90caf9 transparent;
-    -fx-border-width: 0 0 2 0;
+    -fx-border-width: 0.0 0.0 2.0 0.0;
 }
 
 .tbl .column-header {
@@ -157,9 +175,10 @@
 .tbl .column-header .label {
     -fx-font-weight: bold;
     -fx-text-fill: #333;
-    -fx-font-size: 13px;
-    -fx-padding: 8 0 8 8;
+    -fx-font-size: 13.0px;
+    -fx-padding: 8.0 0.0 8.0 8.0;
 }
+
 
 .combo-box {
     -fx-background-color: #ffffff;
