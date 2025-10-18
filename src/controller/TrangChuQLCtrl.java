@@ -216,7 +216,8 @@ public class TrangChuQLCtrl {
 
 		// ===== Khuyến mãi=====
 		case "Danh sách khuyến mãi":
-			doiCenterPane("/fxml/DanhSachKhuyenMai.fxml");
+			DanhSachKhuyenMaiCtrl dsKMCtrl =  doiCenterPane("/fxml/DanhSachKhuyenMai.fxml");
+			dsKMCtrl.setTrangChuQLCtrl(this);
 			break;
 
 		default:

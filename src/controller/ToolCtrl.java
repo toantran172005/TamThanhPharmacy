@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -80,7 +81,13 @@ public class ToolCtrl {
 		Optional<ButtonType> ketQua = alert.showAndWait();
 		return ketQua.isPresent() && ketQua.get() == ButtonType.OK;
 	}
-
+	
+	public String dinhDangLocalDate(LocalDate date) {
+	    if (date == null) return "";
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+	    return date.format(formatter);
+	}
+	
 	// hàm đổi từ localdate sang date
 	public java.sql.Date localDateSangSqlDate(LocalDate localDate) {
 		return (localDate != null) ? java.sql.Date.valueOf(localDate) : null;

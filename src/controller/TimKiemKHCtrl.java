@@ -112,8 +112,7 @@ public class TimKiemKHCtrl {
 		});
 		// Cột hoạt động
 		setupColHoatDong();
-		// Đưa data lên table
-		tblKhachHang.setEditable(true);
+		// Đưa data lên table	 
 		tblKhachHang.setItems(list);
 	}
 
@@ -200,6 +199,19 @@ public class TimKiemKHCtrl {
 		txtTenKH.setText("");
 		txtSdt.setText("");
 	}
+	
+//	public void xoaNhieu() {
+//		List<KhachHang> danhSachChon = tblKhachHang.getItems()
+//		        .stream()
+//		        .filter(KhachHang::isSelected)
+//		        .toList();
+//		
+//		if(danhSachChon.size() >= 2) {
+//			btnLamMoi.setVisible(true);
+//		} else {
+//			btnLamMoi.setVisible(false);
+//		}
+//	}
 
 	public void chuyenDenTrangChiTiet() {
 

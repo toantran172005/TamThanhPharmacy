@@ -2,7 +2,11 @@ package entity;
 
 import java.time.LocalDate;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 public class KhuyenMai {
+	BooleanProperty selected = new SimpleBooleanProperty(false);
 	String maKM;
 	String tenKM;
 	String phuongThucKM;
@@ -26,6 +30,18 @@ public class KhuyenMai {
 		this.ngayBD = ngayBD;
 		this.ngayKT = ngayKT;
 		this.trangThai = trangThai;
+	}
+
+	public boolean isSelected() {
+		return selected.get();
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected.set(selected);
+	}
+
+	public BooleanProperty selectedProperty() {
+		return selected;
 	}
 
 	public String getMaKM() {
@@ -88,8 +104,6 @@ public class KhuyenMai {
 	public String toString() {
 		return "KhuyenMai [maKM=" + maKM + ", tenKM=" + tenKM + ", phuongThucKM=" + phuongThucKM + ", mucKM=" + mucKM
 				+ ", ngayBD=" + ngayBD + ", ngayKT=" + ngayKT + ", trangThai=" + trangThai + "]";
-	}
-	
-	
+	}	
 	
 }

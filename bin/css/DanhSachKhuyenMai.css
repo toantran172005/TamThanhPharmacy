@@ -26,6 +26,28 @@
     -fx-effect: dropshadow(gaussian, rgba(0.0,0.0,0.0,0.05), 5.0, 0.1, 0.0, 1.0);
 }
 
+.btnXoaVaHoanTac {
+    -fx-background-color: #e53935;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+    -fx-transition: all 0.1s ease-in-out;
+}
+
+.btnXoaVaHoanTac:hover {
+    -fx-background-color: #d32f2f;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btnXoaVaHoanTac:pressed {
+    -fx-background-color: #b71c1c;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
 .text-field:focused {
     -fx-border-color: #3b82f6; /* xanh dương nhạt */
     -fx-background-color: #f8fafc;
@@ -39,6 +61,11 @@
     -fx-background-radius: 8.0px;
     -fx-effect: dropshadow(gaussian, rgba(0.0,0.0,0.0,0.15), 6.0, 0.0, 0.0, 2.0);
     -fx-padding: 5.0;
+}
+
+.tbl .table-cell {
+    -fx-alignment: CENTER;
+    -fx-font-size: 15.0px;
 }
 
 .tbl .column-header-background {
@@ -56,4 +83,95 @@
     -fx-text-fill: #333;
     -fx-font-size: 13.0px;
     -fx-padding: 8.0 0.0 8.0 8.0;
+}
+
+
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;     
+    -fx-border-radius: 8.0;          
+    -fx-background-radius: 8.0;
+    -fx-padding: 3.0 3.0 3.0 3.0;                
+}
+
+.combo-box:hover {
+    -fx-border-color: #3b82f6;    
+    -fx-effect: dropshadow(gaussian, rgba(0.0,0.0,0.0,0.15), 5.0, 0.5, 0.0, 1.0);
+}
+
+.combo-box:focused {
+    -fx-border-color: #3b82f6;
+    -fx-effect: dropshadow(gaussian, rgba(0.0,0.0,0.0,0.2), 6.0, 0.5, 0.0, 2.0);
+}
+
+.combo-box .list-cell {
+    -fx-padding: 5.0 10.0 5.0 10.0;
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #f0f0f0;
+}
+
+.date-picker {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 8.0;
+    -fx-background-radius: 8.0;
+    -fx-padding: 3.0 3.0 3.0 3.0;
+}
+
+/* Khi hover DatePicker */
+.date-picker:hover {
+    -fx-border-color: #3b82f6;
+    -fx-effect: dropshadow(gaussian, rgba(0.0,0.0,0.0,0.15), 5.0, 0.5, 0.0, 1.0);
+}
+
+/* Khi DatePicker được focus */
+.date-picker:focused {
+    -fx-border-color: #3b82f6;
+    -fx-effect: dropshadow(gaussian, rgba(0.0,0.0,0.0,0.2), 6.0, 0.5, 0.0, 2.0);
+}
+
+/* Ô hiển thị ngày */
+.date-picker .text-field {
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+    -fx-padding: 5.0 10.0 5.0 10.0;
+    -fx-background-radius: 8.0;
+    -fx-border-radius: 8.0;
+}
+
+/* Nút chọn lịch (calendar icon button) */
+.date-picker .arrow-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0 5 0 5;
+    -fx-cursor: hand;
+}
+
+/* Hover nút calendar */
+.date-picker .arrow-button:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 0 8.0 8.0 0;
+}
+
+/* Popup của DatePicker */
+.date-picker-popup {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 8.0;
+    -fx-background-radius: 8.0;
+    -fx-effect: dropshadow(gaussian, rgba(0.0,0.0,0.0,0.15), 8.0, 0.5, 0.0, 2.0);
+}
+
+/* Ô ngày trong lịch khi hover */
+.date-cell:hover {
+    -fx-background-color: #00ADFE;
+}
+
+/* Ô ngày khi được chọn */
+.date-cell:selected {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
 }
