@@ -1,5 +1,6 @@
 package entity;
 
+import dao.KhachHangDAO;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
@@ -12,6 +13,8 @@ public class KhachHang {
 	private boolean trangThai;
 	private int tongDonHang;
 	private double tongTien;
+	
+//	private KhachHangDAO khDAO = new KhachHangDAO();
 
 	public KhachHang() {
 		super();

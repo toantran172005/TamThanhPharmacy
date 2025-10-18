@@ -23,7 +23,7 @@
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <TitledPane animated="false" prefHeight="333.0" prefWidth="1097.0" text="Bảng top 10 thuốc bán chạy nhất">
+            <TitledPane animated="false" text="Bảng top 10 thuốc bán chạy nhất">
                <content>
                   <TableView prefHeight="303.0" prefWidth="1095.0" styleClass="tbl">
                     <columns>
@@ -42,14 +42,18 @@
                   <Font name="System Bold" size="15.0" />
                </font>
             </TitledPane>
-            <BarChart prefHeight="378.0" prefWidth="1097.0" title="Biểu đồ số lượng bán được của top 10 thuốc bán chạy">
-              <xAxis>
-                <CategoryAxis label="Thuốc" prefHeight="21.0" prefWidth="1008.0" side="BOTTOM" />
-              </xAxis>
-              <yAxis>
-                <NumberAxis label="Số lượng bán" side="LEFT" upperBound="1500.0" />
-              </yAxis>
-            </BarChart>
+            <TitledPane text="Biểu đồ số lượng thuốc ">
+               <content>
+                  <BarChart prefHeight="378.0" prefWidth="1097.0" title="Biểu đồ số lượng bán được của top 10 thuốc bán chạy">
+                    <xAxis>
+                      <CategoryAxis label="Thuốc" prefHeight="21.0" prefWidth="1008.0" side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis label="Số lượng bán" side="LEFT" upperBound="1500.0" />
+                    </yAxis>
+                  </BarChart>
+               </content>
+            </TitledPane>
          </children>
       </VBox>
    </center>

@@ -59,7 +59,7 @@ public class TrangChuNVCtrl {
 		setMauClickVaMenuCon(vbThuoc, List.of("Tìm kiếm thuốc", "Thêm thuốc"));
 		setMauClickVaMenuCon(vbKeThuoc, List.of("Danh sách kệ", "Thêm kệ thuốc"));
 		setMauClickVaMenuCon(vbKhachHang, List.of("Tìm kiếm khách hàng", "Thêm khách hàng", "Khiếu nại & Hỗ trợ"));
-		setMauClickVaMenuCon(vbHoaDon, List.of("Tìm kiếm hóa đơn", "Lập hóa đơn", "Đổi - Trả"));
+		setMauClickVaMenuCon(vbHoaDon, List.of("Tìm kiếm hóa đơn","Danh sách phiếu đặt thuốc", "Lập hóa đơn","Đặt thuốc", "Đổi - Trả"));
 	}
 
 	@SuppressWarnings("unused")
@@ -154,8 +154,14 @@ public class TrangChuNVCtrl {
 		case "Tìm kiếm hóa đơn":
 			moTrang("/fxml/TimKiemHD.fxml", TimKiemHDCtrl.class);
 			break;
+		case "Danh sách phiếu đặt thuốc":
+			
+			break;
 		case "Lập hóa đơn":
 			doiCenterPane("/fxml/LapHoaDon.fxml");
+			break;
+		case "Đặt thuốc":
+
 			break;
 		case "Đổi - Trả":
 			doiCenterPane("/fxml/PhieuDoiTra.fxml");

@@ -11,6 +11,7 @@
 	-fx-transition: all 0.1s ease;
 }
 
+
 .btnXoaVaHoanTac {
     -fx-background-color: #e53935;
     -fx-text-fill: white;

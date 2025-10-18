@@ -46,19 +46,20 @@ public class TrangChuQLCtrl {
 		setThuocTinhMainMenu();
 		moTrangTT(imgTaiKhoan);
 	}
-	
+
 	public void moTrangDaTai(Parent root) {
-	    mainPane.setCenter(root);
+		mainPane.setCenter(root);
 	}
 
 	public void setThuocTinhMainMenu() {
 		setMauClickVaMenuCon(vbTrangChu, List.of());
 		setMauClickVaMenuCon(vbThuoc,
-				List.of("Tìm kiếm thuốc", "Thêm thuốc", "Nhập thuốc", "Đặt thuốc", "Thống kê thuốc", "Thuế"));
+				List.of("Tìm kiếm thuốc", "Thêm thuốc", "Nhập thuốc", "Đặt thuốc bán", "Thống kê thuốc", "Thuế"));
 		setMauClickVaMenuCon(vbKeThuoc, List.of("Danh sách kệ", "Thêm kệ thuốc"));
 		setMauClickVaMenuCon(vbKhachHang,
 				List.of("Tìm kiếm khách hàng", "Thêm khách hàng", "Khiếu nại & Hỗ trợ", "Thống kê khách hàng"));
-		setMauClickVaMenuCon(vbHoaDon, List.of("Tìm kiếm hóa đơn", "Lập hóa đơn", "Đổi - Trả", "Thống kê hóa đơn"));
+		setMauClickVaMenuCon(vbHoaDon, List.of("Tìm kiếm hóa đơn", "Danh sách phiếu đặt thuốc", "Lập hóa đơn",
+				"Đặt thuốc", "Đổi - Trả", "Thống kê hóa đơn"));
 		setMauClickVaMenuCon(vbNhanVien, List.of("Tìm kiếm nhân viên", "Thêm nhân viên"));
 		setMauClickVaMenuCon(vbKhuyenMai, List.of("Danh sách khuyến mãi"));
 	}
@@ -164,7 +165,7 @@ public class TrangChuQLCtrl {
 		case "Nhập thuốc":
 			doiCenterPane("/fxml/NhapThuoc.fxml");
 			break;
-		case "Đặt thuốc":
+		case "Đặt thuốc bán":
 			doiCenterPane("/fxml/DatThuoc.fxml");
 			break;
 		case "Thống kê thuốc":
@@ -203,6 +204,12 @@ public class TrangChuQLCtrl {
 			break;
 		case "Lập hóa đơn":
 			doiCenterPane("/fxml/LapHoaDon.fxml");
+			break;
+		case "Danh sách phiếu đặt thuốc":
+
+			break;
+		case "Đặt thuốc":
+
 			break;
 		case "Đổi - Trả":
 			doiCenterPane("/fxml/PhieuDoiTra.fxml");

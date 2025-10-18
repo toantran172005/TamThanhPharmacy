@@ -31,8 +31,6 @@ import javafx.beans.property.BooleanProperty;
 
 public class TimKiemKHCtrl {
 
-	@FXML
-	public ComboBox<String> cmbTrangThai;
 
 	@FXML
 	public TableView<KhachHang> tblKhachHang;
@@ -48,15 +46,9 @@ public class TimKiemKHCtrl {
 	@FXML
 	public TableColumn<KhachHang, Integer> colTuoi;
 	@FXML
-	public TableColumn<KhachHang, Integer> colTongDonHang;
-	@FXML
-	public TableColumn<KhachHang, String> colTongTienHang;
-	@FXML
-	public TableColumn<KhachHang, String> colTrangThai;
-	@FXML
 	public TableColumn<KhachHang, Void> colHoatDong;
 	@FXML
-	public Button btnLamMoi, btnXemChiTiet;
+	public Button btnLamMoi, btnXemChiTiet, btnLichSuXoa, btnXoaTatCa;
 
 	@FXML
 	public TextField txtTenKH, txtSdt;
@@ -74,17 +66,16 @@ public class TimKiemKHCtrl {
 	public void initialize() {
 		listKH = khDAO.layListKhachHang();
 		listKHThongKe = khDAO.layListKHThongKe();
-		setItemCmbTrangThai();
 		locTatCa();
 		setUpTextFieldVaButton();
 	}
 
 	public void setUpTextFieldVaButton() {
+		btnXoaTatCa.setVisible(false);
 		txtTenKH.setOnAction(event -> locTatCa()); // txt tìm kiếm theo tên khách hàng
 		txtSdt.setOnAction(event -> locTatCa()); // txt tìm kiếm theo số điện thoại
 		btnLamMoi.setOnAction(event -> lamMoiBang()); // btn làm mới lại table
 		btnXemChiTiet.setOnAction(event -> chuyenDenTrangChiTiet());
-		cmbTrangThai.setOnAction(event -> locTatCa());
 	}
 
 	public void setDataChoTable(ObservableList<KhachHang> list) {
@@ -98,18 +89,6 @@ public class TimKiemKHCtrl {
 			return new SimpleStringProperty(toolCtrl.chuyenSoDienThoai(kh.getSdt()));
 		});
 		colTuoi.setCellValueFactory(new PropertyValueFactory<>("tuoi"));
-		colTrangThai.setCellValueFactory(cellData -> {
-			KhachHang kh = cellData.getValue();
-			return new SimpleStringProperty(setTrangThai(kh));
-		});
-		colTongDonHang.setCellValueFactory(cellData -> {
-			KhachHang kh = cellData.getValue();
-			return new SimpleIntegerProperty(tinhTongDonHang(kh)).asObject();
-		});
-		colTongTienHang.setCellValueFactory(cellData -> {
-			KhachHang kh = cellData.getValue();
-			return new SimpleStringProperty(tinhTongTien(kh));
-		});
 		// Cột hoạt động
 		setupColHoatDong();
 		// Đưa data lên table
@@ -200,7 +179,6 @@ public class TimKiemKHCtrl {
 	}
 	
 	public void setGiaTriMacDinh() {
-		cmbTrangThai.setValue("Hoạt động");
 		txtTenKH.setText("");
 		txtSdt.setText("");
 	}
@@ -242,7 +220,6 @@ public class TimKiemKHCtrl {
 	}
 
 	public void locTatCa() {
-	    String trangThai = cmbTrangThai.getValue();
 	    String sdt = toolCtrl.chuyenSoDienThoai(txtSdt.getText().trim().toLowerCase());
 	    String tenNhap = txtTenKH.getText().trim().toLowerCase();
 
@@ -250,14 +227,11 @@ public class TimKiemKHCtrl {
 	        boolean hopTrangThai = true;
 	        boolean hopSdt = true;
 	        boolean hopTen = true;
-
-	        //  Lọc theo trạng thái 
-	        if (trangThai != null && !trangThai.equals("Tất cả")) {
-	            if (trangThai.equals("Hoạt động")) {
-	                hopTrangThai = kh.isTrangThai();
-	            } else if (trangThai.equals("Ngừng hoạt động")) {
-	                hopTrangThai = !kh.isTrangThai();
-	            }
+	        
+	        if(btnLichSuXoa.getText().equals("Lịch sử xóa")) {
+	        	 hopTrangThai = kh.isTrangThai();
+	        } else {
+	        	hopTrangThai = !kh.isTrangThai();
 	        }
 
 	        //  Lọc theo số điện thoại 
@@ -288,12 +262,6 @@ public class TimKiemKHCtrl {
 		return toolCtrl.dinhDangVND(tempKH.getTongTien());
 	}
 
-	public String setTrangThai(KhachHang kh) {
-		Boolean trangThai = true;
-		String display = !trangThai.equals(kh.isTrangThai()) ? "Ngừng hoạt động" : "Hoạt động";
-		return display;
-	}
-
 	public int tinhTongDonHang(KhachHang kh) {
 		KhachHang tempKH = null;
 		for (KhachHang KH : listKHThongKe) {
@@ -303,11 +271,6 @@ public class TimKiemKHCtrl {
 			}
 		}
 		return tempKH.getTongDonHang();
-	}
-
-	public void setItemCmbTrangThai() {
-		cmbTrangThai.getItems().addAll("Tất cả", "Hoạt động", "Ngừng hoạt động");
-		cmbTrangThai.setValue("Hoạt động");
 	}
 
 	public void setTrangChuQLCtrl(TrangChuQLCtrl trangChuQLCtrl) {
