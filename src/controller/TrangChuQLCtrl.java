@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
@@ -9,8 +10,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -19,14 +24,14 @@ import javafx.stage.Stage;
 public class TrangChuQLCtrl {
 
 	@FXML
-	public VBox vbTrangChu, vbThuoc, vbKeThuoc, vbKhachHang, vbHoaDon, vbNhanVien;
-	
-	@FXML 
+	public VBox vbTrangChu, vbThuoc, vbKeThuoc, vbKhachHang, vbHoaDon, vbNhanVien, vbKhuyenMai;
+
+	@FXML
 	public ImageView imgDangXuat;
-	
+
 	@FXML
 	public ImageView imgTaiKhoan;
-	
+
 	public VBox vbHienTai;
 	public Label MenuConHienTai;
 	public static final PseudoClass SELECTED = PseudoClass.getPseudoClass("selected");
@@ -39,19 +44,24 @@ public class TrangChuQLCtrl {
 	public void initialize() {
 		mainPaneCenter = mainPane.getCenter();
 		setThuocTinhMainMenu();
-		moTrangTT(imgTaiKhoan); 
+		moTrangTT(imgTaiKhoan);
+	}
+
+	public void moTrangDaTai(Parent root) {
+		mainPane.setCenter(root);
 	}
 
 	public void setThuocTinhMainMenu() {
 		setMauClickVaMenuCon(vbTrangChu, List.of());
-		setMauClickVaMenuCon(vbThuoc, List.of("Tìm kiếm thuốc", "Thêm thuốc", "Cập nhật thuốc", "Khuyến mãi thuốc",
-				"Nhập thuốc", "Đặt thuốc", "Thống kê thuốc", "Thuế"));
-		setMauClickVaMenuCon(vbKeThuoc, List.of("Danh sách kệ", "Thêm kệ thuốc", "Cập nhật kệ"));
-		setMauClickVaMenuCon(vbKhachHang, List.of("Tìm kiếm khách hàng", "Thêm khách hàng",
-				"Khiếu nại & Hỗ trợ", "Thống kê khách hàng"));
-		setMauClickVaMenuCon(vbHoaDon,
-				List.of("Tìm kiếm hóa đơn", "Lập hóa đơn", "Khuyến mãi hóa đơn", "Đổi - Trả", "Thống kê hóa đơn"));
-		setMauClickVaMenuCon(vbNhanVien, List.of("Tìm kiếm nhân viên", "Thêm nhân viên", "Cập nhật nhân viên"));
+		setMauClickVaMenuCon(vbThuoc,
+				List.of("Tìm kiếm thuốc", "Thêm thuốc", "Nhập thuốc", "Đặt thuốc bán", "Thống kê thuốc", "Thuế"));
+		setMauClickVaMenuCon(vbKeThuoc, List.of("Danh sách kệ", "Thêm kệ thuốc"));
+		setMauClickVaMenuCon(vbKhachHang,
+				List.of("Tìm kiếm khách hàng", "Thêm khách hàng", "Khiếu nại & Hỗ trợ", "Thống kê khách hàng"));
+		setMauClickVaMenuCon(vbHoaDon, List.of("Tìm kiếm hóa đơn", "Danh sách phiếu đặt thuốc", "Lập hóa đơn",
+				"Đặt thuốc", "Đổi - Trả", "Thống kê hóa đơn"));
+		setMauClickVaMenuCon(vbNhanVien, List.of("Tìm kiếm nhân viên", "Thêm nhân viên"));
+		setMauClickVaMenuCon(vbKhuyenMai, List.of("Danh sách khuyến mãi"));
 	}
 
 	@SuppressWarnings("unused")
@@ -110,22 +120,35 @@ public class TrangChuQLCtrl {
 
 		return lbl;
 	}
-	
+
 	public void dangXuat() {
 		Stage stage = (Stage) imgDangXuat.getScene().getWindow();
 		Parent root = null;
-		try {
-			root = FXMLLoader.load(getClass().getResource("/fxml/DangNhap.fxml"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("Xác nhận đăng xuất");
+		alert.setHeaderText("Bạn có chắc chắn muốn đăng xuất?");
+		alert.setContentText("Nhấn OK để xác nhận hoặc Cancel để ở lại.");
+
+		Stage stageAlert = (Stage) alert.getDialogPane().getScene().getWindow();
+		stageAlert.getIcons().add(new Image("/picture/trangChu/logo.jpg"));
+
+		Optional<ButtonType> ketQua = alert.showAndWait();
+
+		if (ketQua.isPresent() && ketQua.get() == ButtonType.OK) {
+			try {
+				root = FXMLLoader.load(getClass().getResource("/fxml/DangNhap.fxml"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			StackPane container = new StackPane(root);
+			Scene scene = new Scene(container);
+			stage.setScene(scene);
+			stage.setMaximized(false);
+			stage.centerOnScreen();
+			stage.setResizable(true);
 		}
-        StackPane container = new StackPane(root);
-        Scene scene = new Scene(container);		
-		stage.setScene(scene);		
-		stage.setMaximized(false); 
-		stage.centerOnScreen();     
-		stage.setResizable(true);
 	}
 
 	public void menuConClick(Label lbl) {
@@ -134,80 +157,78 @@ public class TrangChuQLCtrl {
 		switch (text) {
 		// ===== THUỐC =====
 		case "Tìm kiếm thuốc":
-
+			moTrang("/fxml/TimKiemThuoc.fxml", TimKiemThuocCtrl.class);
 			break;
 		case "Thêm thuốc":
-			break;
-		case "Cập nhật thuốc":
-
-			break;
-		case "Khuyến mãi":
-
+			doiCenterPane("/fxml/ThemThuoc.fxml");
 			break;
 		case "Nhập thuốc":
-
+			doiCenterPane("/fxml/NhapThuoc.fxml");
 			break;
-		case "Đặt thuốc":
-
+		case "Đặt thuốc bán":
+			doiCenterPane("/fxml/DatThuoc.fxml");
 			break;
 		case "Thống kê thuốc":
-
+			doiCenterPane("/fxml/ThongKeThuoc.fxml");
 			break;
 		case "Thuế":
-
+			doiCenterPane("/fxml/Thue.fxml");
 			break;
 
 		// ===== KỆ THUỐC =====
 		case "Danh sách kệ":
-
+			moTrangDanhSachKeThuoc();
 			break;
 		case "Thêm kệ thuốc":
-
-			break;
-		case "Cập nhật kệ":
-
+			doiCenterPane("/fxml/ThemKeThuoc.fxml");
 			break;
 
 		// ===== KHÁCH HÀNG =====
 		case "Tìm kiếm khách hàng":
-			doiCenterPane("/fxml/TimKiemKH.fxml");
+			TimKiemKHCtrl tkKHCtrl = doiCenterPane("/fxml/TimKiemKH.fxml");
+			tkKHCtrl.setTrangChuQLCtrl(this);
 			break;
 		case "Thêm khách hàng":
 			doiCenterPane("/fxml/ThemKhachHang.fxml");
 			break;
 		case "Khiếu nại & Hỗ trợ":
-
+			moTrang("/fxml/DanhSachKhieuNaiVaHoTroKH.fxml", DanhSachKhieuNaiVaHoTroHKCtrl.class);
 			break;
 		case "Thống kê khách hàng":
-
+			moTrang("/fxml/ThongKeKhachHang.fxml", ThongKeKhachHangCtrl.class);
 			break;
 
 		// ===== HÓA ĐƠN =====
 		case "Tìm kiếm hóa đơn":
-
+			moTrang("/fxml/TimKiemHD.fxml", TimKiemHDCtrl.class);
 			break;
 		case "Lập hóa đơn":
+			doiCenterPane("/fxml/LapHoaDon.fxml");
+			break;
+		case "Danh sách phiếu đặt thuốc":
 
 			break;
-		case "Khuyến mãi hóa đơn":
+		case "Đặt thuốc":
 
 			break;
 		case "Đổi - Trả":
-
+			doiCenterPane("/fxml/PhieuDoiTra.fxml");
 			break;
 		case "Thống kê hóa đơn":
-
+			doiCenterPane("/fxml/ThongKeHoaDon.fxml");
 			break;
 
 		// ===== NHÂN VIÊN =====
 		case "Tìm kiếm nhân viên":
-
+			moTrang("/fxml/TimKiemNhanVien.fxml", TimKiemNhanVienCtrl.class);
 			break;
 		case "Thêm nhân viên":
-
+			doiCenterPane("/fxml/ThemNhanVien.fxml");
 			break;
-		case "Cập nhật nhân viên":
 
+		// ===== Khuyến mãi=====
+		case "Danh sách khuyến mãi":
+			doiCenterPane("/fxml/DanhSachKhuyenMai.fxml");
 			break;
 
 		default:
@@ -239,25 +260,79 @@ public class TrangChuQLCtrl {
 			return null;
 		}
 	}
-	
+
 	// ========== MỞ TRANG THÔNG TIN ==========
-		public void setTrangTaiKhoan() {
-		    try {
-		        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ThongTin.fxml"));
-		        Parent root = loader.load();
+	public void setTrangTaiKhoan() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ThongTin.fxml"));
+			Parent root = loader.load();
 
-		        // lấy controller của ThongTin.fxml
-		        ThongTinCtrl controller = loader.getController();
-		        controller.setTrangChuQLCtrl(this);
+			// lấy controller của ThongTin.fxml
+			ThongTinCtrl controller = loader.getController();
+			controller.setTrangChuQLCtrl(this);
 
-		        mainPane.setCenter(root);
-		    } 
-		    catch (IOException e) {
-		        e.printStackTrace();
-		    }
+			mainPane.setCenter(root);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		
-		public void moTrangTT(ImageView imgTaiKhoan) {
-		    imgTaiKhoan.setOnMouseClicked(e -> setTrangTaiKhoan());
+	}
+
+	public void moTrangTT(ImageView imgTaiKhoan) {
+		imgTaiKhoan.setOnMouseClicked(e -> setTrangTaiKhoan());
+	}
+
+	// ========== MỞ TRANG DANH SÁCH KỆ THUỐC ==========
+	public void moTrangDanhSachKeThuoc() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DanhSachKeThuoc.fxml"));
+			Parent root = loader.load();
+
+			// lấy controller của ThongTin.fxml
+			DanhSachKeThuocCtrl controller = loader.getController();
+			controller.setTrangChuQLCtrl(this);
+
+			mainPane.setCenter(root);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+	}
+
+	// ========== MỞ TRANG ChI TIẾT KỆ THUỐC ==========
+	public void setTrangChiTietKeThuoc() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ChiTietKeThuoc.fxml"));
+			Parent root = loader.load();
+
+			// lấy controller của ChiTietKeThuoc.fxml
+			ChiTietKeThuocCtrl controller = loader.getController();
+			controller.setTrangChuQLCtrl(this);
+			mainPane.setCenter(root);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public <T> T moTrang(String fxmlPath, Class<T> controllerClass) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+			Parent root = loader.load();
+
+			// Lấy controller của FXML
+			T controller = loader.getController();
+
+			// Nếu controller có setTrangChuNVCtrl thì tự động gán
+			try {
+				controllerClass.getMethod("setTrangChuQLCtrl", TrangChuQLCtrl.class).invoke(controller, this);
+			} catch (NoSuchMethodException ignore) {
+
+			}
+
+			mainPane.setCenter(root);
+			return controller;
+		} catch (IOException | ReflectiveOperationException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
