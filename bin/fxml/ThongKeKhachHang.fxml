@@ -150,13 +150,21 @@
                            <center>
                               <BarChart fx:id="barChartTopKH" minHeight="300.0" prefHeight="450.0" prefWidth="998.0" title="Top Khách Hàng">
                                  <xAxis>
+<<<<<<< HEAD
                                     <CategoryAxis label="Tên khách hàng" styleClass="chart-x-axis" fx:id="xAxis">
+=======
+                                    <CategoryAxis label="Tên khách hàng" fx:id="xAxis">
+>>>>>>> 5fa02f6ba7e72dcb0737330c94efce55c097731b
                                        <tickLabelFont>
                                           <Font size="15.0" />
                                        </tickLabelFont></CategoryAxis>
                                  </xAxis>
                                  <yAxis>
+<<<<<<< HEAD
                                     <NumberAxis fx:id="yAxis" label="Tổng chi tiêu (VND)" styleClass="chart-y-axis">
+=======
+                                    <NumberAxis fx:id="yAxis" label="Tổng chi tiêu (VND)">
+>>>>>>> 5fa02f6ba7e72dcb0737330c94efce55c097731b
                                        <tickLabelFont>
                                           <Font size="15.0" />
                                        </tickLabelFont></NumberAxis>

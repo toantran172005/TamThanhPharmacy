@@ -1,12 +1,18 @@
 package controller;
 
+<<<<<<< HEAD
 import java.io.File;
 import java.io.FileOutputStream;
 import java.time.LocalDate;
+=======
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+>>>>>>> 5fa02f6ba7e72dcb0737330c94efce55c097731b
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+<<<<<<< HEAD
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -15,6 +21,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+=======
+>>>>>>> 5fa02f6ba7e72dcb0737330c94efce55c097731b
 import dao.KhachHangDAO;
 import entity.KhachHang;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -35,7 +43,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ScrollEvent;
+<<<<<<< HEAD
 import javafx.stage.FileChooser;
+=======
+>>>>>>> 5fa02f6ba7e72dcb0737330c94efce55c097731b
 
 public class ThongKeKhachHangCtrl {
 
@@ -63,16 +74,27 @@ public class ThongKeKhachHangCtrl {
 	@FXML
 	public ComboBox<String> cmbThongKeTop;
 	@FXML
+<<<<<<< HEAD
 	public Button btnThongKe, btnXuatExcel, btnLamMoi;
+=======
+	public Button btnThongKe, btnXuatExcel, btnInBaoCao, btnLamMoi;
+>>>>>>> 5fa02f6ba7e72dcb0737330c94efce55c097731b
 	@FXML
 	public Label lblTongKH, lblTongSLM, lblTongCT, lblChiTieuTB;
 	@FXML
 	public DatePicker dpNgayBD, dpNgayKT;
 	@FXML
 	public BarChart<String, Number> barChartTopKH;
+<<<<<<< HEAD
 	public List<KhachHang> listKHDaSapXep;
 	@FXML
 	public CategoryAxis xAxis;
+=======
+
+	@FXML
+	public CategoryAxis xAxis;
+
+>>>>>>> 5fa02f6ba7e72dcb0737330c94efce55c097731b
 	@FXML
 	public NumberAxis yAxis;
 
@@ -85,7 +107,11 @@ public class ThongKeKhachHangCtrl {
 		setHoatDong();
 	}
 
+<<<<<<< HEAD
 	public void setDataChoTable(ObservableList<KhachHang> listKH) {
+=======
+	public void setDataChoTable() {
+>>>>>>> 5fa02f6ba7e72dcb0737330c94efce55c097731b
 		if (listKH == null || listKH.isEmpty()) {
 			tblThongKeKH.getItems().clear();
 			return;
@@ -130,6 +156,7 @@ public class ThongKeKhachHangCtrl {
 
 	public void setHoatDong() {
 		btnThongKe.setOnAction(event -> thongKeKhachHang());
+<<<<<<< HEAD
 		btnLamMoi.setOnAction(event -> lamMoiDuLieu());
 		btnXuatExcel.setOnAction(event -> xuatFileExcel());
 		cmbThongKeTop.setOnAction(event -> thongKeTheoTop());
@@ -232,6 +259,8 @@ public class ThongKeKhachHangCtrl {
 		tblThongKeKH.getItems().clear();
 		barChartTopKH.getData().clear();
 		listKH.clear();
+=======
+>>>>>>> 5fa02f6ba7e72dcb0737330c94efce55c097731b
 	}
 
 	public void thongKeKhachHang() {
@@ -250,18 +279,27 @@ public class ThongKeKhachHangCtrl {
 		}
 
 		listKH = khDAO.layListKHThongKe(ngayBD, ngayKT);
+<<<<<<< HEAD
 		FXCollections.sort(listKH, (kh1, kh2) -> Double.compare(kh2.getTongTien(), kh1.getTongTien()));
 
+=======
+>>>>>>> 5fa02f6ba7e72dcb0737330c94efce55c097731b
 		for (KhachHang kh : listKH) {
 			double tongTien = khDAO.layTongTien(kh.getMaKH());
 			int tongDon = khDAO.layTongDonHang(kh.getMaKH());
 			tongTienMap.put(kh.getMaKH(), tongTien);
 			tongDonMap.put(kh.getMaKH(), tongDon);
 		}
+<<<<<<< HEAD
 		
 		setDataChoLabel();
 		setDataChoBarChart();
 		setDataChoTable(listKH);
+=======
+		setDataChoLabel();
+		setDataChoBarChart();
+		setDataChoTable();
+>>>>>>> 5fa02f6ba7e72dcb0737330c94efce55c097731b
 	}
 
 	public void setDataChoBarChart() {
@@ -300,8 +338,12 @@ public class ThongKeKhachHangCtrl {
 	}
 
 	public void setItemChoComboBox() {
+<<<<<<< HEAD
 		cmbThongKeTop.getItems().addAll("Tất cả", "1", "5", "10", "20");
 		cmbThongKeTop.setValue("Tất cả");
+=======
+		cmbThongKeTop.getItems().addAll("1", "5", "10", "20");
+>>>>>>> 5fa02f6ba7e72dcb0737330c94efce55c097731b
 	}
 
 }

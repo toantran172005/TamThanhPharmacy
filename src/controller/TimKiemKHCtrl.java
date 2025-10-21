@@ -313,6 +313,7 @@ public class TimKiemKHCtrl {
 	public void xoaNhieu() {
 		List<KhachHang> listkh = hienThiNutXoaNhieu();
 
+<<<<<<< HEAD
 		if (tblDangLam) {
 			// === TRƯỜNG HỢP ĐANG LÀM → XOÁ ===
 			boolean xacNhan = toolCtrl.hienThiXacNhan("Xác nhận xoá",
@@ -340,6 +341,39 @@ public class TimKiemKHCtrl {
 			}
 			toolCtrl.hienThiThongBao("Thành công", "Đã khôi phục thành công " + listkh.size() + " khách hàng.", true);
 		}
+=======
+		if (listkh.isEmpty()) {
+			toolCtrl.hienThiThongBao("Thông báo", "Vui lòng chọn ít nhất một nhân viên để xoá.", false);
+			return;
+		}
+		if (tblDangLam) {
+			// === TRƯỜNG HỢP ĐANG LÀM → XOÁ ===
+			boolean xacNhan = toolCtrl.hienThiXacNhan("Xác nhận xoá",
+					"Bạn có chắc muốn xoá " + listkh.size() + " nhân viên đã chọn?");
+			if (!xacNhan)
+				return;
+
+			for (KhachHang kh : listkh) {
+				if (kh.isTrangThai()) {
+					xoaKhachHang(kh);
+				}
+			}
+			toolCtrl.hienThiThongBao("Thành công", "Đã xoá thành công " + listkh.size() + " khách hàng.", true);
+		} else {
+			// === TRƯỜNG HỢP ĐÃ NGHỈ → KHÔI PHỤC ===
+			boolean xacNhan = toolCtrl.hienThiXacNhan("Xác nhận khôi phục",
+					"Bạn có chắc muốn khôi phục " + listkh.size() + " nhân viên đã chọn?");
+			if (!xacNhan)
+				return;
+
+			for (KhachHang kh : listkh) {
+				if (!kh.isTrangThai()) {
+					hoanTacKhachHang(kh);
+				}
+			}
+			toolCtrl.hienThiThongBao("Thành công", "Đã khôi phục thành công " + listkh.size() + " khách hàng.", true);
+		}
+>>>>>>> 5fa02f6ba7e72dcb0737330c94efce55c097731b
 
 		// Ẩn nút Xóa/KHôi phục và làm mới bảng
 		btnXoaTatCa.setVisible(false);
