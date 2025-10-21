@@ -38,7 +38,6 @@ public class ChiTietKhachHangCtrl {
 			btnCapNhat.setText("Hoàn tất");
 			choPhepCapNhat(true);
 		} else { // cập nhật thông tin
-			
 			btnCapNhat.setText("Cập nhật");
 			choPhepCapNhat(false);
 		}

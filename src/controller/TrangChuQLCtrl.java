@@ -195,7 +195,7 @@ public class TrangChuQLCtrl {
 			moTrang("/fxml/DanhSachKhieuNaiVaHoTroKH.fxml", DanhSachKhieuNaiVaHoTroHKCtrl.class);
 			break;
 		case "Thống kê khách hàng":
-			moTrang("/fxml/ThongKeKhachHang.fxml", ThongKeKhachHangCtrl.class);
+			doiCenterPane("/fxml/ThongKeKhachHang.fxml");
 			break;
 
 		// ===== HÓA ĐƠN =====
