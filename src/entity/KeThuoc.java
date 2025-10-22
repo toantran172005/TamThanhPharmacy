@@ -16,6 +16,11 @@ public class KeThuoc {
 		// TODO Auto-generated constructor stub
 	}
 
+	public KeThuoc(String maKe) {
+		super();
+		this.maKe = maKe;
+	}
+
 	public KeThuoc(String maKe, String loaiKe, int sucChua, String moTa, boolean trangThai) {
 		super();
 		this.maKe = maKe;

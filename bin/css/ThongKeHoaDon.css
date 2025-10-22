@@ -1,10 +1,21 @@
-.axis-label {
+.chart-x-axis .axis-label {
     -fx-font-size: 15px;
 }
 
-.chart-axis {
-    -fx-tick-label-font-size: 13px;
-    -fx-tick-label-fill: #333;
+
+.chart-x-axis .tick-label {
+    -fx-font-size: 15px;  
+}
+
+.chart-y-axis .axis-label {
+    -fx-font-size: 15px;
+}
+
+.chart-y-axis .tick-label {
+    -fx-font-size: 15px;
+}
+.chart-title {
+    -fx-font-size: 18px;
 }
 
 .btn{
@@ -159,4 +170,9 @@
     -fx-text-fill: #333;
     -fx-font-size: 13px;
     -fx-padding: 8 0 8 8;
+}
+
+.tbl .table-cell {
+    -fx-alignment: CENTER;
+    -fx-font-size: 15.0px;
 }

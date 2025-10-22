@@ -67,8 +67,8 @@ public class ThemNhanVienCtrl {
 	}
     
     public void setItemComboBoxChucVu() {
-  		cmbChucVu.getItems().addAll("Nhân viên", "Quản lý");
-  		cmbChucVu.setValue("Nhân viên");
+  		cmbChucVu.getItems().addAll("Nhân viên bán hàng", "Nhân viên quản lý");
+  		cmbChucVu.setValue("Nhân viên bán hàng");
   	}
     
     public void setItemComboBoxThue() {
@@ -172,7 +172,7 @@ public class ThemNhanVienCtrl {
  	
  	public void themNhanVien() {
 	    try {
-	        // Lấy thông tin từ giao diện
+	    	if (!kiemTraHopLe()) return;
 	    	
 	        String maNV = toolCtrl.taoKhoaChinh("NV");
 	        String tenNV = txtTenNV.getText();
@@ -197,14 +197,11 @@ public class ThemNhanVienCtrl {
 	        	NhanVienDAO dao = new NhanVienDAO();
 	        	boolean kq = dao.themNhanVien(nv);
 	        	if (kq) {
-		            System.out.println("✅ Đã thêm nhân viên: " + maNV);
+	        		 toolCtrl.hienThiXacNhan("Thông báo", "Thêm nhân viên thành công!");
 		        } else {
-		            System.out.println("❌ Thêm nhân viên thất bại.");
+		        	toolCtrl.hienThiXacNhan("Thông báo", "Thêm nhân viên thất bại!");
 		        }
 			}
-	        
-	        
-
 	        
 	    } catch (Exception e) {
 	        e.printStackTrace();
@@ -260,4 +257,83 @@ public class ThemNhanVienCtrl {
 
 	    return null;
 	}
+	
+	// ========== KIỂM TRA DỮ LIỆU HỢP LỆ ==========
+	private boolean kiemTraHopLe() {
+		String ten = txtTenNV.getText().trim();
+	    // Kiểm tra họ tên
+	    if (ten.isEmpty()) {
+	        toolCtrl.hienThiXacNhan("Lỗi nhập liệu", "Tên nhân viên không được để trống!");
+	        txtTenNV.requestFocus();
+	        return false;
+	    }
+	    if (ten.matches("^[\\p{L}\\s]+$")) {
+			toolCtrl.hienThiXacNhan("Lỗi nhập liệu", "Tên nhân viên chỉ được chứa chữ cái và khoảng trắng.");
+			return false;
+		}
+
+	    // Kiểm tra số điện thoại
+	    String sdt = txtSdt.getText().trim();
+	    if (sdt.isEmpty()) {
+	        toolCtrl.hienThiXacNhan("Lỗi nhập liệu", "Số điện thoại không được để trống!");
+	        txtSdt.requestFocus();
+	        return false;
+	    }
+	    if (!sdt.matches("^0\\d{9}$")) { 
+	        toolCtrl.hienThiXacNhan("Lỗi nhập liệu", "Số điện thoại phải gồm 10 chữ số và bắt đầu bằng 0!");
+	        txtSdt.requestFocus();
+	        return false;
+	    }
+
+	    // Kiểm tra email
+	    String email = txtEmail.getText().trim();
+	    if (!email.isEmpty() && !email.matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) {
+	        toolCtrl.hienThiXacNhan("Lỗi nhập liệu", "Email không đúng định dạng!");
+	        txtEmail.requestFocus();
+	        return false;
+	    }
+
+	    // Kiểm tra lương
+	    String luongText = txtLuong.getText().trim().replace(",", "").replace("₫", "");
+	    if (luongText.isEmpty()) {
+	        toolCtrl.hienThiXacNhan("Lỗi nhập liệu", "Lương không được để trống!");
+	        txtLuong.requestFocus();
+	        return false;
+	    }
+	    try {
+	        double luong = Double.parseDouble(luongText);
+	        if (luong <= 0) {
+	            toolCtrl.hienThiXacNhan("Lỗi nhập liệu", "Lương phải lớn hơn 0!");
+	            txtLuong.requestFocus();
+	            return false;
+	        }
+	    } catch (NumberFormatException e) {
+	        toolCtrl.hienThiXacNhan("Lỗi nhập liệu", "Lương không hợp lệ!");
+	        txtLuong.requestFocus();
+	        return false;
+	    }
+
+	    // Kiểm tra ngày sinh
+	    if (dpNgaySinh.getValue() == null) {
+	        toolCtrl.hienThiXacNhan("Lỗi nhập liệu", "Vui lòng chọn ngày sinh!");
+	        return false;
+	    }
+	    if (dpNgaySinh.getValue().isAfter(LocalDate.now())) {
+	        toolCtrl.hienThiXacNhan("Lỗi nhập liệu", "Ngày sinh không được lớn hơn ngày hiện tại!");
+	        return false;
+	    }
+
+	    // Kiểm tra ngày vào làm
+	    if (dpNgayVaoLam.getValue() == null) {
+	        toolCtrl.hienThiXacNhan("Lỗi nhập liệu", "Vui lòng chọn ngày vào làm!");
+	        return false;
+	    }
+	    if (dpNgayVaoLam.getValue().isBefore(dpNgaySinh.getValue())) {
+	        toolCtrl.hienThiXacNhan("Lỗi nhập liệu", "Ngày vào làm không thể trước ngày sinh!");
+	        return false;
+	    }
+
+	    return true;
+	}
+
 }

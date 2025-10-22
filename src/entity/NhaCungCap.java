@@ -11,6 +11,10 @@ public class NhaCungCap {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	public NhaCungCap(String maNCC) {
+		super();
+		this.maNCC = maNCC;
+	}
 
 	public NhaCungCap(String maNCC, String tenNCC, String diaChi, String sdt, String email) {
 		super();

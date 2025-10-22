@@ -48,7 +48,7 @@ public class TimKiemNhanVienCtrl {
 	@FXML
 	public Button btnXoa;
 	@FXML
-	public TextField txtMaNV, txtTenNV;
+	public TextField txtSdt, txtTenNV;
 	@FXML
 	public TableView<NhanVien> tblNhanVien;
 	@FXML
@@ -85,7 +85,7 @@ public class TimKiemNhanVienCtrl {
 	}
 
 	public void setAction() {
-		txtMaNV.setOnAction(event -> locNhanVien()); // txt tìm kiếm theo mã nhân viên
+		txtSdt.setOnAction(event -> locNhanVien()); // txt tìm kiếm theo mã nhân viên
 		txtTenNV.setOnAction(event -> locNhanVien()); // txt tìm kiếm theo tên nhân viên
 		btnLamMoi.setOnAction(event -> lamMoiBang()); // btn làm mới lại table
 		btnXemChiTiet.setOnMouseClicked(e -> chuyenDenTrangChiTiet());
@@ -106,19 +106,26 @@ public class TimKiemNhanVienCtrl {
 
 	// ========== LỌC NHÂN VIÊN ==========
 	public void locNhanVien() {
-		String maNV = txtMaNV.getText().trim().toLowerCase();
+		String sdt = toolCtrl.chuyenSoDienThoai(txtSdt.getText().trim().toLowerCase());
 		String tenNV = txtTenNV.getText().trim().toLowerCase();
+		kiemTraDKNhap();
 
 		// Lấy danh sách hiện đang hiển thị trên TableView
-		ObservableList<NhanVien> danhSachHienTai = tblNhanVien.getItems();
+		ObservableList<NhanVien> danhSachHienTai = FXCollections.observableArrayList();
+
+		if (tblDangLam) {
+			danhSachHienTai = listNV;
+		} else {
+			danhSachHienTai = listNVDaNghi;
+		}
 
 		// Bắt đầu từ toàn bộ danh sách
 		ObservableList<NhanVien> listLoc = danhSachHienTai.filtered(nv -> {
 			boolean hopLe = true;
 
 			// --- Lọc theo mã NV ---
-			if (!maNV.isEmpty()) {
-				hopLe = hopLe && nv.getMaNV().toLowerCase().contains(maNV);
+			if (!sdt.isEmpty()) {
+				hopLe = hopLe && nv.getSdt().toLowerCase().contains(sdt);
 			}
 
 			// --- Lọc theo tên NV ---
@@ -129,12 +136,16 @@ public class TimKiemNhanVienCtrl {
 			return hopLe;
 		});
 
+		if (listLoc.isEmpty()) {
+			toolCtrl.hienThiThongBao("Kết quả", "Không tìm thấy nhân viên phù hợp với tiêu chí lọc.", false);
+		}
+
 		setDataChoTable(listLoc);
 	}
 
 	// ========== LÀM MỚI BẢNG ==========
 	public void lamMoiBang() {
-		txtMaNV.setText("");
+		txtSdt.setText("");
 		txtTenNV.setText("");
 		if (tblDangLam) {
 			setDataChoTable(listNV);
@@ -145,6 +156,13 @@ public class TimKiemNhanVienCtrl {
 
 	// ========== SỰ KIỆN CHO NÚT XOÁ ==========
 	public void suKienXemLichSuXoa() {
+		for (NhanVien nv : tblNhanVien.getItems()) {
+			nv.setSelected(false);
+		}
+
+		btnXoa.setVisible(false);
+		tblNhanVien.refresh();
+
 		if (tblDangLam) {
 			// Đang xem danh sách đang làm -> chuyển sang đã nghỉ
 			setDataChoTable(listNVDaNghi);
@@ -153,6 +171,7 @@ public class TimKiemNhanVienCtrl {
 			btnXoa.setText("Khôi phục tất cả");
 			Image image = new Image(getClass().getResourceAsStream("/picture/nhanVien/system-restore.png"));
 			imgXoaNhieu.setImage(image);
+			lamMoiBang();
 		} else {
 			// Đang xem danh sách đã nghỉ -> chuyển về đang làm
 			setDataChoTable(listNV);
@@ -161,6 +180,7 @@ public class TimKiemNhanVienCtrl {
 			btnXoa.setText("Xoá tất cả");
 			Image image = new Image(getClass().getResourceAsStream("/picture/nhanVien/trash.png"));
 			imgXoaNhieu.setImage(image);
+			lamMoiBang();
 		}
 	}
 
@@ -250,6 +270,17 @@ public class TimKiemNhanVienCtrl {
 		chkChonTatCa.setAlignment(Pos.CENTER);
 		colSelect.setGraphic(chkChonTatCa);
 
+		// Khi tick “chọn tất cả” → tất cả nhân viên được chọn hoặc bỏ chọn
+		chkChonTatCa.setOnAction(e -> {
+			boolean isSelected = chkChonTatCa.isSelected();
+			for (NhanVien nv : tblNhanVien.getItems()) {
+				nv.setSelected(isSelected);
+			}
+			tblNhanVien.refresh();
+
+			hienThiNutXoaNhieu();
+		});
+
 		// Cài đặt checkbox cho từng hàng
 		colSelect.setCellValueFactory(cellData -> cellData.getValue().selectedProperty());
 		colSelect.setCellFactory(tc -> {
@@ -294,23 +325,13 @@ public class TimKiemNhanVienCtrl {
 			TableRow<NhanVien> row = new TableRow<>();
 			row.setOnMouseClicked(event -> {
 				if (!row.isEmpty() && event.getClickCount() == 1) {
-					NhanVien kh = row.getItem();
-					kh.setSelected(!kh.isSelected());
+					NhanVien nv = row.getItem();
+					nv.setSelected(!nv.isSelected());
 				}
 			});
 			return row;
 		});
 
-		// Khi tick “chọn tất cả” → tất cả nhân viên được chọn hoặc bỏ chọn
-		chkChonTatCa.setOnAction(e -> {
-			boolean isSelected = chkChonTatCa.isSelected();
-			for (NhanVien nv : tblNhanVien.getItems()) {
-				nv.setSelected(isSelected);
-			}
-			tblNhanVien.refresh();
-
-			hienThiNutXoaNhieu();
-		});
 	}
 
 	// ========== SETUP CỘT HOẠT ĐỘNG TRONG TABLE ==========
@@ -325,9 +346,19 @@ public class TimKiemNhanVienCtrl {
 					NhanVien nv = getTableView().getItems().get(getIndex());
 
 					if (nv.isTrangThai()) { // xử lý xóa
-						xoaNhanVien(nv);
+						if (toolCtrl.hienThiXacNhan("Xóa nhân viên",
+								"Xác nhận xóa nhân viên tên: " + nv.getTenNV() + "?")) {
+							xoaNhanVien(nv);
+							toolCtrl.hienThiXacNhan("Thông báo",
+									"Xóa nhân viên tên: " + nv.getTenNV() + " thành công.");
+						}
 					} else { // xử lý hoàn tác
-						hoanTacNhanVien(nv);
+						if (toolCtrl.hienThiXacNhan("Khôi phục nhân viên",
+								"Xác nhận khôi phục nhân viên tên: " + nv.getTenNV() + "?")) {
+							hoanTacNhanVien(nv);
+							toolCtrl.hienThiXacNhan("Thông báo",
+									"Khôi phục nhân viên tên: " + nv.getTenNV() + " thành công.");
+						}
 					}
 
 					getTableView().refresh();
@@ -399,12 +430,12 @@ public class TimKiemNhanVienCtrl {
 		List<NhanVien> danhSachChon = tblNhanVien.getItems().stream().filter(NhanVien::isSelected).toList();
 
 		if (danhSachChon.isEmpty()) {
-			toolCtrl.hienThiThongBao("Lỗi", "Vui lòng chọn 1 khách hàng để xem chi tiết.", false);
+			toolCtrl.hienThiThongBao("Lỗi", "Vui lòng chọn 1 nhân viên để xem chi tiết.", false);
 			return;
 		}
 
 		if (danhSachChon.size() > 1) {
-			toolCtrl.hienThiThongBao("Lỗi", "Chỉ được chọn 1 khách hàng để xem chi tiết.", false);
+			toolCtrl.hienThiThongBao("Lỗi", "Chỉ được chọn 1 nhân viên để xem chi tiết.", false);
 			return;
 		}
 
@@ -435,6 +466,29 @@ public class TimKiemNhanVienCtrl {
 			trangChuQLCtrl.moTrang("/fxml/CapNhatNhanVien.fxml", CapNhatNhanVienCtrl.class);
 		} else {
 			System.out.println("⚠ Không có tham chiếu TrangChu");
+		}
+	}
+
+	// ========== KIỂM TRA ĐIỀU KIỆN NHẬP ==========
+	public void kiemTraDKNhap() {
+		String sdt = txtSdt.getText().trim();
+		String tenNV = txtTenNV.getText().trim();
+
+		if (sdt.isEmpty() && tenNV.isEmpty()) {
+			toolCtrl.hienThiThongBao("Thông báo", "Vui lòng nhập số điện thoại hoặc tên nhân viên để tìm kiếm.", false);
+			return;
+		}
+
+		// Kiểm tra định dạng số điện thoại
+		if (!sdt.isEmpty() && !sdt.matches("^\\d{9,11}$")) {
+			toolCtrl.hienThiThongBao("Lỗi nhập liệu", "Số điện thoại chỉ được chứa số và có độ dài 9–11 ký tự.", false);
+			return;
+		}
+
+		// Kiểm tra tên nhân viên (chỉ cho phép chữ cái và khoảng trắng)
+		if (!tenNV.isEmpty() && !tenNV.matches("^[\\p{L}\\s]+$")) {
+			toolCtrl.hienThiThongBao("Lỗi nhập liệu", "Tên nhân viên chỉ được chứa chữ cái và khoảng trắng.", false);
+			return;
 		}
 	}
 }

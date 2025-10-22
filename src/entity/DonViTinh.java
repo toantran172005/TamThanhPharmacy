@@ -11,6 +11,11 @@ public class DonViTinh {
 		// TODO Auto-generated constructor stub
 	}
 
+	public DonViTinh(String maDVT) {
+		super();
+		this.maDVT = maDVT;
+	}
+
 	public DonViTinh(String maDVT, String tenDVT) {
 		super();
 		this.maDVT = maDVT;
@@ -35,9 +40,7 @@ public class DonViTinh {
 
 	@Override
 	public String toString() {
-		return "DonViTinh [maDVT=" + maDVT + ", tenDVT=" + tenDVT + "]";
+		return tenDVT;
 	}
-	
-	
 	
 }

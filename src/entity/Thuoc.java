@@ -40,7 +40,12 @@ public class Thuoc {
 		this.anh = anh;
 	}
 
-
+	public Thuoc(String maThuoc, String tenThuoc, Boolean trangThai) {
+		this.maThuoc = maThuoc;
+		this.tenThuoc = tenThuoc;
+		this.trangThai = trangThai;
+	}
+	
 	public String getMaThuoc() {
 		return maThuoc;
 	}

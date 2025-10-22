@@ -7,13 +7,14 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="819.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" stylesheets="/css/ThemKhieuNai.css" fx:controller="controller.ThemKhieuNaiCtrl">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="819.0" stylesheets="/css/ThemKhieuNai.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ThemKhieuNaiCtrl">
    <top>
       <Label style="-fx-font-weight: bold;" text="THÊM KHIẾU NẠI VÀ HỖ TRỢ KHÁCH HÀNG" BorderPane.alignment="CENTER">
          <font>
@@ -25,7 +26,7 @@
       </Label>
    </top>
    <center>
-      <VBox prefHeight="598.0" prefWidth="433.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="598.0" prefWidth="635.0" BorderPane.alignment="CENTER">
          <children>
             <HBox prefHeight="70.0" prefWidth="200.0">
                <children>
@@ -101,54 +102,48 @@
                   </TextArea>
                </children>
             </HBox>
-            <HBox prefHeight="61.0" prefWidth="459.0">
-               <children>
-                  <HBox prefHeight="100.0" prefWidth="230.0">
-                     <children>
-                        <Button fx:id="btnLamMoi" mnemonicParsing="false" prefHeight="37.0" prefWidth="140.0" styleClass="btn" text="Làm mới">
-                           <graphic>
-                              <ImageView fx:id="imgLamMoi" fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" styleClass="img" />
-                           </graphic>
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="50.0" />
-                           </HBox.margin>
-                           <padding>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                           </padding>
-                        </Button>
-                     </children>
-                     <HBox.margin>
-                        <Insets top="20.0" />
-                     </HBox.margin>
-                  </HBox>
-                  <HBox prefHeight="100.0" prefWidth="229.0">
-                     <children>
-                        <Button fx:id="btnThem" mnemonicParsing="false" prefHeight="37.0" prefWidth="140.0" styleClass="btn" text="Thêm">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fx:id="imgThem" fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true" styleClass="img" />
-                           </graphic>
-                           <HBox.margin>
-                              <Insets left="50.0" />
-                           </HBox.margin>
-                           <padding>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                           </padding>
-                        </Button>
-                     </children>
-                     <HBox.margin>
-                        <Insets top="20.0" />
-                     </HBox.margin>
-                  </HBox>
-               </children>
+            <HBox prefHeight="61.0" prefWidth="650.0" spacing="50.0">
                <VBox.margin>
                   <Insets bottom="30.0" top="30.0" />
                </VBox.margin>
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="119.0" styleClass="btn" text="Quay lại">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="29.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../picture/nhanVien/signOut.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="119.0" styleClass="btn" text="Làm mới">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="29.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../picture/nhanVien/refresh.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button layoutX="129.0" layoutY="10.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="111.0" styleClass="btn" text="Thêm">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../picture/nhanVien/plus.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
             </HBox>
          </children>
          <BorderPane.margin>

@@ -166,11 +166,13 @@ public class TimKiemKHCtrl {
 					KhachHang kh = getTableView().getItems().get(getIndex());
 
 					if (kh.isTrangThai()) { // xử lý xóa
-						if(toolCtrl.hienThiXacNhan("Xóa khách hàng", "Xác nhận xóa khách hàng tên: "+kh.getTenKH()+"?")) {
+						if (toolCtrl.hienThiXacNhan("Xóa khách hàng",
+								"Xác nhận xóa khách hàng tên: " + kh.getTenKH() + "?")) {
 							xoaKhachHang(kh);
 						}
 					} else { // xử lý hoàn tác
-						if(toolCtrl.hienThiXacNhan("Khôi phục khách hàng", "Xác nhận khôi phục khách hàng tên: "+kh.getTenKH()+"?")) {
+						if (toolCtrl.hienThiXacNhan("Khôi phục khách hàng",
+								"Xác nhận khôi phục khách hàng tên: " + kh.getTenKH() + "?")) {
 							hoanTacKhachHang(kh);
 						}
 					}
@@ -324,15 +326,10 @@ public class TimKiemKHCtrl {
 
 	public void xoaNhieu() {
 		List<KhachHang> listkh = hienThiNutXoaNhieu();
-
-		if (listkh.isEmpty()) {
-			toolCtrl.hienThiThongBao("Thông báo", "Vui lòng chọn ít nhất một nhân viên để xoá.", false);
-			return;
-		}
 		if (tblDangLam) {
 			// === TRƯỜNG HỢP ĐANG LÀM → XOÁ ===
 			boolean xacNhan = toolCtrl.hienThiXacNhan("Xác nhận xoá",
-					"Bạn có chắc muốn xoá " + listkh.size() + " nhân viên đã chọn?");
+					"Bạn có chắc muốn xoá " + listkh.size() + " khách hàng đã chọn?");
 			if (!xacNhan)
 				return;
 
@@ -345,7 +342,7 @@ public class TimKiemKHCtrl {
 		} else {
 			// === TRƯỜNG HỢP ĐÃ NGHỈ → KHÔI PHỤC ===
 			boolean xacNhan = toolCtrl.hienThiXacNhan("Xác nhận khôi phục",
-					"Bạn có chắc muốn khôi phục " + listkh.size() + " nhân viên đã chọn?");
+					"Bạn có chắc muốn khôi phục " + listkh.size() + " khách hàng đã chọn?");
 			if (!xacNhan)
 				return;
 
@@ -357,7 +354,7 @@ public class TimKiemKHCtrl {
 			toolCtrl.hienThiThongBao("Thành công", "Đã khôi phục thành công " + listkh.size() + " khách hàng.", true);
 		}
 
-		// Ẩn nút Xóa/KHôi phục và làm mới bảng
+		// Ẩn nút Xóa/Khôi phục và làm mới bảng
 		btnXoaTatCa.setVisible(false);
 		lamMoiBang();
 	}

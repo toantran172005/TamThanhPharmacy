@@ -17,7 +17,7 @@ import javafx.collections.ObservableList;
 
 public class NhanVienDAO {
 	private ToolCtrl toolCtrl = new ToolCtrl();
-	public ObservableList<NhanVien> listNV = FXCollections.observableArrayList();;
+	public ObservableList<NhanVien> listNV = FXCollections.observableArrayList();
 
 	public ObservableList<NhanVien> layListNhanVien() {
 		listNV.clear();
@@ -137,5 +137,14 @@ public class NhanVienDAO {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	// ========== TÌM NHÂN VIÊN THEO MÃ ==========
+	public NhanVien timNhanVienTheoMa(String maNV) {
+		for(NhanVien nv: listNV) {
+			if(nv.getMaNV().equalsIgnoreCase(maNV))
+				return nv;
+		}
+		return null;
 	}
 }

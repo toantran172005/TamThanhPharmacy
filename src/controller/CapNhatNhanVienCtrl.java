@@ -168,6 +168,8 @@ public class CapNhatNhanVienCtrl {
 	
 	public void capNhatNhanVien() {
 	    try {
+	    	
+	    	if (!kiemTraHopLe()) return;
 	        // Lấy thông tin từ giao diện
 	        String maNV = txtMaNV.getText();
 	        String tenNV = txtTenNV.getText();
@@ -192,9 +194,9 @@ public class CapNhatNhanVienCtrl {
 	        boolean kq = dao.capNhatNhanVien(nv);
 
 	        if (kq) {
-	            System.out.println("✅ Đã cập nhật nhân viên: " + maNV);
+	        	 toolCtrl.hienThiXacNhan("Thông báo", "Cập nhật thông tin nhân viên thành công!");
 	        } else {
-	            System.out.println("❌ Cập nhật nhân viên thất bại.");
+	        	toolCtrl.hienThiXacNhan("Thông báo", "Không thể cập nhật nhân viên. Vui lòng thử lại!");
 	        }
 	    } catch (Exception e) {
 	        e.printStackTrace();
@@ -249,5 +251,63 @@ public class CapNhatNhanVienCtrl {
 	    }
 
 	    return null;
+	}
+	
+	// ========== KIỂM TRA DỮ LIỆU HỢP LỆ ==========
+	private boolean kiemTraHopLe() {
+		String ten = txtTenNV.getText().trim();
+	    // Kiểm tra họ tên
+	    if (ten.isEmpty()) {
+	        toolCtrl.hienThiXacNhan("Lỗi nhập liệu", "Tên nhân viên không được để trống!");
+	        txtTenNV.requestFocus();
+	        return false;
+	    }
+	    if (ten.matches("^[\\p{L}\\s]+$")) {
+			toolCtrl.hienThiThongBao("Lỗi nhập liệu", "Tên nhân viên chỉ được chứa chữ cái và khoảng trắng.", false);
+			return false;
+		}
+
+	    // Kiểm tra số điện thoại
+	    String sdt = txtSdt.getText().trim();
+	    if (sdt.isEmpty()) {
+	        toolCtrl.hienThiXacNhan("Lỗi nhập liệu", "Số điện thoại không được để trống!");
+	        txtSdt.requestFocus();
+	        return false;
+	    }
+	    if (!sdt.matches("^0\\d{9}$")) { 
+	        toolCtrl.hienThiXacNhan("Lỗi nhập liệu", "Số điện thoại phải gồm 10 chữ số và bắt đầu bằng 0!");
+	        txtSdt.requestFocus();
+	        return false;
+	    }
+
+	    // Kiểm tra email
+	    String email = txtEmail.getText().trim();
+	    if (!email.isEmpty() && !email.matches("^[\\w._%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$")) {
+	        toolCtrl.hienThiXacNhan("Lỗi nhập liệu", "Email không đúng định dạng!");
+	        txtEmail.requestFocus();
+	        return false;
+	    }
+
+	    // Kiểm tra lương
+	    String luongText = txtLuong.getText().trim().replace(",", "").replace("₫", "");
+	    if (luongText.isEmpty()) {
+	        toolCtrl.hienThiXacNhan("Lỗi nhập liệu", "Lương không được để trống!");
+	        txtLuong.requestFocus();
+	        return false;
+	    }
+	    try {
+	        double luong = Double.parseDouble(luongText);
+	        if (luong <= 0) {
+	            toolCtrl.hienThiXacNhan("Lỗi nhập liệu", "Lương phải lớn hơn 0!");
+	            txtLuong.requestFocus();
+	            return false;
+	        }
+	    } catch (NumberFormatException e) {
+	        toolCtrl.hienThiXacNhan("Lỗi nhập liệu", "Lương không hợp lệ!");
+	        txtLuong.requestFocus();
+	        return false;
+	    }
+
+	    return true;
 	}
 }

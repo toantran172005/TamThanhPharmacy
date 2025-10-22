@@ -2,7 +2,6 @@
     -fx-font-size: 15px;
 }
 
-
 .chart-x-axis .tick-label {
     -fx-font-size: 15px;  
 }
@@ -145,8 +144,6 @@
     -fx-border-color: transparent;
     -fx-background-insets: 0;
 }
-
-
 
 .tbl{
 	-fx-background-color: white;

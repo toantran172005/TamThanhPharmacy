@@ -2,10 +2,19 @@ package controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import dao.KhachHangDAO;
 import entity.KhachHang;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -26,6 +35,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.ScrollEvent;
+import javafx.stage.FileChooser;
 
 public class ThongKeKhachHangCtrl {
 
@@ -53,17 +63,16 @@ public class ThongKeKhachHangCtrl {
 	@FXML
 	public ComboBox<String> cmbThongKeTop;
 	@FXML
-	public Button btnThongKe, btnXuatExcel, btnInBaoCao, btnLamMoi;
+	public Button btnThongKe, btnXuatExcel, btnLamMoi;
 	@FXML
 	public Label lblTongKH, lblTongSLM, lblTongCT, lblChiTieuTB;
 	@FXML
 	public DatePicker dpNgayBD, dpNgayKT;
 	@FXML
 	public BarChart<String, Number> barChartTopKH;
-
+	public List<KhachHang> listKHDaSapXep;
 	@FXML
 	public CategoryAxis xAxis;
-
 	@FXML
 	public NumberAxis yAxis;
 
@@ -76,7 +85,7 @@ public class ThongKeKhachHangCtrl {
 		setHoatDong();
 	}
 
-	public void setDataChoTable() {
+	public void setDataChoTable(ObservableList<KhachHang> listKH) {
 		if (listKH == null || listKH.isEmpty()) {
 			tblThongKeKH.getItems().clear();
 			return;
@@ -121,6 +130,105 @@ public class ThongKeKhachHangCtrl {
 
 	public void setHoatDong() {
 		btnThongKe.setOnAction(event -> thongKeKhachHang());
+		btnLamMoi.setOnAction(event -> lamMoiDuLieu());
+		btnXuatExcel.setOnAction(event -> xuatFileExcel());
+		cmbThongKeTop.setOnAction(event -> thongKeTheoTop());
+	}
+
+	public void xuatFileExcel() {
+		try {
+			// Lấy danh sách khách hàng từ TableView
+			List<KhachHang> list = tblThongKeKH.getItems();
+			if (list == null || list.isEmpty()) {
+				tool.hienThiThongBao("Lỗi xuất file excel", "Không có dữ liệu nào để xuất file!", false);
+				return;
+			}
+
+			// Hộp thoại chọn nơi lưu file
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setTitle("Lưu file Excel");
+			fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel Files", "*.xlsx"));
+			fileChooser.setInitialFileName("ThongKeKhachHang.xlsx");
+			File file = fileChooser.showSaveDialog(tblThongKeKH.getScene().getWindow());
+			if (file == null)
+				return;
+
+			// Tạo workbook & sheet
+			Workbook workbook = new XSSFWorkbook();
+			Sheet sheet = workbook.createSheet("Thống kê khách hàng");
+
+			// Tạo font in đậm cho header
+			CellStyle headerStyle = workbook.createCellStyle();
+			Font headerFont = workbook.createFont();
+			headerFont.setBold(true);
+			headerStyle.setFont(headerFont);
+
+			// Tạo hàng tiêu đề
+			Row headerRow = sheet.createRow(0);
+			String[] headers = { "STT", "Mã KH", "Tên KH", "Số điện thoại", "Số lần mua", "Tổng chi tiêu (VND)" };
+			for (int i = 0; i < headers.length; i++) {
+				Cell cell = headerRow.createCell(i);
+				cell.setCellValue(headers[i]);
+				cell.setCellStyle(headerStyle);
+			}
+
+			// Ghi dữ liệu từng dòng
+			int rowNum = 1;
+			for (int i = 0; i < list.size(); i++) {
+				KhachHang kh = list.get(i);
+				Row row = sheet.createRow(rowNum++);
+
+				row.createCell(0).setCellValue(i + 1);
+				row.createCell(1).setCellValue(kh.getMaKH());
+				row.createCell(2).setCellValue(kh.getTenKH());
+				row.createCell(3).setCellValue(kh.getSdt());
+				row.createCell(4).setCellValue(kh.getTongDonHang());
+				row.createCell(5).setCellValue(kh.getTongTien());
+			}
+
+			for (int i = 0; i < headers.length; i++) {
+				sheet.autoSizeColumn(i);
+			}
+
+			try (FileOutputStream fos = new FileOutputStream(file)) {
+				workbook.write(fos);
+			}
+
+			workbook.close();
+			tool.hienThiThongBao("Xuất file excel", "Xuất file Excel thành công!", true);
+			if (tool.hienThiXacNhan("Mở file excel", "Mở file excel vừa lưu?")) {
+				java.awt.Desktop.getDesktop().open(file);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			tool.hienThiThongBao("Xuất file excel", "Xuất file Excel thất bại!", false);
+		}
+	}
+
+	public void thongKeTheoTop() {
+		if (cmbThongKeTop.getValue() == null || listKH == null)
+			return;
+
+		String value = cmbThongKeTop.getValue();
+		ObservableList<KhachHang> listHienThi;
+
+		if (value.equals("Tất cả")) {
+			listHienThi = listKH;
+		} else {
+			int top = Integer.parseInt(value);
+			listHienThi = FXCollections.observableArrayList(listKH.subList(0, Math.min(top, listKH.size())));
+		}
+
+		tblThongKeKH.setItems(listHienThi);
+	}
+
+	public void lamMoiDuLieu() {
+		dpNgayBD.setValue(null);
+		dpNgayKT.setValue(null);
+		tblThongKeKH.getItems().clear();
+		barChartTopKH.getData().clear();
+		listKH.clear();
 	}
 
 	public void thongKeKhachHang() {
@@ -139,15 +247,16 @@ public class ThongKeKhachHangCtrl {
 		}
 
 		listKH = khDAO.layListKHThongKe(ngayBD, ngayKT);
+		FXCollections.sort(listKH, (kh1, kh2) -> Double.compare(kh2.getTongTien(), kh1.getTongTien()));
 		for (KhachHang kh : listKH) {
-			double tongTien = khDAO.layTongTien(kh.getMaKH());
-			int tongDon = khDAO.layTongDonHang(kh.getMaKH());
+			double tongTien = kh.getTongTien();
+			int tongDon = kh.getTongDonHang();
 			tongTienMap.put(kh.getMaKH(), tongTien);
 			tongDonMap.put(kh.getMaKH(), tongDon);
 		}
 		setDataChoLabel();
 		setDataChoBarChart();
-		setDataChoTable();
+		setDataChoTable(listKH);
 	}
 
 	public void setDataChoBarChart() {
@@ -186,7 +295,8 @@ public class ThongKeKhachHangCtrl {
 	}
 
 	public void setItemChoComboBox() {
-		cmbThongKeTop.getItems().addAll("1", "5", "10", "20");
+		cmbThongKeTop.getItems().addAll("Tất cả", "1", "5", "10", "20");
+		cmbThongKeTop.setValue("Tất cả");
 	}
 
 }
