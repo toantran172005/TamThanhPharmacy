@@ -1,5 +1,5 @@
 #btnDangNhap{
-	-fx-background-color: #07afff;
+	-fx-background-color: #00ADFE;
 }
 
 #btnDangNhap:hover {
@@ -9,7 +9,7 @@
 }
 
 #btnDangNhap:pressed {
-    -fx-background-color: #0096e6;
+    -fx-background-color: #00ADFE;
 }
 
 .txt{

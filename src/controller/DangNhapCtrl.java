@@ -52,7 +52,6 @@ public class DangNhapCtrl {
 		imgEye.setImage(matDong);
 	}
 	
-	
 	@FXML private void hienMatKhau() {
 		int conTro = doiMat ? txtPassOpen.getCaretPosition() : txpPassClose.getCaretPosition();
 		

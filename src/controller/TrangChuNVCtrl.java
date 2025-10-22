@@ -2,14 +2,20 @@ package controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+
 import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -19,10 +25,10 @@ public class TrangChuNVCtrl {
 
 	@FXML
 	public VBox vbTrangChu, vbThuoc, vbKeThuoc, vbKhachHang, vbHoaDon;
-	
-	@FXML 
+
+	@FXML
 	public ImageView imgDangXuat;
-	
+
 	@FXML
 	public ImageView imgTaiKhoan;
 
@@ -34,21 +40,26 @@ public class TrangChuNVCtrl {
 	@FXML
 	public BorderPane mainPane;
 	public Node mainPaneCenter;
+	
+	@FXML
+	private AnchorPane contentArea;
 
 	public void initialize() {
 		mainPaneCenter = mainPane.getCenter();
 		setThuocTinhMainMenu();
-		moTrangTT(imgTaiKhoan); 
+		moTrangTT(imgTaiKhoan);
+	}
+	
+	public void moTrangDaTai(Parent root) {
+	    contentArea.getChildren().setAll(root);
 	}
 
 	public void setThuocTinhMainMenu() {
 		setMauClickVaMenuCon(vbTrangChu, List.of());
-		setMauClickVaMenuCon(vbThuoc,
-				List.of("Tìm kiếm thuốc", "Thêm thuốc", "Cập nhật thuốc"));
-		setMauClickVaMenuCon(vbKeThuoc, List.of("Danh sách kệ", "Thêm kệ thuốc", "Cập nhật kệ"));
-		setMauClickVaMenuCon(vbKhachHang,
-				List.of("Tìm kiếm khách hàng", "Thêm khách hàng","Khiếu nại & Hỗ trợ"));
-		setMauClickVaMenuCon(vbHoaDon, List.of("Tìm kiếm hóa đơn", "Lập hóa đơn", "Đổi - Trả"));
+		setMauClickVaMenuCon(vbThuoc, List.of("Tìm kiếm thuốc", "Thêm thuốc"));
+		setMauClickVaMenuCon(vbKeThuoc, List.of("Danh sách kệ", "Thêm kệ thuốc"));
+		setMauClickVaMenuCon(vbKhachHang, List.of("Tìm kiếm khách hàng", "Thêm khách hàng", "Khiếu nại & Hỗ trợ"));
+		setMauClickVaMenuCon(vbHoaDon, List.of("Tìm kiếm hóa đơn","Danh sách phiếu đặt thuốc", "Lập hóa đơn","Đặt thuốc", "Đổi - Trả"));
 	}
 
 	@SuppressWarnings("unused")
@@ -109,82 +120,94 @@ public class TrangChuNVCtrl {
 	}
 
 	public void menuConClick(Label lbl) {
-	    String text = lbl.getText().trim();
+		String text = lbl.getText().trim();
 
-	    switch (text) {
-	        // ===== THUỐC =====
-	        case "Tìm kiếm thuốc":
+		switch (text) {
+		// ===== THUỐC =====
+		case "Tìm kiếm thuốc":
+			moTrang("/fxml/TimKiemThuoc.fxml", TimKiemThuocCtrl.class);
+			break;
+		case "Thêm thuốc":
+			doiCenterPane("/fxml/ThemThuoc.fxml");
+			break;
+		// ===== KỆ THUỐC =====
+		case "Danh sách kệ":
+			moTrangDanhSachKeThuoc();
+			break;
+		case "Thêm kệ thuốc":
+			doiCenterPane("/fxml/ThemKeThuoc.fxml");
+			break;
 
-	            break;
-	        case "Thêm thuốc":
+		// ===== KHÁCH HÀNG =====
+		case "Tìm kiếm khách hàng":
+			TimKiemKHCtrl tkKHCtrl = doiCenterPane("/fxml/TimKiemKH.fxml");
+			tkKHCtrl.setTrangChuNVCtrl(this);
+			break;
+		case "Thêm khách hàng":
+			doiCenterPane("/fxml/ThemKhachHang.fxml");
+			break;
+		case "Khiếu nại & Hỗ trợ":
+			moTrang("/fxml/DanhSachKhieuNaiVaHoTroKH.fxml", DanhSachKhieuNaiVaHoTroHKCtrl.class);
+			break;
 
-	            break;
-	        case "Cập nhật thuốc":
+		// ===== HÓA ĐƠN =====
+		case "Tìm kiếm hóa đơn":
+			moTrang("/fxml/TimKiemHD.fxml", TimKiemHDCtrl.class);
+			break;
+		case "Danh sách phiếu đặt thuốc":
+			
+			break;
+		case "Lập hóa đơn":
+			doiCenterPane("/fxml/LapHoaDon.fxml");
+			break;
+		case "Đặt thuốc":
 
-	            break;
+			break;
+		case "Đổi - Trả":
+			doiCenterPane("/fxml/PhieuDoiTra.fxml");
+			break;
 
-	        // ===== KỆ THUỐC =====
-	        case "Danh sách kệ":
+		default:
+			System.out.println("⚠ Menu chưa xử lý: " + text);
+			break;
+		}
 
-	            break;
-	        case "Thêm kệ thuốc":
-
-	            break;
-	        case "Cập nhật kệ":
-
-	            break;
-
-	        // ===== KHÁCH HÀNG =====
-	        case "Tìm kiếm khách hàng":
-	        	doiCenterPane("/fxml/TimKiemKH.fxml");
-	            break;
-	        case "Thêm khách hàng":
-	        	doiCenterPane("/fxml/ThemKhachHang.fxml");
-	            break;
-	        case "Khiếu nại & Hỗ trợ":
-
-	            break;
-
-	        // ===== HÓA ĐƠN =====
-	        case "Tìm kiếm hóa đơn":
-
-	            break;
-	        case "Lập hóa đơn":
-
-	            break;
-	        case "Đổi - Trả":
-
-	            break;
-
-	        default:
-	            System.out.println("⚠ Menu chưa xử lý: " + text);
-	            break;
-	    }
-
-	    if (MenuConHienTai != null) {
-	        MenuConHienTai.pseudoClassStateChanged(SELECTED, false);
-	    }
-	    lbl.pseudoClassStateChanged(SELECTED, true);
-	    MenuConHienTai = lbl;
+		if (MenuConHienTai != null) {
+			MenuConHienTai.pseudoClassStateChanged(SELECTED, false);
+		}
+		lbl.pseudoClassStateChanged(SELECTED, true);
+		MenuConHienTai = lbl;
 	}
-	
+
 	public void dangXuat() {
 		Stage stage = (Stage) imgDangXuat.getScene().getWindow();
 		Parent root = null;
-		try {
-			root = FXMLLoader.load(getClass().getResource("/fxml/DangNhap.fxml"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        StackPane container = new StackPane(root);
-        Scene scene = new Scene(container);		
-		stage.setScene(scene);		
-		stage.setMaximized(false); 
-		stage.centerOnScreen();     
-		stage.setResizable(true);
-	}
 
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("Xác nhận đăng xuất");
+		alert.setHeaderText("Bạn có chắc chắn muốn đăng xuất?");
+		alert.setContentText("Nhấn OK để xác nhận hoặc Cancel để ở lại.");
+
+		Stage stageAlert = (Stage) alert.getDialogPane().getScene().getWindow();
+		stageAlert.getIcons().add(new Image("/picture/trangChu/logo.jpg"));
+
+		Optional<ButtonType> ketQua = alert.showAndWait();
+
+		if (ketQua.isPresent() && ketQua.get() == ButtonType.OK) {
+			try {
+				root = FXMLLoader.load(getClass().getResource("/fxml/DangNhap.fxml"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			StackPane container = new StackPane(root);
+			Scene scene = new Scene(container);
+			stage.setScene(scene);
+			stage.setMaximized(false);
+			stage.centerOnScreen();
+			stage.setResizable(true);
+		}
+	}
 
 	public void quayLaiTrangChu() {
 		mainPane.setCenter(mainPaneCenter);
@@ -203,25 +226,64 @@ public class TrangChuNVCtrl {
 			return null;
 		}
 	}
-	
+
 	// ========== MỞ TRANG THÔNG TIN ==========
-		public void setTrangTaiKhoan() {
-		    try {
-		        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ThongTin.fxml"));
-		        Parent root = loader.load();
+	public void moTrangTT(ImageView imgTaiKhoan) {
+		imgTaiKhoan.setOnMouseClicked(e -> moTrang("/fxml/ThongTin.fxml", ThongTinCtrl.class));
+	}
 
-		        // lấy controller của ThongTin.fxml
-		        ThongTinCtrl controller = loader.getController();
-		        controller.setTrangChuNVCtrl(this);
+	public <T> T moTrang(String fxmlPath, Class<T> controllerClass) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+			Parent root = loader.load();
 
-		        mainPane.setCenter(root);
-		    } 
-		    catch (IOException e) {
-		        e.printStackTrace();
-		    }
+			// Lấy controller của FXML
+			T controller = loader.getController();
+
+			// Nếu controller có setTrangChuNVCtrl thì tự động gán
+			try {
+				controllerClass.getMethod("setTrangChuNVCtrl", TrangChuNVCtrl.class).invoke(controller, this);
+			} catch (NoSuchMethodException ignore) {
+
+			}
+
+			mainPane.setCenter(root);
+			return controller;
+		} catch (IOException | ReflectiveOperationException e) {
+			e.printStackTrace();
+			return null;
 		}
-		
-		public void moTrangTT(ImageView imgTaiKhoan) {
-		    imgTaiKhoan.setOnMouseClicked(e -> setTrangTaiKhoan());
+	}
+
+	// ========== MỞ TRANG DANH SÁCH KỆ THUỐC ==========
+	public void moTrangDanhSachKeThuoc() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/DanhSachKeThuoc.fxml"));
+			Parent root = loader.load();
+
+			// lấy controller của ThongTin.fxml
+			DanhSachKeThuocCtrl controller = loader.getController();
+			controller.setTrangChuNVCtrl(this);
+
+			mainPane.setCenter(root);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+	}
+
+	// ========== MỞ TRANG ChI TIẾT KỆ THUỐC ==========
+	public void setTrangChiTietKeThuoc() {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ChiTietKeThuoc.fxml"));
+			Parent root = loader.load();
+
+			// lấy controller của ChiTietKeThuoc.fxml
+			ChiTietKeThuocCtrl controller = loader.getController();
+			controller.setTrangChuNVCtrl(this);
+			mainPane.setCenter(root);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
