@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 import controller.ToolCtrl;
 import database.KetNoiDatabase;
@@ -102,37 +104,41 @@ public class KhachHangDAO {
 		}
 		return list;
 	}
+	
+    public Map<String, Integer> layTatCaTongDonHang() {
+        Map<String, Integer> map = new HashMap<>();
+        String sql = "SELECT maKH, COUNT(DISTINCT maHD) AS tongDonHang FROM HoaDon GROUP BY maKH";
+        try (Connection con = KetNoiDatabase.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                map.put(rs.getString("maKH"), rs.getInt("tongDonHang"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
 
-	public int layTongDonHang(String maKH) {
-		String sql = "SELECT COUNT(DISTINCT maHD) FROM HoaDon WHERE maKH = ?";
-		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setString(1, maKH);
-			ResultSet rs = ps.executeQuery();
-			if (rs.next())
-				return rs.getInt(1);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
-	public double layTongTien(String maKH) {
-		String sql = """
-				SELECT SUM(CT.soLuong * CT.donGia)
-				FROM HoaDon HD
-				JOIN CT_HoaDon CT ON HD.maHD = CT.maHD
-				WHERE HD.maKH = ?
-				""";
-		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setString(1, maKH);
-			ResultSet rs = ps.executeQuery();
-			if (rs.next())
-				return rs.getDouble(1);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
+    public Map<String, Double> layTatCaTongTien() {
+        Map<String, Double> map = new HashMap<>();
+        String sql = """
+            SELECT HD.maKH, SUM(CT.soLuong * CT.donGia) AS tongTien
+            FROM HoaDon HD
+            JOIN CT_HoaDon CT ON HD.maHD = CT.maHD
+            GROUP BY HD.maKH
+        """;
+        try (Connection con = KetNoiDatabase.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                map.put(rs.getString("maKH"), rs.getDouble("tongTien"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
 
 	public ObservableList<KhachHang> layListKHThongKe(LocalDate ngayBD, LocalDate ngayKT) {
 		ObservableList<KhachHang> list = FXCollections.observableArrayList();

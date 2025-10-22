@@ -1,22 +1,31 @@
 package entity;
 
+import java.util.Map;
+
 import dao.KhachHangDAO;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
 public class KhachHang {
+	// Thuộc tính chính
 	private BooleanProperty selected = new SimpleBooleanProperty(false);
 	private String maKH;
 	private String tenKH;
 	private String sdt;
 	private int tuoi;
 	private boolean trangThai;
-	@SuppressWarnings("unused")
-	private int tongDonHang;
-	@SuppressWarnings("unused")
-	private double tongTien;
+	// Thuộc tính tạm
+	public Map<String, Integer> tongDonHangCache;
+	public Map<String, Double> tongTienCache;
 	
 	public KhachHangDAO khDAO = new KhachHangDAO();
+
+	public void taoCache() {
+		if (tongDonHangCache == null || tongTienCache == null) {
+			tongDonHangCache = khDAO.layTatCaTongDonHang();
+			tongTienCache = khDAO.layTatCaTongTien();
+		}
+	}
 
 	public KhachHang() {
 		super();
@@ -53,11 +62,13 @@ public class KhachHang {
 	}
 
 	public int getTongDonHang() {
-		return khDAO.layTongDonHang(this.maKH);
+		taoCache();
+		return tongDonHangCache.getOrDefault(maKH, 0);
 	}
 
 	public double getTongTien() {
-		return khDAO.layTongTien(this.maKH);
+		taoCache();
+		return tongTienCache.getOrDefault(maKH, 0.0);
 	}
 
 	public String getMaKH() {

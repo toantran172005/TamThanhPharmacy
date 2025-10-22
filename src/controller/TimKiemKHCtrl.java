@@ -167,11 +167,13 @@ public class TimKiemKHCtrl {
 					KhachHang kh = getTableView().getItems().get(getIndex());
 
 					if (kh.isTrangThai()) { // xử lý xóa
-						if(toolCtrl.hienThiXacNhan("Xóa khách hàng", "Xác nhận xóa khách hàng tên: "+kh.getTenKH()+"?")) {
+						if (toolCtrl.hienThiXacNhan("Xóa khách hàng",
+								"Xác nhận xóa khách hàng tên: " + kh.getTenKH() + "?")) {
 							xoaKhachHang(kh);
 						}
 					} else { // xử lý hoàn tác
-						if(toolCtrl.hienThiXacNhan("Khôi phục khách hàng", "Xác nhận khôi phục khách hàng tên: "+kh.getTenKH()+"?")) {
+						if (toolCtrl.hienThiXacNhan("Khôi phục khách hàng",
+								"Xác nhận khôi phục khách hàng tên: " + kh.getTenKH() + "?")) {
 							hoanTacKhachHang(kh);
 						}
 					}
@@ -196,15 +198,15 @@ public class TimKiemKHCtrl {
 			}
 		});
 	}
-	
+
 	public void hienThiLichSuXoa() {
 		for (KhachHang kh : tblKhachHang.getItems()) {
-	        kh.setSelected(false);
-	    }
+			kh.setSelected(false);
+		}
 		btnXoaTatCa.setVisible(false);
-	    tblKhachHang.refresh();
-	    
-		if(tblDangLam) {
+		tblKhachHang.refresh();
+
+		if (tblDangLam) {
 			btnLichSuXoa.setText("Danh sách hiện tại");
 			btnXoaTatCa.setText("Khôi phục tất cả");
 			tblDangLam = false;
@@ -312,8 +314,6 @@ public class TimKiemKHCtrl {
 
 	public void xoaNhieu() {
 		List<KhachHang> listkh = hienThiNutXoaNhieu();
-
-<<<<<<< HEAD
 		if (tblDangLam) {
 			// === TRƯỜNG HỢP ĐANG LÀM → XOÁ ===
 			boolean xacNhan = toolCtrl.hienThiXacNhan("Xác nhận xoá",
@@ -341,41 +341,8 @@ public class TimKiemKHCtrl {
 			}
 			toolCtrl.hienThiThongBao("Thành công", "Đã khôi phục thành công " + listkh.size() + " khách hàng.", true);
 		}
-=======
-		if (listkh.isEmpty()) {
-			toolCtrl.hienThiThongBao("Thông báo", "Vui lòng chọn ít nhất một nhân viên để xoá.", false);
-			return;
-		}
-		if (tblDangLam) {
-			// === TRƯỜNG HỢP ĐANG LÀM → XOÁ ===
-			boolean xacNhan = toolCtrl.hienThiXacNhan("Xác nhận xoá",
-					"Bạn có chắc muốn xoá " + listkh.size() + " nhân viên đã chọn?");
-			if (!xacNhan)
-				return;
 
-			for (KhachHang kh : listkh) {
-				if (kh.isTrangThai()) {
-					xoaKhachHang(kh);
-				}
-			}
-			toolCtrl.hienThiThongBao("Thành công", "Đã xoá thành công " + listkh.size() + " khách hàng.", true);
-		} else {
-			// === TRƯỜNG HỢP ĐÃ NGHỈ → KHÔI PHỤC ===
-			boolean xacNhan = toolCtrl.hienThiXacNhan("Xác nhận khôi phục",
-					"Bạn có chắc muốn khôi phục " + listkh.size() + " nhân viên đã chọn?");
-			if (!xacNhan)
-				return;
-
-			for (KhachHang kh : listkh) {
-				if (!kh.isTrangThai()) {
-					hoanTacKhachHang(kh);
-				}
-			}
-			toolCtrl.hienThiThongBao("Thành công", "Đã khôi phục thành công " + listkh.size() + " khách hàng.", true);
-		}
->>>>>>> 5fa02f6ba7e72dcb0737330c94efce55c097731b
-
-		// Ẩn nút Xóa/KHôi phục và làm mới bảng
+		// Ẩn nút Xóa/Khôi phục và làm mới bảng
 		btnXoaTatCa.setVisible(false);
 		lamMoiBang();
 	}

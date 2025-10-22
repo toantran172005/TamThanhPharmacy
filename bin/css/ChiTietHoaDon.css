@@ -47,3 +47,8 @@
     -fx-font-size: 13px;
     -fx-padding: 8 0 8 8;
 }
+
+.tbl .table-cell {
+    -fx-alignment: CENTER;
+    -fx-font-size: 15.0px;
+}

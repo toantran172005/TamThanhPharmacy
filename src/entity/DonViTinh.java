@@ -40,7 +40,7 @@ public class DonViTinh {
 
 	@Override
 	public String toString() {
-		return "DonViTinh [maDVT=" + maDVT + ", tenDVT=" + tenDVT + "]";
+		return tenDVT;
 	}
 	
 	

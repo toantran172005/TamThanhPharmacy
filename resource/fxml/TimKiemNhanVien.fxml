@@ -41,12 +41,12 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="60.0" prefWidth="405.0" spacing="20.0">
                      <children>
-                        <Label text="Mã nhân viên: ">
+                        <Label text="Số điện thoại: ">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtMaNV" promptText="Mã nhân viên..." styleClass="text-field">
+                        <TextField fx:id="txtSdt" promptText="Số điện thoại..." styleClass="text-field">
                            <font>
                               <Font size="15.0" />
                            </font>

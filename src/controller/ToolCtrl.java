@@ -45,7 +45,6 @@ public class ToolCtrl {
 	    });
 	}
 
-
 	// Hiển thị thông báo
 	public void hienThiThongBao(String tieuDe, String noiDung, Boolean trangThai) {
 		if (trangThai) {

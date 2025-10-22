@@ -20,251 +20,291 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fx:id="scrTKKH" fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1177.0" prefWidth="1162.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ThongKeKhachHangCtrl">
-   <content>
-      <BorderPane stylesheets="/css/ThongKeKhachHang.css">
-         <top>
-            <VBox prefHeight="118.0" prefWidth="1061.0" BorderPane.alignment="CENTER">
-               <children>
-                  <HBox alignment="CENTER" prefHeight="46.0" prefWidth="1061.0">
-                     <children>
-                        <Label prefHeight="53.0" prefWidth="218.0" text="THỐNG KÊ KHÁCH HÀNG">
-                           <font>
-                              <Font name="System Bold" size="18.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="54.0" prefWidth="1061.0">
-                     <children>
-                        <HBox alignment="CENTER" prefHeight="54.0" prefWidth="314.0" spacing="20.0">
-                           <children>
-                              <Label prefHeight="21.0" prefWidth="73.0" text="Từ ngày: ">
-                                 <font>
-                                    <Font name="System Bold" size="15.0" />
-                                 </font>
-                              </Label>
-                              <DatePicker fx:id="dpNgayBD" promptText="Ngày bắt đầu..." styleClass="combo-box" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="54.0" prefWidth="348.0" spacing="20.0">
-                           <children>
-                              <Label prefHeight="21.0" prefWidth="93.0" text="Đến ngày: ">
-                                 <font>
-                                    <Font name="System Bold" size="15.0" />
-                                 </font>
-                              </Label>
-                              <DatePicker fx:id="dpNgayKT" promptText="Ngày kết thúc" styleClass="combo-box" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="54.0" prefWidth="158.0" spacing="10.0">
-                           <children>
-                              <Button fx:id="btnThongKe" mnemonicParsing="false" prefHeight="32.0" prefWidth="123.0" styleClass="btn" text="Thống kê">
-                                 <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="22.0" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../picture/khachHang/statistic.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                                 <font>
-                                    <Font name="System Bold" size="15.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </HBox>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </top>
-         <center>
-            <VBox prefHeight="1045.0" prefWidth="1161.0" BorderPane.alignment="CENTER">
-               <children>
-                  <TitledPane animated="false" text="Tổng quan khách hàng">
-                     <content>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
-                           <children>
-                              <VBox alignment="CENTER">
-                                 <children>
-                                    <Label text="Tổng khách hàng">
-                                       <font>
-                                          <Font name="System Bold" size="15.0" />
-                                       </font>
-                                    </Label>
-                                    <Label fx:id="lblTongKH" text="0">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font></Label>
-                                 </children>
-                              </VBox>
-                              <VBox alignment="CENTER">
-                                 <children>
-                                    <Label text="Tổng số lần mua">
-                                       <font>
-                                          <Font name="System Bold" size="15.0" />
-                                       </font>
-                                    </Label>
-                                    <Label fx:id="lblTongSLM" text="0">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font></Label>
-                                 </children>
-                              </VBox>
-                              <VBox alignment="CENTER">
-                                 <children>
-                                    <Label text="Tổng chi tiêu">
-                                       <font>
-                                          <Font name="System Bold" size="15.0" />
-                                       </font>
-                                    </Label>
-                                    <Label fx:id="lblTongCT" text="0 VND">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font></Label>
-                                 </children>
-                              </VBox>
-                              <VBox alignment="CENTER">
-                                 <children>
-                                    <Label text="Chi tiêu TB/Khách">
-                                       <font>
-                                          <Font name="System Bold" size="15.0" />
-                                       </font>
-                                    </Label>
-                                    <Label fx:id="lblChiTieuTB" text="0 VND">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font></Label>
-                                 </children>
-                              </VBox>
-                           </children>
-                        </HBox>
-                     </content>
-                  </TitledPane>
-                  <TitledPane animated="false" text="Biểu đồ Top khách Hàng Chi Tiêu Cao Nhất">
-                     <content>
-                        <BorderPane prefHeight="450.0" prefWidth="1116.0">
-                           <center>
-                              <BarChart fx:id="barChartTopKH" minHeight="300.0" prefHeight="450.0" prefWidth="998.0" title="Top Khách Hàng">
-                                 <xAxis>
-<<<<<<< HEAD
-                                    <CategoryAxis label="Tên khách hàng" styleClass="chart-x-axis" fx:id="xAxis">
-=======
-                                    <CategoryAxis label="Tên khách hàng" fx:id="xAxis">
->>>>>>> 5fa02f6ba7e72dcb0737330c94efce55c097731b
-                                       <tickLabelFont>
-                                          <Font size="15.0" />
-                                       </tickLabelFont></CategoryAxis>
-                                 </xAxis>
-                                 <yAxis>
-<<<<<<< HEAD
-                                    <NumberAxis fx:id="yAxis" label="Tổng chi tiêu (VND)" styleClass="chart-y-axis">
-=======
-                                    <NumberAxis fx:id="yAxis" label="Tổng chi tiêu (VND)">
->>>>>>> 5fa02f6ba7e72dcb0737330c94efce55c097731b
-                                       <tickLabelFont>
-                                          <Font size="15.0" />
-                                       </tickLabelFont></NumberAxis>
-                                 </yAxis>
-                              </BarChart>
-                           </center>
-                        </BorderPane>
-                     </content>
-                  </TitledPane>
-                  <TitledPane animated="false" text="Bảng thống kê chi tiết">
-                     <content>
-                        <BorderPane>
-                           <center>
-                              <VBox alignment="TOP_CENTER" spacing="10.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
-                                       <padding>
-                                          <Insets bottom="0.0" left="10.0" right="10.0" top="10.0" />
-                                       </padding>
-                                       <children>
-                                          <Label text="Thống kê theo top:">
-                                             <font>
-                                                <Font name="System Bold" size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <ComboBox fx:id="cmbThongKeTop" prefWidth="140.0" styleClass="combo-box" />
-                                       </children>
-                                    </HBox>
-                                    <TableView fx:id="tblThongKeKH" cache="true" cacheHint="SPEED" minHeight="300.0" prefHeight="224.0" prefWidth="1097.0" styleClass="tbl">
-                                       <columns>
-                                          <TableColumn fx:id="colSTT" prefWidth="60.0" text="STT" />
-                                          <TableColumn fx:id="colMaKH" prefWidth="100.0" text="Mã KH" />
-                                          <TableColumn fx:id="colTenKH" prefWidth="150.0" text="Tên KH" />
-                                          <TableColumn fx:id="colSdt" prefWidth="120.0" text="SĐT" />
-                                          <TableColumn fx:id="colSoLanMua" prefWidth="100.0" text="Số lần mua" />
-                                          <TableColumn fx:id="colTongChiTieu" prefWidth="120.0" text="Tổng chi tiêu" />
-                                       </columns>
-                                       <columnResizePolicy>
-                                          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                       </columnResizePolicy>
-                                    </TableView>
-                                 </children>
-                              </VBox>
-                           </center>
-                        </BorderPane>
-                     </content>
-                  </TitledPane>
-                  <HBox alignment="CENTER" spacing="70.0">
-                     <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-                     </padding>
-                     <children>
-                        <HBox alignment="CENTER" spacing="10.0" styleClass="btn">
-                           <children>
-                              <Button fx:id="btnXuatExcel" mnemonicParsing="false" styleClass="btn" text="Xuất Excel">
-                                 <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="22.0" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../picture/khachHang/export.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                                 <font>
-                                    <Font name="System Bold" size="15.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </HBox>
-                        <HBox alignment="CENTER" spacing="10.0" styleClass="btn">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </HBox>
-                        <HBox alignment="CENTER" spacing="10.0" styleClass="btn">
-                           <children>
-                              <Button fx:id="btnLamMoi" mnemonicParsing="false" styleClass="btn" text="Làm mới">
-                                 <graphic>
-                                    <ImageView fitHeight="22.0" fitWidth="22.0" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../picture/khachHang/refresh.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                                 <font>
-                                    <Font name="System Bold" size="15.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </HBox>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </center>
-      </BorderPane>
-   </content>
+<ScrollPane fx:id="scrTKKH" fitToHeight="true"
+	fitToWidth="true" maxHeight="1.7976931348623157E308"
+	maxWidth="1.7976931348623157E308" prefHeight="1177.0"
+	prefWidth="1162.0" xmlns="http://javafx.com/javafx/24.0.1"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="controller.ThongKeKhachHangCtrl">
+	<content>
+		<BorderPane stylesheets="/css/ThongKeKhachHang.css">
+			<top>
+				<VBox prefHeight="118.0" prefWidth="1061.0"
+					BorderPane.alignment="CENTER">
+					<children>
+						<HBox alignment="CENTER" prefHeight="46.0" prefWidth="1061.0">
+							<children>
+								<Label prefHeight="53.0" prefWidth="218.0"
+									text="THỐNG KÊ KHÁCH HÀNG">
+									<font>
+										<Font name="System Bold" size="18.0" />
+									</font>
+								</Label>
+							</children>
+						</HBox>
+						<HBox alignment="CENTER" prefHeight="54.0" prefWidth="1061.0">
+							<children>
+								<HBox alignment="CENTER" prefHeight="54.0"
+									prefWidth="314.0" spacing="20.0">
+									<children>
+										<Label prefHeight="21.0" prefWidth="73.0"
+											text="Từ ngày: ">
+											<font>
+												<Font name="System Bold" size="15.0" />
+											</font>
+										</Label>
+										<DatePicker fx:id="dpNgayBD"
+											promptText="Ngày bắt đầu..." styleClass="combo-box" />
+									</children>
+								</HBox>
+								<HBox alignment="CENTER" prefHeight="54.0"
+									prefWidth="348.0" spacing="20.0">
+									<children>
+										<Label prefHeight="21.0" prefWidth="93.0"
+											text="Đến ngày: ">
+											<font>
+												<Font name="System Bold" size="15.0" />
+											</font>
+										</Label>
+										<DatePicker fx:id="dpNgayKT"
+											promptText="Ngày kết thúc" styleClass="combo-box" />
+									</children>
+								</HBox>
+								<HBox alignment="CENTER" prefHeight="54.0"
+									prefWidth="158.0" spacing="10.0">
+									<children>
+										<Button fx:id="btnThongKe" mnemonicParsing="false"
+											prefHeight="32.0" prefWidth="123.0" styleClass="btn"
+											text="Thống kê">
+											<graphic>
+												<ImageView fitHeight="22.0" fitWidth="22.0"
+													preserveRatio="true">
+													<image>
+														<Image url="@../picture/khachHang/statistic.png" />
+													</image>
+												</ImageView>
+											</graphic>
+											<font>
+												<Font name="System Bold" size="15.0" />
+											</font>
+										</Button>
+									</children>
+									<cursor>
+										<Cursor fx:constant="HAND" />
+									</cursor>
+								</HBox>
+							</children>
+						</HBox>
+					</children>
+				</VBox>
+			</top>
+			<center>
+				<VBox prefHeight="1045.0" prefWidth="1161.0"
+					BorderPane.alignment="CENTER">
+					<children>
+						<TitledPane animated="false"
+							text="Tổng quan khách hàng">
+							<content>
+								<HBox alignment="CENTER" prefHeight="100.0"
+									prefWidth="200.0" spacing="30.0">
+									<children>
+										<VBox alignment="CENTER">
+											<children>
+												<Label text="Tổng khách hàng">
+													<font>
+														<Font name="System Bold" size="15.0" />
+													</font>
+												</Label>
+												<Label fx:id="lblTongKH" text="0">
+													<font>
+														<Font size="15.0" />
+													</font>
+												</Label>
+											</children>
+										</VBox>
+										<VBox alignment="CENTER">
+											<children>
+												<Label text="Tổng số lần mua">
+													<font>
+														<Font name="System Bold" size="15.0" />
+													</font>
+												</Label>
+												<Label fx:id="lblTongSLM" text="0">
+													<font>
+														<Font size="15.0" />
+													</font>
+												</Label>
+											</children>
+										</VBox>
+										<VBox alignment="CENTER">
+											<children>
+												<Label text="Tổng chi tiêu">
+													<font>
+														<Font name="System Bold" size="15.0" />
+													</font>
+												</Label>
+												<Label fx:id="lblTongCT" text="0 VND">
+													<font>
+														<Font size="15.0" />
+													</font>
+												</Label>
+											</children>
+										</VBox>
+										<VBox alignment="CENTER">
+											<children>
+												<Label text="Chi tiêu TB/Khách">
+													<font>
+														<Font name="System Bold" size="15.0" />
+													</font>
+												</Label>
+												<Label fx:id="lblChiTieuTB" text="0 VND">
+													<font>
+														<Font size="15.0" />
+													</font>
+												</Label>
+											</children>
+										</VBox>
+									</children>
+								</HBox>
+							</content>
+						</TitledPane>
+						<TitledPane animated="false"
+							text="Biểu đồ Top khách Hàng Chi Tiêu Cao Nhất">
+							<content>
+								<BorderPane prefHeight="450.0" prefWidth="1116.0">
+									<center>
+										<BarChart fx:id="barChartTopKH" minHeight="300.0"
+											prefHeight="450.0" prefWidth="998.0" title="Top Khách Hàng">
+											<xAxis>
+												<CategoryAxis label="Tên khách hàng"
+													styleClass="chart-x-axis" fx:id="xAxis">
+													<tickLabelFont>
+														<Font size="15.0" />
+													</tickLabelFont>
+												</CategoryAxis>
+											</xAxis>
+
+											<yAxis>
+												<NumberAxis fx:id="yAxis"
+													label="Tổng chi tiêu (VND)" styleClass="chart-y-axis">
+													<tickLabelFont>
+														<Font size="15.0" />
+													</tickLabelFont>
+												</NumberAxis>
+											</yAxis>
+										</BarChart>
+
+									</center>
+								</BorderPane>
+							</content>
+						</TitledPane>
+						<TitledPane animated="false"
+							text="Bảng thống kê chi tiết">
+							<content>
+								<BorderPane>
+									<center>
+										<VBox alignment="TOP_CENTER" spacing="10.0">
+											<children>
+												<HBox alignment="CENTER_LEFT" spacing="10.0">
+													<padding>
+														<Insets bottom="0.0" left="10.0" right="10.0"
+															top="10.0" />
+													</padding>
+													<children>
+														<Label text="Thống kê theo top:">
+															<font>
+																<Font name="System Bold" size="15.0" />
+															</font>
+														</Label>
+														<ComboBox fx:id="cmbThongKeTop" prefWidth="140.0"
+															styleClass="combo-box" />
+													</children>
+												</HBox>
+												<TableView fx:id="tblThongKeKH" cache="true"
+													cacheHint="SPEED" minHeight="300.0" prefHeight="224.0"
+													prefWidth="1097.0" styleClass="tbl">
+													<columns>
+														<TableColumn fx:id="colSTT" prefWidth="60.0"
+															text="STT" />
+														<TableColumn fx:id="colMaKH" prefWidth="100.0"
+															text="Mã KH" />
+														<TableColumn fx:id="colTenKH"
+															prefWidth="150.0" text="Tên KH" />
+														<TableColumn fx:id="colSdt" prefWidth="120.0"
+															text="SĐT" />
+														<TableColumn fx:id="colSoLanMua"
+															prefWidth="100.0" text="Số lần mua" />
+														<TableColumn fx:id="colTongChiTieu"
+															prefWidth="120.0" text="Tổng chi tiêu" />
+													</columns>
+													<columnResizePolicy>
+														<TableView
+															fx:constant="CONSTRAINED_RESIZE_POLICY" />
+													</columnResizePolicy>
+												</TableView>
+											</children>
+										</VBox>
+									</center>
+								</BorderPane>
+							</content>
+						</TitledPane>
+						<HBox alignment="CENTER" spacing="70.0">
+							<padding>
+								<Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+							</padding>
+							<children>
+								<HBox alignment="CENTER" spacing="10.0" styleClass="btn">
+									<children>
+										<Button fx:id="btnXuatExcel" mnemonicParsing="false"
+											styleClass="btn" text="Xuất Excel">
+											<graphic>
+												<ImageView fitHeight="22.0" fitWidth="22.0"
+													preserveRatio="true">
+													<image>
+														<Image url="@../picture/khachHang/export.png" />
+													</image>
+												</ImageView>
+											</graphic>
+											<font>
+												<Font name="System Bold" size="15.0" />
+											</font>
+										</Button>
+									</children>
+									<cursor>
+										<Cursor fx:constant="HAND" />
+									</cursor>
+								</HBox>
+								<HBox alignment="CENTER" spacing="10.0" styleClass="btn">
+									<cursor>
+										<Cursor fx:constant="HAND" />
+									</cursor>
+								</HBox>
+								<HBox alignment="CENTER" spacing="10.0" styleClass="btn">
+									<children>
+										<Button fx:id="btnLamMoi" mnemonicParsing="false"
+											styleClass="btn" text="Làm mới">
+											<graphic>
+												<ImageView fitHeight="22.0" fitWidth="22.0"
+													preserveRatio="true">
+													<image>
+														<Image url="@../picture/khachHang/refresh.png" />
+													</image>
+												</ImageView>
+											</graphic>
+											<font>
+												<Font name="System Bold" size="15.0" />
+											</font>
+										</Button>
+									</children>
+									<cursor>
+										<Cursor fx:constant="HAND" />
+									</cursor>
+								</HBox>
+							</children>
+						</HBox>
+					</children>
+				</VBox>
+			</center>
+		</BorderPane>
+	</content>
 </ScrollPane>
