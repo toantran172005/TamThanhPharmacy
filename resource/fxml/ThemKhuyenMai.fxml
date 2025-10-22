@@ -158,7 +158,7 @@
               <columns>
                 <TableColumn fx:id="colSelect" editable="false" prefWidth="62.0" sortable="false">
                      <graphic>
-                        <CheckBox mnemonicParsing="false" />
+                        <CheckBox fx:id="chkSelect" mnemonicParsing="false" />
                      </graphic>
                   </TableColumn>
                 <TableColumn fx:id="colMaThuoc" prefWidth="126.0" text="Mã Thuốc" />

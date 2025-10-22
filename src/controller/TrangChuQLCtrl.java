@@ -234,6 +234,7 @@ public class TrangChuQLCtrl {
 		
 		case "Thêm Khuyến Mãi":
 			doiCenterPane("/fxml/ThemKhuyenMai.fxml");
+			break;
 		default:
 			System.out.println("⚠ Menu chưa xử lý: " + text);
 			break;

@@ -1,12 +1,22 @@
 package controller;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
+import dao.ThuocDAO;
 import entity.KhuyenMai;
+import entity.Thuoc;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -18,19 +28,19 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class ThemKhuyenMaiCtrl {
 	
 	@FXML
-	public TableView<KhuyenMai> tblThuocKhuyenMai;
+	public TableView<Object[]> tblThuocKhuyenMai;
 	@FXML
-	public TableColumn<KhuyenMai, Boolean> colSelect;
+	public TableColumn<Object[], Boolean> colSelect;
 	@FXML
-	public TableColumn<KhuyenMai, String> colMaThuoc;
+	public TableColumn<Object[], String> colMaThuoc;
 	@FXML
-	public TableColumn<KhuyenMai, String> colTenThuoc;
+	public TableColumn<Object[], String> colTenThuoc;
 	@FXML
-	public TableColumn<KhuyenMai, String> colLoaiThuoc;
+	public TableColumn<Object[], String> colLoaiThuoc;
 	@FXML
-	public TableColumn<KhuyenMai, String> colDonVi;
+	public TableColumn<Object[], String> colDonVi;
 	@FXML
-	public TableColumn<KhuyenMai, String> colDonGia;
+	public TableColumn<Object[], Double> colDonGia;
 
 	@FXML
 	public Button btnTru;
@@ -50,9 +60,20 @@ public class ThemKhuyenMaiCtrl {
 	public DatePicker dpNgayBD;
 	@FXML
 	public DatePicker dpNgayKT;
+	@FXML
+	public CheckBox chkSelect;
+	
+	public ToolCtrl tool = new ToolCtrl();
+	public ThuocDAO thuocDAO = new ThuocDAO();
+	public ObservableList<Object[]> list = FXCollections.observableArrayList();
+	private final Map<Object[], BooleanProperty> select = new HashMap<>();
 	
 	public void initialize() {
+		list = thuocDAO.layDanhSachThuocChoKM();
+		tool.dinhDangDatePicker(dpNgayBD);
+		tool.dinhDangDatePicker(dpNgayKT);
 		ganSuKien();
+		setDataChoTable(list);
 	}
 	
 	public void ganSuKien() {
@@ -89,72 +110,100 @@ public class ThemKhuyenMaiCtrl {
 		
 	}
 	
-	public void setDataChoTable(ObservableList<KhuyenMai> list) {
+	public void setDataChoTable(ObservableList<Object[]> list) {
 		// Checkbox
 		setUpColCheckBox();
 		// Các cột data
-//		colMaKM.setCellValueFactory(new PropertyValueFactory<>("maKM"));
-//		colTenKM.setCellValueFactory(new PropertyValueFactory<>("tenKM"));
-//		colPhuongThucKM.setCellValueFactory(new PropertyValueFactory<>("phuongThucKM"));
-//		colMucKM.setCellValueFactory(new PropertyValueFactory<>("mucKM"));
-//		colNgayBD.setCellValueFactory(cellData -> {
-//			LocalDate date = cellData.getValue().getNgayBD();
-//			return new SimpleStringProperty(tool.dinhDangLocalDate(date));
-//		});
-//		colNgayKT.setCellValueFactory(cellData -> {
-//			LocalDate date = cellData.getValue().getNgayKT();
-//			return new SimpleStringProperty(tool.dinhDangLocalDate(date));
-//		});
-//		colTrangThai.setCellValueFactory(cellData -> {
-//			KhuyenMai km = cellData.getValue();
-//			return new SimpleStringProperty(setTrangThai(km));
-//		});
-		
-		// Cột hoạt động
-		setupColHoatDong();
+		 colMaThuoc.setCellValueFactory(cellData ->
+         	new SimpleStringProperty(cellData.getValue()[0].toString()));
+		 colTenThuoc.setCellValueFactory(cellData ->
+         	new SimpleStringProperty(cellData.getValue()[1].toString()));
+		 colLoaiThuoc.setCellValueFactory(cellData ->
+		 	new SimpleStringProperty(cellData.getValue()[2].toString()));
+		 colDonVi.setCellValueFactory(cellData ->
+		 	new SimpleStringProperty(cellData.getValue()[3].toString()));
+		 colDonGia.setCellValueFactory(cellData ->
+         	new SimpleDoubleProperty((Double) cellData.getValue()[4]).asObject());
 		// Đưa data lên table
-		tblKhuyenMai.setItems(list);
+		 tblThuocKhuyenMai.setItems(list);
 	}
 	
 	
-	public void setUpColCheckBox() {
-		colSelect.setCellValueFactory(cellData -> cellData.getValue().selectedProperty());
-		colSelect.setCellFactory(tc -> {
-			CheckBoxTableCell<KhuyenMai, Boolean> cell = new CheckBoxTableCell<>() {
-				@Override
-				public void updateItem(Boolean item, boolean empty) {
-					super.updateItem(item, empty);
-					if (!empty) {
-						TableRow<KhuyenMai> row = getTableRow();
-						if (row != null) {
-							KhuyenMai km = row.getItem();
-							if (km != null) {
-								km.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-									if (isNowSelected) {
-										tblKhuyenMai.getSelectionModel().select(km);
-									} else {
-										tblKhuyenMai.getSelectionModel()
-												.clearSelection(tblKhuyenMai.getItems().indexOf(km));
-									}
-								});
-							}
-						}
-					}
-				}
-			};
-			return cell;
-		});
-
-		tblKhuyenMai.setRowFactory(tv -> {
-			TableRow<KhuyenMai> row = new TableRow<>();
+	public void setUpColCheckBox() {		
+		//CellValueFactory để quản lý trạng thái từng dòng
+		colSelect.setCellValueFactory(cell -> 
+				select.computeIfAbsent(cell.getValue(), r -> new SimpleBooleanProperty(false)));
+		
+		//Tạo ô checkbox cho từng dòng
+		colSelect.setCellFactory(CheckBoxTableCell.forTableColumn(colSelect));
+		
+		//Cho phép click vào từng dòng để chọn checkbox
+		tblThuocKhuyenMai.setRowFactory(tv -> {
+			TableRow<Object[]> row = new TableRow<>();
 			row.setOnMouseClicked(event -> {
-				if (!row.isEmpty() && event.getClickCount() == 1) {
-					KhuyenMai km = row.getItem();
-					km.setSelected(!km.isSelected());
+				if(!row.isEmpty()) {
+					Object[] item = row.getItem();
+					BooleanProperty prop = select.get(item);
+					if(prop != null) prop.set(!prop.get());
 				}
 			});
 			return row;
 		});
+		
+		//Click chọn/ bỏ chọn tất cả
+		chkSelect.selectedProperty().addListener((obs, oldVal, newVal) -> {
+			for(Object[] item : tblThuocKhuyenMai.getItems()) {
+				BooleanProperty prop = select.get(item);
+				if(prop != null && prop.get() != newVal) prop.set(newVal);
+			}
+		});
+		
+		//Bỏ chọn tất cả khi có 1 dòng bỏ chón
+		tblThuocKhuyenMai.getItems().addListener((ListChangeListener<Object[]>) change -> {
+	        while (change.next()) {
+	            if (change.wasAdded()) {
+	                for (Object[] item : change.getAddedSubList()) {
+	                    select.computeIfAbsent(item, r -> new SimpleBooleanProperty(false))
+	                            .addListener((o, ov, nv) -> {
+	                                boolean allSelected = tblThuocKhuyenMai.getItems().stream()
+	                                        .allMatch(i -> select.get(i).get());
+	                                chkSelect.setSelected(allSelected);
+	                            });
+	                }
+	            }
+	        }
+	    });
+		
 	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,5 +1,9 @@
 /model/
 /fxml/
+<<<<<<< HEAD
 /controller/
+=======
+/dao/
+>>>>>>> 5fa02f6ba7e72dcb0737330c94efce55c097731b
 /css/
 /entity/
