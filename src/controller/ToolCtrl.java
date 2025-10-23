@@ -57,7 +57,6 @@ public class ToolCtrl {
 				Stage stageAlert = (Stage) thongBao.getDialogPane().getScene().getWindow();
 				stageAlert.getIcons().add(new Image("/picture/trangChu/logo.jpg"));
 				ImageView icon = new ImageView(new Image(getClass().getResourceAsStream("/picture/thuoc/check.png")));
-
 				icon.setFitHeight(50);
 				icon.setFitWidth(50);
 				thongBao.setGraphic(icon);

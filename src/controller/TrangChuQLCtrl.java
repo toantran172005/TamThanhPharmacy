@@ -61,7 +61,7 @@ public class TrangChuQLCtrl {
 		setMauClickVaMenuCon(vbHoaDon, List.of("Tìm kiếm hóa đơn", "Danh sách phiếu đặt thuốc", "Lập hóa đơn",
 				"Đặt thuốc", "Đổi - Trả", "Thống kê hóa đơn"));
 		setMauClickVaMenuCon(vbNhanVien, List.of("Tìm kiếm nhân viên", "Thêm nhân viên"));
-		setMauClickVaMenuCon(vbKhuyenMai, List.of("Danh sách khuyến mãi"));
+		setMauClickVaMenuCon(vbKhuyenMai, List.of("Danh sách khuyến mãi", "Thêm Khuyến Mãi"));
 	}
 
 	@SuppressWarnings("unused")
@@ -228,9 +228,13 @@ public class TrangChuQLCtrl {
 
 		// ===== Khuyến mãi=====
 		case "Danh sách khuyến mãi":
-			doiCenterPane("/fxml/DanhSachKhuyenMai.fxml");
+			DanhSachKhuyenMaiCtrl dsKMCtrl =  doiCenterPane("/fxml/DanhSachKhuyenMai.fxml");
+			dsKMCtrl.setTrangChuQLCtrl(this);
 			break;
-
+		
+		case "Thêm Khuyến Mãi":
+			doiCenterPane("/fxml/ThemKhuyenMai.fxml");
+			break;
 		default:
 			System.out.println("⚠ Menu chưa xử lý: " + text);
 			break;

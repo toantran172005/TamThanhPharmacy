@@ -97,16 +97,7 @@
                         <ComboBox prefHeight="34.0" prefWidth="175.0" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <Label prefHeight="21.0" prefWidth="100.0" text="Trạng thái:">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font>
-                        </Label>
-                        <ComboBox prefHeight="34.0" prefWidth="175.0" />
-                     </children>
-                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="378.0" prefWidth="356.0">
@@ -138,7 +129,7 @@
                               <Font name="System Bold" size="15.0" />
                            </font>
                         </Label>
-                        <TextField prefHeight="34.0" prefWidth="174.0" promptText="Thuế VAT..." />
+                        <ComboBox prefHeight="35.0" prefWidth="171.0" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">

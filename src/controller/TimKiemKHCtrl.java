@@ -98,7 +98,6 @@ public class TimKiemKHCtrl {
 		colTuoi.setCellValueFactory(new PropertyValueFactory<>("tuoi"));
 		// Cột hoạt động
 		setupColHoatDong();
-		// Đưa data lên table
 		tblKhachHang.setItems(list);
 	}
 
@@ -198,15 +197,15 @@ public class TimKiemKHCtrl {
 			}
 		});
 	}
-
+	
 	public void hienThiLichSuXoa() {
 		for (KhachHang kh : tblKhachHang.getItems()) {
-			kh.setSelected(false);
-		}
+	        kh.setSelected(false);
+	    }
 		btnXoaTatCa.setVisible(false);
-		tblKhachHang.refresh();
-
-		if (tblDangLam) {
+	    tblKhachHang.refresh();
+	    
+		if(tblDangLam) {
 			btnLichSuXoa.setText("Danh sách hiện tại");
 			btnXoaTatCa.setText("Khôi phục tất cả");
 			tblDangLam = false;
@@ -247,6 +246,19 @@ public class TimKiemKHCtrl {
 		txtTenKH.setText("");
 		txtSdt.setText("");
 	}
+	
+//	public void xoaNhieu() {
+//		List<KhachHang> danhSachChon = tblKhachHang.getItems()
+//		        .stream()
+//		        .filter(KhachHang::isSelected)
+//		        .toList();
+//		
+//		if(danhSachChon.size() >= 2) {
+//			btnLamMoi.setVisible(true);
+//		} else {
+//			btnLamMoi.setVisible(false);
+//		}
+//	}
 
 	public void chuyenDenTrangChiTiet() {
 

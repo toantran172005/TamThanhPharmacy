@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="831.0" prefWidth="813.0" stylesheets="/css/PhieuDatThuoc.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PhieuDatThuocCtrl">
+<BorderPane prefHeight="788.0" prefWidth="781.0" stylesheets="/css/PhieuDatThuoc.css" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PhieuDatThuocCtrl">
    <center>
       <HBox alignment="CENTER" prefHeight="834.0" prefWidth="813.0" BorderPane.alignment="CENTER">
          <children>

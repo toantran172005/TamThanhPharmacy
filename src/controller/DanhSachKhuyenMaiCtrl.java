@@ -2,13 +2,11 @@ package controller;
 
 import java.io.IOException;
 import java.time.LocalDate;
-
-import javax.swing.text.TabableView;
+import java.util.List;
 
 import dao.KhuyenMaiDAO;
 import entity.KhachHang;
 import entity.KhuyenMai;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,6 +15,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
@@ -50,10 +50,17 @@ public class DanhSachKhuyenMaiCtrl {
 	public TableColumn<KhuyenMai, Void> colHoatDong;
 	
 	@FXML
-	public Button btnTaoKM;
+	public Button btnThem;
+	
 	@FXML
 	public Button btnXemChiTiet;
 	@FXML
+	public Button btnLamMoi;
+	public ComboBox<String> cmbTrangThai;
+	@FXML 
+	public DatePicker dpNgay;
+	
+	public TrangChuQLCtrl trangChuQLCtrl = new TrangChuQLCtrl();
 	public TextField txtTenKM;
 	
 	public KhuyenMaiDAO kmDao = new KhuyenMaiDAO();
@@ -63,36 +70,86 @@ public class DanhSachKhuyenMaiCtrl {
 	
 	public void initialize() {
 		listKM = kmDao.layDanhSachKM();
-		setDataChoTable(listKM);
+		setDataChoTable(listKM);	
+		setItemsChoCombobox();
+		ganSuKien();
+	}
+	
+	public void ganSuKien() {
+		cmbTrangThai.setOnAction(event ->{
+			locTheoTrangThai();
+		});
+		
+		dpNgay.setOnAction(event -> {
+			locTheoNgay();
+		});
+		
+		btnLamMoi.setOnAction(event->{
+			lamMoiBang();
+		});
+		
+		btnXemChiTiet.setOnAction(event -> {
+			chuyenDenChiTietKM();
+		});
+	}
+	
+	public void setItemsChoCombobox() {
+		cmbTrangThai.getItems().addAll("Tất cả","Đã kết thúc", "Hoạt động");
+		cmbTrangThai.setValue("Tất cả");
 	}
 
 	public void chuyenDenChiTietKM() {
-		
+		List<KhuyenMai> danhSachChon = tblKhuyenMai.getItems()
+		        .stream()
+		        .filter(KhuyenMai::isSelected)
+		        .toList();
+
+		if (danhSachChon.isEmpty()) {
+		    tool.hienThiThongBao("Lỗi", "Vui lòng chọn 1 khách hàng để xem chi tiết.", false);
+		    return;
+		}
+
+		if (danhSachChon.size() > 1) {
+		    tool.hienThiThongBao("Lỗi", "Chỉ được chọn 1 khách hàng để xem chi tiết.", false);
+		    return;
+		}
+
+		KhuyenMai km = danhSachChon.get(0);
+
+		if (trangChuQLCtrl != null) {
+	        ChiTietKhuyenMaiCtrl ctKMCtrl = trangChuQLCtrl.doiCenterPane("/fxml/ChiTietKhuyenMaiThuoc.fxml");
+	        ctKMCtrl.hienThiThongTin(km);
+	        ctKMCtrl.setTrangChuQLCtrl(trangChuQLCtrl);
+
+	    } else {
+	        tool.hienThiThongBao("Lỗi hệ thống",
+	                "Controller cha chưa được set. Vui lòng kiểm tra cách load FXML.", false);
+	    }
 	}
 	
-	public void hienThiTrangTaoKM() {
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ThemKhuyenMai.fxml"));
-			Parent root = loader.load();
-			Stage stage = new Stage();
-			stage.setTitle("Thêm khuyến mãi");
-			stage.setScene(new Scene(root));
-			stage.sizeToScene();
-			stage.centerOnScreen();
-			stage.setResizable(false);
-			
-			//stage.initModality(Modality.APPLICATION_MODAL); //Chặn thao tác trên màn hình chính khi pop up đang mở
-			
-			Stage currentStage = (Stage) btnTaoKM.getScene().getWindow();
-			stage.initOwner(currentStage);
-			
-			stage.showAndWait();
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+//	public void hienThiTrangTaoKM() {
+//		try {
+//			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ThemKhuyenMai.fxml"));
+//			Parent root = loader.load();
+//			Stage stage = new Stage();
+//			stage.setTitle("Thêm khuyến mãi");
+//			stage.setScene(new Scene(root));
+//			stage.sizeToScene();
+//			stage.centerOnScreen();
+//			stage.setResizable(false);
+//			
+//			//stage.initModality(Modality.APPLICATION_MODAL); //Chặn thao tác trên màn hình chính khi pop up đang mở
+//			
+//			Stage currentStage = (Stage) btnTaoKM.getScene().getWindow();
+//			stage.initOwner(currentStage);
+//			
+//			stage.showAndWait();
+//			
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 	
 	public void setDataChoTable(ObservableList<KhuyenMai> list) {
 		// Checkbox
@@ -118,9 +175,52 @@ public class DanhSachKhuyenMaiCtrl {
 		// Cột hoạt động
 		setupColHoatDong();
 		// Đưa data lên table
-		tblKhuyenMai.setEditable(true);
 		tblKhuyenMai.setItems(list);
 	}
+	
+	
+	//Hàm lọc dữ liệu theo ngày
+	public void locTheoNgay() {
+		LocalDate ngay = dpNgay.getValue();
+		
+		if(ngay == null) {
+			setDataChoTable(listKM);
+			return;
+		}
+		ObservableList<KhuyenMai> listLoc = listKM.filtered(km -> 
+        (ngay.isAfter(km.getNgayBD()) || ngay.isEqual(km.getNgayBD())) &&
+        (ngay.isBefore(km.getNgayKT()) || ngay.isEqual(km.getNgayKT()))
+    );
+
+    setDataChoTable(listLoc);
+		
+	}
+	
+	public void locTheoTrangThai() {
+		String trangThai = cmbTrangThai.getValue();
+
+		if (trangThai == null || trangThai.isEmpty()) {
+			return;
+		}
+
+		if (trangThai.equals("Tất cả")) {
+			setDataChoTable(listKM);
+			return;
+		}
+
+		ObservableList<KhuyenMai> listLoc = listKM.filtered(km-> {
+			LocalDate today = LocalDate.now();
+			LocalDate ngayKT = km.getNgayKT();
+			if (trangThai.equals("Hoạt động")) {
+				return !today.isAfter(ngayKT);
+			} else if (trangThai.equals("Đã kết thúc")) {
+				return today.isAfter(ngayKT);
+			}
+			return true;
+		});
+		setDataChoTable(listLoc);
+	}
+
 
 	public void setUpColCheckBox() {
 		colSelect.setCellValueFactory(cellData -> cellData.getValue().selectedProperty());
@@ -198,18 +298,59 @@ public class DanhSachKhuyenMaiCtrl {
 			}
 		});
 	}
+	
+//	public void chuyenDenTrangChiTiet() {
+//
+//		List<KhuyenMai> danhSachChon = tblKhuyenMai.getItems()
+//		        .stream()
+//		        .filter(KhuyenMai::isSelected)
+//		        .toList();
+//
+//		if (danhSachChon.isEmpty()) {
+//		    tool.hienThiThongBao("Lỗi", "Vui lòng chọn 1 khách hàng để xem chi tiết.", false);
+//		    return;
+//		}
+//
+//		if (danhSachChon.size() > 1) {
+//		    tool.hienThiThongBao("Lỗi", "Chỉ được chọn 1 khách hàng để xem chi tiết.", false);
+//		    return;
+//		}
+//
+//		KhuyenMai KhuyenMai = danhSachChon.get(0);
+//
+//		if (trangChuQLCtrl != null) {
+//	        ChiTietKhuyenMaiCtrl ctKHCtrl = trangChuQLCtrl.doiCenterPane("/fxml/ChiTietKhuyenMai.fxml");
+//	        ctKHCtrl.hienThiThongTin(KhuyenMai);
+//	        ctKHCtrl.setTrangChuQLCtrl(trangChuQLCtrl);
+//
+//	    } else if (trangChuNVCtrl != null) {
+//	        ChiTietKhuyenMaiCtrl ctKHCtrl = trangChuNVCtrl.doiCenterPane("/fxml/ChiTietKhuyenMai.fxml");
+//	        ctKHCtrl.hienThiThongTin(KhuyenMai);
+//	        ctKHCtrl.setTrangChuNVCtrl(trangChuNVCtrl);
+//
+//	    } else {
+//	        tool.hienThiThongBao("Lỗi hệ thống",
+//	                "Controller cha chưa được set. Vui lòng kiểm tra cách load FXML.", false);
+//	    }
+
 
 	public void lamMoiBang() {
 		listKM = kmDao.layDanhSachKM();
-		txtTenKM.setText("");
+		setDataChoTable(listKM);
+		cmbTrangThai.setValue("Tất cả");
+		dpNgay.setValue(null);
 	}
 	
 	public String setTrangThai(KhuyenMai km) {
 		LocalDate today = LocalDate.now();
 		LocalDate ngayKT = km.getNgayKT();
 		
-		String display = today.isAfter(ngayKT) ? "Kết thúc" : "Đang áp dụng";
+		String display = today.isAfter(ngayKT) ? "Đã kết thúc" : "Hoạt động";
 		return display;
 	}
-	
+
+	public void setTrangChuQLCtrl(TrangChuQLCtrl trangChuQLCtrl) {
+		this.trangChuQLCtrl = trangChuQLCtrl;
+	}
+
 }

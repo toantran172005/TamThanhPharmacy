@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
-
 import controller.ToolCtrl;
 import database.KetNoiDatabase;
 import entity.KhachHang;

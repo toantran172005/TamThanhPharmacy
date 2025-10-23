@@ -20,6 +20,7 @@ import javafx.collections.ObservableList;
 
 public class ThuocDAO {
 
+
 	ToolCtrl tool = new ToolCtrl();
 
 	public ObservableList<Object[]> layDanhSachThuocChoKM() {
@@ -47,7 +48,7 @@ public class ThuocDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		
 		return listThuoc;
 	}
 	

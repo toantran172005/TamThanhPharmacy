@@ -1,12 +1,13 @@
 package controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -14,7 +15,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import dao.KhachHangDAO;
 import entity.KhachHang;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -70,7 +70,6 @@ public class ThongKeKhachHangCtrl {
 	public DatePicker dpNgayBD, dpNgayKT;
 	@FXML
 	public BarChart<String, Number> barChartTopKH;
-
 	public List<KhachHang> listKHDaSapXep;
 	@FXML
 	public CategoryAxis xAxis;
