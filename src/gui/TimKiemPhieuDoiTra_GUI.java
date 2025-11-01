@@ -3,6 +3,9 @@ package gui;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import controller.ToolCtrl;
+
 import java.awt.*;
 
 public class TimKiemPhieuDoiTra_GUI extends JPanel {
@@ -10,6 +13,9 @@ public class TimKiemPhieuDoiTra_GUI extends JPanel {
     private JButton btnTimKiem, btnLamMoi, btnChiTiet;
     private JTable tblPhieuDoiTra;
     private TrangChuQL_GUI mainFrame;
+    Font font1 = new Font("Arial", Font.BOLD, 18);
+	Font font2 = new Font("Arial", Font.PLAIN, 15);
+	public ToolCtrl tool = new ToolCtrl();
 
 	public TimKiemPhieuDoiTra_GUI(TrangChuQL_GUI mainFrame) {
         this.mainFrame = mainFrame;
@@ -29,7 +35,7 @@ public class TimKiemPhieuDoiTra_GUI extends JPanel {
 
         // Tiêu đề
         JLabel lblTitle = new JLabel("DANH SÁCH PHIẾU ĐỔI TRẢ", SwingConstants.CENTER);
-        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        lblTitle.setFont(font1);
         lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         pnlTop.add(lblTitle);
         pnlTop.add(Box.createVerticalStrut(10));
@@ -39,18 +45,14 @@ public class TimKiemPhieuDoiTra_GUI extends JPanel {
         row1.setBackground(Color.WHITE);
 
         JLabel lblKH = new JLabel("Tên khách hàng:");
-        lblKH.setFont(new Font("SansSerif", Font.BOLD, 15));
-        txtKhachHang = new JTextField(15);
-        txtKhachHang.setFont(new Font("SansSerif", Font.PLAIN, 15));
-        txtKhachHang.setToolTipText("Nhập tên khách hàng...");
+        lblKH.setFont(font2);
+        txtKhachHang = tool.taoTextField("Tên khách hàng...");
 
         JLabel lblNV = new JLabel("Tên nhân viên:");
-        lblNV.setFont(new Font("SansSerif", Font.BOLD, 15));
-        txtTenNV = new JTextField(15);
-        txtTenNV.setFont(new Font("SansSerif", Font.PLAIN, 15));
-        txtTenNV.setToolTipText("Nhập tên nhân viên...");
+        lblNV.setFont(font2);
+        txtTenNV = tool.taoTextField("Tên nhân viên...");
 
-        btnTimKiem = taoButton("Tìm kiếm", "/img/search.png");
+        btnTimKiem = tool.taoButton("Tìm kiếm", "/picture/hoaDon/search.png");
 
         row1.add(lblKH);
         row1.add(txtKhachHang);
@@ -63,8 +65,8 @@ public class TimKiemPhieuDoiTra_GUI extends JPanel {
         JPanel row2 = new JPanel(new FlowLayout(FlowLayout.CENTER, 100, 5));
         row2.setBackground(Color.WHITE);
 
-        btnLamMoi = taoButton("Làm mới", "/img/refresh.png");
-        btnChiTiet = taoButton("Xem chi tiết", "/img/xemChiTiet.png");
+        btnLamMoi = tool.taoButton("Làm mới", "/picture/hoaDon/refresh.png");
+        btnChiTiet = tool.taoButton("Xem chi tiết", "/picture/hoaDon/xemChiTiet.png");
 
         row2.add(btnLamMoi);
         row2.add(btnChiTiet);
@@ -78,8 +80,8 @@ public class TimKiemPhieuDoiTra_GUI extends JPanel {
         tblPhieuDoiTra = new JTable(model);
 
         tblPhieuDoiTra.setRowHeight(28);
-        tblPhieuDoiTra.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
-        tblPhieuDoiTra.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        tblPhieuDoiTra.getTableHeader().setFont(font2);
+        tblPhieuDoiTra.setFont(font2);
 
         // Thêm checkbox cột đầu
         tblPhieuDoiTra.getColumnModel().getColumn(0).setMaxWidth(40);
@@ -95,22 +97,4 @@ public class TimKiemPhieuDoiTra_GUI extends JPanel {
         });
     }
 
-    // ====== HÀM TẠO NÚT VỚI ẢNH ======
-    private JButton taoButton(String text, String imgPath) {
-        JButton btn = new JButton(text);
-        btn.setFont(new Font("SansSerif", Font.BOLD, 15));
-        btn.setBackground(new Color(245, 245, 245));
-        btn.setFocusPainted(false);
-        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        try {
-            ImageIcon icon = new ImageIcon(getClass().getResource(imgPath));
-            Image scaled = icon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-            btn.setIcon(new ImageIcon(scaled));
-        } catch (Exception e) {
-            System.err.println("Không tìm thấy ảnh: " + imgPath);
-        }
-
-        return btn;
-    }
 }

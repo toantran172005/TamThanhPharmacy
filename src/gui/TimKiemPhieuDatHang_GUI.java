@@ -3,6 +3,9 @@ package gui;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import controller.ToolCtrl;
+
 import java.awt.*;
 
 public class TimKiemPhieuDatHang_GUI extends JPanel {
@@ -11,6 +14,9 @@ public class TimKiemPhieuDatHang_GUI extends JPanel {
 	private JComboBox<String> cmbTrangThai;
 	private JButton btnTimKiem, btnChiTiet, btnLamMoi;
 	private TrangChuQL_GUI mainFrame;
+	Font font1 = new Font("Arial", Font.BOLD, 18);
+	Font font2 = new Font("Arial", Font.PLAIN, 15);
+	public ToolCtrl tool = new ToolCtrl();
 
 	public TimKiemPhieuDatHang_GUI(TrangChuQL_GUI mainFrame) {
         this.mainFrame = mainFrame;
@@ -31,7 +37,7 @@ public class TimKiemPhieuDatHang_GUI extends JPanel {
 
 		// Tiêu đề
 		JLabel lblTitle = new JLabel("DANH SÁCH PHIẾU ĐẶT THUỐC", SwingConstants.CENTER);
-		lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		lblTitle.setFont(font1);
 		lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT); // 🔥 Giúp căn giữa khi dùng BoxLayout
 		topPanel.add(lblTitle);
 
@@ -40,16 +46,14 @@ public class TimKiemPhieuDatHang_GUI extends JPanel {
 		searchPanel.setBackground(Color.WHITE);
 
 		JLabel lblKH = new JLabel("Tên khách hàng:");
-		lblKH.setFont(new Font("SansSerif", Font.BOLD, 15));
-		txtKhachHang = new JTextField(15);
-		txtKhachHang.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		lblKH.setFont(font2);
+		txtKhachHang = tool.taoTextField("Tên khách hàng...");
 
 		JLabel lblNV = new JLabel("Tên nhân viên:");
-		lblNV.setFont(new Font("SansSerif", Font.BOLD, 15));
-		txtTenNV = new JTextField(15);
-		txtTenNV.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		lblNV.setFont(font2);
+		txtTenNV = tool.taoTextField("Tên nhân viên...");
 
-		btnTimKiem = taoButton("Tìm kiếm", "/img/search.png");
+		btnTimKiem = tool.taoButton("Tìm kiếm", "/picture/hoaDon/search.png");
 		
 		searchPanel.add(lblKH);
 		searchPanel.add(txtKhachHang);
@@ -62,17 +66,16 @@ public class TimKiemPhieuDatHang_GUI extends JPanel {
 		functionPanel.setBackground(Color.WHITE);
 
 		JLabel lblTrangThai = new JLabel("Trạng thái:");
-		lblTrangThai.setFont(new Font("SansSerif", Font.BOLD, 15));
-		cmbTrangThai = new JComboBox<>();
+		lblTrangThai.setFont(font2);
+		cmbTrangThai = cmbTrangThai = cmbTrangThai = tool.taoComboBox(new String[] {"Tất cả", "Chờ hàng", "Đã giao", "Đã hủy"});
 		cmbTrangThai.setPreferredSize(new Dimension(140, 26));
-		cmbTrangThai.setFont(new Font("SansSerif", Font.PLAIN, 14));
 
-		btnChiTiet = taoButton("Xem chi tiết", "/img/xemChiTiet.png");
-		btnLamMoi = taoButton("Làm mới", "/img/refresh.png");
+		btnChiTiet = tool.taoButton("Xem chi tiết", "/picture/hoaDon/xemChiTiet.png");
+		btnLamMoi = tool.taoButton("Làm mới", "/picture/hoaDon/refresh.png");
 
 		JButton[] buttons = { btnLamMoi, btnChiTiet };
 		for (JButton btn : buttons) {
-			btn.setFont(new Font("Segoe UI", Font.BOLD, 15));
+			btn.setFont(font2);
 			btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		}
 
@@ -96,8 +99,8 @@ public class TimKiemPhieuDatHang_GUI extends JPanel {
 		DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 		tblPhieuDatThuoc = new JTable(model);
 		tblPhieuDatThuoc.setRowHeight(28);
-		tblPhieuDatThuoc.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		tblPhieuDatThuoc.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
+		tblPhieuDatThuoc.setFont(font2);
+		tblPhieuDatThuoc.getTableHeader().setFont(font2);
 
 		JScrollPane scrollPane = new JScrollPane(tblPhieuDatThuoc);
 		add(scrollPane, BorderLayout.CENTER);
@@ -107,21 +110,4 @@ public class TimKiemPhieuDatHang_GUI extends JPanel {
 		    mainFrame.setUpNoiDung(chiTietPanel);
 		});
 	}
-
-	private JButton taoButton(String text, String imgPath) {
-        JButton btn = new JButton(text);
-        btn.setFont(new Font("SansSerif", Font.BOLD, 15));
-        btn.setFocusPainted(false);
-        btn.setBackground(new Color(245, 245, 245));
-        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        try {
-            ImageIcon icon = new ImageIcon(getClass().getResource(imgPath));
-            Image scaled = icon.getImage().getScaledInstance(22, 22, Image.SCALE_SMOOTH);
-            btn.setIcon(new ImageIcon(scaled));
-        } catch (Exception e) {
-            System.err.println("Không tìm thấy ảnh: " + imgPath);
-        }
-        return btn;
-    }
 }

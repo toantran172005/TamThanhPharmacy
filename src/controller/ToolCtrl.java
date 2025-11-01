@@ -156,7 +156,7 @@ public class ToolCtrl {
 		JButton btn = new JButton(noiDung);
 
 		// Font và màu
-		btn.setFont(new Font("Times New Roman", Font.BOLD, 15));
+		btn.setFont(new Font("Arial", Font.BOLD, 15));
 		btn.setForeground(Color.BLACK);
 		btn.setBackground(Color.WHITE);
 

@@ -26,6 +26,8 @@ public class TrangChuQL_GUI extends JFrame {
 	private Map<String, String> iconPaths = new HashMap<>();
 	private Map<String, JPanel> panelMapping = new HashMap<>();
 	private String selectedMenu = "";
+	Font font1 = new Font("Arial", Font.BOLD, 18);
+	Font font2 = new Font("Arial", Font.PLAIN, 15);
 
 	public TrangChuQL_GUI() {
 		setTitle("Quản lý hiệu thuốc Tam Thanh");
@@ -42,9 +44,9 @@ public class TrangChuQL_GUI extends JFrame {
 		// LEFT SIDE
 		JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
 		logoPanel.setBackground(Color.WHITE);
-		imgLogo = new JLabel(setUpIcon("/img/logo.jpg", 40, 40));
+		imgLogo = new JLabel(setUpIcon("/picture/trangChu/logo.jpg", 40, 40));
 		lblTenHieuThuoc = new JLabel("NHÀ THUỐC TAM THANH");
-		lblTenHieuThuoc.setFont(new Font("SansSerif", Font.BOLD, 20));
+		lblTenHieuThuoc.setFont(font1);
 		logoPanel.add(imgLogo);
 		logoPanel.add(lblTenHieuThuoc);
 		topPanel.add(logoPanel, BorderLayout.WEST);
@@ -53,14 +55,14 @@ public class TrangChuQL_GUI extends JFrame {
 		JPanel nvPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 10));
 		nvPanel.setBackground(Color.WHITE);
 		lblTenNV = new JLabel("Trần Thanh Toàn");
-		lblTenNV.setFont(new Font("SansSerif", Font.BOLD, 15));
+		lblTenNV.setFont(font2);
 		lblChucVu = new JLabel("Nhân viên bán hàng");
 		JPanel namePanel = new JPanel(new GridLayout(2, 1));
 		namePanel.setBackground(Color.WHITE);
 		namePanel.add(lblTenNV);
 		namePanel.add(lblChucVu);
-		imgTaiKhoan = new JLabel(setUpIcon("/img/user.png", 20, 20));
-		imgDangXuat = new JLabel(setUpIcon("/img/signOut.png", 20, 20));
+		imgTaiKhoan = new JLabel(setUpIcon("/picture/trangChu/user.png", 20, 20));
+		imgDangXuat = new JLabel(setUpIcon("/picture/trangChu/signOut.png", 20, 20));
 		imgDangXuat.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		nvPanel.add(namePanel);
 		nvPanel.add(imgTaiKhoan);
@@ -95,13 +97,13 @@ public class TrangChuQL_GUI extends JFrame {
 		add(contentPanel, BorderLayout.CENTER);
 
 		// ========== THÊM MENU CHÍNH ==========
-		thietLapMenu("Trang chủ", "/img/dashboard.png", taoPanelTrangChu());
-		thietLapMenu("Thuốc", "/img/addMedicine.png", taoPanelTam("Thuốc"));
-		thietLapMenu("Kệ Thuốc", "/img/shelf.png", taoPanelTam("Kệ Thuốc"));
-		thietLapMenu("Khách Hàng", "/img/customer.png", taoPanelTam("Khách Hàng"));
-		thietLapMenu("Hóa Đơn", "/img/order.png", taoPanelTam("Hóa Đơn"));
-		thietLapMenu("Nhân Viên", "/img/nhanVien.png", taoPanelTam("Nhân Viên"));
-		thietLapMenu("Khuyến Mãi", "/img/voucher.png", taoPanelTam("Khuyến Mãi"));
+		thietLapMenu("Trang chủ", "/picture/trangChu/dashboard.png", taoPanelTrangChu());
+		thietLapMenu("Thuốc", "/picture/trangChu/addMedicine.png", taoPanelTam("Thuốc"));
+		thietLapMenu("Kệ Thuốc", "/picture/trangChu/shelf.png", taoPanelTam("Kệ Thuốc"));
+		thietLapMenu("Khách Hàng", "/picture/trangChu/customer.png", taoPanelTam("Khách Hàng"));
+		thietLapMenu("Hóa Đơn", "/picture/trangChu/order.png", taoPanelTam("Hóa Đơn"));
+		thietLapMenu("Nhân Viên", "/picture/trangChu/nhanVien.png", taoPanelTam("Nhân Viên"));
+		thietLapMenu("Khuyến Mãi", "/picture/trangChu/voucher.png", taoPanelTam("Khuyến Mãi"));
 
 		setThuocTinhMainMenu();
 
@@ -184,7 +186,7 @@ public class TrangChuQL_GUI extends JFrame {
 		gbc.insets = new Insets(0, 0, 0, 8);
 		JLabel icon = new JLabel(setUpIcon(iconPath, 22, 22));
 		JLabel label = new JLabel(text);
-		label.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		label.setFont(font2);
 		item.add(icon, gbc);
 		gbc.gridx = 1;
 		item.add(label, gbc);
@@ -234,7 +236,7 @@ public class TrangChuQL_GUI extends JFrame {
 			item.setMaximumSize(new Dimension(220, 50));
 			item.setBackground(new Color(250, 250, 250));
 			JLabel lbl = new JLabel(sub);
-			lbl.setFont(new Font("SansSerif", Font.PLAIN, 16));
+			lbl.setFont(font2);
 			item.add(lbl);
 			subMenuPanel.add(item);
 			ganSuKienMenuCon(item, sub);
@@ -279,11 +281,11 @@ public class TrangChuQL_GUI extends JFrame {
 				selectedMenu = text;
 				item.setBackground(Color.decode("#00ADFE"));
 				label.setForeground(Color.WHITE);
-				label.setFont(new Font("SansSerif", Font.BOLD, 18));
+				label.setFont(font2);
 			} else {
 				item.setBackground(Color.WHITE);
 				label.setForeground(Color.BLACK);
-				label.setFont(new Font("SansSerif", Font.PLAIN, 18));
+				label.setFont(font2);
 			}
 		}
 	}
@@ -325,14 +327,14 @@ public class TrangChuQL_GUI extends JFrame {
 		panel.setBackground(Color.WHITE);
 
 		// Ảnh chính giữa
-		JLabel lblAnh = new JLabel(setUpIcon("/img/AnhTrangChu.png", 1200, 550));
+		JLabel lblAnh = new JLabel(setUpIcon("/picture/trangChu/AnhTrangChu.png", 1200, 550));
 		lblAnh.setHorizontalAlignment(JLabel.CENTER);
 		panel.add(lblAnh, BorderLayout.CENTER);
 
 		// ========== CÁC NÚT THAO TÁC NHANH ==========
-		JButton btnThemKH = taoNutIcon("Thêm khách hàng", "/img/addCustomer.png");
-		JButton btnThemHD = taoNutIcon("Thêm hoá đơn", "/img/addOrder.png");
-		JButton btnThemThuoc = taoNutIcon("Thêm thuốc", "/img/addMedicine.png");
+		JButton btnThemKH = tool.taoButton("Thêm khách hàng", "/picture/trangChu/addCustomer.png");
+		JButton btnThemHD = tool.taoButton("Thêm hoá đơn", "/picture/trangChu/addOrder.png");
+		JButton btnThemThuoc = tool.taoButton("Thêm thuốc", "/picture/trangChu/addMedicine.png");
 
 		JPanel pnThaoTac = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 20));
 		pnThaoTac.setBackground(Color.WHITE);
@@ -343,7 +345,7 @@ public class TrangChuQL_GUI extends JFrame {
 		JPanel pnBottom = new JPanel(new BorderLayout());
 		pnBottom.setBackground(Color.WHITE);
 		JLabel lblTitle = new JLabel("Thao tác nhanh:", JLabel.CENTER);
-		lblTitle.setFont(new Font("SansSerif", Font.BOLD, 18));
+		lblTitle.setFont(font2);
 		lblTitle.setBorder(new EmptyBorder(5, 0, 5, 0));
 		pnBottom.add(lblTitle, BorderLayout.NORTH);
 		pnBottom.add(pnThaoTac, BorderLayout.CENTER);
@@ -351,31 +353,18 @@ public class TrangChuQL_GUI extends JFrame {
 		panel.add(pnBottom, BorderLayout.SOUTH);
 		return panel;
 	}
+	
+	public static void main(String[] args) {
+	    try {
+	        // Just use the system look and feel (matches Windows/macOS/Linux)
+	        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 
-	/** Tạo nút có icon và text */
-	public JButton taoNutIcon(String text, String iconPath) {
-		JButton button = new JButton(text, setUpIcon(iconPath, 24, 24));
-		button.setFont(new Font("SansSerif", Font.PLAIN, 18));
-		button.setFocusPainted(false);
-		button.setBackground(Color.WHITE);
-		button.setBorder(BorderFactory.createCompoundBorder(new LineBorder(new Color(220, 220, 220), 1, true),
-				new EmptyBorder(5, 10, 5, 10)));
-		button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-		// Hiệu ứng hover
-		button.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				button.setBackground(new Color(245, 247, 255));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				button.setBackground(Color.WHITE);
-			}
-		});
-
-		return button;
+	    SwingUtilities.invokeLater(() -> {
+	        new TrangChuQL_GUI().setVisible(true);
+	    });
 	}
 
 }

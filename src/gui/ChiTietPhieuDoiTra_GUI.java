@@ -2,6 +2,9 @@ package gui;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import controller.ToolCtrl;
+
 import java.awt.*;
 
 public class ChiTietPhieuDoiTra_GUI extends JPanel{
@@ -11,6 +14,9 @@ public class ChiTietPhieuDoiTra_GUI extends JPanel{
     private JTable tblThuoc;
     private JButton btnInPhieu, btnQuayLai;
     private TrangChuQL_GUI mainFrame;
+    Font font1 = new Font("Arial", Font.BOLD, 18);
+	Font font2 = new Font("Arial", Font.PLAIN, 15);
+	public ToolCtrl tool = new ToolCtrl();
 
 	public ChiTietPhieuDoiTra_GUI(TrangChuQL_GUI mainFrame) {
         this.mainFrame = mainFrame;
@@ -28,19 +34,19 @@ public class ChiTietPhieuDoiTra_GUI extends JPanel{
         topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JLabel lblTieuDe = new JLabel("HIỆU THUỐC TAM THANH", SwingConstants.CENTER);
-        lblTieuDe.setFont(new Font("SansSerif", Font.BOLD | Font.ITALIC, 18));
+        lblTieuDe.setFont(font1);
         lblTieuDe.setAlignmentX(Component.CENTER_ALIGNMENT);
         topPanel.add(lblTieuDe);
 
         JLabel lblDiaChiTitle = new JLabel("Địa chỉ: ");
-        lblDiaChiTitle.setFont(new Font("SansSerif", Font.BOLD | Font.ITALIC, 15));
+        lblDiaChiTitle.setFont(font2);
         lblDiaChi = new JLabel("");
-        lblDiaChi.setFont(new Font("SansSerif", Font.PLAIN, 15));
+        lblDiaChi.setFont(font2);
 
         JLabel lblHotlineTitle = new JLabel("Hotline: ");
-        lblHotlineTitle.setFont(new Font("SansSerif", Font.BOLD | Font.ITALIC, 15));
+        lblHotlineTitle.setFont(font2);
         lblHotline = new JLabel("");
-        lblHotline.setFont(new Font("SansSerif", Font.PLAIN, 15));
+        lblHotline.setFont(font2);
 
         JPanel diaChiPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         diaChiPanel.add(lblDiaChiTitle);
@@ -54,7 +60,7 @@ public class ChiTietPhieuDoiTra_GUI extends JPanel{
         topPanel.add(hotlinePanel);
 
         JLabel lblChiTietTieuDe = new JLabel("CHI TIẾT PHIẾU ĐỔI TRẢ", SwingConstants.CENTER);
-        lblChiTietTieuDe.setFont(new Font("SansSerif", Font.BOLD, 20));
+        lblChiTietTieuDe.setFont(font1);
         lblChiTietTieuDe.setAlignmentX(Component.CENTER_ALIGNMENT);
         topPanel.add(lblChiTietTieuDe);
 
@@ -79,9 +85,9 @@ public class ChiTietPhieuDoiTra_GUI extends JPanel{
 
         JPanel lyDoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel lblLyDoTitle = new JLabel("Lý do:");
-        lblLyDoTitle.setFont(new Font("SansSerif", Font.BOLD, 15));
+        lblLyDoTitle.setFont(font1);
         lblLyDo = new JLabel("");
-        lblLyDo.setFont(new Font("SansSerif", Font.PLAIN, 15));
+        lblLyDo.setFont(font1);
         lyDoPanel.add(lblLyDoTitle);
         lyDoPanel.add(lblLyDo);
         centerPanel.add(lyDoPanel);
@@ -94,18 +100,18 @@ public class ChiTietPhieuDoiTra_GUI extends JPanel{
 
         JPanel tongTienPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JLabel lblTongTienTitle = new JLabel("Tổng tiền hoàn:");
-        lblTongTienTitle.setFont(new Font("SansSerif", Font.BOLD, 15));
+        lblTongTienTitle.setFont(font1);
         lblTongTienHoan = new JLabel("0 VND");
-        lblTongTienHoan.setFont(new Font("SansSerif", Font.PLAIN, 15));
+        lblTongTienHoan.setFont(font1);
         tongTienPanel.add(lblTongTienTitle);
         tongTienPanel.add(lblTongTienHoan);
         bottomPanel.add(tongTienPanel);
 
         JPanel nutPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 100, 10));
-        btnInPhieu = taoButton("In phiếu", "/img/print.png");
-        btnQuayLai = taoButton("Quay lại", "/img/signOut.png");
-        btnInPhieu.setFont(new Font("SansSerif", Font.BOLD, 15));
-        btnQuayLai.setFont(new Font("SansSerif", Font.BOLD, 15));
+        btnInPhieu = tool.taoButton("In phiếu", "/picture/hoaDon/print.png");
+        btnQuayLai = tool.taoButton("Quay lại", "/picture/hoaDon//signOut.png");
+        btnInPhieu.setFont(font2);
+        btnQuayLai.setFont(font2);
         nutPanel.add(btnInPhieu);
         nutPanel.add(btnQuayLai);
         bottomPanel.add(nutPanel);
@@ -120,28 +126,11 @@ public class ChiTietPhieuDoiTra_GUI extends JPanel{
     private JPanel taoDongThongTin(String tieuDe, JLabel lblNoiDung) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 50, 5));
         JLabel lblTieuDe = new JLabel(tieuDe);
-        lblTieuDe.setFont(new Font("SansSerif", Font.BOLD, 15));
-        lblNoiDung.setFont(new Font("SansSerif", Font.PLAIN, 15));
+        lblTieuDe.setFont(font2);
+        lblNoiDung.setFont(font2);
         panel.add(lblTieuDe);
         panel.add(lblNoiDung);
         return panel;
-    }
-
-    private JButton taoButton(String text, String imgPath) {
-        JButton btn = new JButton(text);
-        btn.setFont(new Font("SansSerif", Font.BOLD, 15));
-        btn.setFocusPainted(false);
-        btn.setBackground(new Color(245, 245, 245));
-        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        try {
-            ImageIcon icon = new ImageIcon(getClass().getResource(imgPath));
-            Image scaled = icon.getImage().getScaledInstance(22, 22, Image.SCALE_SMOOTH);
-            btn.setIcon(new ImageIcon(scaled));
-        } catch (Exception e) {
-            System.err.println("Không tìm thấy ảnh: " + imgPath);
-        }
-        return btn;
     }
     
 }
