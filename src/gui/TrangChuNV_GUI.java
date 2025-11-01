@@ -13,6 +13,8 @@ import java.util.Map;
 import javax.swing.*;
 import javax.swing.border.*;
 
+import controller.ToolCtrl;
+
 public class TrangChuNV_GUI extends JFrame implements ActionListener, MouseListener{
     private JPanel leftPanel, topPanel, contentPanel;
     private JLabel lblTenHieuThuoc, lblTenNV, lblChucVu;
@@ -25,6 +27,9 @@ public class TrangChuNV_GUI extends JFrame implements ActionListener, MouseListe
     private final Color COLOR_SELECTED = new Color(0, 173, 254);
     private final Color COLOR_HOVER = new Color(230, 245, 255);
     private final Color COLOR_DEFAULT = Color.WHITE;
+    Font font1 = new Font("Arial", Font.BOLD, 18);
+	Font font2 = new Font("Arial", Font.PLAIN, 15);
+	public ToolCtrl tool = new ToolCtrl();
 
     public TrangChuNV_GUI() {
         setTitle("Quản lý hiệu thuốc Tam Thanh");
@@ -44,11 +49,11 @@ public class TrangChuNV_GUI extends JFrame implements ActionListener, MouseListe
         add(contentPanel, BorderLayout.CENTER);
 
         // ========== THÊM MENU CHÍNH ==========
-        thietLapMenu("Trang chủ", "/img/dashboard.png", taoPanelTrangChu());
-        thietLapMenu("Thuốc", "/img/addMedicine.png", taoPanelTam("Thuốc"));
-        thietLapMenu("Kệ Thuốc", "/img/shelf.png", taoPanelTam("Kệ Thuốc"));
-        thietLapMenu("Khách Hàng", "/img/customer.png", taoPanelTam("Khách Hàng"));
-        thietLapMenu("Hóa Đơn", "/img/order.png", taoPanelTam("Hóa Đơn"));
+        thietLapMenu("Trang chủ", "/picture/trangChu/dashboard.png", taoPanelTrangChu());
+        thietLapMenu("Thuốc", "/picture/trangChu/addMedicine.png", taoPanelTam("Thuốc"));
+        thietLapMenu("Kệ Thuốc", "/picture/trangChu/shelf.png", taoPanelTam("Kệ Thuốc"));
+        thietLapMenu("Khách Hàng", "/picture/trangChu/customer.png", taoPanelTam("Khách Hàng"));
+        thietLapMenu("Hóa Đơn", "/picture/trangChu/order.png", taoPanelTam("Hóa Đơn"));
 
         setThuocTinhMainMenu();
 
@@ -67,9 +72,9 @@ public class TrangChuNV_GUI extends JFrame implements ActionListener, MouseListe
         // LEFT
         JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         logoPanel.setBackground(Color.WHITE);
-        imgLogo = new JLabel(setUpIcon("/img/logo.jpg", 40, 40));
+        imgLogo = new JLabel(setUpIcon("/picture/trangChu/logo.jpg", 40, 40));
         lblTenHieuThuoc = new JLabel("NHÀ THUỐC TAM THANH");
-        lblTenHieuThuoc.setFont(new Font("SansSerif", Font.BOLD, 20));
+        lblTenHieuThuoc.setFont(font1);
         logoPanel.add(imgLogo);
         logoPanel.add(lblTenHieuThuoc);
         topPanel.add(logoPanel, BorderLayout.WEST);
@@ -78,14 +83,14 @@ public class TrangChuNV_GUI extends JFrame implements ActionListener, MouseListe
         JPanel nvPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 10));
         nvPanel.setBackground(Color.WHITE);
         lblTenNV = new JLabel("Trần Thanh Toàn");
-        lblTenNV.setFont(new Font("SansSerif", Font.BOLD, 15));
+        lblTenNV.setFont(font2);
         lblChucVu = new JLabel("Nhân viên bán hàng");
         JPanel namePanel = new JPanel(new GridLayout(2, 1));
         namePanel.setBackground(Color.WHITE);
         namePanel.add(lblTenNV);
         namePanel.add(lblChucVu);
-        imgTaiKhoan = new JLabel(setUpIcon("/img/user.png", 20, 20));
-        imgDangXuat = new JLabel(setUpIcon("/img/signOut.png", 20, 20));
+        imgTaiKhoan = new JLabel(setUpIcon("/picture/trangChu/user.png", 20, 20));
+        imgDangXuat = new JLabel(setUpIcon("/picture/trangChu/signOut.png", 20, 20));
         imgDangXuat.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         nvPanel.add(namePanel);
         nvPanel.add(imgTaiKhoan);
@@ -138,7 +143,7 @@ public class TrangChuNV_GUI extends JFrame implements ActionListener, MouseListe
         gbc.insets = new Insets(0, 0, 0, 8);
         JLabel icon = new JLabel(setUpIcon(iconPath, 22, 22));
         JLabel label = new JLabel(text);
-        label.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        label.setFont(font2);
         item.add(icon, gbc);
         gbc.gridx = 1;
         item.add(label, gbc);
@@ -186,7 +191,7 @@ public class TrangChuNV_GUI extends JFrame implements ActionListener, MouseListe
             item.setMaximumSize(new Dimension(220, 50));
             item.setBackground(new Color(250, 250, 250));
             JLabel lbl = new JLabel(sub);
-            lbl.setFont(new Font("SansSerif", Font.PLAIN, 16));
+            lbl.setFont(font2);
             item.add(lbl);
             subMenuPanel.add(item);
         }
@@ -229,52 +234,25 @@ public class TrangChuNV_GUI extends JFrame implements ActionListener, MouseListe
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.WHITE);
 
-        JLabel lblAnh = new JLabel(setUpIcon("/img/AnhTrangChu.png", 1200, 550));
+        JLabel lblAnh = new JLabel(setUpIcon("/picture/trangChu/AnhTrangChu.png", 1200, 550));
         lblAnh.setHorizontalAlignment(JLabel.CENTER);
         panel.add(lblAnh, BorderLayout.CENTER);
 
         JPanel pnThaoTac = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 30));
         pnThaoTac.setBackground(Color.WHITE);
-        pnThaoTac.add(taoNutIcon("Thêm khách hàng", "/img/addCustomer.png"));
-        pnThaoTac.add(taoNutIcon("Thêm hoá đơn", "/img/addOrder.png"));
-        pnThaoTac.add(taoNutIcon("Thêm thuốc", "/img/addMedicine.png"));
+        pnThaoTac.add(tool.taoButton("Thêm khách hàng", "/picture/trangChu/addCustomer.png"));
+        pnThaoTac.add(tool.taoButton("Thêm hoá đơn", "/picture/trangChu/addOrder.png"));
+        pnThaoTac.add(tool.taoButton("Thêm thuốc", "/picture/trangChu/addMedicine.png"));
 
         JPanel pnBottom = new JPanel(new BorderLayout());
         pnBottom.setBackground(Color.WHITE);
         JLabel lblTitle = new JLabel("Thao tác nhanh:", JLabel.CENTER);
-        lblTitle.setFont(new Font("SansSerif", Font.BOLD, 18));
+        lblTitle.setFont(font2);
         pnBottom.add(lblTitle, BorderLayout.NORTH);
         pnBottom.add(pnThaoTac, BorderLayout.CENTER);
         panel.add(pnBottom, BorderLayout.SOUTH);
 
         return panel;
-    }
-
-    // ================== NÚT ICON ==================
-    public JButton taoNutIcon(String text, String iconPath) {
-        JButton button = new JButton(text, setUpIcon(iconPath, 24, 24));
-        button.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        button.setFocusPainted(false);
-        button.setBackground(Color.WHITE);
-        button.setBorder(BorderFactory.createCompoundBorder(
-                new LineBorder(new Color(220, 220, 220), 1, true),
-                new EmptyBorder(5, 10, 5, 10)
-        ));
-        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        button.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                button.setBackground(new Color(245, 247, 255));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                button.setBackground(Color.WHITE);
-            }
-        });
-
-        return button;
     }
 
     // ================== HỖ TRỢ ==================
@@ -287,11 +265,11 @@ public class TrangChuNV_GUI extends JFrame implements ActionListener, MouseListe
                 selectedMenu = text;
                 item.setBackground(Color.decode("#00ADFE"));
                 label.setForeground(Color.WHITE);
-                label.setFont(new Font("SansSerif", Font.BOLD, 18));
+                label.setFont(font2);
             } else {
                 item.setBackground(Color.WHITE);
                 label.setForeground(Color.BLACK);
-                label.setFont(new Font("SansSerif", Font.PLAIN, 18));
+                label.setFont(font2);
             }
         }
     }

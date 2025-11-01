@@ -5,6 +5,9 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JDateChooser;
+
+import controller.ToolCtrl;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,6 +18,9 @@ public class LapPhieuDatHang_GUI extends JPanel {
     private JTextArea txaGhiChu;
     private JButton btnThem, btnLamMoi, btnTaoPhieuDat;
     private JDateChooser ngayHen;
+    Font font1 = new Font("Arial", Font.BOLD, 18);
+  	Font font2 = new Font("Arial", Font.PLAIN, 15);
+  	public ToolCtrl tool = new ToolCtrl();
 
     public LapPhieuDatHang_GUI() {
     	setLayout(new BorderLayout(0, 15));
@@ -29,7 +35,7 @@ public class LapPhieuDatHang_GUI extends JPanel {
         pnlTop.setBorder(new EmptyBorder(20, 20, 10, 20));
 
         JLabel lblTieuDe = new JLabel("LẬP PHIẾU ĐẶT THUỐC", SwingConstants.CENTER);
-        lblTieuDe.setFont(new Font("SansSerif", Font.BOLD, 20));
+        lblTieuDe.setFont(font1);
         lblTieuDe.setAlignmentX(Component.CENTER_ALIGNMENT);
         pnlTop.add(lblTieuDe);
 
@@ -41,9 +47,9 @@ public class LapPhieuDatHang_GUI extends JPanel {
         JPanel row1 = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 5));
         row1.setBackground(Color.WHITE);
 
-        txtSdt = taoTextField("Nhập số điện thoại", 170);
-        txtTenKH = taoTextField("Tên khách hàng...", 170);
-        txtTuoi = taoTextField("Tuổi...", 70);
+        txtSdt = tool.taoTextField("Số điện thoại...");
+        txtTenKH = tool.taoTextField("Tên khách hàng...");
+        txtTuoi = tool.taoTextField("Tuổi...");
 
         row1.add(taoLabel("Số điện thoại:", 15));
         row1.add(txtSdt);
@@ -57,11 +63,11 @@ public class LapPhieuDatHang_GUI extends JPanel {
         JPanel row2 = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 5));
         row2.setBackground(Color.WHITE);
 
-        cmbSanPham = new JComboBox<>();
+        cmbSanPham = tool.taoComboBox(new String[] {});
         cmbSanPham.setEditable(true);
         cmbSanPham.setPreferredSize(new Dimension(200, 30));
 
-        txtSoLuong = taoTextField("Nhập số lượng...", 100);
+        txtSoLuong = tool.taoTextField("Số lượng...");
 
         row2.add(taoLabel("Sản phẩm:", 15));
         row2.add(cmbSanPham);
@@ -79,10 +85,10 @@ public class LapPhieuDatHang_GUI extends JPanel {
         ngayHen.setPreferredSize(new Dimension(150, 28));
         ngayHen.setDate(new Date()); // ngày hiện tại mặc định
 
-        cmbDonVi = new JComboBox<>();
+        cmbDonVi = tool.taoComboBox(new String[] {});
         cmbDonVi.setPreferredSize(new Dimension(120, 30));
 
-        btnThem = taoButton("Thêm", "/img/plus.png");
+        btnThem = tool.taoButton("Thêm", "/picture/hoaDon/plus.png");
 
         row3.add(taoLabel("Ngày hẹn:", 15));
         row3.add(ngayHen);
@@ -98,8 +104,8 @@ public class LapPhieuDatHang_GUI extends JPanel {
         DefaultTableModel model = new DefaultTableModel(cols, 0);
 		tblThuoc = new JTable(model);
 		tblThuoc.setRowHeight(25);
-		tblThuoc.setFont(new Font("SansSerif", Font.PLAIN, 14));
-		tblThuoc.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
+		tblThuoc.setFont(font2);
+		tblThuoc.getTableHeader().setFont(font2);
 		JScrollPane scroll = new JScrollPane(tblThuoc);
 		add(scroll, BorderLayout.CENTER);
         
@@ -123,8 +129,8 @@ public class LapPhieuDatHang_GUI extends JPanel {
         // --- Nút chức năng ---
         JPanel rowBtns = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 10));
         rowBtns.setBackground(Color.WHITE);
-        btnLamMoi = taoButton("Làm mới", "/img/refresh.png");
-        btnTaoPhieuDat = taoButton("Tạo phiếu đặt", "/img/plus.png");
+        btnLamMoi = tool.taoButton("Làm mới", "/picture/hoaDon/refresh.png");
+        btnTaoPhieuDat = tool.taoButton("Tạo phiếu đặt", "/picture/hoaDon/plus.png");
         rowBtns.add(btnLamMoi);
         rowBtns.add(btnTaoPhieuDat);
 
@@ -136,14 +142,14 @@ public class LapPhieuDatHang_GUI extends JPanel {
 
     private JLabel taoLabel(String text, int size) {
         JLabel lbl = new JLabel(text);
-        lbl.setFont(new Font("SansSerif", Font.BOLD, size));
+        lbl.setFont(font2);
         return lbl;
     }
 
     private JTextField taoTextField(String prompt, int width) {
         JTextField txt = new JTextField(prompt);
         txt.setPreferredSize(new Dimension(width, 30));
-        txt.setFont(new Font("SansSerif", Font.PLAIN, 15));
+        txt.setFont(font2);
         txt.setForeground(Color.GRAY);
         txt.addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
@@ -163,18 +169,6 @@ public class LapPhieuDatHang_GUI extends JPanel {
             }
         });
         return txt;
-    }
-
-    private JButton taoButton(String text, String imgPath) {
-        ImageIcon icon = new ImageIcon(getClass().getResource(imgPath));
-        Image imgScaled = icon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-        icon = new ImageIcon(imgScaled);
-
-        JButton btn = new JButton(text, icon);
-        btn.setFont(new Font("SansSerif", Font.BOLD, 15));
-        btn.setBackground(new Color(245, 245, 245));
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        return btn;
     }
 
 }

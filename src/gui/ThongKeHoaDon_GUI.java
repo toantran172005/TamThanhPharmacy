@@ -7,12 +7,17 @@ import com.toedter.calendar.JDateChooser; // Thư viện chọn ngày
 //import org.jfree.chart.plot.*;
 //import org.jfree.data.category.DefaultCategoryDataset;
 
+import controller.ToolCtrl;
+
 public class ThongKeHoaDon_GUI extends JFrame {
     private JDateChooser dpNgayBatDau, dpNgayKetThuc;
     private JButton btnThongKe, btnXuatExcel, btnLamMoi;
     private JLabel lblTongDoanhThu, lblTongHD, lblTBDT;
     private JComboBox<String> cmbTopTK;
     private JTable tblThongKeHD;
+    Font font1 = new Font("Arial", Font.BOLD, 18);
+  	Font font2 = new Font("Arial", Font.PLAIN, 15);
+  	public ToolCtrl tool = new ToolCtrl();
 
     public ThongKeHoaDon_GUI() {
         setTitle("Thống kê hóa đơn");
@@ -30,7 +35,7 @@ public class ThongKeHoaDon_GUI extends JFrame {
         topPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel lblTitle = new JLabel("THỐNG KÊ HÓA ĐƠN", SwingConstants.CENTER);
-        lblTitle.setFont(new Font("Arial", Font.BOLD, 22));
+        lblTitle.setFont(font1);
         lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         topPanel.add(lblTitle);
 
@@ -43,8 +48,7 @@ public class ThongKeHoaDon_GUI extends JFrame {
         dpNgayKetThuc = new JDateChooser();
         dpNgayKetThuc.setPreferredSize(new Dimension(150, 30));
 
-        btnThongKe = new JButton("Thống kê", new ImageIcon("img/statistic.png"));
-        btnThongKe.setFont(new Font("Arial", Font.BOLD, 14));
+        btnThongKe = tool.taoButton("Thống kê","/picture/hoaDon/statistic.png");
 
         filterPanel.add(lblTuNgay);
         filterPanel.add(dpNgayBatDau);
@@ -66,7 +70,7 @@ public class ThongKeHoaDon_GUI extends JFrame {
         lblTBDT = new JLabel("Doanh thu TB/Hóa đơn: 0");
 
         for (JLabel lbl : new JLabel[]{lblTongDoanhThu, lblTongHD, lblTBDT}) {
-            lbl.setFont(new Font("Arial", Font.PLAIN, 15));
+            lbl.setFont(font2);
             summaryPanel.add(lbl);
         }
         centerPanel.add(summaryPanel);
@@ -101,8 +105,8 @@ public class ThongKeHoaDon_GUI extends JFrame {
 
         // --- Nút dưới cùng ---
         JPanel bottomButtons = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 10));
-        btnXuatExcel = new JButton("Xuất Excel", new ImageIcon("img/export.png"));
-        btnLamMoi = new JButton("Làm mới", new ImageIcon("img/return.png"));
+        btnXuatExcel = tool.taoButton("Xuất Excel", "/picture/hoaDon/export.png");
+        btnLamMoi = tool.taoButton("Làm mới", "/picture/hoaDon/return.png");
         bottomButtons.add(btnXuatExcel);
         bottomButtons.add(btnLamMoi);
         centerPanel.add(bottomButtons);
@@ -110,7 +114,7 @@ public class ThongKeHoaDon_GUI extends JFrame {
         mainPanel.add(centerPanel, BorderLayout.CENTER);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new ThongKeHoaDon_GUI().setVisible(true));
-    }
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> new ThongKeHoaDon_GUI().setVisible(true));
+//    }
 }

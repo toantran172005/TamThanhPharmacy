@@ -3,12 +3,18 @@ package gui;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import controller.ToolCtrl;
+
 import java.awt.*;
 
 public class TimKiemNhanVien_GUI extends JPanel {
     private JTable tblNhanVien;
     private JTextField txtSdt, txtTenNV;
     private JButton btnXemChiTiet, btnLamMoi, btnLichSuXoa, btnXoa;
+    Font font1 = new Font("Arial", Font.BOLD, 18);
+	Font font2 = new Font("Arial", Font.PLAIN, 15);
+	public ToolCtrl tool = new ToolCtrl();
 
     public TimKiemNhanVien_GUI() {
         setLayout(new BorderLayout());
@@ -45,10 +51,10 @@ public class TimKiemNhanVien_GUI extends JPanel {
         pnlButtons.setBackground(Color.WHITE);
         pnlButtons.setBorder(new EmptyBorder(0, 20, 0, 0));
 
-        btnXemChiTiet = taoButton("Xem chi tiết", "/img/find.png");
-        btnLamMoi = taoButton("Làm mới", "/img/refresh.png");
-        btnLichSuXoa = taoButton("Lịch sử xoá", "/img/document.png");
-        btnXoa = taoButton("Xoá tất cả", "/img/trash.png");
+        btnXemChiTiet = tool.taoButton("Xem chi tiết", "/picture/hoaDon/find.png");
+        btnLamMoi = tool.taoButton("Làm mới", "/picture/hoaDon/refresh.png");
+        btnLichSuXoa = tool.taoButton("Lịch sử xoá", "/picture/hoaDon/document.png");
+        btnXoa = tool.taoButton("Xoá tất cả", "/picture/hoaDon/trash.png");
 
         pnlButtons.add(btnXemChiTiet);
         pnlButtons.add(btnLamMoi);
@@ -81,13 +87,13 @@ public class TimKiemNhanVien_GUI extends JPanel {
 
     private JLabel taoLabel(String text) {
         JLabel lbl = new JLabel(text);
-        lbl.setFont(new Font("SansSerif", Font.BOLD, 14));
+        lbl.setFont(font2);
         return lbl;
     }
 
     private JTextField taoTextField(String placeholder) {
         JTextField txt = new JTextField(15);
-        txt.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        txt.setFont(font2);
         txt.setForeground(Color.GRAY);
         txt.setText(placeholder);
 
@@ -111,31 +117,13 @@ public class TimKiemNhanVien_GUI extends JPanel {
         return txt;
     }
 
-    private JButton taoButton(String text, String iconPath) {
-        JButton btn = new JButton(text);
-        btn.setFont(new Font("SansSerif", Font.BOLD, 14));
-        btn.setFocusPainted(false);
-        btn.setBackground(new Color(230, 230, 230));
-        btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        btn.setIcon(new ImageIcon(getClass().getResource(iconPath)));
-
-        // Thu nhỏ icon
-        ImageIcon icon = (ImageIcon) btn.getIcon();
-        if (icon != null) {
-            Image img = icon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-            btn.setIcon(new ImageIcon(img));
-        }
-
-        return btn;
-    }
-
-    // ========== MAIN TEST ==========
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Tìm kiếm nhân viên");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(850, 600);
-        frame.add(new TimKiemNhanVien_GUI());
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
+//    // ========== MAIN TEST ==========
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame("Tìm kiếm nhân viên");
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setSize(850, 600);
+//        frame.add(new TimKiemNhanVien_GUI());
+//        frame.setLocationRelativeTo(null);
+//        frame.setVisible(true);
+//    }
 }
