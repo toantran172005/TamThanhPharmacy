@@ -2,6 +2,10 @@ package gui;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+
 import com.toedter.calendar.JDateChooser; // Thư viện chọn ngày
 //import org.jfree.chart.*;
 //import org.jfree.chart.plot.*;
@@ -9,7 +13,7 @@ import com.toedter.calendar.JDateChooser; // Thư viện chọn ngày
 
 import controller.ToolCtrl;
 
-public class ThongKeHoaDon_GUI extends JFrame {
+public class ThongKeHoaDon_GUI extends JPanel {
     private JDateChooser dpNgayBatDau, dpNgayKetThuc;
     private JButton btnThongKe, btnXuatExcel, btnLamMoi;
     private JLabel lblTongDoanhThu, lblTongHD, lblTBDT;
@@ -20,10 +24,9 @@ public class ThongKeHoaDon_GUI extends JFrame {
   	public ToolCtrl tool = new ToolCtrl();
 
     public ThongKeHoaDon_GUI() {
-        setTitle("Thống kê hóa đơn");
-        setSize(1100, 800);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+    	setLayout(new BorderLayout());
+		setPreferredSize(new Dimension(1134, 617));
+		setBackground(Color.WHITE);
 
         JPanel mainPanel = new JPanel(new BorderLayout(20, 20));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -40,13 +43,11 @@ public class ThongKeHoaDon_GUI extends JFrame {
         topPanel.add(lblTitle);
 
         JPanel filterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 10));
-        JLabel lblTuNgay = new JLabel("Từ ngày:");
-        dpNgayBatDau = new JDateChooser();
-        dpNgayBatDau.setPreferredSize(new Dimension(150, 30));
+        JLabel lblTuNgay = tool.taoLabel("Từ ngày:");
+        dpNgayBatDau = tool.taoDateChooser();
 
-        JLabel lblDenNgay = new JLabel("Đến ngày:");
-        dpNgayKetThuc = new JDateChooser();
-        dpNgayKetThuc.setPreferredSize(new Dimension(150, 30));
+        JLabel lblDenNgay = tool.taoLabel("Đến ngày:");
+        dpNgayKetThuc = tool.taoDateChooser();
 
         btnThongKe = tool.taoButton("Thống kê","/picture/hoaDon/statistic.png");
 
@@ -65,9 +66,9 @@ public class ThongKeHoaDon_GUI extends JFrame {
 
         // --- Thông tin tổng quan ---
         JPanel summaryPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 10));
-        lblTongDoanhThu = new JLabel("Tổng doanh thu: 0 VND");
-        lblTongHD = new JLabel("Tổng hóa đơn: 0");
-        lblTBDT = new JLabel("Doanh thu TB/Hóa đơn: 0");
+        lblTongDoanhThu = tool.taoLabel("Tổng doanh thu: 0 VND");
+        lblTongHD = tool.taoLabel("Tổng hóa đơn: 0");
+        lblTBDT = tool.taoLabel("Doanh thu TB/Hóa đơn: 0");
 
         for (JLabel lbl : new JLabel[]{lblTongDoanhThu, lblTongHD, lblTBDT}) {
             lbl.setFont(font2);
@@ -96,12 +97,42 @@ public class ThongKeHoaDon_GUI extends JFrame {
         topTablePanel.add(cmbTopTK);
         tablePanel.add(topTablePanel, BorderLayout.NORTH);
 
-        String[] columns = {"STT", "Tên khách hàng", "Số điện thoại", "Số hóa đơn", "Tổng mua"};
-        Object[][] data = {};
-        tblThongKeHD = new JTable(data, columns);
-        JScrollPane scrollPane = new JScrollPane(tblThongKeHD);
-        tablePanel.add(scrollPane, BorderLayout.CENTER);
-        centerPanel.add(tablePanel);
+        String[] columnNames = {"STT", "Tên khách hàng", "Số điện thoại", "Số hóa đơn", "Tổng mua"};
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+		tblThongKeHD = new JTable(model);
+		tblThongKeHD.setRowHeight(28);
+		tblThongKeHD.getTableHeader().setFont(font2);
+		tblThongKeHD.setFont(font2);
+
+		// Đặt nền trắng cho bảng
+		tblThongKeHD.setBackground(Color.WHITE);
+
+		// Đặt nền trắng cho vùng header và vùng chứa
+		tblThongKeHD.getTableHeader().setBackground(new Color(240, 240, 240)); // xám rất nhạt
+		tblThongKeHD.setGridColor(new Color(200, 200, 200)); // Màu đường kẻ ô (nhẹ)
+		tblThongKeHD.setShowGrid(true); // Bật hiển thị đường kẻ
+
+		// Viền cho bảng
+		tblThongKeHD.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
+
+		// Nền của JScrollPane (bao quanh bảng)
+		JScrollPane scrollPane = new JScrollPane(tblThongKeHD);
+		scrollPane.getViewport().setBackground(Color.WHITE); // nền vùng chứa bảng
+
+		// Căn giữa nội dung các ô
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		for (int i = 0; i < tblThongKeHD.getColumnCount(); i++) {
+			tblThongKeHD.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		}
+
+		// Căn giữa tiêu đề cột
+		JTableHeader header = tblThongKeHD.getTableHeader();
+		header.setBackground(new Color(240, 240, 240));
+		header.setFont(font2);
+		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+
+		centerPanel.add(scrollPane, BorderLayout.CENTER);
 
         // --- Nút dưới cùng ---
         JPanel bottomButtons = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 10));
@@ -113,8 +144,4 @@ public class ThongKeHoaDon_GUI extends JFrame {
 
         mainPanel.add(centerPanel, BorderLayout.CENTER);
     }
-
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(() -> new ThongKeHoaDon_GUI().setVisible(true));
-//    }
 }

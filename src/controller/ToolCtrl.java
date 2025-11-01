@@ -96,7 +96,7 @@ public class ToolCtrl {
 		lbl.setVerticalAlignment(SwingConstants.CENTER);
 
 		// Kích thước: cao 25, rộng tự động theo text
-		lbl.setPreferredSize(new Dimension(lbl.getPreferredSize().width, 30));
+//		lbl.setPreferredSize(new Dimension(lbl.getPreferredSize().width, 30));
 
 		return lbl;
 	}
