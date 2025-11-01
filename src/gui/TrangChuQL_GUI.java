@@ -127,17 +127,17 @@ public class TrangChuQL_GUI extends JFrame {
 		panelMapping.put("Khuyến Mãi", taoPanelTam("Khuyến Mãi"));
 
 		// Menu con
-		panelMapping.put("Tìm kiếm thuốc", taoPanelTam("Tìm kiếm thuốc"));
-		panelMapping.put("Thêm thuốc", taoPanelTam("Thêm thuốc"));
-		panelMapping.put("Nhập thuốc", taoPanelTam("Nhập thuốc"));
-		panelMapping.put("Đặt thuốc bán", taoPanelTam("Đặt thuốc bán"));
-		panelMapping.put("Thống kê thuốc", taoPanelTam("Thống kê thuốc"));
-		panelMapping.put("Đơn vị", taoPanelTam("Đơn vị"));
+		panelMapping.put("Tìm kiếm thuốc", new TimKiemThuoc_GUI());
+		panelMapping.put("Thêm thuốc", new ThemThuoc_GUI());
+		panelMapping.put("Nhập thuốc", new NhapThuoc_GUI());
+		panelMapping.put("Đặt thuốc bán", new DatThuoc_GUI());
+		panelMapping.put("Thống kê thuốc", new ThongKeThuoc_GUI());
+		panelMapping.put("Đơn vị", new DonVi_GUI());
 
 		panelMapping.put("Danh sách kệ", taoPanelTam("Danh sách kệ"));
 		panelMapping.put("Thêm kệ thuốc", taoPanelTam("Thêm kệ thuốc"));
 
-		panelMapping.put("Tìm kiếm khách hàng", taoPanelTam("Tìm kiếm khách hàng"));
+		panelMapping.put("Tìm kiếm khách hàng", new TimKiemKH_GUI());
 		panelMapping.put("Thêm khách hàng", taoPanelTam("Thêm khách hàng"));
 		panelMapping.put("Khiếu nại & Hỗ trợ", taoPanelTam("Khiếu nại & Hỗ trợ"));
 		panelMapping.put("Thống kê khách hàng", taoPanelTam("Thống kê khách hàng"));
@@ -152,8 +152,8 @@ public class TrangChuQL_GUI extends JFrame {
 		panelMapping.put("Tìm kiếm nhân viên", taoPanelTam("Tìm kiếm nhân viên"));
 		panelMapping.put("Thêm nhân viên", taoPanelTam("Thêm nhân viên"));
 
-		panelMapping.put("Danh sách khuyến mãi", taoPanelTam("Danh sách khuyến mãi"));
-		panelMapping.put("Thêm Khuyến Mãi", taoPanelTam("Thêm Khuyến Mãi"));
+		panelMapping.put("Danh sách khuyến mãi", new DanhSachKhuyenMai_GUI());
+		panelMapping.put("Thêm Khuyến Mãi", new ThemKhuyenMai_GUI());
 	}
 
 	// ================== SỰ KIỆN CLICK CHO MENU CON ==================
