@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -31,6 +32,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -43,6 +45,20 @@ import com.toedter.calendar.JDateChooser;
 import connectDB.*;
 
 public class ToolCtrl {
+	
+	// ===== ĐỔI PANEL =====
+	public void doiPanel(JPanel pnlCha, JPanel pnlMoi) {
+	    if (pnlCha == null || pnlMoi == null) {
+	        System.err.println("❌ Lỗi: Panel cha hoặc panel mới bị null trong ToolCtrl.doiPanel()");
+	        return;
+	    }
+	    pnlCha.removeAll();           
+	    pnlCha.setLayout(new BorderLayout()); 
+	    pnlCha.add(pnlMoi, BorderLayout.CENTER);
+	    pnlCha.revalidate();          
+	    pnlCha.repaint();             
+	}
+
 
 	public JDateChooser taoDateChooser() {
 		JDateChooser dateChooser = new JDateChooser();
@@ -80,7 +96,7 @@ public class ToolCtrl {
 		lbl.setVerticalAlignment(SwingConstants.CENTER);
 
 		// Kích thước: cao 25, rộng tự động theo text
-		lbl.setPreferredSize(new Dimension(lbl.getPreferredSize().width, 30));
+//		lbl.setPreferredSize(new Dimension(lbl.getPreferredSize().width, 30));
 
 		return lbl;
 	}
@@ -242,14 +258,22 @@ public class ToolCtrl {
 	// Hiển thị thông báo
 	// ==========================
 	public void hienThiThongBao(String tieuDe, String noiDung, boolean trangThai) {
-		if (trangThai) {
-			ImageIcon icon = new ImageIcon(getClass().getResource("/picture/thuoc/check.png"));
-			JOptionPane.showMessageDialog(null, noiDung, tieuDe, JOptionPane.INFORMATION_MESSAGE, icon);
-		} else {
-			ImageIcon icon = new ImageIcon(getClass().getResource("/picture/thuoc/cross.png"));
-			JOptionPane.showMessageDialog(null, noiDung, tieuDe, JOptionPane.ERROR_MESSAGE, icon);
-		}
+	    String iconPath;
+	    if (trangThai) {
+	        iconPath = "/picture/thuoc/check.png";
+	    } else {
+	        iconPath = "/picture/thuoc/cross.png";
+	    }
+
+	    // Tạo icon và thu nhỏ lại
+	    ImageIcon icon = new ImageIcon(getClass().getResource(iconPath));
+	    Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+	    ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+	    int messageType = trangThai ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE;
+	    JOptionPane.showMessageDialog(null, noiDung, tieuDe, messageType, scaledIcon);
 	}
+
 
 	// ==========================
 	// 2️⃣ Hiển thị xác nhận

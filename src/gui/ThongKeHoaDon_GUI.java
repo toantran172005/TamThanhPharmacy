@@ -118,7 +118,6 @@ public class ThongKeHoaDon_GUI extends JPanel {
 		// Nền của JScrollPane (bao quanh bảng)
 		JScrollPane scrollPane = new JScrollPane(tblThongKeHD);
 		scrollPane.getViewport().setBackground(Color.WHITE); // nền vùng chứa bảng
-		scrollPane.setBorder(BorderFactory.createTitledBorder("Danh sách thuốc")); // viền ngoài
 
 		// Căn giữa nội dung các ô
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();

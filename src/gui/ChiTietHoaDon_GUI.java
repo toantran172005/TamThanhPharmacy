@@ -13,7 +13,7 @@ import java.util.Vector;
 
 public class ChiTietHoaDon_GUI extends JPanel {
 	private JLabel lblDiaChi, lblHotline, lblMaHD, lblNgayLap, lblNhanVien, lblKhachHang;
-	private JLabel lblGhiChu, lblTongTien, lblTienNhan, lblTienThua;
+	private JLabel lblGhiChu, lblTongTien, lblTienNhan, lblTienThua; 
 	private JTable tblThuoc;
 	private JButton btnInHoaDon, btnQuayLai, btnTaoPhieuDoiTra;
 	private TrangChuQL_GUI mainFrame;
@@ -68,10 +68,10 @@ public class ChiTietHoaDon_GUI extends JPanel {
 		lblChiTiet.setAlignmentX(Component.CENTER_ALIGNMENT);
 		pnlTop.add(lblChiTiet);
 
-		pnlTop.add(taoDongThongTin("Mã hoá đơn:", lblMaHD = tool.taoLabel("")));
-		pnlTop.add(taoDongThongTin("Ngày lập:", lblNgayLap = tool.taoLabel("")));
-		pnlTop.add(taoDongThongTin("Nhân viên:", lblNhanVien = tool.taoLabel("")));
-		pnlTop.add(taoDongThongTin("Khách hàng:", lblKhachHang = tool.taoLabel("")));
+		pnlTop.add(taoDongThongTin("Mã hoá đơn: ", lblMaHD = tool.taoLabel("Đỗ Minh Tuấn")));
+		pnlTop.add(taoDongThongTin("Ngày lập: ", lblNgayLap = tool.taoLabel("11/11/1111")));
+		pnlTop.add(taoDongThongTin("Nhân viên: ", lblNhanVien = tool.taoLabel("Đỗ Minh Tuấn")));
+		pnlTop.add(taoDongThongTin("Khách hàng: ", lblKhachHang = tool.taoLabel("Đỗ Minh Tuấn")));
 
 		add(pnlTop, BorderLayout.NORTH);
 
@@ -97,7 +97,6 @@ public class ChiTietHoaDon_GUI extends JPanel {
 		// Nền của JScrollPane (bao quanh bảng)
 		JScrollPane scrollPane = new JScrollPane(tblThuoc);
 		scrollPane.getViewport().setBackground(Color.WHITE); // nền vùng chứa bảng
-		scrollPane.setBorder(BorderFactory.createTitledBorder("Danh sách thuốc")); // viền ngoài
 
 		// Căn giữa nội dung các ô
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -120,10 +119,10 @@ public class ChiTietHoaDon_GUI extends JPanel {
 		pnlBottom.setBorder(new EmptyBorder(10, 0, 10, 0));
 		pnlBottom.setBackground(Color.WHITE);
 
-		pnlBottom.add(taoDongThongTin("Ghi chú:", lblGhiChu = tool.taoLabel("")));
-		pnlBottom.add(taoDongThongTin("Tổng tiền:", lblTongTien = tool.taoLabel("")));
-		pnlBottom.add(taoDongThongTin("Tiền nhận:", lblTienNhan = tool.taoLabel("")));
-		pnlBottom.add(taoDongThongTin("Tiền thừa:", lblTienThua = tool.taoLabel("")));
+		pnlBottom.add(taoDongThongTin("Ghi chú:", lblGhiChu = tool.taoLabel("Không có")));
+		pnlBottom.add(taoDongThongTin("Tổng tiền:", lblTongTien = tool.taoLabel("1.000.000 VNĐ")));
+		pnlBottom.add(taoDongThongTin("Tiền nhận:", lblTienNhan = tool.taoLabel("1.000.000 VNĐ")));
+		pnlBottom.add(taoDongThongTin("Tiền thừa:", lblTienThua = tool.taoLabel("1.000.000 VNĐ")));
 
 		JPanel pnlButtons = new JPanel(new FlowLayout(FlowLayout.CENTER, 60, 10));
 		pnlButtons.setBackground(Color.WHITE);
@@ -152,5 +151,7 @@ public class ChiTietHoaDon_GUI extends JPanel {
 		panel.add(lbl);
 		return panel;
 	}
+
+
 
 }

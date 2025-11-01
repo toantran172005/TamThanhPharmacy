@@ -99,7 +99,6 @@ public class TimKiemHD_GUI extends JPanel {
 		// Nền của JScrollPane (bao quanh bảng)
 		JScrollPane scrollPane = new JScrollPane(tblHoaDon);
 		scrollPane.getViewport().setBackground(Color.WHITE); // nền vùng chứa bảng
-		scrollPane.setBorder(BorderFactory.createTitledBorder("Danh sách hoá đơn")); // viền ngoài
 
 		// Căn giữa nội dung các ô
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
