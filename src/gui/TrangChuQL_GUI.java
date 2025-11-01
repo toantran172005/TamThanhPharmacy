@@ -147,10 +147,10 @@ public class TrangChuQL_GUI extends JFrame {
 		panelMapping.put("Lập hóa đơn", new LapHoaDon_GUI());
 		panelMapping.put("Đặt thuốc", new LapPhieuDatHang_GUI());
 		panelMapping.put("Danh sách phiếu đổi trả", new TimKiemPhieuDoiTra_GUI(this));
-		panelMapping.put("Thống kê hóa đơn", taoPanelTam("Thống kê hóa đơn"));
+		panelMapping.put("Thống kê hóa đơn", new ThongKeHoaDon_GUI());
 
-		panelMapping.put("Tìm kiếm nhân viên", taoPanelTam("Tìm kiếm nhân viên"));
-		panelMapping.put("Thêm nhân viên", taoPanelTam("Thêm nhân viên"));
+		panelMapping.put("Tìm kiếm nhân viên", new TimKiemNV_GUI(this));
+		panelMapping.put("Thêm nhân viên", new ThemNhanVien_GUI());
 
 		panelMapping.put("Danh sách khuyến mãi", taoPanelTam("Danh sách khuyến mãi"));
 		panelMapping.put("Thêm Khuyến Mãi", taoPanelTam("Thêm Khuyến Mãi"));

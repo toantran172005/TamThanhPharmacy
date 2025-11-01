@@ -43,7 +43,7 @@ import com.toedter.calendar.JDateChooser;
 import connectDB.*;
 
 public class ToolCtrl {
-	
+
 	public JDateChooser taoDateChooser() {
 		JDateChooser dateChooser = new JDateChooser();
 		dateChooser.setPreferredSize(new Dimension(220, 35)); // chiều rộng và cao chuẩn
@@ -51,7 +51,7 @@ public class ToolCtrl {
 		dateChooser.setDateFormatString("dd-MM-yyyy"); // định dạng hiển thị ngày
 		return dateChooser;
 	}
-	
+
 	public JTextArea taoTextArea(int chieuCao) {
 		JTextArea area = new JTextArea();
 		area.setFont(new Font("Times New Roman", Font.PLAIN, 15));
@@ -97,7 +97,7 @@ public class ToolCtrl {
 		combo.setBorder(
 				new CompoundBorder(new LineBorder(new Color(0xCC, 0xCC, 0xCC), 1, true), new EmptyBorder(3, 3, 3, 3)));
 
-		combo.setPreferredSize(new Dimension(250, 35));
+		combo.setPreferredSize(new Dimension(220, 35));
 
 		// Cho phép nhập (editable)
 		combo.setEditable(true);
