@@ -31,15 +31,43 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import com.toedter.calendar.JDateChooser;
+
 import connectDB.*;
 
 public class ToolCtrl {
+	
+	public JDateChooser taoDateChooser() {
+		JDateChooser dateChooser = new JDateChooser();
+		dateChooser.setPreferredSize(new Dimension(220, 35)); // chiều rộng và cao chuẩn
+		dateChooser.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		dateChooser.setDateFormatString("dd-MM-yyyy"); // định dạng hiển thị ngày
+		return dateChooser;
+	}
+	
+	public JTextArea taoTextArea(int chieuCao) {
+		JTextArea area = new JTextArea();
+		area.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		area.setForeground(new Color(0x33, 0x33, 0x33));
+		area.setBackground(Color.WHITE);
+		area.setBorder(new CompoundBorder(new LineBorder(new Color(0xD1, 0xD1, 0xD1), 1, true),
+				new EmptyBorder(8, 12, 8, 12)));
+		area.setLineWrap(true);
+		area.setWrapStyleWord(true);
+
+		// Chiều rộng mặc định 220, chiều cao theo tham số
+		area.setPreferredSize(new Dimension(220, chieuCao));
+		area.setMinimumSize(new Dimension(220, chieuCao));
+
+		return area;
+	}
 
 	public JLabel taoLabel(String noiDung) {
 		JLabel lbl = new JLabel(noiDung);
