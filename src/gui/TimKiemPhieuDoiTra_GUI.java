@@ -15,12 +15,18 @@ public class TimKiemPhieuDoiTra_GUI extends JPanel {
 	private JButton btnTimKiem, btnLamMoi, btnChiTiet;
 	private JTable tblPhieuDoiTra;
 	private TrangChuQL_GUI mainFrame;
+	private TrangChuNV_GUI mainFrameNV;
 	Font font1 = new Font("Arial", Font.BOLD, 18);
 	Font font2 = new Font("Arial", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
 
 	public TimKiemPhieuDoiTra_GUI(TrangChuQL_GUI mainFrame) {
 		this.mainFrame = mainFrame;
+		initUI();
+	}
+	
+	public TimKiemPhieuDoiTra_GUI(TrangChuNV_GUI mainFrameNV) {
+		this.mainFrameNV = mainFrameNV;
 		initUI();
 	}
 

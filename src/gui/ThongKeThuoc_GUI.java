@@ -15,7 +15,6 @@ public class ThongKeThuoc_GUI extends JPanel {
     private JTable tblThongKe;
     private JButton btnThongKe, btnLamMoi, btnLuu;
     private JDateChooser dpNgayBD, dpNgayKT;
-
     private final ToolCtrl tool = new ToolCtrl();
 
     public ThongKeThuoc_GUI() {

@@ -16,14 +16,20 @@ public class TimKiemPhieuDatHang_GUI extends JPanel {
 	private JComboBox<String> cmbTrangThai;
 	private JButton btnTimKiem, btnChiTiet, btnLamMoi;
 	private TrangChuQL_GUI mainFrame;
+	private TrangChuNV_GUI mainFrameNV;
 	Font font1 = new Font("Arial", Font.BOLD, 18);
 	Font font2 = new Font("Arial", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
 
 	public TimKiemPhieuDatHang_GUI(TrangChuQL_GUI mainFrame) {
-        this.mainFrame = mainFrame;
-        initUI();
-    }
+		this.mainFrame = mainFrame;
+		initUI();
+	}
+
+	public TimKiemPhieuDatHang_GUI(TrangChuNV_GUI mainFrameNV) {
+		this.mainFrameNV = mainFrameNV;
+		initUI();
+	}
 
 	public void initUI() {
 		setLayout(new BorderLayout());
@@ -54,7 +60,7 @@ public class TimKiemPhieuDatHang_GUI extends JPanel {
 		txtTenNV = tool.taoTextField("Tên nhân viên...");
 
 		btnTimKiem = tool.taoButton("Tìm kiếm", "/picture/hoaDon/search.png");
-		
+
 		searchPanel.add(lblKH);
 		searchPanel.add(txtKhachHang);
 		searchPanel.add(lblNV);
@@ -66,7 +72,8 @@ public class TimKiemPhieuDatHang_GUI extends JPanel {
 		functionPanel.setBackground(Color.WHITE);
 
 		JLabel lblTrangThai = tool.taoLabel("Trạng thái:");
-		cmbTrangThai = cmbTrangThai = cmbTrangThai = tool.taoComboBox(new String[] {"Tất cả", "Chờ hàng", "Đã giao", "Đã hủy"});
+		cmbTrangThai = cmbTrangThai = cmbTrangThai = tool
+				.taoComboBox(new String[] { "Tất cả", "Chờ hàng", "Đã giao", "Đã hủy" });
 		cmbTrangThai.setPreferredSize(new Dimension(140, 26));
 
 		btnChiTiet = tool.taoButton("Xem chi tiết", "/picture/hoaDon/xemChiTiet.png");
@@ -85,10 +92,10 @@ public class TimKiemPhieuDatHang_GUI extends JPanel {
 		topPanel.add(functionPanel);
 
 		add(topPanel, BorderLayout.NORTH);
-		
+
 		// ======== CENTER TABLE ========
 		String[] columnNames = { "STT", "Mã phiếu", "Tên nhân viên", "Tên khách hàng", "Ngày đặt", "Ngày hẹn",
-		"Trạng thái" };
+				"Trạng thái" };
 		DefaultTableModel model = new DefaultTableModel(columnNames, 0);
 		tblPhieuDatThuoc = new JTable(model);
 		tblPhieuDatThuoc.setRowHeight(28);
@@ -121,14 +128,13 @@ public class TimKiemPhieuDatHang_GUI extends JPanel {
 		JTableHeader header = tblPhieuDatThuoc.getTableHeader();
 		header.setBackground(new Color(240, 240, 240));
 		header.setFont(font2);
-		((DefaultTableCellRenderer) header.getDefaultRenderer())
-		        .setHorizontalAlignment(SwingConstants.CENTER);
+		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
 		add(scrollPane, BorderLayout.CENTER);
-		
+
 		btnChiTiet.addActionListener(e -> {
-		    ChiTietPhieuDatHang_GUI chiTietPanel = new ChiTietPhieuDatHang_GUI(mainFrame);
-		    mainFrame.setUpNoiDung(chiTietPanel);
+			ChiTietPhieuDatHang_GUI chiTietPanel = new ChiTietPhieuDatHang_GUI(mainFrame);
+			mainFrame.setUpNoiDung(chiTietPanel);
 		});
 	}
 }

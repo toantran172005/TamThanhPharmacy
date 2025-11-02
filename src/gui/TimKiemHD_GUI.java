@@ -16,6 +16,7 @@ public class TimKiemHD_GUI extends JPanel {
 	private JTextField txtKhachHang, txtTenNV;
 	private JButton btnTimKiem, btnLamMoi, btnChiTiet, btnLichSuXoa;
 	private TrangChuQL_GUI mainFrame;
+	private TrangChuNV_GUI mainFrameNV;
 	Font font1 = new Font("Arial", Font.BOLD, 18);
 	Font font2 = new Font("Arial", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
@@ -23,6 +24,11 @@ public class TimKiemHD_GUI extends JPanel {
 	// --- Thêm constructor nhận TrangChuQL_GUI ---
 	public TimKiemHD_GUI(TrangChuQL_GUI mainFrame) {
 		this.mainFrame = mainFrame;
+		initUI();
+	}
+	
+	public TimKiemHD_GUI(TrangChuNV_GUI mainFrameNV) {
+		this.mainFrameNV = mainFrameNV;
 		initUI();
 	}
 
