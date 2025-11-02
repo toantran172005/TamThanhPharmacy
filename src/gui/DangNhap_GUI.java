@@ -2,50 +2,48 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 import java.net.URL;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import controller.ToolCtrl;
 
-public class DangNhap_GUI extends JFrame implements ActionListener{
+public class DangNhap_GUI extends JFrame {
+
     private JTextField txtTenDangNhap;
     private JPasswordField txpPassClose;
     private JTextField txtPassOpen;
     private JLabel imgEye;
-    private JLabel imgLogo;
     private JButton btnDangNhap;
     private boolean hienMatKhau = false;
     public ToolCtrl tool = new ToolCtrl();
-    Font font1 = new Font("Arial", Font.BOLD, 18);
-	Font font2 = new Font("Arial", Font.PLAIN, 15);
+
+    Font font1 = new Font("Times New Roman", Font.BOLD, 22);
+    Font font2 = new Font("Times New Roman", Font.PLAIN, 16);
 
     public DangNhap_GUI() {
-        setTitle("Đăng nhập");
+        setTitle("Đăng nhập hệ thống");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(480, 550);
         setLocationRelativeTo(null);
         setResizable(false);
-        setLayout(new BorderLayout());
         getContentPane().setBackground(Color.WHITE);
+        setLayout(new BorderLayout(0, 0));
 
         // ======= PANEL TRÊN =======
-        JPanel pnlTop = new JPanel(null);
+        JPanel pnlTop = new JPanel(new BorderLayout());
         pnlTop.setBackground(Color.WHITE);
         pnlTop.setBorder(new EmptyBorder(20, 0, 10, 0));
-        pnlTop.setPreferredSize(new Dimension(480, 200));
 
-        JLabel lblLogo = new JLabel();
-        lblLogo.setBounds(140, 10, 200, 150);
+        JLabel lblLogo = new JLabel(scaleIcon("/picture/trangChu/logo.jpg", 180, 130));
         lblLogo.setHorizontalAlignment(SwingConstants.CENTER);
-        lblLogo.setIcon(scaleIcon("/picture/trangChu/logo.jpg", 200, 150)); // ✅ dùng scaleIcon()
-        pnlTop.add(lblLogo);
+        pnlTop.add(lblLogo, BorderLayout.CENTER);
 
         JLabel lblTieuDe = new JLabel("HIỆU THUỐC TAM THANH", SwingConstants.CENTER);
         lblTieuDe.setFont(font1);
-        lblTieuDe.setBounds(100, 160, 280, 30);
-        pnlTop.add(lblTieuDe);
+        lblTieuDe.setForeground(new Color(0x1A1A1A));
+        lblTieuDe.setBorder(new EmptyBorder(10, 0, 0, 0));
+        pnlTop.add(lblTieuDe, BorderLayout.SOUTH);
 
         add(pnlTop, BorderLayout.NORTH);
 
@@ -53,38 +51,42 @@ public class DangNhap_GUI extends JFrame implements ActionListener{
         JPanel pnlCenter = new JPanel(null);
         pnlCenter.setBackground(Color.WHITE);
 
-        JLabel lblTenDangNhap = tool.taoLabel("Tên đăng nhập");
-        lblTenDangNhap.setBounds(80, 20, 200, 25);
+        int startX = 80;
+        int fieldWidth = 290;
+        int height = 34;
+
+        JLabel lblTenDangNhap = taoLabel("Tên đăng nhập:");
+        lblTenDangNhap.setBounds(startX, 20, 200, 25);
         pnlCenter.add(lblTenDangNhap);
 
-        txtTenDangNhap = tool.taoTextField("Tên đăng nhập: ");
-        txtTenDangNhap.setBounds(80, 50, 290, 34);
+        txtTenDangNhap = tool.taoTextField("");
+        txtTenDangNhap.setBounds(startX, 50, fieldWidth, height);
         pnlCenter.add(txtTenDangNhap);
 
-        JLabel iconUser = new JLabel(scaleIcon("/picture/dangNhap/user.png", 33, 33)); // ✅
-        iconUser.setBounds(375, 50, 40, 34);
+        JLabel iconUser = new JLabel(scaleIcon("/picture/dangNhap/user.png", 30, 30));
+        iconUser.setBounds(375, 50, 34, 34);
         pnlCenter.add(iconUser);
 
-        JLabel lblMatKhau = tool.taoLabel("Mật khẩu: ");
-        lblMatKhau.setBounds(80, 100, 200, 25);
+        JLabel lblMatKhau = taoLabel("Mật khẩu:");
+        lblMatKhau.setBounds(startX, 100, 200, 25);
         pnlCenter.add(lblMatKhau);
 
         txpPassClose = new JPasswordField();
         txpPassClose.setFont(font2);
-        txpPassClose.setBounds(80, 130, 290, 34);
+        txpPassClose.setBounds(startX, 130, fieldWidth, height);
         pnlCenter.add(txpPassClose);
 
-        txtPassOpen = tool.taoTextField("Mật khẩu");
-        txtPassOpen.setBounds(80, 130, 290, 34);
+        txtPassOpen = tool.taoTextField("");
+        txtPassOpen.setBounds(startX, 130, fieldWidth, height);
         txtPassOpen.setVisible(false);
         pnlCenter.add(txtPassOpen);
 
-        imgEye = new JLabel(scaleIcon("/picture/dangNhap/eye.png", 34, 34)); // ✅
-        imgEye.setBounds(375, 130, 40, 34);
-        imgEye.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        imgEye = new JLabel(scaleIcon("/picture/dangNhap/eye.png", 30, 30));
+        imgEye.setBounds(375, 130, 34, 34);
+        imgEye.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         pnlCenter.add(imgEye);
 
-        // Xử lý ẩn/hiện mật khẩu
+        // Ẩn/Hiện mật khẩu
         imgEye.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -93,12 +95,12 @@ public class DangNhap_GUI extends JFrame implements ActionListener{
                     txtPassOpen.setText(new String(txpPassClose.getPassword()));
                     txtPassOpen.setVisible(true);
                     txpPassClose.setVisible(false);
-                    imgEye.setIcon(scaleIcon("/picture/dangNhap/closed-eyes.png", 34, 34)); // ✅
+                    imgEye.setIcon(scaleIcon("/picture/dangNhap/closed-eyes.png", 30, 30));
                 } else {
                     txpPassClose.setText(txtPassOpen.getText());
                     txtPassOpen.setVisible(false);
                     txpPassClose.setVisible(true);
-                    imgEye.setIcon(scaleIcon("/picture/dangNhap/eye.png", 34, 34)); // ✅
+                    imgEye.setIcon(scaleIcon("/picture/dangNhap/eye.png", 30, 30));
                 }
             }
         });
@@ -106,25 +108,32 @@ public class DangNhap_GUI extends JFrame implements ActionListener{
         add(pnlCenter, BorderLayout.CENTER);
 
         // ======= PANEL DƯỚI =======
-        JPanel pnlBottom = new JPanel(null);
+        JPanel pnlBottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 25));
         pnlBottom.setBackground(Color.WHITE);
-        pnlBottom.setPreferredSize(new Dimension(480, 100));
 
-        btnDangNhap = new JButton("Đăng Nhập");
+        btnDangNhap = new JButton("Đăng nhập");
         btnDangNhap.setFont(font2);
         btnDangNhap.setForeground(Color.WHITE);
         btnDangNhap.setBackground(new Color(0, 174, 254));
-        btnDangNhap.setBounds(80, 25, 290, 42);
+        btnDangNhap.setPreferredSize(new Dimension(290, 42));
         btnDangNhap.setFocusPainted(false);
-        pnlBottom.add(btnDangNhap);
-
-        // Xử lý sự kiện đăng nhập
+        btnDangNhap.setBorderPainted(false);
+        btnDangNhap.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnDangNhap.addActionListener(e -> chuyenDenTrangChuNhanVien());
 
+        pnlBottom.add(btnDangNhap);
         add(pnlBottom, BorderLayout.SOUTH);
     }
 
-    // Hàm scaleIcon dùng để load & scale ảnh
+    // ======= HÀM TẠO LABEL =======
+    private JLabel taoLabel(String text) {
+        JLabel lbl = new JLabel(text);
+        lbl.setFont(font2);
+        lbl.setForeground(new Color(0x333333));
+        return lbl;
+    }
+
+    // ======= HÀM SCALE ICON =======
     public ImageIcon scaleIcon(String path, int width, int height) {
         URL imgURL = getClass().getResource(path);
         if (imgURL == null) {
@@ -135,39 +144,11 @@ public class DangNhap_GUI extends JFrame implements ActionListener{
         Image scaled = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(scaled);
     }
-    
+
+    // ======= CHUYỂN TRANG =======
     private void chuyenDenTrangChuNhanVien() {
-        String ten = txtTenDangNhap.getText().trim();
-        String pass = hienMatKhau ? txtPassOpen.getText().trim() : new String(txpPassClose.getPassword());
-
-//        if (ten.isEmpty() || pass.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-//            return;
-//        }
-
-//        dao.TaiKhoanDAO tkDAO = new dao.TaiKhoanDAO();
-//        String vaiTro = tkDAO.kiemTraDangNhap(ten, pass);
-//
-//        if (vaiTro == null) {
-//            JOptionPane.showMessageDialog(this, "Sai tên đăng nhập hoặc mật khẩu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//        } else {
-//            JOptionPane.showMessageDialog(this, "Đăng nhập thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-//
-//            // Mở giao diện tương ứng với vai trò
-//            if (vaiTro.equalsIgnoreCase("Quản lý")) {
-                new TrangChuQL_GUI().setVisible(true);
-//            } else {
-//                new TrangChuNV_GUI().setVisible(true);
-//            }
-
-            // Đóng form đăng nhập
-            this.dispose();
-//        }
+        new TrangChuQL_GUI().setVisible(true);
+        this.dispose();
     }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 }
