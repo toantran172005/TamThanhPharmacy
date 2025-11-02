@@ -3,21 +3,29 @@ package gui;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 
 import java.awt.*;
+import java.util.ArrayList;
+
+import controller.ThuocCtrl;
 import controller.ToolCtrl;
+import entity.Thuoc;
 
 public class TimKiemThuoc_GUI extends JPanel {
 
-	private JTextField txtTenThuoc;
-	private JComboBox<String> cmbLoaiThuoc;
-	private JTable tblThuoc;
-	private JCheckBox chkChonTatCa;
-	private JButton btnXemChiTiet, btnLamMoi, btnLichSuXoa, btnXoaTatCa;
+	public JTextField txtTenThuoc;
+	public JComboBox<String> cmbLoaiThuoc;
+	public JTable tblThuoc;
+	public DefaultTableModel model;
+	public JCheckBox chkChonTatCa;
+	public JButton btnXemChiTiet, btnLamMoi, btnLichSuXoa, btnXoaTatCa;
 
-	private final ToolCtrl tool = new ToolCtrl();
+	public final ToolCtrl tool = new ToolCtrl();
+	public ThuocCtrl thCtrl;
 
 	public TimKiemThuoc_GUI() {
+		this.thCtrl = new ThuocCtrl(this);
 		setLayout(new BorderLayout());
 		setBackground(Color.WHITE);
 
@@ -80,23 +88,24 @@ public class TimKiemThuoc_GUI extends JPanel {
 		add(topPanel, BorderLayout.NORTH);
 
 		// ====== CENTER: Bảng thuốc ======
-		String[] cols = {"Mã thuốc", "Tên thuốc", "Phân loại", "Giá bán", "Số lượng", "Dạng thuốc", "Hạn sử dụng", "Hoạt động" };
-		DefaultTableModel model = new DefaultTableModel(cols, 0);
+		String[] cols = {"Mã thuốc", "Tên thuốc", "Phân loại", "Giá bán", "Số lượng", "Đơn vị tính", "Hạn sử dụng"};
+		model = new DefaultTableModel(cols, 0);
 
 		tblThuoc = new JTable(model);
 		tblThuoc.setRowHeight(38);
 		tblThuoc.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		tblThuoc.setSelectionBackground(new Color(0xE3F2FD));
+		tblThuoc.setSelectionForeground(Color.BLACK);
 		tblThuoc.setGridColor(new Color(0xDDDDDD));
 		tblThuoc.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
 		tblThuoc.setBackground(Color.WHITE);
-		tblThuoc.setForeground(new Color(0x33, 0x33, 0x33));
+		tblThuoc.setForeground(Color.BLACK);
 
 		JTableHeader header = tblThuoc.getTableHeader();
 		header.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		header.setBackground(Color.WHITE);
-		header.setForeground(new Color(0x33, 0x33, 0x33));
+		header.setForeground(Color.BLACK);
 		header.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
 		
 		JScrollPane scroll = new JScrollPane(tblThuoc);
@@ -107,26 +116,29 @@ public class TimKiemThuoc_GUI extends JPanel {
 		add(scroll, BorderLayout.CENTER);
 
 		// ===== Sự kiện =====
-		btnLamMoi.addActionListener(e -> onBtnLamMoi());
-		btnXemChiTiet.addActionListener(e -> onBtnXemChiTiet());
-		btnLichSuXoa.addActionListener(e -> onBtnLichSuXoa());
+		ganSuKien();
 	}
 
 	// ================== EVENT HANDLERS ==================
-	private void onBtnLamMoi() {
+	public void onBtnLamMoi() {
 		txtTenThuoc.setText("");
 		cmbLoaiThuoc.setSelectedIndex(-1);
 	}
-
-	private void onBtnXemChiTiet() {
-		/* TODO: xử lý xem chi tiết thuốc */
+	
+	//gắn sự kiện
+	public void ganSuKien() {
+		thCtrl.setDataChoTable();
+		btnXemChiTiet.addActionListener(e -> thCtrl.xemChiTiet());
+		btnLamMoi.addActionListener(e -> onBtnLamMoi());
+		btnLichSuXoa.addActionListener(e -> onBtnLichSuXoa());
 	}
-
-	private void onBtnLichSuXoa() {
+	
+	public void onBtnLichSuXoa() {
 		/* TODO: hiển thị lịch sử xóa thuốc */
 	}
 
-	private void onBtnXoaTatCa() {
+	public void onBtnXoaTatCa() {
 		/* TODO: xử lý xoá tất cả thuốc được chọn */
 	}
+	
 }
