@@ -1,8 +1,17 @@
 /font/
+<<<<<<< Updated upstream
 /picture/
 /connectDB/
 /controller/
 /dao/
 /entity/
 /gui/
+=======
+/gui/
+/picture/
+/connectDB/
+/controller/
+/dao/
+/entity/
+>>>>>>> Stashed changes
 /main/

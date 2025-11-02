@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -33,12 +34,14 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -56,9 +59,9 @@ public class ToolCtrl {
 	    pnlCha.setLayout(new BorderLayout()); 
 	    pnlCha.add(pnlMoi, BorderLayout.CENTER);
 	    pnlCha.revalidate();          
-	    pnlCha.repaint();             
+	    pnlCha.repaint();   
+	    
 	}
-
 
 	public JDateChooser taoDateChooser() {
 		JDateChooser dateChooser = new JDateChooser();
