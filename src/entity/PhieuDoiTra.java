@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class PhieuDoiTra {
 	private String maPhieuDT;
-	private KhachHang khachHang;
+	private HoaDon hoaDon;
 	private NhanVien nhanVien;
 	private LocalDate ngayDoiTra;
 	private String lyDo;
@@ -15,10 +15,10 @@ public class PhieuDoiTra {
 		// TODO Auto-generated constructor stub
 	}
 
-	public PhieuDoiTra(String maPhieuDT, KhachHang khachHang, NhanVien nhanVien, LocalDate ngayDoiTra, String lyDo) {
+	public PhieuDoiTra(String maPhieuDT, HoaDon hoaDon, NhanVien nhanVien, LocalDate ngayDoiTra, String lyDo) {
 		super();
 		this.maPhieuDT = maPhieuDT;
-		this.khachHang = khachHang;
+		this.hoaDon = hoaDon;
 		this.nhanVien = nhanVien;
 		this.ngayDoiTra = ngayDoiTra;
 		this.lyDo = lyDo;
@@ -32,12 +32,12 @@ public class PhieuDoiTra {
 		this.maPhieuDT = maPhieuDT;
 	}
 
-	public KhachHang getKhachHang() {
-		return khachHang;
+	public HoaDon getHoaDon() {
+		return hoaDon;
 	}
 
-	public void setKhachHang(KhachHang khachHang) {
-		this.khachHang = khachHang;
+	public void setHoaDon(HoaDon hoaDon) {
+		this.hoaDon = hoaDon;
 	}
 
 	public NhanVien getNhanVien() {
@@ -83,7 +83,7 @@ public class PhieuDoiTra {
 
 	@Override
 	public String toString() {
-		return "PhieuDoiTra [maPhieuDT=" + maPhieuDT + ", khachHang=" + khachHang + ", nhanVien=" + nhanVien
+		return "PhieuDoiTra [maPhieuDT=" + maPhieuDT + ", hoaDon=" + hoaDon + ", nhanVien=" + nhanVien
 				+ ", ngayDoiTra=" + ngayDoiTra + ", lyDo=" + lyDo + "]";
 	}
 }

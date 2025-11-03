@@ -1,24 +1,39 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import controller.DanhSachKNHTCtrl;
 import controller.ToolCtrl;
 import java.awt.*;
 
-/**
- * Giao diện: Danh sách Khiếu nại & Hỗ trợ khách hàng
- * Bố cục: 2 hàng filter + hàng nút nằm dưới 2 comboBox
- */
 public class DanhSachKhieuNaiVaHoTroHK_GUI extends JPanel {
 
-	private JTextField txtTenKH, txtTenNV;
-	private JComboBox<String> cmbLoaiDon, cmbTrangThai;
-	private JButton btnXemCT, btnLamMoi;
-	private JTable tblKNHT;
+	public JTextField txtTenKH, txtTenNV;
+	public JComboBox<String> cmbLoaiDon, cmbTrangThai;
+	public JButton btnXemCT, btnLamMoi, btnXoa, btnTimKiem;
+	public JTable tblKNHT;
 	public ToolCtrl tool = new ToolCtrl();
+	public DefaultTableModel model;
+
+	public DanhSachKNHTCtrl knhtCtrl = new DanhSachKNHTCtrl(this);
 
 	public DanhSachKhieuNaiVaHoTroHK_GUI() {
+		khoiTaoUI();
+		knhtCtrl.locTatCa();
+		setHoatDong();
+	}
+
+	public void setHoatDong() {
+		btnTimKiem.addActionListener(e -> knhtCtrl.locTatCa());
+		btnLamMoi.addActionListener(e -> knhtCtrl.lamMoi());
+		cmbLoaiDon.addActionListener(e -> knhtCtrl.locTatCa());
+		cmbTrangThai.addActionListener(e -> knhtCtrl.locTatCa());
+	}
+
+	public void khoiTaoUI() {
 		setLayout(new BorderLayout());
 		setBackground(Color.WHITE);
 
@@ -47,7 +62,9 @@ public class DanhSachKhieuNaiVaHoTroHK_GUI extends JPanel {
 
 		// Loại đơn
 		JLabel lblLoaiDon = tool.taoLabel("Loại đơn:");
-		cmbLoaiDon = tool.taoComboBox(new String[] { "Tất cả" });
+		cmbLoaiDon = tool.taoComboBox(new String[] { "Tất cả", "Khiếu nại", "Hỗ trợ" });
+		cmbLoaiDon.setEditable(false);
+		cmbLoaiDon.setSelectedItem("Tất cả");
 		JPanel p2 = taoDong(lblLoaiDon, cmbLoaiDon);
 
 		// Tên NV
@@ -57,7 +74,9 @@ public class DanhSachKhieuNaiVaHoTroHK_GUI extends JPanel {
 
 		// Trạng thái
 		JLabel lblTrangThai = tool.taoLabel("Trạng thái:");
-		cmbTrangThai = tool.taoComboBox(new String[] { "Tất cả", "Chờ xử lý", "Đã xử lý" });
+		cmbTrangThai = tool.taoComboBox(new String[] { "Hoàn tất", "Chờ xử lý" });
+		cmbTrangThai.setEditable(false);
+		cmbTrangThai.setSelectedItem("Chờ xử lý");
 		JPanel p4 = taoDong(lblTrangThai, cmbTrangThai);
 
 		filtersPanel.add(p1);
@@ -72,17 +91,21 @@ public class DanhSachKhieuNaiVaHoTroHK_GUI extends JPanel {
 		JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 5));
 		btnPanel.setBackground(Color.WHITE);
 
+		btnTimKiem = tool.taoButton("Tìm kiếm", "/picture/khachHang/search.png");
 		btnXemCT = tool.taoButton("Xem chi tiết", "/picture/khachHang/find.png");
 		btnLamMoi = tool.taoButton("Làm mới", "/picture/khachHang/return.png");
+		btnXoa = tool.taoButton("Xóa", "/picture/khachHang/trash.png");
 
+		btnPanel.add(btnTimKiem);
 		btnPanel.add(btnXemCT);
 		btnPanel.add(btnLamMoi);
+		btnPanel.add(btnXoa);
 
 		topPanel.add(btnPanel);
 
 		// ====================== TABLE ======================
 		String[] cols = { "Mã phiếu", "Tên khách hàng", "Tên nhân viên", "Loại đơn", "Ngày tạo", "Trạng thái" };
-		DefaultTableModel model = new DefaultTableModel(cols, 0) {
+		model = new DefaultTableModel(cols, 0) {
 			@Override
 			public boolean isCellEditable(int r, int c) {
 				return false;
@@ -91,8 +114,8 @@ public class DanhSachKhieuNaiVaHoTroHK_GUI extends JPanel {
 
 		tblKNHT = new JTable(model);
 		tblKNHT.setRowHeight(38);
-		tblKNHT.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-		tblKNHT.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 14));
+		tblKNHT.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		tblKNHT.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 15));
 		tblKNHT.setSelectionBackground(new Color(0xE3F2FD));
 		tblKNHT.setGridColor(new Color(0xDDDDDD));
 		tblKNHT.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
@@ -101,10 +124,16 @@ public class DanhSachKhieuNaiVaHoTroHK_GUI extends JPanel {
 		tblKNHT.setBackground(Color.WHITE);
 		tblKNHT.setForeground(new Color(0x33, 0x33, 0x33));
 
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		for (int i = 0; i < tblKNHT.getColumnCount(); i++) {
+			tblKNHT.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		}
+
 		JTableHeader header = tblKNHT.getTableHeader();
-		header.setBackground(Color.WHITE);
-		header.setForeground(new Color(0x33, 0x33, 0x33));
-		header.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
+		header.setBackground(new Color(240, 240, 240));
+		header.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
 		JScrollPane scrollTable = new JScrollPane(tblKNHT);
 		scrollTable.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
@@ -114,14 +143,10 @@ public class DanhSachKhieuNaiVaHoTroHK_GUI extends JPanel {
 		// ====================== LAYOUT ======================
 		add(topPanel, BorderLayout.NORTH);
 		add(scrollTable, BorderLayout.CENTER);
-
-		// Events
-		btnXemCT.addActionListener(e -> onBtnXemCT());
-		btnLamMoi.addActionListener(e -> onBtnLamMoi());
 	}
 
 	// === HÀM TẠO DÒNG LABEL + COMPONENT ===
-	private JPanel taoDong(JLabel lbl, JComponent comp) {
+	public JPanel taoDong(JLabel lbl, JComponent comp) {
 		JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
 		p.setBackground(Color.WHITE);
 		lbl.setPreferredSize(new Dimension(120, 30));
@@ -131,7 +156,4 @@ public class DanhSachKhieuNaiVaHoTroHK_GUI extends JPanel {
 		return p;
 	}
 
-	public void onBtnXemCT() { /* TODO */ }
-
-	public void onBtnLamMoi() { /* TODO */ }
 }

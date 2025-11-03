@@ -5,6 +5,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import controller.ChiTietHoaDonCtrl;
+import controller.ChiTietPhieuDoiTraCtrl;
 import controller.ToolCtrl;
 
 import java.awt.*;
@@ -15,14 +17,28 @@ public class ChiTietPhieuDoiTra_GUI extends JPanel {
 			lblTongTienHoan;
 	private JTable tblThuoc;
 	private JButton btnInPhieu, btnQuayLai;
-	private TrangChuQL_GUI mainFrame;
-	Font font1 = new Font("Arial", Font.BOLD, 18);
-	Font font2 = new Font("Arial", Font.PLAIN, 15);
+	private TrangChuQL_GUI mainFrameQL;
+	private TrangChuNV_GUI mainFrameNV;
+	Font font1 = new Font("Times New Roman", Font.BOLD, 18);
+	Font font2 = new Font("Times New Roman", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
+	private ChiTietPhieuDoiTraCtrl ctrl;
+
+	// Constructor
+	public ChiTietPhieuDoiTraCtrl getCtrl() {
+		return ctrl;
+	}
 
 	public ChiTietPhieuDoiTra_GUI(TrangChuQL_GUI mainFrame) {
-		this.mainFrame = mainFrame;
+		this.mainFrameQL = mainFrame;
 		initUI();
+		this.ctrl = new ChiTietPhieuDoiTraCtrl(this);
+	}
+
+	public ChiTietPhieuDoiTra_GUI(TrangChuNV_GUI mainFrame) {
+		this.mainFrameNV = mainFrame;
+		initUI();
+		this.ctrl = new ChiTietPhieuDoiTraCtrl(this);
 	}
 
 	public void initUI() {
@@ -30,7 +46,7 @@ public class ChiTietPhieuDoiTra_GUI extends JPanel {
 		setPreferredSize(new Dimension(1058, 509));
 		setBackground(Color.WHITE);
 
-		// ======= TOP (Thông tin hiệu thuốc + phiếu) =======
+		// ========== TOP PANEL ==========
 		JPanel pnlTop = new JPanel();
 		pnlTop.setLayout(new BoxLayout(pnlTop, BoxLayout.Y_AXIS));
 		pnlTop.setBackground(Color.WHITE);
@@ -74,7 +90,7 @@ public class ChiTietPhieuDoiTra_GUI extends JPanel {
 
 		add(pnlTop, BorderLayout.NORTH);
 
-		// ======= CENTER (Bảng thuốc + lý do) =======
+		// ========== CENTER PANEL ==========
 		JPanel pnlCenter = new JPanel();
 		pnlCenter.setLayout(new BoxLayout(pnlCenter, BoxLayout.Y_AXIS));
 		pnlCenter.setBackground(Color.WHITE);
@@ -90,7 +106,8 @@ public class ChiTietPhieuDoiTra_GUI extends JPanel {
 		tblThuoc.getTableHeader().setBackground(new Color(240, 240, 240)); // xám rất nhạt
 		tblThuoc.setGridColor(new Color(200, 200, 200)); // Màu đường kẻ ô (nhẹ)
 		tblThuoc.setShowGrid(true); // Bật hiển thị đường kẻ
-
+		tblThuoc.setFont(font2);
+		
 		// Viền cho bảng
 		tblThuoc.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
 
@@ -122,7 +139,7 @@ public class ChiTietPhieuDoiTra_GUI extends JPanel {
 
 		add(pnlCenter, BorderLayout.CENTER);
 
-		// ======= BOTTOM (Tổng tiền + nút) =======
+		// ========== BOTTOM PANEL ==========
 		JPanel pnlBottom = new JPanel();
 		pnlBottom.setLayout(new BoxLayout(pnlBottom, BoxLayout.Y_AXIS));
 		pnlBottom.setBackground(Color.WHITE);
@@ -144,12 +161,9 @@ public class ChiTietPhieuDoiTra_GUI extends JPanel {
 		pnlBottom.add(pnlNut);
 
 		add(pnlBottom, BorderLayout.SOUTH);
-
-		btnQuayLai.addActionListener(e -> {
-			mainFrame.setUpNoiDung(new TimKiemPhieuDoiTra_GUI(mainFrame));
-		});
 	}
 
+	// ========== TẠO THÔNG TIN ==========
 	private JPanel taoDongThongTin(String tieuDe, JLabel lblNoiDung) {
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 50, 5));
 		panel.setBackground(Color.WHITE);
@@ -159,4 +173,60 @@ public class ChiTietPhieuDoiTra_GUI extends JPanel {
 		return panel;
 	}
 
+	// ========== GETTER ==========
+	public JLabel getLblDiaChi() {
+		return lblDiaChi;
+	}
+
+	public JLabel getLblHotline() {
+		return lblHotline;
+	}
+
+	public JLabel getLblMaPhieuDT() {
+		return lblMaPhieuDT;
+	}
+
+	public JLabel getLblMaHD() {
+		return lblMaHD;
+	}
+
+	public JLabel getLblNgayLap() {
+		return lblNgayLap;
+	}
+
+	public JLabel getLblNhanVien() {
+		return lblNhanVien;
+	}
+
+	public JLabel getLblKhachHang() {
+		return lblKhachHang;
+	}
+
+	public JLabel getLblLyDo() {
+		return lblLyDo;
+	}
+
+	public JLabel getLblTongTienHoan() {
+		return lblTongTienHoan;
+	}
+
+	public JTable getTblThuoc() {
+		return tblThuoc;
+	}
+
+	public JButton getBtnInPhieu() {
+		return btnInPhieu;
+	}
+
+	public JButton getBtnQuayLai() {
+		return btnQuayLai;
+	}
+
+	public TrangChuQL_GUI getMainFrameQL() {
+		return mainFrameQL;
+	}
+
+	public TrangChuNV_GUI getMainFrameNV() {
+		return mainFrameNV;
+	}
 }

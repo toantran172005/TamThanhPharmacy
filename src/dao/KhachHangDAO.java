@@ -17,11 +17,19 @@ public class KhachHangDAO {
 
 	public ToolCtrl tool = new ToolCtrl();
 
-	// ========== TÌM KHÁCH HÀNG THEO MÃ ==========
 	public KhachHang timMaKhachHangTheoSDT(String sdt) {
 		ArrayList<KhachHang> listKH = layListKhachHang();
 		for (KhachHang kh : listKH) {
 			if (kh.getSdt().equalsIgnoreCase(sdt))
+				return kh;
+		}
+		return null;
+	}
+
+	public KhachHang timKhachHangTheoMa(String maKH) {
+		ArrayList<KhachHang> listKH = layListKhachHang();
+		for (KhachHang kh : listKH) {
+			if (kh.getMaKH().equalsIgnoreCase(maKH))
 				return kh;
 		}
 		return null;

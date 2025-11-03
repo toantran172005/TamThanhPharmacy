@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 import controller.ToolCtrl;
 import entity.KhachHang;
@@ -20,6 +21,170 @@ public class PhieuDatHangDAO {
 	NhanVienDAO nvDAO = new NhanVienDAO();
 	KhachHangDAO khDAO = new KhachHangDAO();
 	ThuocDAO thuocDAO = new ThuocDAO();
+
+	public boolean capNhatMaHDChoPhieuDatHang(String maPDH, String maHD) {
+		String sql = "UPDATE PhieuDatHang SET maHD = ? WHERE maPDH = ?";
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setString(1, maHD);
+			ps.setString(2, maPDH);
+
+			return ps.executeUpdate() > 0;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public int taoHoaDonVaChiTiet(String maHD, String maKH, String maNV, String loaiTT, LocalDate ngayLap,
+			String diaChiHT, String tenHT, String ghiChu, String hotline, double tienNhan, boolean trangThai,
+			List<Object[]> dsChiTiet) {
+		String sqlHoaDon = "INSERT INTO HoaDon (maHD, maKH, maNV, loaiTT, ngayLap, diaChiHT, tenHT, ghiChu, hotline, tienNhan, trangThai) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sqlCT = "INSERT INTO CT_HoaDon (maHD, maThuoc, soLuong, donGia, maDVT) VALUES (?, ?, ?, ?, ?)";
+
+		try (Connection con = KetNoiDatabase.getConnection()) {
+			con.setAutoCommit(false);
+
+			// Insert vào bảng HoaDon
+			try (PreparedStatement psHD = con.prepareStatement(sqlHoaDon)) {
+				psHD.setString(1, maHD);
+				psHD.setString(2, maKH);
+				psHD.setString(3, maNV);
+				psHD.setString(4, loaiTT);
+				psHD.setDate(5, java.sql.Date.valueOf(ngayLap));
+				psHD.setString(6, diaChiHT);
+				psHD.setString(7, tenHT);
+				psHD.setString(8, ghiChu);
+				psHD.setString(9, hotline);
+				psHD.setDouble(10, tienNhan);
+				psHD.setBoolean(11, trangThai);
+				psHD.executeUpdate();
+			}
+
+			// Insert chi tiết hóa đơn
+			try (PreparedStatement psCT = con.prepareStatement(sqlCT)) {
+				for (Object[] ct : dsChiTiet) {
+					psCT.setString(1, maHD);
+					psCT.setString(2, (String) ct[0]); // maThuoc
+					psCT.setInt(3, (int) ct[1]); // soLuong
+					psCT.setDouble(4, (double) ct[2]); // donGia
+					psCT.setString(5, (String) ct[3]); // maDVT
+					psCT.addBatch();
+				}
+				psCT.executeBatch();
+			}
+
+			con.commit();
+			return 1; // thành công
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				// rollback nếu lỗi
+				Connection con = KetNoiDatabase.getConnection();
+				if (con != null)
+					con.rollback();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+			return -1; // thất bại
+		}
+	}
+
+	/**
+	 * @return 1 = Thành công 0 = Không đủ tồn kho -1 = Lỗi SQL hoặc lỗi khác
+	 */
+	public int taoPhieuDatHangVaChiTiet(String maPDH, String maKH, String maNV, Date ngayDat, Date ngayHen,
+			String ghiChu, List<Object[]> dsChiTiet) {
+
+		String sqlPhieu = """
+				INSERT INTO PhieuDatHang
+				(maPDH, maHD, maKH, maNV, ngayDat, ngayHen, ghiChu, trangThai, diaChiHT, tenHT, hotline)
+				VALUES (?, NULL, ?, ?, ?, ?, ?, N'Chờ hàng', ?, ?, ?)
+				""";
+
+		String sqlCheckKho = "SELECT soLuongTon FROM CT_Kho WHERE maThuoc = ?";
+		String sqlInsertCT = "INSERT INTO CT_PhieuDatHang (maPDH, maThuoc, soLuong, maDVT, donGia) VALUES (?, ?, ?, ?, ?)";
+		String sqlUpdateKho = "UPDATE CT_Kho SET soLuongTon = soLuongTon - ? WHERE maThuoc = ?";
+
+		try (Connection con = KetNoiDatabase.getConnection()) {
+			con.setAutoCommit(false);
+
+			try (PreparedStatement psPhieu = con.prepareStatement(sqlPhieu);
+					PreparedStatement psCheck = con.prepareStatement(sqlCheckKho);
+					PreparedStatement psInsertCT = con.prepareStatement(sqlInsertCT);
+					PreparedStatement psUpdateKho = con.prepareStatement(sqlUpdateKho)) {
+
+				// === 1️⃣ Thêm phiếu đặt hàng ===
+				psPhieu.setString(1, maPDH);
+				psPhieu.setString(2, maKH);
+				psPhieu.setString(3, maNV);
+				psPhieu.setDate(4, new java.sql.Date(ngayDat.getTime()));
+				psPhieu.setDate(5, new java.sql.Date(ngayHen.getTime()));
+				psPhieu.setString(6, ghiChu);
+				psPhieu.setString(7, "456 Nguyễn Huệ, TP.HCM");
+				psPhieu.setString(8, "Hiệu Thuốc Tam Thanh");
+				psPhieu.setString(9, "+84-912345689");
+
+				if (psPhieu.executeUpdate() == 0) {
+					con.rollback();
+					return -1;
+				}
+
+				// === 2️⃣ Thêm chi tiết và cập nhật kho ===
+				for (Object[] ct : dsChiTiet) {
+					String maThuoc = (String) ct[0];
+					int soLuong = (int) ct[1];
+					String maDVT = (String) ct[2];
+					double donGia = (double) ct[3];
+
+					// kiểm tra tồn kho
+					psCheck.setString(1, maThuoc);
+					try (ResultSet rs = psCheck.executeQuery()) {
+						if (rs.next()) {
+							int ton = rs.getInt("soLuongTon");
+							if (ton < soLuong) {
+								con.rollback();
+								return 0; // ❌ không đủ tồn kho
+							}
+						} else {
+							con.rollback();
+							return 0; // ❌ thuốc không tồn tại trong kho
+						}
+					}
+
+					// thêm chi tiết phiếu
+					psInsertCT.setString(1, maPDH);
+					psInsertCT.setString(2, maThuoc);
+					psInsertCT.setInt(3, soLuong);
+					psInsertCT.setString(4, maDVT);
+					psInsertCT.setDouble(5, donGia);
+					psInsertCT.executeUpdate();
+
+					// trừ kho
+					psUpdateKho.setInt(1, soLuong);
+					psUpdateKho.setString(2, maThuoc);
+					psUpdateKho.executeUpdate();
+				}
+
+				con.commit();
+				return 1; // ✅ thành công
+
+			} catch (SQLException e) {
+				con.rollback();
+				e.printStackTrace();
+				return -1;
+			} finally {
+				con.setAutoCommit(true);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
 
 	public ArrayList<PhieuDatHang> layListPhieuDatHang() {
 		ArrayList<PhieuDatHang> list = new ArrayList<>();
@@ -69,27 +234,6 @@ public class PhieuDatHangDAO {
 			e.printStackTrace();
 		}
 		return list;
-	}
-
-	public boolean themPhieuDatHang(String maPDH, String maKH, String maNV, LocalDate ngayDat, LocalDate ngayHen,
-			String ghiChu) {
-		String sql = "INSERT INTO PhieuDatHang (maPDH, maKH, maNV, ngayDat, ngayHen, ghiChu, trangThai) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, 'Chờ hàng')";
-		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-
-			ps.setString(1, maPDH);
-			ps.setString(2, maKH);
-			ps.setString(3, maNV);
-			ps.setDate(4, java.sql.Date.valueOf(ngayDat));
-			ps.setDate(5, java.sql.Date.valueOf(ngayHen));
-			ps.setString(6, ghiChu);
-
-			return ps.executeUpdate() > 0;
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
 	}
 
 	public ArrayList<Object[]> layDanhSachThuocTheoPDH(String maPDH) {

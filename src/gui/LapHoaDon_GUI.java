@@ -6,6 +6,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import controller.LapHoaDonCtrl;
+import controller.TimKiemHDCtrl;
 import controller.ToolCtrl;
 
 import java.awt.*;
@@ -16,11 +18,33 @@ public class LapHoaDon_GUI extends JPanel {
 	private JLabel lblTongTien, lblTienThua;
 	private JTable tblThuoc;
 	private JButton btnThem, btnLamMoi, btnTaoHD;
-	Font font1 = new Font("Arial", Font.BOLD, 18);
-	Font font2 = new Font("Arial", Font.PLAIN, 15);
+	private TrangChuQL_GUI mainFrame;
+    private TrangChuNV_GUI mainFrameNV;
+    private LapHoaDonCtrl controller;
+    
+	Font font1 = new Font("Times New Roman", Font.BOLD, 18);
+	Font font2 = new Font("Times New Roman", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
+	
+	 // Constructor cho Quản lý
+    public LapHoaDon_GUI(TrangChuQL_GUI mainFrame) {
+        this.mainFrame = mainFrame;
+        initUI();
+        khoiTaoController();
+    }
 
-	public LapHoaDon_GUI() {
+    // Constructor cho Nhân viên
+    public LapHoaDon_GUI(TrangChuNV_GUI mainFrameNV) {
+        this.mainFrameNV = mainFrameNV;
+        initUI();
+        khoiTaoController();
+    }
+    
+    private void khoiTaoController() {
+        this.controller = new LapHoaDonCtrl(this);
+    }
+
+	public void initUI() {
 		setLayout(new BorderLayout(0, 15));
 		setBackground(Color.WHITE);
 		setPreferredSize(new Dimension(1027, 900));
@@ -164,7 +188,7 @@ public class LapHoaDon_GUI extends JPanel {
 		add(pnlBottom, BorderLayout.SOUTH);
 	}
 
-	// ====== HÀM TẠO CÁC THÀNH PHẦN CHUNG ======
+	// ========== HÀM TẠO CÁC THÀNH PHẦN CHUNG ==========
 	private JPanel taoHang() {
 		JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
 		p.setBackground(Color.WHITE);
@@ -177,18 +201,21 @@ public class LapHoaDon_GUI extends JPanel {
 		return p;
 	}
 
-	private JLabel taoLabel(String text) {
-		JLabel lbl = new JLabel(text);
-		lbl.setFont(font2);
-		return lbl;
-	}
-
-	private JTextField taoTextField(String prompt, int width) {
-		JTextField txt = new JTextField(prompt);
-		txt.setPreferredSize(new Dimension(width, 28));
-		txt.setFont(font2);
-		txt.setForeground(Color.GRAY);
-		return txt;
-	}
-
+	 // ========== GETTER ==========
+    public JTextField getTxtSdt() { return txtSdt; }
+    public JTextField getTxtTenKH() { return txtTenKH; }
+    public JTextField getTxtTuoi() { return txtTuoi; }
+    public JTextField getTxtSoLuong() { return txtSoLuong; }
+    public JTextField getTxtTienNhan() { return txtTienNhan; }
+    public JComboBox<String> getCmbSanPham() { return cmbSanPham; }
+    public JComboBox<String> getCmbDonVi() { return cmbDonVi; }
+    public JComboBox<String> getCmbHTThanhToan() { return cmbHTThanhToan; }
+    public JLabel getLblTongTien() { return lblTongTien; }
+    public JLabel getLblTienThua() { return lblTienThua; }
+    public JTable getTblThuoc() { return tblThuoc; }
+    public JButton getBtnThem() { return btnThem; }
+    public JButton getBtnLamMoi() { return btnLamMoi; }
+    public JButton getBtnTaoHD() { return btnTaoHD; }
+    public TrangChuQL_GUI getMainFrame() {return mainFrame;}
+    public TrangChuNV_GUI getMainFrameNV() {return mainFrameNV;}
 }
