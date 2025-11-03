@@ -15,10 +15,10 @@ public class KetNoiDatabase {
     public static Connection getConnection(){
         try {
         	 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        	 System.out.println("✅ Driver đã được nạp!");
+//        	 System.out.println("✅ Driver đã được nạp!");
             if (connection == null || connection.isClosed()) {
                 connection = DriverManager.getConnection(URL, USER, PASSWORD);
-                System.out.println(" Kết nối SQL Server thành công!");
+//                System.out.println(" Kết nối SQL Server thành công!");
             }
         } catch (Exception e) {
             System.err.println("❌ Lỗi kết nối CSDL: " + e.getMessage());

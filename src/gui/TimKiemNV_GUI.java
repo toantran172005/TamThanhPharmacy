@@ -13,7 +13,7 @@ public class TimKiemNV_GUI extends JPanel {
 
 	private JTable tblNhanVien;
 	private JTextField txtSdt, txtTenNV;
-	private JButton btnXemChiTiet, btnLamMoi, btnLichSuXoa, btnXoa;
+	private JButton btnXemChiTiet, btnLamMoi, btnLichSuXoa;
 	Font font1 = new Font("Arial", Font.BOLD, 18);
 	Font font2 = new Font("Arial", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
@@ -78,20 +78,23 @@ public class TimKiemNV_GUI extends JPanel {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
 		btnXemChiTiet = tool.taoButton("Xem chi tiết", "/picture/nhanVien/find.png");
-		btnLamMoi     = tool.taoButton("Làm mới", "/picture/nhanVien/refresh.png");
-		btnLichSuXoa  = tool.taoButton("Lịch sử xoá", "/picture/nhanVien/document.png");
-		btnXoa        = tool.taoButton("Xoá tất cả", "/picture/nhanVien/trash.png");
+		btnLamMoi = tool.taoButton("Làm mới", "/picture/nhanVien/refresh.png");
+		btnLichSuXoa = tool.taoButton("Lịch sử xoá", "/picture/nhanVien/document.png");
 
 		Dimension btnSize = new Dimension(145, 38);
 		btnXemChiTiet.setPreferredSize(btnSize);
 		btnLamMoi.setPreferredSize(btnSize);
 		btnLichSuXoa.setPreferredSize(btnSize);
-		btnXoa.setPreferredSize(btnSize);
 
-		gbc.gridx = 0; gbc.gridy = 0; rightPanel.add(btnXemChiTiet, gbc);
-		gbc.gridx = 1; gbc.gridy = 0; rightPanel.add(btnLamMoi, gbc);
-		gbc.gridx = 0; gbc.gridy = 1; rightPanel.add(btnLichSuXoa, gbc);
-		gbc.gridx = 1; gbc.gridy = 1; rightPanel.add(btnXoa, gbc);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		rightPanel.add(btnXemChiTiet, gbc);
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		rightPanel.add(btnLamMoi, gbc);
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		rightPanel.add(btnLichSuXoa, gbc);
 
 		// === Gom lại và căn giữa ===
 		centerContent.add(Box.createHorizontalGlue()); // Đẩy vào giữa
