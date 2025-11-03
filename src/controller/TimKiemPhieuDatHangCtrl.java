@@ -10,14 +10,14 @@ import entity.PhieuDatHang;
 import gui.ChiTietPhieuDatHang_GUI;
 import gui.TimKiemPhieuDatHang_GUI;
 
-public class DanhSachPhieuDatHangCtrl {
+public class TimKiemPhieuDatHangCtrl {
 
 	public TimKiemPhieuDatHang_GUI tkpdhGUI;
 	public PhieuDatHangDAO pdhDAO = new PhieuDatHangDAO();
 	public ToolCtrl tool = new ToolCtrl();
 	public ArrayList<PhieuDatHang> dsPDH;
 
-	public DanhSachPhieuDatHangCtrl(TimKiemPhieuDatHang_GUI tkpdhGUI) {
+	public TimKiemPhieuDatHangCtrl(TimKiemPhieuDatHang_GUI tkpdhGUI) {
 		this.tkpdhGUI = tkpdhGUI;
 		this.dsPDH = pdhDAO.layListPhieuDatHang();
 	}

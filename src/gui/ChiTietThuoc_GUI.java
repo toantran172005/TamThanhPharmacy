@@ -6,7 +6,7 @@ import com.toedter.calendar.JDateChooser;
 
 import java.awt.*;
 
-import controller.ChiTietPDHCtrl;
+import controller.ChiTietThuocCtrl;
 import controller.ThuocCtrl;
 import controller.ToolCtrl;
 
@@ -19,14 +19,14 @@ public class ChiTietThuoc_GUI extends JPanel {
     public JDateChooser dpHanSuDung;
     public ToolCtrl tool = new ToolCtrl();
     public ThuocCtrl thCtrl;
-    public ChiTietPDHCtrl ctCtrl;
+    public ChiTietThuocCtrl ctCtrl;
     public JComboBox<String> cmbQuocGia;
     public String maThuoc;
 
     public ChiTietThuoc_GUI(String maThuoc) {
     	
     	this.thCtrl = new ThuocCtrl(this);
-    	this.ctCtrl = new ChiTietPDHCtrl(this);
+    	this.ctCtrl = new ChiTietThuocCtrl(this);
     	this.maThuoc = maThuoc;
     	
         setLayout(new BorderLayout());

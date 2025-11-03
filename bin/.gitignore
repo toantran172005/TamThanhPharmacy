@@ -1,3 +1,6 @@
-/connectDB/
 /controller/
 /gui/
+/dao/
+/entity/
+/connectDB/
+/picture/

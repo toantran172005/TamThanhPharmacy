@@ -6,6 +6,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import controller.ChiTietPDHCtrl;
 import controller.ToolCtrl;
 import dao.PhieuDatHangDAO;
 import entity.PhieuDatHang;
@@ -15,8 +16,9 @@ import java.util.ArrayList;
 
 public class ChiTietPhieuDatHang_GUI extends JPanel {
 
-	public JLabel lblDiaChi, lblHotline, lblMaPhieu, lblNgayDat, lblNgayHen, lblNhanVien, lblKhachHang, lblGhiChu;
+	public JLabel lblDiaChi, lblHotline, lblMaPhieu, lblNgayDat, lblNgayHen, lblNhanVien, lblKhachHang;
 	public JTable tblThuoc;
+	public JTextArea txaGhiChu;
 	public DefaultTableModel model;
 	public JComboBox<String> cmbTrangThai;
 	public JButton btnTaoHD, btnCapNhat, btnQuayLai;
@@ -27,6 +29,7 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 	Font font2 = new Font("Time New Roman", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
 	public PhieuDatHang pdh;
+	public ChiTietPDHCtrl ctpdhCtrl = new ChiTietPDHCtrl(this);
 
 	public ChiTietPhieuDatHang_GUI(TrangChuQL_GUI mainFrame, PhieuDatHang pdh) {
 		this.mainFrameQL = mainFrame;
@@ -47,21 +50,15 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 	}
 
 	public void setHoatDong() {
-		btnQuayLai.addActionListener(e -> {
-			if (mainFrameQL != null) {
-				tool.doiPanel(this, new TimKiemPhieuDatHang_GUI(mainFrameQL));
-			} else {
-				tool.doiPanel(this, new TimKiemPhieuDatHang_GUI(mainFrameNV));
-			}
-		});
+		btnQuayLai.addActionListener(e -> ctpdhCtrl.quayLaiTrangDanhSach());
+		btnCapNhat.addActionListener(e -> ctpdhCtrl.capNhatPDH());
+		btnTaoHD.addActionListener(e -> ctpdhCtrl.taoHoaDon());
 	}
 
 	public void choPhepCapNhap() {
 		if (btnCapNhat.getText().trim().equals("Cập nhật")) {
-			cmbTrangThai.setEditable(false);
 			cmbTrangThai.setEnabled(false);
 		} else {
-			cmbTrangThai.setEditable(true);
 			cmbTrangThai.setEnabled(true);
 		}
 	}
@@ -76,7 +73,7 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 		lblNgayHen.setText(tool.dinhDangLocalDate(pdh.getNgayHen()));
 		lblNhanVien.setText(pdh.getNhanVien() != null ? pdh.getNhanVien().getTenNV() : "");
 		lblKhachHang.setText(pdh.getKhachHang() != null ? pdh.getKhachHang().getTenKH() : "");
-		lblGhiChu.setText(pdh.getGhiChu());
+		txaGhiChu.setText(pdh.getGhiChu());
 		lblDiaChi.setText(pdh.getDiaChiHT());
 		lblHotline.setText(tool.chuyenSoDienThoai(pdh.getHotline()));
 		cmbTrangThai.setSelectedItem(pdh.getTrangThai());
@@ -200,15 +197,16 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 
 		// Ghi chú
 		pnlCenter.add(Box.createVerticalStrut(15));
-		pnlCenter.add(taoDongThongTin("Ghi chú:", lblGhiChu = tool.taoLabel("")));
+		pnlCenter.add(taoDongThongTin("Ghi chú:", txaGhiChu = tool.taoTextArea(30)));
 
 		// Trạng thái
 		pnlCenter.add(Box.createVerticalStrut(10));
 		JPanel trangThaiPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
 		trangThaiPanel.setBackground(Color.WHITE);
 		JLabel lblTrangThai = tool.taoLabel("Trạng thái:");
-		cmbTrangThai = cmbTrangThai = tool.taoComboBox(new String[] { "Chờ hàng", "Đã giao", "Đã hủy" });
+		cmbTrangThai = cmbTrangThai = tool.taoComboBox(new String[] { "Chờ hàng", "Đã hủy" });
 		cmbTrangThai.setPreferredSize(new Dimension(150, 30));
+		cmbTrangThai.setEditable(false);
 		trangThaiPanel.add(lblTrangThai);
 		trangThaiPanel.add(cmbTrangThai);
 		pnlCenter.add(trangThaiPanel);
@@ -231,12 +229,26 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 	}
 
 	// Hàm tạo 1 dòng thông tin
-	public JPanel taoDongThongTin(String tieuDe, JLabel lblNoiDung) {
+	// Hàm tạo 1 dòng thông tin (có thể chứa JLabel, JTextArea, JTextField,
+	// JComboBox, ...)
+	public JPanel taoDongThongTin(String tieuDe, JComponent noiDung) {
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
 		panel.setBackground(Color.WHITE);
+
 		JLabel lblTieuDe = tool.taoLabel(tieuDe);
 		panel.add(lblTieuDe);
-		panel.add(lblNoiDung);
+
+		if (noiDung instanceof JTextArea) {
+			JTextArea txa = (JTextArea) noiDung;
+			txa.setLineWrap(true);
+			txa.setWrapStyleWord(true);
+			JScrollPane scroll = new JScrollPane(txa);
+			scroll.setPreferredSize(new Dimension(250, 60));
+			panel.add(scroll);
+		} else {
+			panel.add(noiDung);
+		}
+
 		return panel;
 	}
 

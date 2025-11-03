@@ -10,13 +10,13 @@ import entity.Thuoc;
 import gui.ChiTietThuoc_GUI;
 import gui.TimKiemThuoc_GUI;
 
-public class ChiTietPDHCtrl {
+public class ChiTietThuocCtrl {
 
 	private ToolCtrl tool = new ToolCtrl();
 	private ThuocDAO thDAO = new ThuocDAO();
 	private ChiTietThuoc_GUI ctThuoc;
 	
-	public ChiTietPDHCtrl(ChiTietThuoc_GUI ctThuoc) {
+	public ChiTietThuocCtrl(ChiTietThuoc_GUI ctThuoc) {
 		this.ctThuoc = ctThuoc;
 	}
 	

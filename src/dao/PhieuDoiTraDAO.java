@@ -5,9 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import controller.ToolCtrl;
+import entity.HoaDon;
+import entity.NhanVien;
+import entity.PhieuDoiTra;
 import connectDB.KetNoiDatabase;
 
 public class PhieuDoiTraDAO {
@@ -15,48 +21,59 @@ public class PhieuDoiTraDAO {
 	NhanVienDAO nvDAO = new NhanVienDAO();
 	KhachHangDAO khDAO = new KhachHangDAO();
 	ThuocDAO thuocDAO = new ThuocDAO();
+	HoaDonDAO hdDAO = new HoaDonDAO();
+	Connection con = KetNoiDatabase.getConnection();
+	
 
-	public ArrayList<Object[]> layListPDT() {
-		ArrayList<Object[]> listPDT = new ArrayList<>();
+	public ArrayList<PhieuDoiTra> layListPDT() {
+	    ArrayList<PhieuDoiTra> listPDT = new ArrayList<>();
+	    
+	    String sql = """
+	        SELECT pdt.maPhieuDT, pdt.maHD, pdt.maNV, pdt.ngayDoiTra, pdt.lyDo
+	        FROM PhieuDoiTra pdt
+	        ORDER BY CAST(SUBSTRING(pdt.maPhieuDT, 6, LEN(pdt.maPhieuDT)) AS INT)
+	        """;
 
-		String sql = """
-				 SELECT pdt.maPhieuDT, pdt.maHD, hd.maKH, kh.tenKH, kh.sdt, pdt.maNV, nv.tenNV, pdt.ngayDoiTra,
-				 pdt.lyDo, hd.diaChiHT, hd.tenHT, hd.hotline
-				   FROM PhieuDoiTra pdt
-				   JOIN NhanVien nv ON pdt.maNV = nv.maNV
-				JOIN HoaDon hd ON pdt.maHD = hd.maHD
-				   JOIN KhachHang kh ON hd.maKH = kh.maKH
-				   ORDER BY TRY_CAST(SUBSTRING(pdt.maPhieuDT, 6, LEN(pdt.maPhieuDT)) AS INT)
-					""";
+	    try (PreparedStatement pstmt = con.prepareStatement(sql);
+	         ResultSet rs = pstmt.executeQuery()) {
 
-		try (Connection con = KetNoiDatabase.getConnection();
-				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery(sql)) {
+	        while (rs.next()) {
+	            String maPhieuDT = rs.getString("maPhieuDT");
+	            String maHD = rs.getString("maHD");
+	            String maNV = rs.getString("maNV");
+	            String lyDo = rs.getString("lyDo");
+	            
+	            HoaDon hd = hdDAO.timHoaDonTheoMa(maHD);
+	            NhanVien nv = nvDAO.timNhanVienTheoMa(maNV);
 
-			while (rs.next()) {
-				Object[] pdt = { rs.getString("maPhieuDT"), rs.getString("maHD"), rs.getString("maKH"),
-						rs.getString("tenKH"), rs.getString("sdt"), rs.getString("maNV"), rs.getString("tenNV"),
-						rs.getDate("ngayDoiTra").toLocalDate(), rs.getString("lyDo"), rs.getString("diaChiHT"),
-						rs.getString("tenHT"), rs.getString("hotline") };
-				listPDT.add(pdt);
-			}
+	            // Xử lý ngày an toàn (có thể null)
+	            java.sql.Date sqlDate = rs.getDate("ngayDoiTra");
+	            LocalDate ngayDoiTra = (sqlDate != null) ? sqlDate.toLocalDate() : null;
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	            // Tạo đối tượng đúng cách
+	            PhieuDoiTra pdt = new PhieuDoiTra(maPhieuDT, hd, nv, ngayDoiTra, lyDo);
+	            listPDT.add(pdt);
+	        }
 
-		return listPDT;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        JOptionPane.showMessageDialog(null, 
+	            "Lỗi tải danh sách phiếu đổi trả: " + e.getMessage(),
+	            "Lỗi Database", JOptionPane.ERROR_MESSAGE);
+	    }
+
+	    return listPDT;
 	}
 
-	public boolean themPDTBangObject(Object[] pdt, String maNV) {
+	public boolean themPDT(PhieuDoiTra pdt, String maNV, String maHD) {
 		String sql = "INSERT INTO PhieuDoiTra (maPhieuDT, maHD, maNV, ngayDoiTra, lyDo) " + "VALUES (?, ?, ?, ?, ?)";
-		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 
-			ps.setString(1, pdt[0].toString());
-			ps.setString(2, pdt[1].toString());
-			ps.setString(3, pdt[2].toString());
-			ps.setDate(4, java.sql.Date.valueOf(pdt[3].toString()));
-			ps.setString(5, pdt[4].toString());
+			ps.setString(1, pdt.getMaPhieuDT());
+			ps.setString(2, maHD);
+			ps.setString(3, maNV);
+			ps.setDate(4, java.sql.Date.valueOf(pdt.getNgayDoiTra()));
+			ps.setString(5, pdt.getLyDo());
 
 			return ps.executeUpdate() > 0;
 		} catch (Exception e) {
@@ -67,7 +84,7 @@ public class PhieuDoiTraDAO {
 
 	public boolean themChiTietPDTBangObject(Object[] ct) {
 		String sql = "INSERT INTO CT_PhieuDoiTra (maPhieuDT, maThuoc, soLuong, ghiChu, tienHoan, mucHoan, maDVT) VALUES (?, ?, ?, ?, ?, ?, ?)";
-		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 
 			ps.setString(1, ct[0].toString());
 			ps.setString(2, ct[1].toString());
@@ -86,9 +103,8 @@ public class PhieuDoiTraDAO {
 	public String layMaPDTMoiNhat() {
 		String sql = "SELECT TOP 1 pdt.maPhieuDT\r\n" + "FROM PhieuDoiTra pdt\r\n"
 				+ "ORDER BY TRY_CAST(SUBSTRING(pdt.maPhieuDT, 6, LEN(pdt.maPhieuDT)) AS INT) DESC;";
-		try (Connection con = KetNoiDatabase.getConnection();
-				PreparedStatement ps = con.prepareStatement(sql);
-				ResultSet rs = ps.executeQuery()) {
+		try (PreparedStatement ps = con.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery()) {
 
 			if (rs.next()) {
 				return rs.getString("maPhieuDT");
@@ -110,7 +126,7 @@ public class PhieuDoiTraDAO {
 					WHERE maPhieuDT = ?
 				""";
 
-		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 
 			ps.setString(1, maPhieuDT);
 			ResultSet rs = ps.executeQuery();
@@ -136,7 +152,7 @@ public class PhieuDoiTraDAO {
 						GROUP BY ct.maPhieuDT;
 									""";
 
-		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, maPhieuDT);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
@@ -147,5 +163,15 @@ public class PhieuDoiTraDAO {
 		}
 		return 0;
 	}
+	
+    // ================= TÌM HOÁ ĐƠN THEO MÃ =================
+    public PhieuDoiTra timPhieuDoiTraTheoMa(String maPDT) {
+        for (PhieuDoiTra pdt : layListPDT()) {
+            if (pdt.getMaPhieuDT().equalsIgnoreCase(maPDT)) {
+                return pdt;
+            }
+        }
+        return null;
+    }
 
 }

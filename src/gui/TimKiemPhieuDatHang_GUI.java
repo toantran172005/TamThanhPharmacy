@@ -6,7 +6,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-import controller.DanhSachPhieuDatHangCtrl;
+import controller.TimKiemPhieuDatHangCtrl;
 import controller.ToolCtrl;
 import dao.PhieuDatHangDAO;
 import entity.PhieuDatHang;
@@ -25,7 +25,7 @@ public class TimKiemPhieuDatHang_GUI extends JPanel {
 	Font font1 = new Font("Time New Roman", Font.BOLD, 18);
 	Font font2 = new Font("Time New Roman", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
-	public DanhSachPhieuDatHangCtrl dspdhCtrl = new DanhSachPhieuDatHangCtrl(this);
+	public TimKiemPhieuDatHangCtrl dspdhCtrl = new TimKiemPhieuDatHangCtrl(this);
 
 	public TimKiemPhieuDatHang_GUI(TrangChuNV_GUI mainFrameNV) {
 		this.mainFrameNV = mainFrameNV;

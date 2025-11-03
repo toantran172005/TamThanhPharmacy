@@ -2,9 +2,12 @@ package gui;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import controller.ThongKeKhachHangCtrl;
+import controller.TimKiemKhachHangCtrl;
 import controller.ToolCtrl;
 
 import java.awt.*;
@@ -14,27 +17,32 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import com.toedter.calendar.JDateChooser;
+
 public class ThongKeKhachHang_GUI extends JPanel {
 
+	public JDateChooser ngayBD, ngayKT;
+	public JButton btnThongKe;
+	public JLabel lblTongKH, lblTongSLM, lblTongCT, lblChiTieuTB;
+	public JFreeChart barChart;
+	public ChartPanel chartPanel;
+	public JTable tblThongKeKH;
+	public JComboBox<String> cmbTop;
+	public JButton btnXuatExcel, btnLamMoi;
 	public ToolCtrl tool = new ToolCtrl();
+	public ThongKeKhachHangCtrl thongKekhCtrl = new ThongKeKhachHangCtrl(this);
+	public DefaultTableModel model;
 
-	// TOP
-	private JTextField txtNgayBD, txtNgayKT;
-	private JButton btnThongKe;
+	public void setHoatDong() {
+		btnThongKe.addActionListener(e -> thongKekhCtrl.thongKeKhachHang());
+		cmbTop.addActionListener(e -> {
+			String selected = (String) cmbTop.getSelectedItem();
+			int topN = Integer.parseInt(selected);
+			thongKekhCtrl.thongKeTopKhach(topN);
+		});
+		btnLamMoi.addActionListener(e -> thongKekhCtrl.lamMoi());
 
-	// TOTAL OVERVIEW
-	private JLabel lblTongKH, lblTongSLM, lblTongCT, lblChiTieuTB;
-
-	// CHART
-	private JFreeChart barChart;
-	private ChartPanel chartPanel;
-
-	// TABLE
-	private JTable tblThongKeKH;
-	private JComboBox<String> cmbTop;
-
-	// BOTTOM BUTTONS
-	private JButton btnXuatExcel, btnLamMoi;
+	}
 
 	public ThongKeKhachHang_GUI() {
 		setLayout(new BorderLayout());
@@ -63,17 +71,17 @@ public class ThongKeKhachHang_GUI extends JPanel {
 		datePanel.setBackground(Color.WHITE);
 		datePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 5));
 
-		txtNgayBD = tool.taoTextField("Ngày bắt đầu...");
-		txtNgayBD.setPreferredSize(new Dimension(160, 35));
-		txtNgayKT = tool.taoTextField("Ngày kết thúc...");
-		txtNgayKT.setPreferredSize(new Dimension(160, 35));
+		ngayBD = tool.taoDateChooser();
+		ngayBD.setPreferredSize(new Dimension(160, 35));
+		ngayKT = tool.taoDateChooser();
+		ngayKT.setPreferredSize(new Dimension(160, 35));
 
 		btnThongKe = tool.taoButton("Thống kê", "/picture/khachHang/statistic.png");
 
 		datePanel.add(tool.taoLabel("Từ ngày:"));
-		datePanel.add(txtNgayBD);
+		datePanel.add(ngayBD);
 		datePanel.add(tool.taoLabel("Đến ngày:"));
-		datePanel.add(txtNgayKT);
+		datePanel.add(ngayKT);
 		datePanel.add(btnThongKe);
 
 		topPanel.add(datePanel);
@@ -142,12 +150,13 @@ public class ThongKeKhachHang_GUI extends JPanel {
 		topFilter.setBackground(Color.WHITE);
 		topFilter.add(tool.taoLabel("Thống kê theo top:"));
 		cmbTop = tool.taoComboBox(new String[] { "5", "10", "20" });
+		cmbTop.setEditable(false);
 		topFilter.add(cmbTop);
 
 		tblPanel.add(topFilter);
 
 		String[] cols = { "STT", "Mã KH", "Tên KH", "SĐT", "Số lần mua", "Tổng chi tiêu" };
-		DefaultTableModel model = new DefaultTableModel(cols, 0) {
+		model = new DefaultTableModel(cols, 0) {
 			@Override
 			public boolean isCellEditable(int r, int c) {
 				return false;
@@ -155,7 +164,7 @@ public class ThongKeKhachHang_GUI extends JPanel {
 		};
 		tblThongKeKH = new JTable(model);
 		tblThongKeKH.setRowHeight(38);
-		tblThongKeKH.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		tblThongKeKH.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		tblThongKeKH.setGridColor(new Color(0xDDDDDD));
 		tblThongKeKH.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		tblThongKeKH.setSelectionBackground(new Color(0xE3F2FD));
@@ -164,11 +173,17 @@ public class ThongKeKhachHang_GUI extends JPanel {
 		tblThongKeKH.setBackground(Color.WHITE);
 		tblThongKeKH.setForeground(new Color(0x33, 0x33, 0x33));
 
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		for (int i = 0; i < tblThongKeKH.getColumnCount(); i++) {
+			tblThongKeKH.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		}
+
+		// Căn giữa tiêu đề cột
 		JTableHeader header = tblThongKeKH.getTableHeader();
-		header.setBackground(Color.WHITE);
-		header.setForeground(new Color(0x33, 0x33, 0x33));
-		header.setFont(new Font("Times New Roman", Font.BOLD, 14));
-		header.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
+		header.setBackground(new Color(240, 240, 240));
+		header.setFont(new Font("Times New Roman", Font.BOLD, 15));
+		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
 		JScrollPane scrollTable = new JScrollPane(tblThongKeKH);
 		scrollTable.setBackground(Color.WHITE);
@@ -192,10 +207,11 @@ public class ThongKeKhachHang_GUI extends JPanel {
 		bottomPanel.add(btnLamMoi);
 
 		add(bottomPanel, BorderLayout.SOUTH);
+		setHoatDong();
 	}
 
 	// === Hỗ trợ tạo info box cho tổng quan ===
-	private JPanel createInfoBox(String title, JLabel value) {
+	public JPanel createInfoBox(String title, JLabel value) {
 		JPanel pnl = new JPanel();
 		pnl.setLayout(new BoxLayout(pnl, BoxLayout.Y_AXIS));
 		pnl.setBackground(Color.WHITE);
