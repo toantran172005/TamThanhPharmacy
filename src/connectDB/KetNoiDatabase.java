@@ -13,6 +13,7 @@ public class KetNoiDatabase {
     private static Connection connection = null;
 
     public static Connection getConnection(){
+    	connection = null;
         try {
         	 Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         	 System.out.println("✅ Driver đã được nạp!");

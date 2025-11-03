@@ -43,11 +43,24 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.poi.ss.usermodel.DateUtil;
+
 import com.toedter.calendar.JDateChooser;
 
 import connectDB.*;
 
 public class ToolCtrl {
+	
+	public LocalDate convertExcelDate(Object value) {
+	    if (value instanceof Date)
+	        return utilDateSangLocalDate((Date) value);
+	    else if (value instanceof Double)
+	        return utilDateSangLocalDate(DateUtil.getJavaDate((Double) value));
+	    else if (value instanceof String && !((String) value).isEmpty())
+	        return LocalDate.parse((String) value);
+	    return null;
+	}
+
 	
 	// ===== ĐỔI PANEL =====
 	public void doiPanel(JPanel pnlCha, JPanel pnlMoi) {

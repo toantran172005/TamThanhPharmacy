@@ -20,6 +20,7 @@ public class Thuoc {
 	LocalDate hanSuDung;
 	Boolean trangThai;
 	String anh;
+	String noiSanXuat;
 	// Thuộc tính tạm
 	int stt;
 	int soLo;
@@ -63,7 +64,7 @@ public class Thuoc {
 		this.trangThai = trangThai;
 	}
 
-	public Thuoc(int stt, String maThuoc, String tenThuoc, int soLo, String dangThuoc, DonViTinh dvt,
+	public Thuoc(String maThuoc, String tenThuoc, int soLo, String dangThuoc, DonViTinh dvt,
 			LocalDate hanSuDung, int soLuong, double giaBan, Thue thue, String loaiThue) {
 		super();
 		this.maThuoc = maThuoc;
@@ -73,7 +74,6 @@ public class Thuoc {
 		this.dangThuoc = dangThuoc;
 		this.giaBan = giaBan;
 		this.hanSuDung = hanSuDung;
-		this.stt = stt;
 		this.soLo = soLo;
 		this.soLuong = soLuong;
 		this.loaiThue = loaiThue;
@@ -104,7 +104,25 @@ public class Thuoc {
 //	public BooleanProperty selectedProperty() {
 //		return selected;
 //	}
-	
+
+	public Thuoc(String maThuoc, Thue thue, KeThuoc keThuoc, DonViTinh dvt, NhaCungCap ncc, String tenThuoc,
+			String dangThuoc, float giaBan, LocalDate hanSuDung, boolean trangThai, String anh, int soLuong,String noiSanXuat) {
+		super();
+		this.maThuoc = maThuoc;
+		this.thue = thue;
+		this.keThuoc = keThuoc;
+		this.dvt = dvt;
+		this.ncc = ncc;
+		this.tenThuoc = tenThuoc;
+		this.dangThuoc = dangThuoc;
+		this.giaBan = giaBan;
+		this.hanSuDung = hanSuDung;
+		this.trangThai = trangThai;
+		this.anh = anh;
+		this.soLuong = soLuong;
+		this.noiSanXuat = noiSanXuat;
+	}
+
 	public String getMaThuoc() {
 		return maThuoc;
 	}
@@ -246,6 +264,15 @@ public class Thuoc {
 
 	public void setSoLuongDat(int soLuongDat) {
 		this.soLuongDat = soLuongDat;
+	}
+	
+
+	public String getNoiSanXuat() {
+		return noiSanXuat;
+	}
+
+	public void setNoiSanXuat(String noiSanXuat) {
+		this.noiSanXuat = noiSanXuat;
 	}
 
 	@Override

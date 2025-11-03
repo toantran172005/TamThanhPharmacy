@@ -1,21 +1,29 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
+
 import java.awt.*;
+
+import controller.DatThuocBanCtrl;
 import controller.ToolCtrl;
 
 public class DatThuoc_GUI extends JPanel {
 
-	private JComboBox<String> cmbThuoc;
-	private JTextField txtSoLuongDat;
-	private JButton btnTru, btnCong, btnThem, btnLamMoi, btnTaoPhieuDat;
-	private JTable tblDatThuoc;
-
+	public JComboBox<String> cmbThuoc;
+	public JTextField txtSoLuongDat;
+	public JButton btnTru, btnCong, btnThem, btnLamMoi, btnTaoPhieuDat, btnXoa;
+	public JTable tblDatThuoc;
+	public DefaultTableModel model;
+	
+	private DatThuocBanCtrl dtCtrl;
 	private final ToolCtrl tool = new ToolCtrl();
 
 	public DatThuoc_GUI() {
+		dtCtrl = new DatThuocBanCtrl(this);
 		setLayout(new BorderLayout());
 		setBackground(Color.WHITE);
 
@@ -66,11 +74,13 @@ public class DatThuoc_GUI extends JPanel {
 		// Cột 3: Buttons
 		btnThem = tool.taoButton("Thêm", "/picture/khuyenMai/plus.png");
 		btnLamMoi = tool.taoButton("Làm mới", "/picture/keThuoc/refresh.png");
+		btnXoa = tool.taoButton("Xoá", "/picture/khachHang/trash.png");
 
 		row1.add(colThuoc);
 		row1.add(colSL);
 		row1.add(btnThem);
 		row1.add(btnLamMoi);
+		row1.add(btnXoa);
 
 		topPanel.add(row1);
 		topPanel.add(Box.createVerticalStrut(10));
@@ -80,7 +90,7 @@ public class DatThuoc_GUI extends JPanel {
 
 		// ====== CENTER ======
 		String[] cols = { "STT", "Mã thuốc", "Tên thuốc", "Đơn vị", "Số lượng đặt" };
-		DefaultTableModel model = new DefaultTableModel(cols, 0) {
+		model = new DefaultTableModel(cols, 0) {
 			@Override
 			public boolean isCellEditable(int r, int c) {
 				return false;
@@ -91,6 +101,7 @@ public class DatThuoc_GUI extends JPanel {
 		tblDatThuoc.setRowHeight(38);
 		tblDatThuoc.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 		tblDatThuoc.setSelectionBackground(new Color(0xE3F2FD));
+		tblDatThuoc.setSelectionForeground(Color.BLACK);
 		tblDatThuoc.setGridColor(new Color(0xDDDDDD));
 		tblDatThuoc.setBackground(Color.WHITE);
 		tblDatThuoc.setForeground(new Color(0x33, 0x33, 0x33));
@@ -101,6 +112,18 @@ public class DatThuoc_GUI extends JPanel {
 		header.setForeground(new Color(0x33, 0x33, 0x33));
 		header.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
 
+		//Căn giữa cho dữ liệu trong cột
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        TableColumnModel columnModel = tblDatThuoc.getColumnModel();
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            columnModel.getColumn(i).setCellRenderer(centerRenderer);
+        }
+        
+        //Căn giữa cho tiêu đề table
+        ((DefaultTableCellRenderer) tblDatThuoc.getTableHeader().getDefaultRenderer())
+        .setHorizontalAlignment(SwingConstants.CENTER);
+        
 		JScrollPane scroll = new JScrollPane(tblDatThuoc);
 		scroll.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
 		scroll.setBackground(Color.WHITE);
@@ -117,7 +140,12 @@ public class DatThuoc_GUI extends JPanel {
 		add(bottom, BorderLayout.SOUTH);
 
 		// ====== EVENT DUMMY ======
-		btnLamMoi.addActionListener(e -> txtSoLuongDat.setText("1"));
+		ganSuKien();
+	}
+	
+	public void ganSuKien() {
+		dtCtrl.setDataChoComboBox();
+		btnLamMoi.addActionListener(e -> dtCtrl.lamMoi());
 		btnCong.addActionListener(e -> {
 			int sl = Integer.parseInt(txtSoLuongDat.getText().trim());
 			txtSoLuongDat.setText(String.valueOf(sl + 1));
@@ -129,19 +157,12 @@ public class DatThuoc_GUI extends JPanel {
 		});
 		
 		btnTaoPhieuDat.addActionListener(e -> {
-			onBtnTaoPhieuDat();
+			tool.doiPanel(this, new PhieuDatThuoc_GUI(this));
 		});
+		
+		btnThem.addActionListener(e -> dtCtrl.addThuocVaoTable());
+		
+		btnXoa.addActionListener(e -> dtCtrl.xoaThuocKhoiBang());
 	}
-	
-	private void onBtnTaoPhieuDat() {
-	    JFrame frame = new JFrame("Chi tiết phiếu đặt thuốc");
-	    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	    frame.setSize(850, 750);
-	    frame.setLocationRelativeTo(null);
-
-	    frame.setContentPane(new PhieuDatThuoc_GUI());
-	    frame.setVisible(true);
-	}
-
 
 }

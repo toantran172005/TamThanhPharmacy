@@ -1,22 +1,29 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 
 import java.awt.*;
+
+import controller.DonViTinhCtrl;
 import controller.ToolCtrl;
 
 public class DonVi_GUI extends JPanel {
 
-    private JTextField txtTimDV, txtTenDV;
-    private JTable tblDonVi;
-    private JButton btnLamMoi, btnLichSuXoa, btnXoaTatCa, btnThemDV;
-    private JCheckBox chkChonTatCa;
+    public JTextField txtTimDV, txtTenDV;
+    public JTable tblDonVi;
+    public JButton btnLamMoi, btnLichSuXoa, btnXoaTatCa, btnThemDV;
+    public JCheckBox chkChonTatCa;
+    public DefaultTableModel model;
 
     private final ToolCtrl tool = new ToolCtrl();
-
+    private DonViTinhCtrl dvCtrl;
+    
     public DonVi_GUI() {
+    	dvCtrl = new DonViTinhCtrl(this);
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
@@ -100,8 +107,8 @@ public class DonVi_GUI extends JPanel {
         add(topPanel, BorderLayout.NORTH);
 
         // ===== CENTER: Table =====
-        String[] cols = {"STT", "Mã Đơn Vị", "Tên Đơn Vị", "Hoạt Động"};
-        DefaultTableModel model = new DefaultTableModel(cols, 0);
+        String[] cols = {"STT", "Mã Đơn Vị", "Tên Đơn Vị"};
+        model = new DefaultTableModel(cols, 0);
 
         tblDonVi = new JTable(model);
         tblDonVi.setRowHeight(50);
@@ -114,6 +121,18 @@ public class DonVi_GUI extends JPanel {
         header.setFont(new Font("Times New Roman", Font.BOLD, 14));
         header.setBackground(Color.WHITE);
         header.setForeground(new Color(0x33, 0x33, 0x33));
+        
+        //Căn giữa cho dữ liệu trong cột
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        TableColumnModel columnModel = tblDonVi.getColumnModel();
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            columnModel.getColumn(i).setCellRenderer(centerRenderer);
+        }
+        
+        //Căn giữa cho tiêu đề table
+        ((DefaultTableCellRenderer) tblDonVi.getTableHeader().getDefaultRenderer())
+        .setHorizontalAlignment(SwingConstants.CENTER);
 
         tblDonVi.getColumnModel().getColumn(0).setMaxWidth(40);
 
@@ -123,9 +142,7 @@ public class DonVi_GUI extends JPanel {
         add(scroll, BorderLayout.CENTER);
 
         // ===== SỰ KIỆN =====
-        btnThemDV.addActionListener(e -> onBtnThemDV());
-        btnLamMoi.addActionListener(e -> onBtnLamMoi());
-        btnLichSuXoa.addActionListener(e -> onBtnLichSuXoa());
+        dvCtrl.setDataChoTable();
     }
 
     private JPanel taoDong(String label, JComponent comp, int labelWidth, int fieldWidth) {
@@ -142,24 +159,8 @@ public class DonVi_GUI extends JPanel {
         return row;
     }
 
-    // ==== SỰ KIỆN ====
-    private void onBtnThemDV() {
-        // TODO: Xử lý thêm đơn vị
-        JOptionPane.showMessageDialog(this, "Thêm đơn vị thành công!");
+    public void ganSuKien() {
+    	
     }
-
-    private void onBtnLamMoi() {
-        txtTimDV.setText("");
-        txtTenDV.setText("");
-    }
-
-    private void onBtnXoaTatCa() {
-        // TODO
-        JOptionPane.showMessageDialog(this, "Đã xoá tất cả!");
-    }
-
-    private void onBtnLichSuXoa() {
-        // TODO
-        JOptionPane.showMessageDialog(this, "Mở lịch sử xoá!");
-    }
+    
 }

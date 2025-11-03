@@ -1,20 +1,32 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
+
+import org.w3c.dom.ls.LSException;
+
 import java.awt.*;
+import java.util.ArrayList;
+
+import controller.DatThuocBanCtrl;
 import controller.ToolCtrl;
+import entity.Thuoc;
 
 public class PhieuDatThuoc_GUI extends JPanel {
 
-    private JTable tblPhieuDat;
-    private JLabel lblNgayDat, lblNguoiLap;
-    private JButton btnLuuTep, btnTaoPhieuDat;
+    public JTable tblPhieuDat;
+    public DefaultTableModel model;
+    public JLabel lblNgayDat, lblNguoiLap;
+    public JButton btnLuuTep, btnTaoPhieuDat;
 
     private final ToolCtrl tool = new ToolCtrl();
+    private DatThuocBanCtrl dtCtrl;
 
-    public PhieuDatThuoc_GUI() {
+    public PhieuDatThuoc_GUI(DatThuoc_GUI dtGUI) {
+    	dtCtrl = new DatThuocBanCtrl(dtGUI,this);
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
@@ -77,12 +89,7 @@ public class PhieuDatThuoc_GUI extends JPanel {
         centerPanel.add(lblNCC, BorderLayout.NORTH);
 
         String[] cols = {"STT", "Tên thuốc", "Đơn vị", "Số lượng đặt"};
-        DefaultTableModel model = new DefaultTableModel(cols, 0) {
-            @Override
-            public boolean isCellEditable(int r, int c) {
-                return false;
-            }
-        };
+        model = new DefaultTableModel(cols, 0);
 
         tblPhieuDat = new JTable(model);
         tblPhieuDat.setRowHeight(35);
@@ -98,6 +105,18 @@ public class PhieuDatThuoc_GUI extends JPanel {
         header.setForeground(new Color(0x333333));
         header.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
 
+        //Căn giữa cho dữ liệu trong cột
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        TableColumnModel columnModel = tblPhieuDat.getColumnModel();
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            columnModel.getColumn(i).setCellRenderer(centerRenderer);
+        }
+        
+        //Căn giữa cho tiêu đề table
+        ((DefaultTableCellRenderer) tblPhieuDat.getTableHeader().getDefaultRenderer())
+        .setHorizontalAlignment(SwingConstants.CENTER);
+        
         JScrollPane scroll = new JScrollPane(tblPhieuDat);
         scroll.getViewport().setBackground(Color.WHITE);
         scroll.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
@@ -130,9 +149,16 @@ public class PhieuDatThuoc_GUI extends JPanel {
         bottomPanel.add(nguoiLapPanel, BorderLayout.EAST);
         add(bottomPanel, BorderLayout.SOUTH);
 
+        ArrayList<Thuoc> listThuocDat = dtCtrl.layDanhSachThuocTuTable();
+        dtCtrl.setDataChoTablePDT(listThuocDat);
         
+        ganSuKien();
     }
 
     // ===================== SỰ KIỆN =====================
- 
+    public void ganSuKien() {
+    	btnLuuTep.addActionListener(e -> {
+    		tool.doiPanel(this, new DatThuoc_GUI());
+    	});
+    }
 }

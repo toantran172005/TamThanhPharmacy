@@ -1,26 +1,32 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 
 import com.toedter.calendar.JDateChooser;
 
+import controller.KhuyenMaiCtrl;
 import controller.ToolCtrl;
 
 import java.awt.*;
 
 public class DanhSachKhuyenMai_GUI extends JPanel {
 
-    private JTextField txtTenKM;
-    private JComboBox<String> cmbTrangThai;
-    private JDateChooser dpNgay; 
-    private JTable tblKhuyenMai;
-    private JButton btnXemChiTiet, btnLamMoi, btnLichSuXoa, btnXoaTatCa;
+	public JTextField txtTenKM;
+    public JComboBox<String> cmbTrangThai;
+    public JDateChooser dpNgay; 
+    public JTable tblKhuyenMai;
+    public DefaultTableModel model;
+    public JButton btnXemChiTiet, btnLamMoi, btnLichSuXoa, btnXoaTatCa;
 
     private final ToolCtrl tool = new ToolCtrl();
+    private KhuyenMaiCtrl kmCtrl;
 
     public DanhSachKhuyenMai_GUI() {
+    	kmCtrl = new KhuyenMaiCtrl(this);
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
         setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -60,7 +66,7 @@ public class DanhSachKhuyenMai_GUI extends JPanel {
         btnLamMoi = tool.taoButton("Làm mới", "/picture/keThuoc/refresh.png");
         
         JLabel lblTrangThai = tool.taoLabel("Trạng thái:");
-        cmbTrangThai = new JComboBox<>(new String[]{"Tất cả", "Đang hoạt động", "Hết hạn"});
+        cmbTrangThai = new JComboBox<>(new String[]{"Tất cả", "Đang hoạt động", "Đã kết thúc"});
         cmbTrangThai.setPreferredSize(new Dimension(200, 35));
 
         JLabel lblNgay = tool.taoLabel("Ngày:");
@@ -91,15 +97,10 @@ public class DanhSachKhuyenMai_GUI extends JPanel {
                 "Mã khuyến mãi", "Tên khuyến mãi",
                 "Hình thức", "Mức khuyến mãi",
                 "Ngày bắt đầu", "Ngày kết thúc",
-                "Trạng thái", "Hoạt động"
+                "Trạng thái"
         };
 
-        DefaultTableModel model = new DefaultTableModel(cols, 0) {
-            @Override
-            public boolean isCellEditable(int row, int col) {
-                return col == 0; // chỉ cột chọn được phép check
-            }
-        };
+        model = new DefaultTableModel(cols, 0);
 
         tblKhuyenMai = new JTable(model);
         tblKhuyenMai.setRowHeight(35);
@@ -115,6 +116,18 @@ public class DanhSachKhuyenMai_GUI extends JPanel {
         header.setBackground(Color.WHITE);
         header.setForeground(new Color(0x33, 0x33, 0x33));
         header.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
+        
+        //Căn giữa cho dữ liệu trong cột
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        TableColumnModel columnModel = tblKhuyenMai.getColumnModel();
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            columnModel.getColumn(i).setCellRenderer(centerRenderer);
+        }
+        
+        //Căn giữa cho tiêu đề table
+        ((DefaultTableCellRenderer) tblKhuyenMai.getTableHeader().getDefaultRenderer())
+        .setHorizontalAlignment(SwingConstants.CENTER);
 
         JScrollPane scroll = new JScrollPane(tblKhuyenMai);
         scroll.getViewport().setBackground(Color.WHITE);
@@ -123,6 +136,7 @@ public class DanhSachKhuyenMai_GUI extends JPanel {
         add(scroll, BorderLayout.CENTER);
 
         // ======= SỰ KIỆN =======
+        kmCtrl.setDataChoTable();
         btnLamMoi.addActionListener(e -> lamMoi());
         btnXemChiTiet.addActionListener(e -> tool.doiPanel(this, new ChiTietKhuyenMai_GUI()));
         btnLichSuXoa.addActionListener(e -> lichSuXoa());

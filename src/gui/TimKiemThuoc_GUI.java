@@ -1,9 +1,11 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -88,7 +90,7 @@ public class TimKiemThuoc_GUI extends JPanel {
 		add(topPanel, BorderLayout.NORTH);
 
 		// ====== CENTER: Bảng thuốc ======
-		String[] cols = {"Mã thuốc", "Tên thuốc", "Phân loại", "Giá bán", "Số lượng", "Đơn vị tính", "Hạn sử dụng"};
+		String[] cols = {"Mã thuốc", "Tên thuốc", "Phân loại", "Giá bán", "Số lượng", "Nơi sản xuất", "Đơn vị tính", "Hạn sử dụng"};
 		model = new DefaultTableModel(cols, 0);
 
 		tblThuoc = new JTable(model);
@@ -108,6 +110,18 @@ public class TimKiemThuoc_GUI extends JPanel {
 		header.setForeground(Color.BLACK);
 		header.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
 		
+		//Căn giữa cho dữ liệu trong cột
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        TableColumnModel columnModel = tblThuoc.getColumnModel();
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            columnModel.getColumn(i).setCellRenderer(centerRenderer);
+        }
+        
+        //Căn giữa cho tiêu đề table
+        ((DefaultTableCellRenderer) tblThuoc.getTableHeader().getDefaultRenderer())
+        .setHorizontalAlignment(SwingConstants.CENTER);
+		
 		JScrollPane scroll = new JScrollPane(tblThuoc);
 		scroll.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
 		scroll.getViewport().setBackground(Color.WHITE);
@@ -123,6 +137,8 @@ public class TimKiemThuoc_GUI extends JPanel {
 	public void onBtnLamMoi() {
 		txtTenThuoc.setText("");
 		cmbLoaiThuoc.setSelectedIndex(-1);
+		model.setRowCount(0);
+		thCtrl.setDataChoTable();
 	}
 	
 	//gắn sự kiện

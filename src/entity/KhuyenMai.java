@@ -46,18 +46,18 @@ public class KhuyenMai {
 		}
 		return null;
 	}
-
-//	public boolean isSelected() {
-//		return selected.get();
-//	}
-//
-//	public void setSelected(boolean selected) {
-//		this.selected.set(selected);
-//	}
-//
-//	public BooleanProperty selectedProperty() {
-//		return selected;
-//	}
+	
+	public String getTrangThaiHD() {
+		String result = null;
+		
+		if(ngayKT.isBefore(LocalDate.now())) {
+			result = "Đã kết thúc";
+		} else if (ngayBD.isBefore(LocalDate.now()) && ngayKT.isAfter(LocalDate.now())) {
+			result = "Đang hoạt động";
+		}
+		
+		return result;
+	}
 
 	public String getMaKM() {
 		return maKM;

@@ -68,19 +68,6 @@ public class ThuocCtrl {
 		return listTK;
 	}
 	
-	
-	//Lấy list thuốc
-	public ArrayList<Thuoc> layListThuoc() {	
-		ArrayList<Thuoc> listTH = new ArrayList<Thuoc>();
-		try {
-			listTH = thuocDAO.layListThuocHoanChinh();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return listTH;
-	}
-	
-	
 	//xoá thuốc
 	public boolean xoaThuoc(String maTH) {
 		return thuocDAO.xoaThuoc(maTH);
@@ -88,14 +75,15 @@ public class ThuocCtrl {
 	
 	//đổ dữ liệu lên bảng tìm kiếm thuốc
 	public void setDataChoTable() {
-		ArrayList<Thuoc> listThuoc = layListThuoc();
+		ArrayList<Thuoc> listThuoc = thuocDAO.layListThuocHoanChinh();
 		for(Thuoc t : listThuoc) {
 			thuoc.model.addRow(new Object[] {
 					t.getMaThuoc(),
 					t.getTenThuoc(),
 					t.getKeThuoc().getLoaiKe(),
-					t.getGiaBan(),
+					tool.dinhDangVND(t.getGiaBan()),
 					t.getSoLuong(),
+					t.getNoiSanXuat(),
 					t.getDvt().getTenDVT(),
 					t.getHanSuDung()
 			});
@@ -106,27 +94,40 @@ public class ThuocCtrl {
 	public void onThongKe() {
 		 LocalDate bd = tool.utilDateSangLocalDate(tkThuoc.dpNgayBD.getDate());
 	     LocalDate kt = tool.utilDateSangLocalDate(tkThuoc.dpNgayKT.getDate());
-	     ArrayList<Thuoc> listTK = layListThongKe(bd, kt);
 	     int stt = 1;
 	     
-	     if(bd == null || kt == null) {
-			tool.hienThiThongBao("Lỗi", "Vui lòng không để trống ngày bắt đầu và ngày kết thúc", false);
-		} else {
-			tkThuoc.dataset.clear();
-			for(Thuoc t : listTK) {
-				tkThuoc.dataset.addValue(t.getSoLuongBan(), "Số lượng bán", t.getTenThuoc());
-			}
-		}
+	     if(bd == null) {
+	    	 bd = LocalDate.of(2025, 01, 01);
+	     } 
+	     
+	     if(kt == null) {
+	    	 kt = LocalDate.now();
+	     }
+	     
+	     if(bd == null && kt == null) {
+	    	 bd = LocalDate.of(2025, 01, 01);
+	    	 kt = LocalDate.now();
+	     }
 	    
+	     
+	    ArrayList<Thuoc> listTK = layListThongKe(bd, kt);
 	    tkThuoc.pnlChart.repaint();
 	    
+	    
+	    //Đưa dữ liệu cho dataset để vẽ biểu đồ
+	    tkThuoc.dataset.clear();
+	    for(Thuoc t : listTK) {
+	    	tkThuoc.dataset.addValue(t.getSoLuongBan(), "Số lượng bán", t.getTenThuoc());
+	    }
+	    
+	    //Đổ dữ liệu lên bảng
 	    for(Thuoc t : listTK) {
 	    	tkThuoc.model.addRow(new Object[] {
 	    			stt++,
 	    			t.getMaThuoc(),
 	    			t.getTenThuoc(),
 	    			t.getSoLuongBan(),
-	    			t.getDoanhThu(),
+	    			tool.dinhDangVND(t.getDoanhThu())
 	    	});
 	    }
 	}

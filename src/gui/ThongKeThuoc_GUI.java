@@ -1,8 +1,10 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -98,6 +100,18 @@ public class ThongKeThuoc_GUI extends JPanel {
         header.setBackground(Color.WHITE);
         header.setForeground(new Color(0x333333));
 
+      //Căn giữa cho dữ liệu trong cột
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        TableColumnModel columnModel = tblThongKe.getColumnModel();
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            columnModel.getColumn(i).setCellRenderer(centerRenderer);
+        }
+        
+        //Căn giữa cho tiêu đề table
+        ((DefaultTableCellRenderer) tblThongKe.getTableHeader().getDefaultRenderer())
+        .setHorizontalAlignment(SwingConstants.CENTER);
+        
         JScrollPane scrollTable = new JScrollPane(tblThongKe);
         scrollTable.setBorder(BorderFactory.createTitledBorder("Bảng Top 10 thuốc bán chạy nhất"));
         scrollTable.getViewport().setBackground(Color.WHITE);
@@ -115,8 +129,8 @@ public class ThongKeThuoc_GUI extends JPanel {
         ganSuKien();
     }
 
-    // =================== Xử lý ===================
     
+    // =================== Xử lý ===================
     public void ganSuKien() {
     	btnThongKe.addActionListener(e -> {
     		thCtrl.onThongKe();

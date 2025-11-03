@@ -23,8 +23,8 @@ public class DonViTinhDAO {
     }
 
     // 🔹 Lấy danh sách đơn vị đang hoạt động
-    public List<DonViTinh> layListDVT() {
-        List<DonViTinh> listDVT = new ArrayList<>();
+    public ArrayList<DonViTinh> layListDVT() {
+    	ArrayList<DonViTinh> listDVT = new ArrayList<>();
 
         String sql = """
             SELECT *
@@ -53,8 +53,8 @@ public class DonViTinhDAO {
     }
 
     // 🔹 Lấy danh sách đơn vị đã xóa
-    public List<DonViTinh> layDanhSachDaXoa() {
-        List<DonViTinh> listDaXoa = new ArrayList<>();
+    public ArrayList<DonViTinh> layDanhSachDaXoa() {
+    	ArrayList<DonViTinh> listDaXoa = new ArrayList<>();
 
         String sql = """
             SELECT *

@@ -73,23 +73,6 @@ public class ThuocDAO {
 		return 0;
 	}
 
-	public boolean luuData(String maPNT, String maNCC, String maNV, LocalDate ngayNhap,
-			ArrayList<Thuoc> listThuoc) {
-		try (Connection conn = KetNoiDatabase.getConnection()) {
-			conn.setAutoCommit(false);
-
-			insertPhieuNhapThuoc(conn, maPNT, maNCC, maNV, ngayNhap);
-			insertChiTietPhieuNhap(conn, maPNT, listThuoc);
-			insertThuoc(conn, maNCC, listThuoc);
-
-			conn.commit();
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-
 	public String layHoacTaoThue(Connection conn, Thuoc t) throws SQLException {
 		String sqlFindThue = "SELECT maThue FROM Thue WHERE loaiThue = ? AND tyLeThue = ?";
 		String sqlInsertThue = "INSERT INTO Thue (maThue, loaiThue, tyLeThue, moTa) VALUES (?, ?, ?, ?)";
@@ -115,6 +98,7 @@ public class ThuocDAO {
 			return maThue;
 		}
 	}
+	
 
 	public String layHoacTaoDVT(Connection conn, Thuoc t) throws SQLException {
 		String sqlFindDVT = "SELECT maDVT FROM DonViTinh WHERE tenDVT = ?";
@@ -268,6 +252,23 @@ public class ThuocDAO {
 			ps.executeBatch();
 		}
 	}
+	
+	public boolean luuData(String maPNT, String maNCC, String maNV, LocalDate ngayNhap,
+			ArrayList<Thuoc> listThuoc) {
+		try (Connection conn = KetNoiDatabase.getConnection()) {
+			conn.setAutoCommit(false);
+
+			insertPhieuNhapThuoc(conn, maPNT, maNCC, maNV, ngayNhap);
+			insertChiTietPhieuNhap(conn, maPNT, listThuoc);
+			insertThuoc(conn, maNCC, listThuoc);
+
+			conn.commit();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
 	public ArrayList<Object[]> layDanhSachThuocChoKM() {
 		ArrayList<Object[]> listThuoc = new ArrayList<>();
@@ -307,7 +308,7 @@ public class ThuocDAO {
 	            th.loaiThue, th.tyLeThue, th.moTa,
 	            dvt.tenDVT,
 	            kt.loaiKe, kt.sucChua, kt.moTa,
-	            ncc.tenNCC, ncc.sdt, ncc.diaChi, ncc.email
+	            ncc.tenNCC, ncc.sdt, ncc.diaChi, ncc.email, t.noiSanXuat
 	        FROM Thuoc t
 	        LEFT JOIN CT_Kho ctK ON t.maThuoc = ctK.maThuoc
 	        LEFT JOIN Thue th ON t.maThue = th.maThue
@@ -362,11 +363,12 @@ public class ThuocDAO {
 	            boolean trangThai = rs.getBoolean("trangThai");
 	            String anh = rs.getString("anh");
 	            int soLuongTon = rs.getInt("soLuongTon");
+	            String noiSanXuat = rs.getString("noiSanXuat");
 
 	            // ====== Gộp thành Thuoc ======
 	            Thuoc thuoc = new Thuoc(
 	            		maThuoc, thue, keThuoc, dvt, ncc, tenThuoc, dangThuoc, giaBan, hanSuDung,
-						trangThai, anh, soLuongTon
+						trangThai, anh, soLuongTon, noiSanXuat
 	            );
 
 	            listThuoc.add(thuoc);

@@ -2,21 +2,27 @@ package gui;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
+
 import java.awt.*;
 import java.io.File;
 
+import controller.NhapThuocCtrl;
 import controller.ToolCtrl;
 
 public class NhapThuoc_GUI extends JPanel {
 
-    private final ToolCtrl tool = new ToolCtrl();
-
-    private JTable tblNhapThuoc;
-    private JButton btnLamMoi, btnThemTep, btnLuu;
+    public final ToolCtrl tool = new ToolCtrl();
+    public NhapThuocCtrl ntCtrl;
+    public JTable tblNhapThuoc;
+    public JButton btnLamMoi, btnThemTep, btnLuu;
+    public DefaultTableModel model;
 
     public NhapThuoc_GUI() {
+    	ntCtrl = new NhapThuocCtrl(this);
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
         setBorder(new EmptyBorder(10, 20, 10, 20));
@@ -66,12 +72,7 @@ public class NhapThuoc_GUI extends JPanel {
             "ĐVT", "Hạn dùng", "Số lượng", "Đơn giá", "Thuế (%)", "Loại thuế", "Thành tiền"
         };
 
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-            @Override
-            public boolean isCellEditable(int row, int col) {
-                return false;
-            }
-        };
+        model = new DefaultTableModel(columnNames, 0);
 
         tblNhapThuoc = new JTable(model);
         tblNhapThuoc.setRowHeight(35);
@@ -87,6 +88,19 @@ public class NhapThuoc_GUI extends JPanel {
         header.setForeground(new Color(0x333333));
         header.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
 
+      //Căn giữa cho dữ liệu trong cột
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        TableColumnModel columnModel = tblNhapThuoc.getColumnModel();
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            columnModel.getColumn(i).setCellRenderer(centerRenderer);
+        }
+        
+        //Căn giữa cho tiêu đề table
+        ((DefaultTableCellRenderer) tblNhapThuoc.getTableHeader().getDefaultRenderer())
+        .setHorizontalAlignment(SwingConstants.CENTER);
+        
+        
         // Scrollpane
         JScrollPane scrollPane = new JScrollPane(tblNhapThuoc);
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
@@ -106,30 +120,14 @@ public class NhapThuoc_GUI extends JPanel {
 
         // =================== SỰ KIỆN ===================
         btnLamMoi.addActionListener(e -> lamMoiBang());
-        btnThemTep.addActionListener(e -> chonFileExcel());
-        btnLuu.addActionListener(e -> luuDuLieu());
+        btnThemTep.addActionListener(e -> ntCtrl.chonFileExcel());
+        btnLuu.addActionListener(e ->  ntCtrl.luuDataTuTable());
     }
 
     // =================== HÀM XỬ LÝ ===================
     private void lamMoiBang() {
         DefaultTableModel model = (DefaultTableModel) tblNhapThuoc.getModel();
         model.setRowCount(0);
-    }
-
-    private void chonFileExcel() {
-    	try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Chọn tệp Excel để nhập thuốc");
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
-                "File Excel (.xlsx, .xls)", "xlsx", "xls"));
-
-        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            java.io.File file = fileChooser.getSelectedFile();
-        }
     }
 
 
