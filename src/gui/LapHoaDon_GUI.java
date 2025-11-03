@@ -17,7 +17,7 @@ public class LapHoaDon_GUI extends JPanel {
 	private JComboBox<String> cmbSanPham, cmbDonVi, cmbHTThanhToan;
 	private JLabel lblTongTien, lblTienThua;
 	private JTable tblThuoc;
-	private JButton btnThem, btnLamMoi, btnTaoHD;
+	private JButton btnThem, btnLamMoi, btnTaoHD, btnXoa;
 	private TrangChuQL_GUI mainFrame;
     private TrangChuNV_GUI mainFrameNV;
     private LapHoaDonCtrl controller;
@@ -96,14 +96,17 @@ public class LapHoaDon_GUI extends JPanel {
 		cmbDonVi.setPreferredSize(new Dimension(150, 28));
 		row3.add(cmbDonVi);
 
+
 		btnThem = tool.taoButton("Thêm", "/picture/hoaDon/plus.png");
+		btnXoa = tool.taoButton("Xoá", "/picture/hoaDon/trash.png");
 		row3.add(btnThem);
+		row3.add(btnXoa);
 		pnlTop.add(row3);
 
 		add(pnlTop, BorderLayout.NORTH);
 
 		// ===================== PHẦN GIỮA: BẢNG =====================
-		String[] cols = { "STT", "Tên thuốc", "Số lượng", "Đơn vị", "Đơn giá", "Thành tiền", "Ghi chú", "Hoạt động" };
+		String[] cols = { "STT", "Tên thuốc", "Số lượng", "Đơn vị", "Đơn giá", "Thành tiền", "Ghi chú"};
 		DefaultTableModel model = new DefaultTableModel(cols, 0);
 		tblThuoc = new JTable(model);
 		tblThuoc.setRowHeight(25);
@@ -216,6 +219,7 @@ public class LapHoaDon_GUI extends JPanel {
     public JButton getBtnThem() { return btnThem; }
     public JButton getBtnLamMoi() { return btnLamMoi; }
     public JButton getBtnTaoHD() { return btnTaoHD; }
+    public JButton getBtnXoa() { return btnXoa; }
     public TrangChuQL_GUI getMainFrame() {return mainFrame;}
     public TrangChuNV_GUI getMainFrameNV() {return mainFrameNV;}
 }

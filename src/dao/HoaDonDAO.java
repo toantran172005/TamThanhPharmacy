@@ -63,6 +63,74 @@ public class HoaDonDAO {
 		}
 		return listHDDaXoa;
 	}
+	
+	public Map<LocalDate, Double> layDoanhThuTheoNgay(LocalDate ngayBD, LocalDate ngayKT) {
+		Map<LocalDate, Double> map = new LinkedHashMap<>();
+		String sql = """
+				SELECT hd.ngayLap, SUM(
+					CASE 
+						WHEN km.loaiKM = N'Giảm giá' THEN cthd.soLuong * cthd.donGia * (1 - km.mucKM / 100.0)
+						WHEN km.loaiKM = N'Mua tặng' THEN 
+                		(cthd.soLuong - FLOOR(cthd.soLuong / (km.soLuongMua + km.soLuongTang)) * km.soLuongTang) * cthd.donGia
+					ELSE 
+                		cthd.soLuong * cthd.donGia
+					END
+					) AS tongTien
+				FROM HoaDon hd
+				JOIN CT_HoaDon cthd ON hd.maHD = cthd.maHD
+				JOIN Thuoc t ON cthd.maThuoc = t.maThuoc
+				LEFT JOIN KhuyenMai km ON t.maKM = km.maKM
+				WHERE hd.ngayLap BETWEEN ? AND ? AND hd.trangThai = 1
+				GROUP BY hd.ngayLap
+				ORDER BY hd.ngayLap
+				    """;
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setDate(1, java.sql.Date.valueOf(ngayBD));
+			pstmt.setDate(2, java.sql.Date.valueOf(ngayKT));
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				map.put(rs.getDate("ngayLap").toLocalDate(), rs.getDouble("tongTien"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+
+	public List<KhachHang> layListKHThongKe(LocalDate ngayBD, LocalDate ngayKT) {
+		List<KhachHang> list = new ArrayList<>();
+
+		String query = """
+				SELECT maKH, tenKH, tuoi, sdt
+				FROM (
+				    SELECT DISTINCT KH.maKH, KH.tenKH, KH.tuoi, KH.sdt,
+				           TRY_CAST(REPLACE(KH.maKH, 'TTKH', '') AS INT) AS maSo
+				    FROM KhachHang KH
+				    JOIN HoaDon HD ON KH.maKH = HD.maKH
+				    WHERE HD.ngayLap BETWEEN ? AND ? AND hd.trangThai = 1
+				) AS t
+				ORDER BY t.maSo;
+				""";
+
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement pstmt = con.prepareStatement(query)) {
+
+			pstmt.setDate(1, java.sql.Date.valueOf(ngayBD));
+			pstmt.setDate(2, java.sql.Date.valueOf(ngayKT));
+
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				list.add(new KhachHang(rs.getString("maKH"), rs.getString("tenKH"), rs.getInt("tuoi"),
+						rs.getString("sdt")));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+
 
 	// ================= HÀM HỖ TRỢ: CHUYỂN ResultSet → HoaDon =================
 	private HoaDon mapResultSetToHoaDon(ResultSet rs) throws SQLException {
@@ -114,26 +182,25 @@ public class HoaDonDAO {
 			return false;
 		}
 	}
-	
+
 	// ================= THÊM CHI TIẾT HÓA ĐƠN =================
 	public boolean themChiTietHoaDon(String maHD, String maThuoc, int soLuong, String maDVT, double donGia) {
-	    String sql = """
-	            INSERT INTO CT_HoaDon (maHD, maThuoc, soLuong, maDVT, donGia)
-	            VALUES (?, ?, ?, ?, ?)
-	            """;
-	    try (PreparedStatement ps = con.prepareStatement(sql)) {
-	        ps.setString(1, maHD);
-	        ps.setString(2, maThuoc);
-	        ps.setInt(3, soLuong);
-	        ps.setString(4, maDVT);
-	        ps.setDouble(5, donGia);
-	        return ps.executeUpdate() > 0;
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        return false;
-	    }
+		String sql = """
+				INSERT INTO CT_HoaDon (maHD, maThuoc, soLuong, maDVT, donGia)
+				VALUES (?, ?, ?, ?, ?)
+				""";
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, maHD);
+			ps.setString(2, maThuoc);
+			ps.setInt(3, soLuong);
+			ps.setString(4, maDVT);
+			ps.setDouble(5, donGia);
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
-
 
 	// ================= XÓA / KHÔI PHỤC =================
 	public boolean xoaHD(String maHD) {
@@ -156,6 +223,74 @@ public class HoaDonDAO {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	public int layTongDonHang(String maKH) {
+		String sql = "SELECT COUNT(DISTINCT maHD) FROM HoaDon WHERE maKH = ?";
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, maKH);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next())
+				return rs.getInt(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public double layTongTien(String maKH) {
+		String sql = """
+				SELECT SUM(
+					CASE
+						WHEN km.loaiKM = N'Giảm giá' THEN cthd.soLuong * cthd.donGia * (1 - km.mucKM / 100.0)
+						WHEN km.loaiKM = N'Mua tặng' THEN
+				            		(cthd.soLuong - FLOOR(cthd.soLuong / (km.soLuongMua + km.soLuongTang)) * km.soLuongTang) * cthd.donGia
+					ELSE
+				            		cthd.soLuong * cthd.donGia
+					END
+					)
+				FROM HoaDon HD
+				JOIN CT_HoaDon cthd ON HD.maHD = cthd.maHD
+				JOIN Thuoc t ON cthd.maThuoc = t.maThuoc
+				LEFT JOIN KhuyenMai km ON t.maKM = km.maKM
+				WHERE HD.maKH = ?
+				""";
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, maKH);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next())
+				return rs.getDouble(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public double layTongTienTheoSanPham(String maHD, String maSP) {
+		String sql = """
+				SELECT SUM(
+						CASE
+				         WHEN km.loaiKM = N'Giảm giá' THEN cthd.soLuong * cthd.donGia * (1 - km.mucKM / 100.0)
+				         WHEN km.loaiKM = N'Mua tặng' THEN
+				             (cthd.soLuong - FLOOR(cthd.soLuong / (km.soLuongMua + km.soLuongTang)) * km.soLuongTang) * cthd.donGia
+				         ELSE
+				             cthd.soLuong * cthd.donGia
+						END)
+				FROM CT_HoaDon cthd
+				 JOIN Thuoc t ON cthd.maThuoc = t.maThuoc
+				 LEFT JOIN KhuyenMai km ON t.maKM = km.maKM
+				WHERE cthd.maHD = ? AND cthd.maThuoc = ?
+							""";
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, maHD);
+			ps.setString(2, maSP);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next())
+				return rs.getDouble(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 	// ================= TÍNH TỔNG TIỀN THEO HÓA ĐƠN =================

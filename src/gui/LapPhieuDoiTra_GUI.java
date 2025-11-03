@@ -15,7 +15,7 @@ public class LapPhieuDoiTra_GUI extends JPanel {
 	private JTextArea txaLyDo, txaGhiChu;
 	private JComboBox<String> cmbMucHoan;
 	private JTable tblHDThuoc, tblPhieuDTThuoc;
-	private JButton btnThem, btnLamMoi, btnTaoPhieuDT, btnQuayLai;
+	private JButton btnThem, btnLamMoi, btnTaoPhieuDT, btnQuayLai, btnXoa;
 	private ToolCtrl toolCtrl = new ToolCtrl();
 	private TrangChuQL_GUI trangChuQL;
 	private TrangChuNV_GUI trangChuNV;
@@ -60,7 +60,7 @@ public class LapPhieuDoiTra_GUI extends JPanel {
 		add(pnlTop, BorderLayout.NORTH);
 
 		// ========== CENTER PANEL ==========
-		String[] colsHD = { "Tên thuốc", "Số lượng", "Đơn vị", "Đơn giá", "Thành tiền" };
+		String[] colsHD = { "Mã thuốc", "Tên thuốc", "Số lượng", "Đơn vị", "Đơn giá", "Thành tiền" };
 		DefaultTableModel modelHD = new DefaultTableModel(colsHD, 0);
 		tblHDThuoc = new JTable(modelHD);
 		tblHDThuoc.setFont(font2);
@@ -137,9 +137,11 @@ public class LapPhieuDoiTra_GUI extends JPanel {
 		col3.setLayout(new BoxLayout(col3, BoxLayout.Y_AXIS));
 		col3.setBackground(Color.WHITE);
 		btnThem = toolCtrl.taoButton("Thêm", "/picture/hoaDon/plus.png");
+		btnXoa = toolCtrl.taoButton("Xoá", "/picture/hoaDon/trash.png");
 		JPanel btnWrapper = new JPanel();
 		btnWrapper.setBackground(Color.WHITE);
 		btnWrapper.add(btnThem);
+		btnWrapper.add(btnXoa);
 		col3.add(btnWrapper);
 
 		// Đặt 3 cột vào GridBag
@@ -157,8 +159,7 @@ public class LapPhieuDoiTra_GUI extends JPanel {
 		pnlTopBottom.add(Box.createVerticalStrut(10));
 
 		// Bảng đổi trả
-		String[] colsDT = { "Tên thuốc", "Số lượng", "Đơn vị", "Đơn giá", "Mức hoàn", "Tiền hoàn", "Ghi chú",
-				"Hoạt động" };
+		String[] colsDT = { "Tên thuốc", "Số lượng", "Đơn vị", "Đơn giá", "Mức hoàn", "Tiền hoàn", "Ghi chú"};
 		DefaultTableModel modelDT = new DefaultTableModel(colsDT, 0);
 		tblPhieuDTThuoc = new JTable(modelDT);
 		tblPhieuDTThuoc.setFont(font2);
@@ -316,6 +317,10 @@ public class LapPhieuDoiTra_GUI extends JPanel {
 		return btnThem;
 	}
 
+	public JButton getBtnXoa() {
+		return btnXoa;
+	}
+	
 	public JButton getBtnLamMoi() {
 		return btnLamMoi;
 	}

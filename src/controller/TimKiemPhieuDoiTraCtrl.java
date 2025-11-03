@@ -24,6 +24,23 @@ public class TimKiemPhieuDoiTraCtrl {
 		listPDT = pdtDAO.layListPDT();
 		capNhatBang(listPDT);
 		suKien();
+
+		// Tự động reload khi panel được hiển thị
+		gui.addAncestorListener(new javax.swing.event.AncestorListener() {
+			@Override
+			public void ancestorAdded(javax.swing.event.AncestorEvent event) {
+				listPDT = pdtDAO.layListPDT();
+				capNhatBang(listPDT);
+			}
+
+			@Override
+			public void ancestorRemoved(javax.swing.event.AncestorEvent event) {
+			}
+
+			@Override
+			public void ancestorMoved(javax.swing.event.AncestorEvent event) {
+			}
+		});
 	}
 
 	public void setTrangChuQL(TrangChuQL_GUI trangChuQL) {

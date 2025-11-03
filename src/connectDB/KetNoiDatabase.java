@@ -8,7 +8,7 @@ public class KetNoiDatabase {
 
 	private static String URL = "jdbc:sqlserver://localhost:1433;DatabaseName=QL_HieuThuoc_TamThanh;encrypt=false;trustServerCertificate=true";
     private static final String USER = "sa";     
-    private static final String PASSWORD = "md140705";
+    private static final String PASSWORD = "sapassword";
 
     private static Connection connection = null;
 

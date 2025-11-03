@@ -40,6 +40,41 @@ public class ThuocDAO {
 			return null;
 		}
 	}
+	
+	public boolean tangSoLuongTon(String maThuoc, String maDVT, int soLuongDoiTra) {
+		String sqlLayTiLe = "SELECT tiLe FROM Thuoc_DonViTinh WHERE maThuoc = ? AND maDVT = ?";
+		String sqlCapNhat = "UPDATE CT_Kho SET soLuongTon = soLuongTon + ? WHERE maThuoc = ?";
+
+		try (Connection con = KetNoiDatabase.getConnection();
+				PreparedStatement psLayTiLe = con.prepareStatement(sqlLayTiLe);
+				PreparedStatement psCapNhat = con.prepareStatement(sqlCapNhat)) {
+
+			// Lấy tỉ lệ quy đổi
+			psLayTiLe.setString(1, maThuoc);
+			psLayTiLe.setString(2, maDVT);
+
+			double tiLe = 1; // Mặc định nếu không có đơn vị quy đổi
+			try (ResultSet rs = psLayTiLe.executeQuery()) {
+				if (rs.next()) {
+					tiLe = rs.getDouble("tiLe");
+				}
+			}
+
+			// Tính số lượng thực tế cần cộng (theo đơn vị nhỏ nhất)
+			double soLuongThucTe = soLuongDoiTra * tiLe;
+
+			// Cập nhật tồn kho
+			psCapNhat.setDouble(1, soLuongThucTe);
+			psCapNhat.setString(2, maThuoc);
+
+			int rowsAffected = psCapNhat.executeUpdate();
+			return rowsAffected > 0;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
 	// Giảm số lượng tồn khi bán hàng
 	public boolean giamSoLuongTon(String maThuoc, String maDVT, int soLuongBan) {
