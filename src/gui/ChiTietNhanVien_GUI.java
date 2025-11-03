@@ -9,15 +9,15 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 
 public class ChiTietNhanVien_GUI extends JPanel {
-    private JLabel imgAnhNV;
-    private JButton btnChonAnh, btnLamMoi, btnCapNhat, btnLuu;
-    private JLabel lblTrangThai;
-    private JTextField txtMaNV, txtTenNV, txtSdt, txtLuong, txtEmail, txtThue;
-    private JComboBox<String> cmbChucVu, cmbGioiTinh;
-    private JDateChooser dtpNgaySinh, dtpNgayVaoLam;
+	public JLabel imgAnhNV;
+	public JButton btnChonAnh, btnLamMoi, btnCapNhat, btnLuu;
+	public JLabel lblTrangThai;
+	public JTextField txtMaNV, txtTenNV, txtSdt, txtLuong, txtEmail, txtThue;
+	public JComboBox<String> cmbChucVu, cmbGioiTinh;
+	public JDateChooser dtpNgaySinh, dtpNgayVaoLam;
 
-    private ToolCtrl tool = new ToolCtrl();
-    private TrangChuQL_GUI mainFrame;
+	public ToolCtrl tool = new ToolCtrl();
+	public TrangChuQL_GUI mainFrame;
 
     public ChiTietNhanVien_GUI(TrangChuQL_GUI mainFrame) {
         this.mainFrame = mainFrame;
@@ -184,7 +184,7 @@ public class ChiTietNhanVien_GUI extends JPanel {
     }
 
     // =================== TẠO DÒNG FORM (giữ lại) ===================
-    private JPanel createFormRow(String labelText, JComponent field) {
+    public JPanel createFormRow(String labelText, JComponent field) {
         JPanel row = new JPanel();
         row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
         row.setBackground(Color.WHITE);
@@ -205,7 +205,7 @@ public class ChiTietNhanVien_GUI extends JPanel {
     }
 
     // =================== PLACEHOLDER IMAGE ===================
-    private ImageIcon loadPlaceholderImage(int w, int h) {
+    public ImageIcon loadPlaceholderImage(int w, int h) {
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = img.createGraphics();
         g2.setColor(new Color(240, 240, 240));

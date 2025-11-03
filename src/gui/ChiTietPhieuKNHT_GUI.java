@@ -7,12 +7,12 @@ import controller.ToolCtrl;
 
 public class ChiTietPhieuKNHT_GUI extends JPanel {
 
-	private ToolCtrl tool = new ToolCtrl();
+	public ToolCtrl tool = new ToolCtrl();
 
-	private JTextField txtTenKH, txtSdt, txtTenNV;
-	private JComboBox<String> cmbLoaiDon, cmbTrangThai;
-	private JTextArea txaNoiDung;
-	private JButton btnCapNhat, btnQuayLai;
+	public JTextField txtTenKH, txtSdt, txtTenNV;
+	public JComboBox<String> cmbLoaiDon, cmbTrangThai;
+	public JTextArea txaNoiDung;
+	public JButton btnCapNhat, btnQuayLai;
 
 	public ChiTietPhieuKNHT_GUI() {
 		setLayout(new BorderLayout());
@@ -87,7 +87,7 @@ public class ChiTietPhieuKNHT_GUI extends JPanel {
 	}
 
 	// === Hàm tạo 1 hàng label + control ===
-	private JPanel taoDong(String text, JComponent comp, int labelWidth, int fieldWidth) {
+	public JPanel taoDong(String text, JComponent comp, int labelWidth, int fieldWidth) {
 		JPanel row = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 0));
 		row.setBackground(Color.WHITE);
 

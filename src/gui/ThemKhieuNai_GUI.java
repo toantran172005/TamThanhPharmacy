@@ -8,13 +8,13 @@ import controller.ToolCtrl;
 
 public class ThemKhieuNai_GUI extends JPanel {
 
-    private JTextField txtTenKhachHang;
-    private JComboBox<String> cmbLoaiDon;
-    private JTextArea txaNoiDung;
-    private JButton btnQuayLai, btnLamMoi, btnThem;
-    private JDateChooser dateNgayLap;
+	public JTextField txtTenKhachHang;
+	public JComboBox<String> cmbLoaiDon;
+	public JTextArea txaNoiDung;
+	public JButton btnQuayLai, btnLamMoi, btnThem;
+    public JDateChooser dateNgayLap;
 
-    private final ToolCtrl tool = new ToolCtrl();
+    public ToolCtrl tool = new ToolCtrl();
 
     public ThemKhieuNai_GUI() {
         setLayout(new BorderLayout());
@@ -86,7 +86,7 @@ public class ThemKhieuNai_GUI extends JPanel {
         btnThem.addActionListener(e -> onThem());
     }
 
-    private JPanel taoDong(String text, JComponent comp, int labelWidth, int fieldWidth) {
+    public JPanel taoDong(String text, JComponent comp, int labelWidth, int fieldWidth) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 0));
         row.setBackground(Color.WHITE);
 

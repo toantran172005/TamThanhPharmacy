@@ -9,13 +9,13 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 
 public class ThemNhanVien_GUI extends JPanel {
-    private JLabel imgAnhNV;
-    private JButton btnChonAnh, btnLamMoi, btnThem;
-    private JTextField txtTenNV, txtSdt, txtLuong, txtEmail;
-    private JComboBox<String> cmbChucVu, cmbGioiTinh, cmbThue;
-    private JDateChooser dpNgaySinh, dpNgayVaoLam;
+	public JLabel imgAnhNV;
+    public JButton btnChonAnh, btnLamMoi, btnThem;
+    public JTextField txtTenNV, txtSdt, txtLuong, txtEmail;
+    public JComboBox<String> cmbChucVu, cmbGioiTinh, cmbThue;
+    public JDateChooser dpNgaySinh, dpNgayVaoLam;
 
-    private final ToolCtrl tool = new ToolCtrl();
+    public ToolCtrl tool = new ToolCtrl();
 
     public ThemNhanVien_GUI() {
         initUI();
@@ -158,7 +158,7 @@ public class ThemNhanVien_GUI extends JPanel {
     }
 
     // =================== TẠO DÒNG FORM ===================
-    private JPanel createFormRow(String labelText, JComponent field) {
+    public JPanel createFormRow(String labelText, JComponent field) {
         JPanel row = new JPanel();
         row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
         row.setBackground(Color.WHITE);
@@ -179,7 +179,7 @@ public class ThemNhanVien_GUI extends JPanel {
     }
 
     // =================== PLACEHOLDER IMAGE ===================
-    private ImageIcon loadPlaceholderImage(int w, int h) {
+    public ImageIcon loadPlaceholderImage(int w, int h) {
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = img.createGraphics();
         g2.setColor(new Color(240, 240, 240));

@@ -19,8 +19,8 @@ public class DonVi_GUI extends JPanel {
     public JCheckBox chkChonTatCa;
     public DefaultTableModel model;
 
-    private final ToolCtrl tool = new ToolCtrl();
-    private DonViTinhCtrl dvCtrl;
+    public ToolCtrl tool = new ToolCtrl();
+    public DonViTinhCtrl dvCtrl;
     
     public DonVi_GUI() {
     	dvCtrl = new DonViTinhCtrl(this);
@@ -145,7 +145,7 @@ public class DonVi_GUI extends JPanel {
         dvCtrl.setDataChoTable();
     }
 
-    private JPanel taoDong(String label, JComponent comp, int labelWidth, int fieldWidth) {
+    public JPanel taoDong(String label, JComponent comp, int labelWidth, int fieldWidth) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         row.setBackground(Color.WHITE);
 

@@ -17,7 +17,7 @@ import entity.PhieuDoiTra;
 import connectDB.KetNoiDatabase;
 
 public class PhieuDoiTraDAO {
-	private ToolCtrl toolCtrl = new ToolCtrl();
+	public ToolCtrl toolCtrl = new ToolCtrl();
 	NhanVienDAO nvDAO = new NhanVienDAO();
 	KhachHangDAO khDAO = new KhachHangDAO();
 	ThuocDAO thuocDAO = new ThuocDAO();

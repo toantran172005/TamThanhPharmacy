@@ -11,14 +11,14 @@ import java.awt.*;
 
 public class TimKiemNV_GUI extends JPanel {
 
-	private JTable tblNhanVien;
-	private JTextField txtSdt, txtTenNV;
-	private JButton btnXemChiTiet, btnLamMoi, btnLichSuXoa;
+	public JTable tblNhanVien;
+	public JTextField txtSdt, txtTenNV;
+	public JButton btnXemChiTiet, btnLamMoi, btnLichSuXoa;
 	Font font1 = new Font("Arial", Font.BOLD, 18);
 	Font font2 = new Font("Arial", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
 
-	private TrangChuQL_GUI mainFrame;
+	public TrangChuQL_GUI mainFrame;
 
 	public TimKiemNV_GUI(TrangChuQL_GUI mainFrame) {
 		this.mainFrame = mainFrame;

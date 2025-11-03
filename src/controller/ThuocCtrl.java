@@ -22,11 +22,11 @@ import gui.TimKiemThuoc_GUI;
 
 public class ThuocCtrl {
 	
-	private ThuocDAO thuocDAO = new ThuocDAO();
-	private ToolCtrl tool = new ToolCtrl();
-	private ThongKeThuoc_GUI tkThuoc;
-	private TimKiemThuoc_GUI thuoc;
-	private ChiTietThuoc_GUI ctThuoc;
+	public ThuocDAO thuocDAO = new ThuocDAO();
+	public ToolCtrl tool = new ToolCtrl();
+	public ThongKeThuoc_GUI tkThuoc;
+	public TimKiemThuoc_GUI thuoc;
+	public ChiTietThuoc_GUI ctThuoc;
 	
 	public ThuocCtrl(ThongKeThuoc_GUI tkThuoc) {
 		this.tkThuoc = tkThuoc;

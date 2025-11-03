@@ -10,9 +10,9 @@ import gui.DonVi_GUI;
 
 public class DonViTinhCtrl {
 	
-	private DonVi_GUI dvGUI;
-	private ToolCtrl tool = new ToolCtrl();
-	private DonViTinhDAO dvDAO = new DonViTinhDAO();
+	public DonVi_GUI dvGUI;
+	public ToolCtrl tool = new ToolCtrl();
+	public DonViTinhDAO dvDAO = new DonViTinhDAO();
 	ArrayList<DonViTinh> listDVT = new ArrayList<DonViTinh>();
 	
 	public DonViTinhCtrl(DonVi_GUI donVi_GUI) {

@@ -16,24 +16,24 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class LapHoaDonCtrl {
-	private LapHoaDon_GUI gui;
-	private ToolCtrl tool = new ToolCtrl();
-	private TrangChuQL_GUI trangChuQL;
-	private TrangChuNV_GUI trangChuNV;
+	public LapHoaDon_GUI gui;
+	public ToolCtrl tool = new ToolCtrl();
+	public TrangChuQL_GUI trangChuQL;
+	public TrangChuNV_GUI trangChuNV;
 
-	private ThuocDAO thuocDAO = new ThuocDAO();
-	private KhachHangDAO khDAO = new KhachHangDAO();
-	private NhanVienDAO nvDAO = new NhanVienDAO();
-	private DonViTinhDAO dvtDAO = new DonViTinhDAO();
-	private KhuyenMaiDAO kmDAO = new KhuyenMaiDAO();
-	private HoaDonDAO hdDAO = new HoaDonDAO();
+	public ThuocDAO thuocDAO = new ThuocDAO();
+	public KhachHangDAO khDAO = new KhachHangDAO();
+	public NhanVienDAO nvDAO = new NhanVienDAO();
+	public DonViTinhDAO dvtDAO = new DonViTinhDAO();
+	public KhuyenMaiDAO kmDAO = new KhuyenMaiDAO();
+	public HoaDonDAO hdDAO = new HoaDonDAO();
 
-	private List<KhachHang> dsKhachHang;
-	private List<Thuoc> dsThuoc;
-	private DefaultTableModel tableModel;
+	public List<KhachHang> dsKhachHang;
+	public List<Thuoc> dsThuoc;
+	public DefaultTableModel tableModel;
 
-	private boolean dangSetTenKH = false;
-	private boolean dangSetSdtKH = false;
+	public boolean dangSetTenKH = false;
+	public boolean dangSetSdtKH = false;
 
 	public LapHoaDonCtrl() {
 		this(null);
@@ -49,14 +49,14 @@ public class LapHoaDonCtrl {
 		init();
 	}
 
-	private void init() {
+	public void init() {
 		loadData();
 		setupEvents();
 		setupAutoComplete();
 	}
 
 	// === TẢI DỮ LIỆU ===
-	private void loadData() {
+	public void loadData() {
 		dsKhachHang = khDAO.layListKhachHang();
 		dsThuoc = thuocDAO.layListThuoc();
 
@@ -75,7 +75,7 @@ public class LapHoaDonCtrl {
 	}
 
 	// === SỰ KIỆN ===
-	private void setupEvents() {
+	public void setupEvents() {
 		gui.getBtnThem().addActionListener(e -> xuLyThemThuocVaoBang());
 		gui.getBtnXoa().addActionListener(e -> xuLyXoaDong());
 		gui.getBtnLamMoi().addActionListener(e -> lamMoi());
@@ -89,7 +89,7 @@ public class LapHoaDonCtrl {
 	}
 
 	// === AUTOCOMPLETE ===
-	private void setupAutoComplete() {
+	public void setupAutoComplete() {
 		gui.getTxtTenKH().addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent e) {
 				if (dangSetTenKH || gui.getTxtTenKH().getText().trim().isEmpty())
@@ -115,7 +115,7 @@ public class LapHoaDonCtrl {
 		});
 	}
 
-	private void showSuggestion(JTextField tf, List<KhachHang> list, boolean isTen) {
+	public void showSuggestion(JTextField tf, List<KhachHang> list, boolean isTen) {
 		JPopupMenu pop = new JPopupMenu();
 		for (KhachHang kh : list) {
 			String text = isTen ? kh.getTenKH() + " - " + tool.chuyenSoDienThoai(kh.getSdt())
@@ -145,7 +145,7 @@ public class LapHoaDonCtrl {
 	}
 
 	// === THÊM THUỐC ===
-	private void xuLyThemThuocVaoBang() {
+	public void xuLyThemThuocVaoBang() {
 		String tenThuoc = gui.getCmbSanPham().getEditor().getItem().toString().trim();
 		if (tenThuoc.isEmpty()) {
 			tool.hienThiThongBao("Lỗi", "Vui lòng chọn thuốc!", false);
@@ -235,13 +235,13 @@ public class LapHoaDonCtrl {
 	}
 
 	// ===== Reset form nhập =====
-	private void resetFormNhap() {
+	public void resetFormNhap() {
 		gui.getTxtSoLuong().setText("");
 		gui.getCmbSanPham().setSelectedIndex(0);
 		gui.getCmbDonVi().setSelectedIndex(0);
 	}
 
-	private void xuLyXoaDong() {
+	public void xuLyXoaDong() {
 		JTable table = gui.getTblThuoc();
 		int row = table.getSelectedRow();
 
@@ -265,12 +265,12 @@ public class LapHoaDonCtrl {
 		}
 	}
 
-	private void capNhatSTT() {
+	public void capNhatSTT() {
 		for (int i = 0; i < tableModel.getRowCount(); i++)
 			tableModel.setValueAt(i + 1, i, 0);
 	}
 
-	private void tinhTongTien() {
+	public void tinhTongTien() {
 		double tong = 0;
 
 		for (int i = 0; i < tableModel.getRowCount(); i++) {
@@ -285,7 +285,7 @@ public class LapHoaDonCtrl {
 		gui.getLblTongTien().setText(tool.dinhDangVND(tong));
 	}
 
-	private void tinhTienThua() {
+	public void tinhTienThua() {
 		// Nếu không chọn "Tiền mặt" → không có tiền thừa
 		if (!"Tiền mặt".equals(gui.getCmbHTThanhToan().getSelectedItem())) {
 			gui.getLblTienThua().setText("0 VNĐ");
@@ -308,7 +308,7 @@ public class LapHoaDonCtrl {
 		}
 	}
 
-	private void lamMoi() {
+	public void lamMoi() {
 		gui.getTxtSdt().setText("");
 		gui.getTxtTenKH().setText("");
 		gui.getTxtTuoi().setText("");
@@ -319,7 +319,7 @@ public class LapHoaDonCtrl {
 		tinhTongTien();
 	}
 
-	private void xuLyXuatHoaDon() {
+	public void xuLyXuatHoaDon() {
 		try {
 			// ==== 1. Kiểm tra dữ liệu ====
 			if (tableModel.getRowCount() == 0) {

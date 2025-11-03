@@ -15,7 +15,7 @@ import controller.ToolCtrl;
 
 public class NhapThuoc_GUI extends JPanel {
 
-    public final ToolCtrl tool = new ToolCtrl();
+    public ToolCtrl tool = new ToolCtrl();
     public NhapThuocCtrl ntCtrl;
     public JTable tblNhapThuoc;
     public JButton btnLamMoi, btnThemTep, btnLuu;
@@ -125,13 +125,13 @@ public class NhapThuoc_GUI extends JPanel {
     }
 
     // =================== HÀM XỬ LÝ ===================
-    private void lamMoiBang() {
+    public void lamMoiBang() {
         DefaultTableModel model = (DefaultTableModel) tblNhapThuoc.getModel();
         model.setRowCount(0);
     }
 
 
-    private void luuDuLieu() {
+    public void luuDuLieu() {
         tool.hienThiThongBao("Thông báo", "Dữ liệu đã được lưu thành công!", true);
     }
 }

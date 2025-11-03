@@ -10,12 +10,12 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class TimKiemPhieuDoiTraCtrl {
-	private final TimKiemPhieuDoiTra_GUI gui;
-	private final PhieuDoiTraDAO pdtDAO = new PhieuDoiTraDAO();
-	private final ToolCtrl tool = new ToolCtrl();
-	private TrangChuQL_GUI trangChuQL;
-	private TrangChuNV_GUI trangChuNV;
-	private List<PhieuDoiTra> listPDT;
+	public TimKiemPhieuDoiTra_GUI gui;
+	public PhieuDoiTraDAO pdtDAO = new PhieuDoiTraDAO();
+	public ToolCtrl tool = new ToolCtrl();
+	public TrangChuQL_GUI trangChuQL;
+	public TrangChuNV_GUI trangChuNV;
+	public List<PhieuDoiTra> listPDT;
 
 	public TimKiemPhieuDoiTraCtrl(TimKiemPhieuDoiTra_GUI gui) {
 		this.gui = gui;
@@ -52,7 +52,7 @@ public class TimKiemPhieuDoiTraCtrl {
 	}
 
 	// ================== SỰ KIỆN ==================
-	private void suKien() {
+	public void suKien() {
 		ActionListener setAction = e -> locPhieuDoiTra();
 		gui.getTxtKhachHang().addActionListener(setAction);
 		gui.getTxtTenNV().addActionListener(setAction);

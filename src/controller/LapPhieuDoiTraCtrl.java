@@ -20,19 +20,19 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class LapPhieuDoiTraCtrl {
-	private final LapPhieuDoiTra_GUI gui;
-	private final HoaDonDAO hdDAO = new HoaDonDAO();
-	private final PhieuDoiTraDAO pdtDAO = new PhieuDoiTraDAO();
-	private final ToolCtrl tool = new ToolCtrl();
-	private final DonViTinhDAO dvtDAO = new DonViTinhDAO();
-	private final ThuocDAO thuocDAO = new ThuocDAO();
+	public LapPhieuDoiTra_GUI gui;
+	public HoaDonDAO hdDAO = new HoaDonDAO();
+	public PhieuDoiTraDAO pdtDAO = new PhieuDoiTraDAO();
+	public ToolCtrl tool = new ToolCtrl();
+	public DonViTinhDAO dvtDAO = new DonViTinhDAO();
+	public ThuocDAO thuocDAO = new ThuocDAO();
 
 	public LapPhieuDoiTra_GUI getGui() {
 		return gui;
 	}
 
-	private String maHD;
-	private double tongTienHoan = 0;
+	public String maHD;
+	public double tongTienHoan = 0;
 
 	public LapPhieuDoiTraCtrl(LapPhieuDoiTra_GUI gui) {
 		this.gui = gui;
@@ -40,7 +40,7 @@ public class LapPhieuDoiTraCtrl {
 	}
 
 	// ========== GẮN SỰ KIỆN ==========
-	private void suKien() {
+	public void suKien() {
 		gui.getBtnThem().addActionListener(e -> themThuocVaoPhieu());
 		gui.getBtnXoa().addActionListener(e -> xuLyXoaDong());
 		gui.getBtnLamMoi().addActionListener(e -> lamMoi());
@@ -67,7 +67,7 @@ public class LapPhieuDoiTraCtrl {
 	}
 
 	// ========== LẤY DỮ LIỆU TỪ HOÁ ĐƠN ==========
-	private void taiDuLieuHoaDon(String maHD) {
+	public void taiDuLieuHoaDon(String maHD) {
 		HoaDon hd = hdDAO.timHoaDonTheoMa(maHD);
 		if (hd != null && hd.getKhachHang() != null) {
 			gui.getLblKhachHang().setText(hd.getKhachHang().getTenKH());
@@ -78,7 +78,7 @@ public class LapPhieuDoiTraCtrl {
 	}
 
 	// ========== ĐƯA NHỮNG THUỐC ĐÃ MUA LÊN BẢNG ==========
-	private void capNhatBangThuocDaMua(String maHD) {
+	public void capNhatBangThuocDaMua(String maHD) {
 		DefaultTableModel model = (DefaultTableModel) gui.getTblHDThuoc().getModel();
 		model.setRowCount(0);
 
@@ -97,7 +97,7 @@ public class LapPhieuDoiTraCtrl {
 	}
 
 	// ========== THÊM THUỐC VÀO PHIẾU ĐỔI TRẢ ==========
-	private void themThuocVaoPhieu() {
+	public void themThuocVaoPhieu() {
 		String tenThuoc = gui.getTxtTenThuoc().getText().trim();
 		String soLuongStr = gui.getTxtSoLuong().getText().trim();
 		String mucHoanStr = (String) gui.getCmbMucHoan().getSelectedItem();
@@ -157,7 +157,7 @@ public class LapPhieuDoiTraCtrl {
 	}
 
 	// ========== XOÁ 1 DÒNG TTRONG TABLE PHIẾU ĐỔI TRẢ ==========
-	private void xuLyXoaDong() {
+	public void xuLyXoaDong() {
 		JTable table = gui.getTblPhieuDTThuoc();
 		int row = table.getSelectedRow();
 
@@ -182,7 +182,7 @@ public class LapPhieuDoiTraCtrl {
 	}
 
 	// ========== TÍNH TỔNG TIỀN HOÀN==========
-	private void tinhTongTienHoan() {
+	public void tinhTongTienHoan() {
 		JTable tblDT = gui.getTblPhieuDTThuoc();
 		DefaultTableModel model = (DefaultTableModel) tblDT.getModel();
 
@@ -205,7 +205,7 @@ public class LapPhieuDoiTraCtrl {
 	}
 
 	// ========== LÀM MỚI CÁC Ô NHẬP ==========
-	private void lamMoiInput() {
+	public void lamMoiInput() {
 		gui.getTxtTenThuoc().setText("");
 		gui.getTxtSoLuong().setText("");
 		gui.getCmbMucHoan().setSelectedIndex(0);
@@ -213,7 +213,7 @@ public class LapPhieuDoiTraCtrl {
 	}
 
 	// ========== LÀM MỚI ==========
-	private void lamMoi() {
+	public void lamMoi() {
 		lamMoiInput();
 		DefaultTableModel modelDT = (DefaultTableModel) gui.getTblPhieuDTThuoc().getModel();
 		modelDT.setRowCount(0);
@@ -222,7 +222,7 @@ public class LapPhieuDoiTraCtrl {
 	}
 
 	// ========== TẠO PHIẾU ĐỔI TRẢ ==========
-	private void taoPhieuDoiTra() {
+	public void taoPhieuDoiTra() {
 		if (gui.getTblPhieuDTThuoc().getRowCount() == 0) {
 			tool.hienThiThongBao("Lỗi", "Chưa có thuốc nào để đổi trả!", false);
 			return;
@@ -313,7 +313,7 @@ public class LapPhieuDoiTraCtrl {
 	}
 
 	// ========== QUAY LẠI ==========
-	private void quayLai() {
+	public void quayLai() {
 		if (gui.getTrangChuQL() != null) {
 			tool.doiPanel(gui, new TimKiemHD_GUI(gui.getTrangChuQL()));
 		} else if (gui.getTrangChuNV() != null) {

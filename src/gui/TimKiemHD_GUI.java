@@ -10,11 +10,11 @@ import controller.ToolCtrl;
 import java.awt.*;
 
 public class TimKiemHD_GUI extends JPanel {
-    private JTable tblHoaDon;
-    private JTextField txtKhachHang, txtTenNV;
-    private JButton btnTimKiem, btnLamMoi, btnChiTiet, btnLichSuXoa, btnXoaHoanTac;
-    private TrangChuQL_GUI mainFrame;
-    private TrangChuNV_GUI mainFrameNV;
+	public JTable tblHoaDon;
+	public JTextField txtKhachHang, txtTenNV;
+    public JButton btnTimKiem, btnLamMoi, btnChiTiet, btnLichSuXoa, btnXoaHoanTac;
+    public TrangChuQL_GUI mainFrame;
+    public TrangChuNV_GUI mainFrameNV;
 
     Font font1 = new Font("Times New Roman", Font.BOLD, 18);
     Font font2 = new Font("Times New Roman", Font.PLAIN, 15);
@@ -33,7 +33,7 @@ public class TimKiemHD_GUI extends JPanel {
         new TimKiemHDCtrl(this); // Khởi tạo controller
     }
 
-    private void initUI() {
+    public void initUI() {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(1058, 509));
         setBackground(Color.WHITE);

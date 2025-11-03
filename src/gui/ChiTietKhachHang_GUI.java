@@ -11,13 +11,13 @@ import java.awt.*;
  */
 public class ChiTietKhachHang_GUI extends JPanel {
 
-    private JTextField txtMaKH;
-    private JTextField txtTenKH;
-    private JTextField txtSdt;
-    private JTextField txtTuoi;
-    private JComboBox<String> cmbTrangThai;
-    private JButton btnCapNhat;
-    private JButton btnQuayLai;
+	public JTextField txtMaKH;
+	public JTextField txtTenKH;
+	public JTextField txtSdt;
+	public JTextField txtTuoi;
+	public JComboBox<String> cmbTrangThai;
+	public JButton btnCapNhat;
+	public JButton btnQuayLai;
 
     public ToolCtrl tool = new ToolCtrl();
 

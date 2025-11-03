@@ -12,8 +12,8 @@ import entity.*;
 
 public class HoaDonDAO {
 	Connection con = KetNoiDatabase.getConnection();
-	private NhanVienDAO nvDAO = new NhanVienDAO();
-	private KhachHangDAO khDAO = new KhachHangDAO();
+	public NhanVienDAO nvDAO = new NhanVienDAO();
+	public KhachHangDAO khDAO = new KhachHangDAO();
 
 	// ================= LẤY DANH SÁCH HÓA ĐƠN CÒN HIỆU LỰC =================
 	public List<HoaDon> layListHoaDon() {

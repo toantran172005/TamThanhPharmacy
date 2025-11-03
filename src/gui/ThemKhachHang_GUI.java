@@ -6,13 +6,13 @@ import controller.ToolCtrl;
 
 public class ThemKhachHang_GUI extends JPanel {
 
-    private JTextField txtTenKH;
-    private JTextField txtSdt;
-    private JTextField txtTuoi;
-    private JButton btnLamMoi;
-    private JButton btnThem;
+	public JTextField txtTenKH;
+	public JTextField txtSdt;
+	public JTextField txtTuoi;
+	public JButton btnLamMoi;
+	public JButton btnThem;
 
-    private final ToolCtrl tool = new ToolCtrl();
+	public ToolCtrl tool = new ToolCtrl();
 
     public ThemKhachHang_GUI() {
         setLayout(new BorderLayout());
@@ -74,7 +74,7 @@ public class ThemKhachHang_GUI extends JPanel {
     }
 
     // === Tạo 1 hàng label + field ===
-    private JPanel taoDong(String text, JComponent comp, int labelWidth, int fieldWidth) {
+    public JPanel taoDong(String text, JComponent comp, int labelWidth, int fieldWidth) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 0));
         row.setBackground(Color.WHITE);
 

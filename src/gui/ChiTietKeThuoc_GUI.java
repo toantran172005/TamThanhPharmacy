@@ -11,12 +11,12 @@ import java.awt.*;
  */
 public class ChiTietKeThuoc_GUI extends JPanel {
 
-    private JTextField txtMaKe, txtSucChua;
-    private JTextArea txaMoTa;
-    private JComboBox<String> cmbLoaiKe, cmbTrangThai;
-    private JTable tblChiTietKT;
-    private JButton btnCapNhat, btnThoat;
-    private ToolCtrl tool = new ToolCtrl();
+	public JTextField txtMaKe, txtSucChua;
+	public JTextArea txaMoTa;
+	public JComboBox<String> cmbLoaiKe, cmbTrangThai;
+	public JTable tblChiTietKT;
+	public JButton btnCapNhat, btnThoat;
+	public ToolCtrl tool = new ToolCtrl();
 
     public ChiTietKeThuoc_GUI() {
         setLayout(new BorderLayout());
@@ -108,7 +108,7 @@ public class ChiTietKeThuoc_GUI extends JPanel {
     /** 
      * Tạo 1 dòng gồm label và component, spacing đẹp và label tự giãn theo độ dài chữ.
      */
-    private JPanel taoDong(String text, JComponent comp) {
+    public JPanel taoDong(String text, JComponent comp) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
         row.setBackground(Color.WHITE);
         JLabel lbl = tool.taoLabel(text);

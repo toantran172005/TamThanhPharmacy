@@ -11,13 +11,13 @@ import java.awt.*;
 
 public class ChiTietKhuyenMai_GUI extends JPanel {
 
-    private JTextField txtTenKM, txtSLM, txtSLT;
-    private JComboBox<String> cmbLoaiKM, cmbThemThuoc;
-    private JTable tblChiTietKM;
-    private JButton btnThemThuoc, btnCapNhat, btnQuayLai;
-    private JDateChooser dpNgayBD, dpNgayKT; 
-    private JCheckBox chkChonTatCa;
-    private final ToolCtrl tool = new ToolCtrl();
+	public JTextField txtTenKM, txtSLM, txtSLT;
+	public JComboBox<String> cmbLoaiKM, cmbThemThuoc;
+	public JTable tblChiTietKM;
+	public JButton btnThemThuoc, btnCapNhat, btnQuayLai;
+	public JDateChooser dpNgayBD, dpNgayKT; 
+	public JCheckBox chkChonTatCa;
+	public ToolCtrl tool = new ToolCtrl();
 
     public ChiTietKhuyenMai_GUI() {
         setLayout(new BorderLayout());
@@ -152,7 +152,7 @@ public class ChiTietKhuyenMai_GUI extends JPanel {
         btnQuayLai.addActionListener(e -> tool.doiPanel(this, new DanhSachKhuyenMai_GUI()));
     }
 
-    private JPanel taoDongStepper(String labelText, JTextField txt, JButton btnMinus, JButton btnPlus) {
+    public JPanel taoDongStepper(String labelText, JTextField txt, JButton btnMinus, JButton btnPlus) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         row.setBackground(Color.WHITE);
 
@@ -174,15 +174,15 @@ public class ChiTietKhuyenMai_GUI extends JPanel {
     }
     
     // ====== EVENT HANDLERS ======
-    private void onBtnThemThuoc() {
+    public void onBtnThemThuoc() {
         /* TODO: thêm thuốc vào bảng */
     }
 
-    private void onBtnCapNhat() {
+    public void onBtnCapNhat() {
         /* TODO: cập nhật khuyến mãi */
     }
 
-    private void onBtnQuayLai() {
+    public void onBtnQuayLai() {
         /* TODO: quay lại giao diện trước */
     }
 }

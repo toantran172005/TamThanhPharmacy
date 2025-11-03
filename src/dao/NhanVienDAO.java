@@ -15,7 +15,7 @@ import entity.NhanVien;
 import entity.Thue;
 
 public class NhanVienDAO {
-	private ToolCtrl toolCtrl = new ToolCtrl();
+	public ToolCtrl toolCtrl = new ToolCtrl();
 	public ArrayList<NhanVien> listNV = new ArrayList<>();
 	
 	// ========== TÌM NHÂN VIÊN THEO MÃ ==========
