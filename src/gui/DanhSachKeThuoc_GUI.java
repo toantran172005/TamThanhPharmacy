@@ -1,26 +1,50 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import controller.DanhSachKeThuocCtrl;
 import controller.ToolCtrl;
 import java.awt.*;
 
 public class DanhSachKeThuoc_GUI extends JPanel {
-	
-	private JComboBox<String> cmbSucChua;
-	private JComboBox<String> cmbLoaiKe;
-	private JButton btnXemCT;
-	private JButton btnLamMoi;
-	private JButton btnLichSuXoa;
-	private JTable tblKeThuoc;
+
+	public JComboBox<String> cmbSucChua;
+	public JComboBox<String> cmbLoaiKe;
+	public JButton btnXemCT, btnLichSuXoa, btnLamMoi, btnXoa;
+	public JTable tblKeThuoc;
 
 	public ToolCtrl tool = new ToolCtrl();
+	public DefaultTableModel model;
+	public DanhSachKeThuocCtrl ktCtrl = new DanhSachKeThuocCtrl(this);
 
 	public DanhSachKeThuoc_GUI() {
+		khoiTaoUI();
+		setUpCmb();
+		ktCtrl.locTatCa();
+		setHoatDong();
+	}
+
+	public void setHoatDong() {
+
+	}
+
+	public void setUpCmb() {
+		cmbLoaiKe.removeAllItems();
+		cmbLoaiKe.addItem("Tất cả");
+		for (String loaiKe : ktCtrl.layListTenKe()) {
+			cmbLoaiKe.addItem(loaiKe);
+		}
+		cmbLoaiKe.setEditable(false);
+		cmbSucChua.setEditable(false);
+
+	}
+
+	public void khoiTaoUI() {
 		setLayout(new BorderLayout());
-		setBackground(Color.WHITE); // toàn bộ panel chính màu trắng
+		setBackground(Color.WHITE);
 
 		// ====================== TOP PANEL ======================
 		JPanel topPanel = new JPanel(new BorderLayout());
@@ -41,7 +65,7 @@ public class DanhSachKeThuoc_GUI extends JPanel {
 		JLabel lblSucChua = tool.taoLabel("Sức chứa:");
 		lblSucChua.setPreferredSize(new Dimension(120, 30));
 
-		cmbSucChua = tool.taoComboBox(new String[] { "Tất cả" });
+		cmbSucChua = tool.taoComboBox(new String[] { "Tất cả", "< 100", "< 200", "< 300", "< 400", "< 500" });
 		cmbSucChua.setBackground(Color.WHITE);
 
 		rowSucChua.add(Box.createHorizontalStrut(15));
@@ -85,7 +109,7 @@ public class DanhSachKeThuoc_GUI extends JPanel {
 		btnXemCT = tool.taoButton("Xem chi tiết", "/picture/keThuoc/find.png");
 		btnLamMoi = tool.taoButton("Làm mới", "/picture/keThuoc/refresh.png");
 
-		btnRow1.add(Box.createHorizontalStrut(30));
+		btnRow1.add(Box.createHorizontalStrut(25));
 		btnRow1.add(btnXemCT);
 		btnRow1.add(Box.createHorizontalStrut(25));
 		btnRow1.add(btnLamMoi);
@@ -96,11 +120,13 @@ public class DanhSachKeThuoc_GUI extends JPanel {
 		btnRow2.setMaximumSize(new Dimension(Short.MAX_VALUE, 50));
 		btnRow2.setBackground(Color.WHITE);
 
+		btnXoa = tool.taoButton("Xóa", "/picture/khachHang/trash.png");
 		btnLichSuXoa = tool.taoButton("Lịch sử xóa", "/picture/khachHang/document.png");
 
-		btnRow2.add(Box.createHorizontalStrut(30));
+		btnRow2.add(Box.createHorizontalStrut(25));
 		btnRow2.add(btnLichSuXoa);
 		btnRow2.add(Box.createHorizontalStrut(25));
+		btnRow2.add(btnXoa);
 
 		rightVBox.add(btnRow1);
 		rightVBox.add(Box.createVerticalStrut(10));
@@ -110,8 +136,8 @@ public class DanhSachKeThuoc_GUI extends JPanel {
 		topPanel.add(rightVBox, BorderLayout.EAST);
 
 		// ====================== CENTER: TALL TABLE ======================
-		String[] cols = { "Mã kệ", "Loại kệ", "Sức chứa", "Mô tả", "Trạng thái", "Hoạt động" };
-		DefaultTableModel model = new DefaultTableModel(cols, 0) {
+		String[] cols = { "Mã kệ", "Loại kệ", "Sức chứa", "Mô tả", "Trạng thái" };
+		model = new DefaultTableModel(cols, 0) {
 			@Override
 			public boolean isCellEditable(int row, int col) {
 				return false;
@@ -120,8 +146,8 @@ public class DanhSachKeThuoc_GUI extends JPanel {
 
 		tblKeThuoc = new JTable(model);
 		tblKeThuoc.setRowHeight(40);
-		tblKeThuoc.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-		tblKeThuoc.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 14));
+		tblKeThuoc.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		tblKeThuoc.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 15));
 		tblKeThuoc.setSelectionBackground(new Color(0xE3F2FD));
 		tblKeThuoc.setGridColor(new Color(0xDDDDDD));
 		tblKeThuoc.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
@@ -130,11 +156,18 @@ public class DanhSachKeThuoc_GUI extends JPanel {
 		tblKeThuoc.setBackground(Color.WHITE);
 		tblKeThuoc.setForeground(new Color(0x33, 0x33, 0x33));
 
-		// 🌿 Header trắng đồng bộ
+		// Căn giữa nội dung các ô
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		for (int i = 0; i < tblKeThuoc.getColumnCount(); i++) {
+			tblKeThuoc.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		}
+
+		// Căn giữa tiêu đề cột
 		JTableHeader header = tblKeThuoc.getTableHeader();
-		header.setBackground(Color.WHITE);
-		header.setForeground(new Color(0x33, 0x33, 0x33));
-		header.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
+		header.setBackground(new Color(240, 240, 240));
+		header.setFont(new Font("Times New Roman", Font.BOLD, 18));
+		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
 		// Column widths
 		tblKeThuoc.getColumnModel().getColumn(0).setPreferredWidth(127);
@@ -142,7 +175,6 @@ public class DanhSachKeThuoc_GUI extends JPanel {
 		tblKeThuoc.getColumnModel().getColumn(2).setPreferredWidth(92);
 		tblKeThuoc.getColumnModel().getColumn(3).setPreferredWidth(185);
 		tblKeThuoc.getColumnModel().getColumn(4).setPreferredWidth(138);
-		tblKeThuoc.getColumnModel().getColumn(5).setPreferredWidth(104);
 
 		// 🌿 Scroll trắng hoàn toàn
 		JScrollPane scrollPane = new JScrollPane(tblKeThuoc);
@@ -153,20 +185,5 @@ public class DanhSachKeThuoc_GUI extends JPanel {
 		// ====================== FINAL LAYOUT ======================
 		add(topPanel, BorderLayout.NORTH);
 		add(scrollPane, BorderLayout.CENTER);
-
-		// ====================== EVENTS ======================
-		btnXemCT.addActionListener(this::onBtnXemCT);
-		btnLamMoi.addActionListener(this::onBtnLamMoi);
-		btnLichSuXoa.addActionListener(this::onBtnLichSuXoa);
 	}
-
-	// === Event stubs ===
-	public void onBtnXemCT(java.awt.event.ActionEvent e) {
-		/* TODO */ }
-
-	public void onBtnLamMoi(java.awt.event.ActionEvent e) {
-		/* TODO */ }
-
-	public void onBtnLichSuXoa(java.awt.event.ActionEvent e) {
-		/* TODO */ }
 }

@@ -17,6 +17,18 @@ import entity.Thue;
 public class NhanVienDAO {
 	private ToolCtrl toolCtrl = new ToolCtrl();
 	public ArrayList<NhanVien> listNV = new ArrayList<>();
+	
+	// ========== TÌM NHÂN VIÊN THEO MÃ ==========
+		public NhanVien timNhanVienTheoMa(String maNV) {
+			if (listNV.isEmpty()) {
+		        layListNhanVien();
+		    }
+			for(NhanVien nv: listNV) {
+				if(nv.getMaNV().equalsIgnoreCase(maNV))
+					return nv;
+			}
+			return null;
+		}
 
 	public ArrayList<NhanVien> layListNhanVien() {
 		listNV.clear();
@@ -138,14 +150,6 @@ public class NhanVienDAO {
 		}
 	}
 	
-	// ========== TÌM NHÂN VIÊN THEO MÃ ==========
-	public NhanVien timNhanVienTheoMa(String maNV) {
-		for(NhanVien nv: listNV) {
-			if(nv.getMaNV().equalsIgnoreCase(maNV))
-				return nv;
-		}
-		return null;
-	}
 	
 	public String layEmailNV(String maNV) {
 		String sql = """

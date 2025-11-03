@@ -10,6 +10,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.sql.Connection;
@@ -22,32 +28,44 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Consumer;
+
 import javax.imageio.ImageIO;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTable;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import org.apache.poi.ss.usermodel.DateUtil;
 
 import com.toedter.calendar.JDateChooser;
 
 import connectDB.*;
+import entity.KhachHang;
 
 public class ToolCtrl {
 	
@@ -61,19 +79,18 @@ public class ToolCtrl {
 	    return null;
 	}
 
-	
 	// ===== ĐỔI PANEL =====
 	public void doiPanel(JPanel pnlCha, JPanel pnlMoi) {
-	    if (pnlCha == null || pnlMoi == null) {
-	        System.err.println("❌ Lỗi: Panel cha hoặc panel mới bị null trong ToolCtrl.doiPanel()");
-	        return;
-	    }
-	    pnlCha.removeAll();           
-	    pnlCha.setLayout(new BorderLayout()); 
-	    pnlCha.add(pnlMoi, BorderLayout.CENTER);
-	    pnlCha.revalidate();          
-	    pnlCha.repaint();   
-	    
+		if (pnlCha == null || pnlMoi == null) {
+			System.err.println("❌ Lỗi: Panel cha hoặc panel mới bị null trong ToolCtrl.doiPanel()");
+			return;
+		}
+		pnlCha.removeAll();
+		pnlCha.setLayout(new BorderLayout());
+		pnlCha.add(pnlMoi, BorderLayout.CENTER);
+		pnlCha.revalidate();
+		pnlCha.repaint();
+
 	}
 
 	public JDateChooser taoDateChooser() {
@@ -274,22 +291,21 @@ public class ToolCtrl {
 	// Hiển thị thông báo
 	// ==========================
 	public void hienThiThongBao(String tieuDe, String noiDung, boolean trangThai) {
-	    String iconPath;
-	    if (trangThai) {
-	        iconPath = "/picture/thuoc/check.png";
-	    } else {
-	        iconPath = "/picture/thuoc/cross.png";
-	    }
+		String iconPath;
+		if (trangThai) {
+			iconPath = "/picture/thuoc/check.png";
+		} else {
+			iconPath = "/picture/thuoc/cross.png";
+		}
 
-	    // Tạo icon và thu nhỏ lại
-	    ImageIcon icon = new ImageIcon(getClass().getResource(iconPath));
-	    Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-	    ImageIcon scaledIcon = new ImageIcon(scaledImage);
+		// Tạo icon và thu nhỏ lại
+		ImageIcon icon = new ImageIcon(getClass().getResource(iconPath));
+		Image scaledImage = icon.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+		ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
-	    int messageType = trangThai ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE;
-	    JOptionPane.showMessageDialog(null, noiDung, tieuDe, messageType, scaledIcon);
+		int messageType = trangThai ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE;
+		JOptionPane.showMessageDialog(null, noiDung, tieuDe, messageType, scaledIcon);
 	}
-
 
 	// ==========================
 	// 2️⃣ Hiển thị xác nhận

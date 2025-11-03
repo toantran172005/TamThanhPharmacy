@@ -9,21 +9,36 @@ import javax.swing.table.JTableHeader;
 
 import com.toedter.calendar.JDateChooser;
 
+import controller.LapPhieuDatHangCtrl;
 import controller.ToolCtrl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class LapPhieuDatHang_GUI extends JPanel {
-	private JTextField txtSdt, txtTenKH, txtTuoi, txtSoLuong;
-	private JComboBox<String> cmbSanPham, cmbDonVi;
-	private JTable tblThuoc;
-	private JTextArea txaGhiChu;
-	private JButton btnThem, btnLamMoi, btnTaoPhieuDat;
-	private JDateChooser ngayHen;
-	Font font1 = new Font("Arial", Font.BOLD, 18);
-	Font font2 = new Font("Arial", Font.PLAIN, 15);
+	public JTextField txtSdt, txtTenKH, txtTuoi, txtSoLuong;
+	public JComboBox<String> cmbSanPham, cmbDonVi;
+	public JTable tblThuoc;
+	public JTextArea txaGhiChu;
+	public JButton btnThem, btnLamMoi, btnTaoPhieuDat, btnXoa;
+	public JDateChooser ngayHen;
+	Font font1 = new Font("Time New Roman", Font.BOLD, 18);
+	Font font2 = new Font("Time New Roman", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
+	public LapPhieuDatHangCtrl lpdhCtrl = new LapPhieuDatHangCtrl(this);
+	public DefaultTableModel model;
+	
+	public void setUpDuLieu() {
+		lpdhCtrl.setUpComboBox();
+		lpdhCtrl.setUpGoiY();
+	}
+	
+	public void setHoatDong() {
+		btnLamMoi.addActionListener(e -> lpdhCtrl.lamMoi());
+		btnThem.addActionListener(e -> lpdhCtrl.themVaoTable());
+		btnXoa.addActionListener(e -> lpdhCtrl.xoaThuoc());
+		btnTaoPhieuDat.addActionListener(e -> lpdhCtrl.taoPhieuDat());
+	}
 
 	public LapPhieuDatHang_GUI() {
 		setLayout(new BorderLayout(0, 15));
@@ -90,17 +105,20 @@ public class LapPhieuDatHang_GUI extends JPanel {
 
 		row3.add(tool.taoLabel("Đơn vị:"));
 		cmbDonVi = tool.taoComboBox(new String[] {});
+		cmbDonVi.setEditable(false);
 		row3.add(cmbDonVi);
 
 		btnThem = tool.taoButton("Thêm", "/picture/hoaDon/plus.png");
+		btnXoa = tool.taoButton("Xóa", "/picture/khachHang/trash.png");
 		row3.add(btnThem);
+		row3.add(btnXoa);
 		pnlTop.add(row3);
 
 		add(pnlTop, BorderLayout.NORTH);
 
 		// =================== CENTER ===================
-		String[] cols = { "STT", "Tên thuốc", "Số lượng", "Đơn vị", "Hoạt động" };
-		DefaultTableModel model = new DefaultTableModel(cols, 0);
+		String[] cols = { "STT", "Tên thuốc", "Số lượng", "Đơn vị"};
+		model = new DefaultTableModel(cols, 0);
 		tblThuoc = new JTable(model);
 		tblThuoc.setRowHeight(25);
 		tblThuoc.setFont(font2);
@@ -160,6 +178,8 @@ public class LapPhieuDatHang_GUI extends JPanel {
 
 		pnlBottom.add(rowBtns);
 		add(pnlBottom, BorderLayout.SOUTH);
+		setHoatDong();
+		setUpDuLieu();
 	}
 
 }

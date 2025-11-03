@@ -22,6 +22,25 @@ public class ThuocDAO {
 
 	ToolCtrl tool = new ToolCtrl();
 
+	public String layMaThuocTheoTen(String tenThuoc) {
+		String sql = "SELECT maThuoc FROM Thuoc WHERE tenThuoc = ?";
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setString(1, tenThuoc);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getString("maThuoc");
+				} else {
+					return null; // không tìm thấy
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	// Giảm số lượng tồn khi bán hàng
 	public boolean giamSoLuongTon(String maThuoc, String maDVT, int soLuongBan) {
 		String sqlLayTiLe = "SELECT tiLe FROM Thuoc_DonViTinh WHERE maThuoc = ? AND maDVT = ?";
@@ -233,8 +252,7 @@ public class ThuocDAO {
 		}
 	}
 
-	public void insertChiTietPhieuNhap(Connection conn, String maPNT, ArrayList<Thuoc> listThuoc)
-			throws SQLException {
+	public void insertChiTietPhieuNhap(Connection conn, String maPNT, ArrayList<Thuoc> listThuoc) throws SQLException {
 		String sqlCT = """
 				    INSERT INTO CT_PhieuNhapThuoc (maPNT, maThuoc, soLo, soLuongNhap, donGiaNhap)
 				    VALUES (?, ?, ?, ?, ?)
@@ -297,10 +315,9 @@ public class ThuocDAO {
 
 		return listThuoc;
 	}
-	
+
 	public ArrayList<Thuoc> layListThuocHoanChinh() {
 		ArrayList<Thuoc> listThuoc = new ArrayList<>();
-
 	    String sql = """
 	        SELECT 
 	            t.maThuoc, t.tenThuoc, t.dangThuoc, t.giaBan, t.hanSuDung, t.trangThai, t.anh, 
@@ -319,40 +336,22 @@ public class ThuocDAO {
 	        ORDER BY TRY_CAST(REPLACE(t.maThuoc, 'TTTH', '') AS INT)
 	    """;
 
-	    try (Connection con = KetNoiDatabase.getConnection();
-	         Statement stmt = con.createStatement();
-	         ResultSet rs = stmt.executeQuery(sql)) {
+		try (Connection con = KetNoiDatabase.getConnection();
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql)) {
 
-	        while (rs.next()) {
-	            // ====== Thông tin con ======
-	            Thue thue = new Thue(
-	                rs.getString("maThue"),
-	                rs.getString("loaiThue"),
-	                rs.getDouble("tyLeThue"),
-	                rs.getString("moTa")
-	            );
+			while (rs.next()) {
+				// ====== Thông tin con ======
+				Thue thue = new Thue(rs.getString("maThue"), rs.getString("loaiThue"), rs.getDouble("tyLeThue"),
+						rs.getString("moTa"));
 
-	            DonViTinh dvt = new DonViTinh(
-	                rs.getString("maDVT"),
-	                rs.getString("tenDVT")
-	            );
+				DonViTinh dvt = new DonViTinh(rs.getString("maDVT"), rs.getString("tenDVT"));
 
-	            KeThuoc keThuoc = new KeThuoc(
-	                rs.getString("maKe"),
-	                rs.getString("loaiKe"),
-	                rs.getInt("sucChua"),
-	                rs.getString("moTa"),
-	                true
-	            );
+				KeThuoc keThuoc = new KeThuoc(rs.getString("maKe"), rs.getString("loaiKe"), rs.getInt("sucChua"),
+						rs.getString("moTa"), true);
 
-	            NhaCungCap ncc = new NhaCungCap(
-	                rs.getString("maNCC"),
-	                rs.getString("tenNCC"),
-	                rs.getString("diaChi"),
-	                rs.getString("sdt"),
-	                rs.getString("email")
-	                
-	            );
+				NhaCungCap ncc = new NhaCungCap(rs.getString("maNCC"), rs.getString("tenNCC"), rs.getString("diaChi"),
+						rs.getString("sdt"), rs.getString("email"));
 
 	            // ====== Thông tin chính ======
 	            String maThuoc = rs.getString("maThuoc");
@@ -371,16 +370,16 @@ public class ThuocDAO {
 						trangThai, anh, soLuongTon, noiSanXuat
 	            );
 
-	            listThuoc.add(thuoc);
-	        }
 
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
+				listThuoc.add(thuoc);
+			}
 
-	    return listThuoc;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return listThuoc;
 	}
-
 
 	public ArrayList<Thuoc> layListThuoc() {
 		ArrayList<Thuoc> listThuoc = new ArrayList<>();
@@ -462,7 +461,7 @@ public class ThuocDAO {
 		}
 		return donGia;
 	}
-	
+
 	// xoá thuốc
 	public boolean xoaThuoc(String maTH) {
 		String sql = "update [dbo].[Thuoc]\r\n" + "set [trangThai] = 0\r\n" + "where [maThuoc] = ? ";
@@ -491,257 +490,224 @@ public class ThuocDAO {
 			return false;
 		}
 	}
-	
+
 	// lấy danh sách đã xoá
-		public ArrayList<Thuoc> layDanhSachDaXoa() {
-			ArrayList<Thuoc> listThuocXoa = new ArrayList<>();
+	public ArrayList<Thuoc> layDanhSachDaXoa() {
+		ArrayList<Thuoc> listThuocXoa = new ArrayList<>();
 
-		    String sql = """
-		        SELECT 
-		            t.maThuoc, t.tenThuoc, t.dangThuoc, t.giaBan, t.hanSuDung, t.trangThai, t.anh, 
-		            t.maNCC, t.maThue, t.maDVT, t.maKe, ctK.soLuongTon,
-		            th.loaiThue, th.tyLeThue, th.moTa,
-		            dvt.tenDVT,
-		            kt.loaiKe, kt.sucChua, kt.moTa,
-		            ncc.tenNCC, ncc.sdt, ncc.diaChi, ncc.email
-		        FROM Thuoc t
-		        JOIN CT_Kho ctK ON t.maThuoc = ctK.maThuoc
-		        JOIN Thue th ON t.maThue = th.maThue
-		        JOIN DonViTinh dvt ON t.maDVT = dvt.maDVT
-		        JOIN KeThuoc kt ON t.maKe = kt.maKe
-		        JOIN NhaCungCap ncc ON t.maNCC = ncc.maNCC
-		        WHERE t.trangThai = 0
-		        ORDER BY TRY_CAST(REPLACE(t.maThuoc, 'TTTH', '') AS INT)
-		    """;
+		String sql = """
+				    SELECT
+				        t.maThuoc, t.tenThuoc, t.dangThuoc, t.giaBan, t.hanSuDung, t.trangThai, t.anh,
+				        t.maNCC, t.maThue, t.maDVT, t.maKe, ctK.soLuongTon,
+				        th.loaiThue, th.tyLeThue, th.moTa,
+				        dvt.tenDVT,
+				        kt.loaiKe, kt.sucChua, kt.moTa,
+				        ncc.tenNCC, ncc.sdt, ncc.diaChi, ncc.email
+				    FROM Thuoc t
+				    JOIN CT_Kho ctK ON t.maThuoc = ctK.maThuoc
+				    JOIN Thue th ON t.maThue = th.maThue
+				    JOIN DonViTinh dvt ON t.maDVT = dvt.maDVT
+				    JOIN KeThuoc kt ON t.maKe = kt.maKe
+				    JOIN NhaCungCap ncc ON t.maNCC = ncc.maNCC
+				    WHERE t.trangThai = 0
+				    ORDER BY TRY_CAST(REPLACE(t.maThuoc, 'TTTH', '') AS INT)
+				""";
 
-		    try (Connection con = KetNoiDatabase.getConnection();
-		         Statement stmt = con.createStatement();
-		         ResultSet rs = stmt.executeQuery(sql)) {
+		try (Connection con = KetNoiDatabase.getConnection();
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql)) {
 
-		        while (rs.next()) {
-		            // ====== Thông tin con ======
-		            Thue thue = new Thue(
-		                rs.getString("maThue"),
-		                rs.getString("loaiThue"),
-		                rs.getDouble("tyLeThue"),
-		                rs.getString("moTa")
-		            );
+			while (rs.next()) {
+				// ====== Thông tin con ======
+				Thue thue = new Thue(rs.getString("maThue"), rs.getString("loaiThue"), rs.getDouble("tyLeThue"),
+						rs.getString("moTa"));
 
-		            DonViTinh dvt = new DonViTinh(
-		                rs.getString("maDVT"),
-		                rs.getString("tenDVT")
-		            );
+				DonViTinh dvt = new DonViTinh(rs.getString("maDVT"), rs.getString("tenDVT"));
 
-		            KeThuoc keThuoc = new KeThuoc(
-		                rs.getString("maKe"),
-		                rs.getString("loaiKe"),
-		                rs.getInt("sucChua"),
-		                rs.getString("moTa"),
-		                true
-		            );
+				KeThuoc keThuoc = new KeThuoc(rs.getString("maKe"), rs.getString("loaiKe"), rs.getInt("sucChua"),
+						rs.getString("moTa"), true);
 
-		            NhaCungCap ncc = new NhaCungCap(
-		                rs.getString("maNCC"),
-		                rs.getString("tenNCC"),
-		                rs.getString("diaChi"),
-		                rs.getString("sdt"),
-		                rs.getString("email")
-		                
-		            );
+				NhaCungCap ncc = new NhaCungCap(rs.getString("maNCC"), rs.getString("tenNCC"), rs.getString("diaChi"),
+						rs.getString("sdt"), rs.getString("email")
 
-		            // ====== Thông tin chính ======
-		            String maThuoc = rs.getString("maThuoc");
-		            String tenThuoc = rs.getString("tenThuoc");
-		            String dangThuoc = rs.getString("dangThuoc");
-		            float giaBan = rs.getFloat("giaBan");
-		            LocalDate hanSuDung = tool.sqlDateSangLocalDate(rs.getDate("hanSuDung"));
-		            boolean trangThai = rs.getBoolean("trangThai");
-		            String anh = rs.getString("anh");
-		            int soLuongTon = rs.getInt("soLuongTon");
+				);
 
-		            // ====== Gộp thành Thuoc ======
-		            Thuoc thuoc = new Thuoc(
-		            		maThuoc, thue, keThuoc, dvt, ncc, tenThuoc, dangThuoc, giaBan, hanSuDung,
-							trangThai, anh, soLuongTon
-		            );
+				// ====== Thông tin chính ======
+				String maThuoc = rs.getString("maThuoc");
+				String tenThuoc = rs.getString("tenThuoc");
+				String dangThuoc = rs.getString("dangThuoc");
+				float giaBan = rs.getFloat("giaBan");
+				LocalDate hanSuDung = tool.sqlDateSangLocalDate(rs.getDate("hanSuDung"));
+				boolean trangThai = rs.getBoolean("trangThai");
+				String anh = rs.getString("anh");
+				int soLuongTon = rs.getInt("soLuongTon");
 
-		            listThuocXoa.add(thuoc);
-		        }
+				// ====== Gộp thành Thuoc ======
+				Thuoc thuoc = new Thuoc(maThuoc, thue, keThuoc, dvt, ncc, tenThuoc, dangThuoc, giaBan, hanSuDung,
+						trangThai, anh, soLuongTon);
 
-		    } catch (SQLException e) {
-		        e.printStackTrace();
-		    }
+				listThuocXoa.add(thuoc);
+			}
 
-		    return listThuocXoa;
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		
-		
-		//cập nhật thuốc
-		public boolean capNhatThuoc(Thuoc thuoc) {
-		    String sql = """
-		        UPDATE Thuoc
-		        SET tenThuoc = ?, dangThuoc = ?, giaBan = ?, hanSuDung = ?,
-		            maDVT = ?,
-		            maThue = ?,
-		            maKe = ?,
-		            anh = ?, 
-		            trangThai = ?
-		        WHERE maThuoc = ?
-		    """;
-		    
-		    try (Connection con = KetNoiDatabase.getConnection();
-		         PreparedStatement ps = con.prepareStatement(sql)) {
-		        
-		        ps.setString(1, thuoc.getTenThuoc());
-		        ps.setString(2, thuoc.getDangThuoc());
-		        ps.setDouble(3, thuoc.getGiaBan());
-		        ps.setDate(4, tool.localDateSangSqlDate(thuoc.getHanSuDung()));
-		        ps.setString(5, thuoc.getDvt().getMaDVT());
-		        ps.setString(6, thuoc.getThue().getMaThue());
-		        ps.setString(7, thuoc.getKeThuoc().getMaKe());
-		        ps.setString(8, thuoc.getAnh());
-		        ps.setBoolean(9, thuoc.getTrangThai());
-		        ps.setString(10, thuoc.getMaThuoc());
-		        
-		        return ps.executeUpdate() > 0;
-		    } catch (SQLException e) {
-		        e.printStackTrace();
-		    }
-		    return false;
+
+		return listThuocXoa;
+	}
+
+	// cập nhật thuốc
+	public boolean capNhatThuoc(Thuoc thuoc) {
+		String sql = """
+				    UPDATE Thuoc
+				    SET tenThuoc = ?, dangThuoc = ?, giaBan = ?, hanSuDung = ?,
+				        maDVT = ?,
+				        maThue = ?,
+				        maKe = ?,
+				        anh = ?,
+				        trangThai = ?
+				    WHERE maThuoc = ?
+				""";
+
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setString(1, thuoc.getTenThuoc());
+			ps.setString(2, thuoc.getDangThuoc());
+			ps.setDouble(3, thuoc.getGiaBan());
+			ps.setDate(4, tool.localDateSangSqlDate(thuoc.getHanSuDung()));
+			ps.setString(5, thuoc.getDvt().getMaDVT());
+			ps.setString(6, thuoc.getThue().getMaThue());
+			ps.setString(7, thuoc.getKeThuoc().getMaKe());
+			ps.setString(8, thuoc.getAnh());
+			ps.setBoolean(9, thuoc.getTrangThai());
+			ps.setString(10, thuoc.getMaThuoc());
+
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		
-		//Tìm mã theo giá trị của combobox
-		public static String timMaTheoGiaTri(String tenBang, String tenCot, String ma, String giaTri) {
-	        String sql = "SELECT " + ma + " FROM " + tenBang + " WHERE " + giaTri + " = ?";
-	        try (Connection con = KetNoiDatabase.getConnection();
-	             PreparedStatement ps = con.prepareStatement(sql)) {
+		return false;
+	}
 
-	            ps.setString(1, giaTri);
-	            ResultSet rs = ps.executeQuery();
+	// Tìm mã theo giá trị của combobox
+	public static String timMaTheoGiaTri(String tenBang, String tenCot, String ma, String giaTri) {
+		String sql = "SELECT " + ma + " FROM " + tenBang + " WHERE " + giaTri + " = ?";
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-	            if (rs.next()) {
-	                return rs.getString(ma);
-	            }
+			ps.setString(1, giaTri);
+			ResultSet rs = ps.executeQuery();
 
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	        return null;
-	    }
-		
-		//Thêm thuốc
-		public boolean themThuoc(Thuoc thuoc) {
-	        String sql = "INSERT INTO Thuoc (maThuoc, maThue, maNCC, maKe, tenThuoc, dangThuoc, giaBan, hanSuDung, trangThai, anh, maDVT) "
-	                   + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	        String maThue = thuoc.getThue().getMaThue();
-            String maNCC = thuoc.getNcc().getMaNCC();
-            String maKe = thuoc.getKeThuoc().getMaKe();
-            String maDVT = thuoc.getDvt().getMaDVT();
+			if (rs.next()) {
+				return rs.getString(ma);
+			}
 
-	        try (Connection con = KetNoiDatabase.getConnection();
-		         PreparedStatement ps = con.prepareStatement(sql)) 
-	        {
-	           
-	            ps.setString(1, thuoc.getMaThuoc());
-	            ps.setString(2, maThue);
-	            ps.setString(3, maNCC);
-	            ps.setString(4, maKe);
-	            ps.setString(5, thuoc.getTenThuoc());
-	            ps.setString(6, thuoc.getDangThuoc());
-	            ps.setDouble(7, thuoc.getGiaBan());
-	            ps.setDate(8, tool.localDateSangSqlDate(thuoc.getHanSuDung()));
-	            ps.setBoolean(9, thuoc.getTrangThai());
-	            ps.setString(10, thuoc.getAnh());
-	            ps.setString(11, maDVT);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-	            
-	            int result = ps.executeUpdate();
-	            return result > 0;
+	// Thêm thuốc
+	public boolean themThuoc(Thuoc thuoc) {
+		String sql = "INSERT INTO Thuoc (maThuoc, maThue, maNCC, maKe, tenThuoc, dangThuoc, giaBan, hanSuDung, trangThai, anh, maDVT) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String maThue = thuoc.getThue().getMaThue();
+		String maNCC = thuoc.getNcc().getMaNCC();
+		String maKe = thuoc.getKeThuoc().getMaKe();
+		String maDVT = thuoc.getDvt().getMaDVT();
 
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	            return false;
-	        }
-	    }
-		
-		//lấy danh sách top 10 thuốc bán chạy
-		public ArrayList<Thuoc> layListTHThongKe(LocalDate ngayBD, LocalDate ngayKT) {
-			ArrayList<Thuoc> list = new ArrayList<>();
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-			String query = "SELECT TOP 10 \r\n"
-					+ "    t.maThuoc,\r\n"
-					+ "    t.tenThuoc,\r\n"
-					+ "    SUM(ct.soLuong) AS soLuongBan,\r\n"
-					+ "    SUM(ct.soLuong * ct.donGia) AS doanhThu\r\n"
-					+ "FROM CT_HoaDon ct\r\n"
-					+ "JOIN HoaDon hd ON ct.maHD = hd.maHD\r\n"
-					+ "JOIN Thuoc t ON ct.maThuoc = t.maThuoc\r\n"
-					+ "WHERE hd.ngayLap BETWEEN ? AND ?\r\n"
-					+ "GROUP BY t.maThuoc, t.tenThuoc\r\n"
-					+ "ORDER BY soLuongBan DESC;";
+			ps.setString(1, thuoc.getMaThuoc());
+			ps.setString(2, maThue);
+			ps.setString(3, maNCC);
+			ps.setString(4, maKe);
+			ps.setString(5, thuoc.getTenThuoc());
+			ps.setString(6, thuoc.getDangThuoc());
+			ps.setDouble(7, thuoc.getGiaBan());
+			ps.setDate(8, tool.localDateSangSqlDate(thuoc.getHanSuDung()));
+			ps.setBoolean(9, thuoc.getTrangThai());
+			ps.setString(10, thuoc.getAnh());
+			ps.setString(11, maDVT);
 
-			try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement pstmt = con.prepareStatement(query)) {
+			int result = ps.executeUpdate();
+			return result > 0;
 
-				pstmt.setDate(1, java.sql.Date.valueOf(ngayBD));
-				pstmt.setDate(2, java.sql.Date.valueOf(ngayKT));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
-				ResultSet rs = pstmt.executeQuery();
+	// lấy danh sách top 10 thuốc bán chạy
+	public ArrayList<Thuoc> layListTHThongKe(LocalDate ngayBD, LocalDate ngayKT) {
+		ArrayList<Thuoc> list = new ArrayList<>();
 
-				while (rs.next()) {
-					list.add(new Thuoc(rs.getString("maThuoc"), rs.getString("tenThuoc"), rs.getInt("soLuongBan"), rs.getInt("doanhThu")));
+		String query = "SELECT TOP 10 \r\n" + "    t.maThuoc,\r\n" + "    t.tenThuoc,\r\n"
+				+ "    SUM(ct.soLuong) AS soLuongBan,\r\n" + "    SUM(ct.soLuong * ct.donGia) AS doanhThu\r\n"
+				+ "FROM CT_HoaDon ct\r\n" + "JOIN HoaDon hd ON ct.maHD = hd.maHD\r\n"
+				+ "JOIN Thuoc t ON ct.maThuoc = t.maThuoc\r\n" + "WHERE hd.ngayLap BETWEEN ? AND ?\r\n"
+				+ "GROUP BY t.maThuoc, t.tenThuoc\r\n" + "ORDER BY soLuongBan DESC;";
+
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement pstmt = con.prepareStatement(query)) {
+
+			pstmt.setDate(1, java.sql.Date.valueOf(ngayBD));
+			pstmt.setDate(2, java.sql.Date.valueOf(ngayKT));
+
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				list.add(new Thuoc(rs.getString("maThuoc"), rs.getString("tenThuoc"), rs.getInt("soLuongBan"),
+						rs.getInt("doanhThu")));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+
+	public Thuoc layThuocDeDat(Thuoc th) {
+		String sql = "select t.maThuoc, t.tenThuoc, dvt.maDVT, dvt.tenDVT\r\n"
+				+ "  from [dbo].[Thuoc] t JOIN [dbo].[DonViTinh] dvt on dvt.maDVT = t.maDVT\r\n"
+				+ "  where t.maThuoc = ?";
+
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, th.getMaThuoc());
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					DonViTinh dvt = new DonViTinh();
+					dvt.setMaDVT(rs.getString("maDVT"));
+					dvt.setTenDVT(rs.getString("tenDVT"));
+
+					Thuoc thuoc = new Thuoc();
+					thuoc.setMaThuoc(rs.getString("maThuoc"));
+					thuoc.setTenThuoc(rs.getString("tenThuoc"));
+					thuoc.setDvt(dvt);
+
+					return thuoc;
 				}
-
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
 
-			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		
-		public Thuoc layThuocDeDat(Thuoc th) {
-			String sql = "select t.maThuoc, t.tenThuoc, dvt.maDVT, dvt.tenDVT\r\n"
-					+ "  from [dbo].[Thuoc] t JOIN [dbo].[DonViTinh] dvt on dvt.maDVT = t.maDVT\r\n"
-					+ "  where t.maThuoc = ?";
-			
-			try(Connection con = KetNoiDatabase.getConnection(); 
-				PreparedStatement ps = con.prepareStatement(sql))
-			{
-				ps.setString(1, th.getMaThuoc());			
-				try (ResultSet rs = ps.executeQuery()) {
-		            if (rs.next()) {
-		                DonViTinh dvt = new DonViTinh();
-		                dvt.setMaDVT(rs.getString("maDVT"));
-		                dvt.setTenDVT(rs.getString("tenDVT"));
+		return null;
+	}
 
-		                Thuoc thuoc = new Thuoc();
-		                thuoc.setMaThuoc(rs.getString("maThuoc"));
-		                thuoc.setTenThuoc(rs.getString("tenThuoc"));
-		                thuoc.setDvt(dvt);
+	public int laySoLuongTon(String maThuoc) {
+		String sql = "SELECT soLuongTon\r\n" + "			From [dbo].[CT_Kho]\r\n"
+				+ "					where maThuoc = ?";
 
-		                return thuoc;
-		            }
-		        }
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return null;
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, maThuoc);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next())
+				return rs.getInt("soLuongTon");
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		
-		public int laySoLuongTon(String maThuoc) {
-			String sql = "SELECT soLuongTon\r\n"
-					+ "			From [dbo].[CT_Kho]\r\n"
-					+ "					where maThuoc = ?";
-			
-			try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-				ps.setString(1, maThuoc);
-				ResultSet rs = ps.executeQuery();
-				if (rs.next())
-					return rs.getInt("soLuongTon");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return 0;
-		}
+		return 0;
+	}
 }
-	
