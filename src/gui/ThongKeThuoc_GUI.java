@@ -3,21 +3,38 @@ package gui;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
+
 import java.awt.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 import com.toedter.calendar.JDateChooser; // cần thư viện JCalendar
+
+import controller.ThuocCtrl;
 import controller.ToolCtrl;
+import entity.Thuoc;
 
 public class ThongKeThuoc_GUI extends JPanel {
 
-    private JTable tblThongKe;
-    private JButton btnThongKe, btnLamMoi, btnLuu;
-    private JDateChooser dpNgayBD, dpNgayKT;
-    private final ToolCtrl tool = new ToolCtrl();
+	public JTable tblThongKe;
+	public DefaultTableModel model;
+	public JButton btnThongKe, btnLamMoi, btnLuu;
+	public JDateChooser dpNgayBD, dpNgayKT;
+	public DefaultCategoryDataset dataset;
+	public ChartPanel pnlChart;
+	public JFreeChart chart;
+	public final ToolCtrl tool = new ToolCtrl();
+	public ThuocCtrl thCtrl;
+	public ArrayList<Thuoc> list = new ArrayList<Thuoc>();
 
     public ThongKeThuoc_GUI() {
+    	thCtrl = new ThuocCtrl(this);
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
         setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
@@ -68,12 +85,7 @@ public class ThongKeThuoc_GUI extends JPanel {
 
         // ===== CENTER: TABLE =====
         String[] cols = { "STT", "Mã thuốc", "Tên thuốc", "Số lượng bán", "Doanh thu" };
-        DefaultTableModel model = new DefaultTableModel(cols, 0) {
-            @Override
-            public boolean isCellEditable(int row, int col) {
-                return false;
-            }
-        };
+        model = new DefaultTableModel(cols, 0);
 
         tblThongKe = new JTable(model);
         tblThongKe.setRowHeight(36);
@@ -91,46 +103,29 @@ public class ThongKeThuoc_GUI extends JPanel {
         scrollTable.getViewport().setBackground(Color.WHITE);
         add(scrollTable, BorderLayout.CENTER);
 
-        // ===== SOUTH: BIỂU ĐỒ (giả lập hoặc dùng JFreeChart) =====
-        JPanel chartPanel = new JPanel();
-        chartPanel.setPreferredSize(new Dimension(100, 300));
-        chartPanel.setBackground(Color.WHITE);
-        chartPanel.setBorder(BorderFactory.createTitledBorder("Biểu đồ số lượng bán được của top 10 thuốc"));
-
-        JLabel fakeChart = new JLabel("🧭 (Khu vực biểu đồ - tích hợp JFreeChart sau)");
-        fakeChart.setFont(new Font("Arial", Font.ITALIC, 15));
-        chartPanel.add(fakeChart);
-
-        add(chartPanel, BorderLayout.SOUTH);
+        // ===== SOUTH: BIỂU ĐỒ =====
+        dataset = new DefaultCategoryDataset();
+        
+        chart = ChartFactory.createBarChart("Top 10 thuốc bán chạy", "Thuốc", "Số lượng bán", dataset, PlotOrientation.VERTICAL, false, true, false);
+        pnlChart = new ChartPanel(chart);
+        pnlChart.setPreferredSize(new Dimension(900, 400));
+        add(pnlChart, BorderLayout.SOUTH);
 
         // ===== EVENTS =====
-        btnThongKe.addActionListener(e -> onThongKe());
-        btnLamMoi.addActionListener(e -> onLamMoi());
-        btnLuu.addActionListener(e -> onLuu());
+        ganSuKien();
     }
 
-    // =================== HANDLERS ===================
-    private void onThongKe() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Date bd = dpNgayBD.getDate();
-        Date kt = dpNgayKT.getDate();
-
-        if (bd == null || kt == null) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn đầy đủ ngày bắt đầu và kết thúc!", "Thiếu thông tin",
-                    JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        System.out.println("Thống kê từ " + sdf.format(bd) + " đến " + sdf.format(kt));
+    // =================== Xử lý ===================
+    
+    public void ganSuKien() {
+    	btnThongKe.addActionListener(e -> {
+    		thCtrl.onThongKe();
+    	});
+    	
+    	btnLamMoi.addActionListener(e -> thCtrl.onLamMoi());
+    	
+    	btnLuu.addActionListener(e -> thCtrl.luuThongKe());
     }
+    
 
-    private void onLamMoi() {
-        dpNgayBD.setDate(null);
-        dpNgayKT.setDate(null);
-        ((DefaultTableModel) tblThongKe.getModel()).setRowCount(0);
-    }
-
-    private void onLuu() {
-        JOptionPane.showMessageDialog(this, "Chức năng lưu tệp đang được phát triển!", "Thông báo",
-                JOptionPane.INFORMATION_MESSAGE);
-    }
 }
