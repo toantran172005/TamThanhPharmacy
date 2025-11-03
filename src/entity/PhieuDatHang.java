@@ -13,7 +13,7 @@ public class PhieuDatHang {
 	private String tenHT;
 	private String ghiChu;
 	private String hotline;
-	private boolean trangThai;
+	private String trangThai;
 	
 	public PhieuDatHang() {
 		super();
@@ -21,7 +21,7 @@ public class PhieuDatHang {
 	}
 
 	public PhieuDatHang(String maPDH, KhachHang khachHang, NhanVien nhanVien, LocalDate ngayDat, LocalDate ngayHen,
-			String diaChiHT, String tenHT, String ghiChu, String hotline, boolean trangThai) {
+			String diaChiHT, String tenHT, String ghiChu, String hotline, String trangThai) {
 		super();
 		this.maPDH = maPDH;
 		this.khachHang = khachHang;
@@ -107,11 +107,11 @@ public class PhieuDatHang {
 		this.hotline = hotline;
 	}
 
-	public boolean isTrangThai() {
+	public String getTrangThai() {
 		return trangThai;
 	}
 
-	public void setTrangThai(boolean trangThai) {
+	public void setTrangThai(String trangThai) {
 		this.trangThai = trangThai;
 	}
 
