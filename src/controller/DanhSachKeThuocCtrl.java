@@ -4,71 +4,149 @@ import java.util.ArrayList;
 
 import dao.KeThuocDAO;
 import entity.KeThuoc;
+import gui.ChiTietKeThuoc_GUI;
 import gui.DanhSachKeThuoc_GUI;
 
 public class DanhSachKeThuocCtrl {
 
-    public DanhSachKeThuoc_GUI ktGUI;
-    public KeThuocDAO keDAO = new KeThuocDAO();
-    public ToolCtrl tool = new ToolCtrl();
+	public DanhSachKeThuoc_GUI ktGUI;
+	public KeThuocDAO keDAO = new KeThuocDAO();
+	public ToolCtrl tool = new ToolCtrl();
 
-    public ArrayList<KeThuoc> listKe;
+	public ArrayList<KeThuoc> listKe;
+	public boolean hienThiHoatDong = true;
 
-    public DanhSachKeThuocCtrl(DanhSachKeThuoc_GUI ktGUI) {
-        super();
-        this.ktGUI = ktGUI;
-        listKe = layListKeThuoc();
-    }
+	public DanhSachKeThuocCtrl(DanhSachKeThuoc_GUI ktGUI) {
+		super();
+		this.ktGUI = ktGUI;
+		listKe = layListKeThuoc();
+	}
 
-    public void lamMoi() {
-        ktGUI.cmbLoaiKe.setSelectedItem("Tất cả");
-        ktGUI.cmbSucChua.setSelectedItem("Tất cả");
-        locTatCa();
-    }
+	public void xemChiTietKT() {
+		int selectedRow = ktGUI.tblKeThuoc.getSelectedRow();
+		if (selectedRow == -1) {
+			tool.hienThiThongBao("Lỗi", "Vui lòng chọn một phiếu để xem chi tiết!", false);
+			return;
+		}
+		int modelRow = ktGUI.tblKeThuoc.convertRowIndexToModel(selectedRow);
+		Object maObj = ktGUI.tblKeThuoc.getModel().getValueAt(modelRow, 0);
+		String maKe = maObj == null ? "" : maObj.toString();
 
-    public void locTatCa() {
-        ArrayList<KeThuoc> ketQua = new ArrayList<>();
+		KeThuoc ke = null;
+		for (KeThuoc k : listKe) {
+			if (k.getMaKe().equals(maKe)) {
+				ke = k;
+				break;
+			}
+		}
+		
+		if(ke != null) {
+			ChiTietKeThuoc_GUI ctKTGUI = new ChiTietKeThuoc_GUI(ke);
+			tool.doiPanel(ktGUI, ctKTGUI);
+		}
+	}
 
-        String loaiKe = ktGUI.cmbLoaiKe.getSelectedItem().toString();
-        String sucChuaStr = ktGUI.cmbSucChua.getSelectedItem().toString();
+	public void xoaKeThuoc() {
+		if (ktGUI.btnXoa.getText().equals("Xóa")) {
+			if (tool.hienThiXacNhan("Xóa kệ thuốc", "Xác nhận xóa kệ thuốc?", null)) {
+				int viewRow = ktGUI.tblKeThuoc.getSelectedRow();
+				if (viewRow != -1) {
+					int modelRow = ktGUI.tblKeThuoc.convertRowIndexToModel(viewRow);
+					Object maObj = ktGUI.tblKeThuoc.getModel().getValueAt(modelRow, 0);
+					String maKe = maObj == null ? "" : maObj.toString();
 
-        for (KeThuoc ke : listKe) {
-            boolean trungLoaiKe = loaiKe.equals("Tất cả") || ke.getLoaiKe().equalsIgnoreCase(loaiKe);
+					KeThuoc ke = null;
+					for (KeThuoc k : listKe) {
+						if (k.getMaKe().equals(maKe)) {
+							ke = k;
+							break;
+						}
+					}
+					if (keDAO.xoaKeThuoc(maKe)) {
+						tool.hienThiThongBao("Xóa kệ thuốc", "Đã xóa kệ thuốc thành công!", true);
+						ke.setTrangThai(false);
+					}
 
-            boolean trungSucChua = true;
-            if (!sucChuaStr.equals("Tất cả")) {
-                int max = Integer.parseInt(sucChuaStr.replace("<", "").trim());
-                trungSucChua = ke.getSucChua() < max;
-            }
+				}
+				locTatCa(hienThiHoatDong);
+			}
+		} else {
+			if (tool.hienThiXacNhan("Khôi phục kệ thuốc", "Xác nhận khôi phục kệ thuốc?", null)) {
+				int viewRow = ktGUI.tblKeThuoc.getSelectedRow();
+				if (viewRow != -1) {
+					int modelRow = ktGUI.tblKeThuoc.convertRowIndexToModel(viewRow);
+					Object maObj = ktGUI.tblKeThuoc.getModel().getValueAt(modelRow, 0);
+					String maKe = maObj == null ? "" : maObj.toString();
 
-            if (trungLoaiKe && trungSucChua) {
-                ketQua.add(ke);
-            }
-        }
+					KeThuoc ke = null;
+					for (KeThuoc k : listKe) {
+						if (k.getMaKe().equals(maKe)) {
+							ke = k;
+							break;
+						}
+					}
+					if (keDAO.khoiPhucKeThuoc(maKe)) {
+						tool.hienThiThongBao("Khôi phục kệ thuốc", "Đã khôi phục kệ thuốc thành công!", true);
+						ke.setTrangThai(true);
+					}
 
-        setDataChoTable(ketQua);
-    }
+				}
+				locTatCa(hienThiHoatDong);
+			}
+		}
+	}
 
-    public ArrayList<KeThuoc> layListKeThuoc() {
-        return keDAO.layListKeThuoc();
-    }
-    
-    public ArrayList<String> layListTenKe() {
-    	return keDAO.layTatCaKeThuoc();
-    }
+	public void xuLyBtnLichSuXoa() {
+		hienThiHoatDong = !hienThiHoatDong;
+		ktGUI.btnLichSuXoa.setText(!hienThiHoatDong ? "Danh sách hiện tại" : "Lịch sử xóa");
+		ktGUI.btnXoa.setText(!hienThiHoatDong ? "Khôi phục" : "Xóa");
+		locTatCa(hienThiHoatDong);
+	}
 
-    public void setDataChoTable(ArrayList<KeThuoc> list) {
-        ktGUI.model.setRowCount(0);
+	public void lamMoi() {
+		ktGUI.cmbLoaiKe.setSelectedItem("Tất cả");
+		ktGUI.cmbSucChua.setSelectedItem("Tất cả");
+		locTatCa(hienThiHoatDong);
+	}
 
-        for (KeThuoc ke : list) {
-            Object[] row = {
-                ke.getMaKe(),
-                ke.getLoaiKe(),
-                ke.getSucChua(),
-                ke.getMoTa(),
-                ke.isTrangThai() ? "Hoạt động" : "Đã xóa"
-            };
-            ktGUI.model.addRow(row);
-        }
-    }
+	public void locTatCa(boolean hienThiHoatDong) {
+		ArrayList<KeThuoc> ketQua = new ArrayList<>();
+
+		String loaiKe = ktGUI.cmbLoaiKe.getSelectedItem().toString();
+		String sucChuaStr = ktGUI.cmbSucChua.getSelectedItem().toString();
+
+		for (KeThuoc ke : listKe) {
+			boolean trungLoaiKe = loaiKe.equals("Tất cả") || ke.getLoaiKe().equalsIgnoreCase(loaiKe);
+
+			boolean trungSucChua = true;
+			if (!sucChuaStr.equals("Tất cả")) {
+				int max = Integer.parseInt(sucChuaStr.replace("<", "").trim());
+				trungSucChua = ke.getSucChua() < max;
+			}
+
+			if (trungLoaiKe && trungSucChua && ke.isTrangThai() == hienThiHoatDong) {
+				ketQua.add(ke);
+			}
+		}
+
+		setDataChoTable(ketQua);
+	}
+
+	public ArrayList<KeThuoc> layListKeThuoc() {
+		return keDAO.layListKeThuoc();
+	}
+
+	public ArrayList<String> layListTenKe() {
+		return keDAO.layTatCaKeThuoc();
+	}
+
+	public void setDataChoTable(ArrayList<KeThuoc> list) {
+		ktGUI.model.setRowCount(0);
+
+		for (KeThuoc ke : list) {
+			Object[] row = { ke.getMaKe(), ke.getLoaiKe(), ke.getSucChua(), ke.getMoTa(),
+					ke.isTrangThai() ? "Hoạt động" : "Đã xóa" };
+			ktGUI.model.addRow(row);
+		}
+	}
 }

@@ -23,12 +23,17 @@ public class DanhSachKeThuoc_GUI extends JPanel {
 	public DanhSachKeThuoc_GUI() {
 		khoiTaoUI();
 		setUpCmb();
-		ktCtrl.locTatCa();
+		ktCtrl.locTatCa(ktCtrl.hienThiHoatDong);
 		setHoatDong();
 	}
 
 	public void setHoatDong() {
-
+		btnLamMoi.addActionListener(e -> ktCtrl.lamMoi());
+		cmbLoaiKe.addActionListener(e -> ktCtrl.locTatCa(ktCtrl.hienThiHoatDong));
+		cmbSucChua.addActionListener(e -> ktCtrl.locTatCa(ktCtrl.hienThiHoatDong));
+		btnLichSuXoa.addActionListener(e -> ktCtrl.xuLyBtnLichSuXoa());
+		btnXoa.addActionListener(e -> ktCtrl.xoaKeThuoc());
+		btnXemCT.addActionListener(e -> ktCtrl.xemChiTietKT());
 	}
 
 	public void setUpCmb() {

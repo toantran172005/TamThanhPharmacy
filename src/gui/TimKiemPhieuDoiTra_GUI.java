@@ -112,7 +112,7 @@ public class TimKiemPhieuDoiTra_GUI extends JPanel {
         // Căn giữa tiêu đề cột
         JTableHeader header = tblPhieuDoiTra.getTableHeader();
         header.setBackground(new Color(240, 240, 240));
-        header.setFont(font2);
+        header.setFont(font1);
         ((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
         add(scrollPane, BorderLayout.CENTER);

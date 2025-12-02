@@ -90,7 +90,7 @@ public class TimKiemHD_GUI extends JPanel {
         };
         tblHoaDon = new JTable(model);
         tblHoaDon.setRowHeight(28);
-        tblHoaDon.getTableHeader().setFont(font2);
+        tblHoaDon.getTableHeader().setFont(font1);
         tblHoaDon.setFont(font2);
         tblHoaDon.setBackground(Color.WHITE);
         tblHoaDon.getTableHeader().setBackground(new Color(240, 240, 240));

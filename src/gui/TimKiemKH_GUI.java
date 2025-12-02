@@ -118,7 +118,7 @@ public class TimKiemKH_GUI extends JPanel {
 
 		JTableHeader header = tblKhachHang.getTableHeader();
 		header.setBackground(new Color(240, 240, 240));
-		header.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		header.setFont(new Font("Times New Roman", Font.BOLD, 18));
 		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
 		tblKhachHang.getColumnModel().getColumn(0).setPreferredWidth(130);

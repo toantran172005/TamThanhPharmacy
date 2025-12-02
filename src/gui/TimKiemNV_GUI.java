@@ -5,23 +5,27 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import controller.TimKiemNhanVienCtrl;
 import controller.ToolCtrl;
 
 import java.awt.*;
 
 public class TimKiemNV_GUI extends JPanel {
 
-	private JTable tblNhanVien;
-	private JTextField txtSdt, txtTenNV;
-	private JButton btnXemChiTiet, btnLamMoi, btnLichSuXoa;
-	Font font1 = new Font("Arial", Font.BOLD, 18);
-	Font font2 = new Font("Arial", Font.PLAIN, 15);
+	public JTable tblNhanVien;
+	public JTextField txtSdt, txtTenNV;
+	public JButton btnXemChiTiet, btnLamMoi, btnLichSuXoa;
+	Font font1 = new Font("Time New Roman", Font.BOLD, 18);
+	Font font2 = new Font("Time New Roman", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
 
-	private TrangChuQL_GUI mainFrame;
+	public TrangChuQL_GUI mainFrame;
+//	public TimKiemNhanVienCtrl tknvCtrl = new TimKiemNhanVienCtrl(this);
+	public DefaultTableModel model;
 
 	public TimKiemNV_GUI(TrangChuQL_GUI mainFrame) {
 		this.mainFrame = mainFrame;
+//		tknvCtrl.setDataChoTable(tknvCtrl.listNV);
 		initUI();
 	}
 
@@ -109,9 +113,8 @@ public class TimKiemNV_GUI extends JPanel {
 		add(topPanel, BorderLayout.NORTH);
 
 		// ====== CENTER PANEL (Table) ======
-		String[] columnNames = { "STT", "Mã nhân viên", "Tên nhân viên", "Số điện thoại", "Giới tính", "Chức vụ",
-				"Hoạt động" };
-		DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+		String[] columnNames = { "Mã nhân viên", "Tên nhân viên", "Số điện thoại", "Giới tính", "Chức vụ" };
+		model = new DefaultTableModel(columnNames, 0);
 		tblNhanVien = new JTable(model);
 		tblNhanVien.setRowHeight(28);
 		tblNhanVien.getTableHeader().setFont(font2);
@@ -142,7 +145,7 @@ public class TimKiemNV_GUI extends JPanel {
 		// Căn giữa tiêu đề cột
 		JTableHeader header = tblNhanVien.getTableHeader();
 		header.setBackground(new Color(240, 240, 240));
-		header.setFont(font2);
+		header.setFont(font1);
 		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
 		add(scrollPane, BorderLayout.CENTER);
