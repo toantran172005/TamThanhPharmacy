@@ -22,6 +22,25 @@ public class ThuocDAO {
 
 	ToolCtrl tool = new ToolCtrl();
 
+	public String layTenDonViTinhTheoMaThuoc(String maThuoc) {
+		String sql = "SELECT dvt.tenDVT FROM Thuoc t " + "JOIN DonViTinh dvt ON t.maDVT = dvt.maDVT "
+				+ "WHERE t.maThuoc = ?";
+
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+			pst.setString(1, maThuoc);
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				return rs.getString("tenDVT");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public String layMaThuocTheoTen(String tenThuoc) {
 		String sql = "SELECT maThuoc FROM Thuoc WHERE tenThuoc = ?";
 		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -40,7 +59,7 @@ public class ThuocDAO {
 			return null;
 		}
 	}
-	
+
 	public boolean tangSoLuongTon(String maThuoc, String maDVT, int soLuongDoiTra) {
 		String sqlLayTiLe = "SELECT tiLe FROM Thuoc_DonViTinh WHERE maThuoc = ? AND maDVT = ?";
 		String sqlCapNhat = "UPDATE CT_Kho SET soLuongTon = soLuongTon + ? WHERE maThuoc = ?";
@@ -152,7 +171,6 @@ public class ThuocDAO {
 			return maThue;
 		}
 	}
-	
 
 	public String layHoacTaoDVT(Connection conn, Thuoc t) throws SQLException {
 		String sqlFindDVT = "SELECT maDVT FROM DonViTinh WHERE tenDVT = ?";
@@ -305,9 +323,8 @@ public class ThuocDAO {
 			ps.executeBatch();
 		}
 	}
-	
-	public boolean luuData(String maPNT, String maNCC, String maNV, LocalDate ngayNhap,
-			ArrayList<Thuoc> listThuoc) {
+
+	public boolean luuData(String maPNT, String maNCC, String maNV, LocalDate ngayNhap, ArrayList<Thuoc> listThuoc) {
 		try (Connection conn = KetNoiDatabase.getConnection()) {
 			conn.setAutoCommit(false);
 
@@ -353,23 +370,23 @@ public class ThuocDAO {
 
 	public ArrayList<Thuoc> layListThuocHoanChinh() {
 		ArrayList<Thuoc> listThuoc = new ArrayList<>();
-	    String sql = """
-	        SELECT 
-	            t.maThuoc, t.tenThuoc, t.dangThuoc, t.giaBan, t.hanSuDung, t.trangThai, t.anh, 
-	            t.maNCC, t.maThue, t.maDVT, t.maKe, ctK.soLuongTon,
-	            th.loaiThue, th.tyLeThue, th.moTa,
-	            dvt.tenDVT,
-	            kt.loaiKe, kt.sucChua, kt.moTa,
-	            ncc.tenNCC, ncc.sdt, ncc.diaChi, ncc.email, t.noiSanXuat
-	        FROM Thuoc t
-	        LEFT JOIN CT_Kho ctK ON t.maThuoc = ctK.maThuoc
-	        LEFT JOIN Thue th ON t.maThue = th.maThue
-	        LEFT JOIN DonViTinh dvt ON t.maDVT = dvt.maDVT
-	        LEFT JOIN KeThuoc kt ON t.maKe = kt.maKe
-	        LEFT JOIN NhaCungCap ncc ON t.maNCC = ncc.maNCC
-	        WHERE t.trangThai = 1
-	        ORDER BY TRY_CAST(REPLACE(t.maThuoc, 'TTTH', '') AS INT)
-	    """;
+		String sql = """
+				    SELECT
+				        t.maThuoc, t.tenThuoc, t.dangThuoc, t.giaBan, t.hanSuDung, t.trangThai, t.anh,
+				        t.maNCC, t.maThue, t.maDVT, t.maKe, ctK.soLuongTon,
+				        th.loaiThue, th.tyLeThue, th.moTa,
+				        dvt.tenDVT,
+				        kt.loaiKe, kt.sucChua, kt.moTa,
+				        ncc.tenNCC, ncc.sdt, ncc.diaChi, ncc.email, t.noiSanXuat
+				    FROM Thuoc t
+				    LEFT JOIN CT_Kho ctK ON t.maThuoc = ctK.maThuoc
+				    LEFT JOIN Thue th ON t.maThue = th.maThue
+				    LEFT JOIN DonViTinh dvt ON t.maDVT = dvt.maDVT
+				    LEFT JOIN KeThuoc kt ON t.maKe = kt.maKe
+				    LEFT JOIN NhaCungCap ncc ON t.maNCC = ncc.maNCC
+				    WHERE t.trangThai = 1
+				    ORDER BY TRY_CAST(REPLACE(t.maThuoc, 'TTTH', '') AS INT)
+				""";
 
 		try (Connection con = KetNoiDatabase.getConnection();
 				Statement stmt = con.createStatement();
@@ -388,23 +405,20 @@ public class ThuocDAO {
 				NhaCungCap ncc = new NhaCungCap(rs.getString("maNCC"), rs.getString("tenNCC"), rs.getString("diaChi"),
 						rs.getString("sdt"), rs.getString("email"));
 
-	            // ====== Thông tin chính ======
-	            String maThuoc = rs.getString("maThuoc");
-	            String tenThuoc = rs.getString("tenThuoc");
-	            String dangThuoc = rs.getString("dangThuoc");
-	            float giaBan = rs.getFloat("giaBan");
-	            LocalDate hanSuDung = tool.sqlDateSangLocalDate(rs.getDate("hanSuDung"));
-	            boolean trangThai = rs.getBoolean("trangThai");
-	            String anh = rs.getString("anh");
-	            int soLuongTon = rs.getInt("soLuongTon");
-	            String noiSanXuat = rs.getString("noiSanXuat");
+				// ====== Thông tin chính ======
+				String maThuoc = rs.getString("maThuoc");
+				String tenThuoc = rs.getString("tenThuoc");
+				String dangThuoc = rs.getString("dangThuoc");
+				float giaBan = rs.getFloat("giaBan");
+				LocalDate hanSuDung = tool.sqlDateSangLocalDate(rs.getDate("hanSuDung"));
+				boolean trangThai = rs.getBoolean("trangThai");
+				String anh = rs.getString("anh");
+				int soLuongTon = rs.getInt("soLuongTon");
+				String noiSanXuat = rs.getString("noiSanXuat");
 
-	            // ====== Gộp thành Thuoc ======
-	            Thuoc thuoc = new Thuoc(
-	            		maThuoc, thue, keThuoc, dvt, ncc, tenThuoc, dangThuoc, giaBan, hanSuDung,
-						trangThai, anh, soLuongTon, noiSanXuat
-	            );
-
+				// ====== Gộp thành Thuoc ======
+				Thuoc thuoc = new Thuoc(maThuoc, thue, keThuoc, dvt, ncc, tenThuoc, dangThuoc, giaBan, hanSuDung,
+						trangThai, anh, soLuongTon, noiSanXuat);
 
 				listThuoc.add(thuoc);
 			}
@@ -458,7 +472,6 @@ public class ThuocDAO {
 		return listThuoc;
 	}
 
-	// ========== TÌM KHÁCH HÀNG THEO MÃ ==========
 	public Thuoc timThuocTheoMa(String maThuoc) {
 		ArrayList<Thuoc> listThuoc = layListThuoc();
 		for (Thuoc thuoc : listThuoc) {

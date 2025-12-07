@@ -7,6 +7,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,9 @@ import entity.Thuoc;
 import gui.LapPhieuDatHang_GUI;
 
 public class LapPhieuDatHangCtrl {
+
+//	String maThuoc = thDAO.layMaThuocTheoTen(tenThuoc);
+//	donVi = thDAO.layTenDonViTinhTheoMaThuoc(maThuoc);
 
 	public LapPhieuDatHang_GUI lpdhGUI;
 	public PhieuDatHangDAO pdhDAO = new PhieuDatHangDAO();
@@ -159,11 +164,12 @@ public class LapPhieuDatHangCtrl {
 
 		if (sdt.isEmpty() || tenKH.isEmpty() || tuoiStr.isEmpty() || tenThuoc == null || tenThuoc.isEmpty()
 				|| donVi == null || donVi.isEmpty() || soLuongStr.isEmpty() || ngayUtil == null) {
+
 			tool.hienThiThongBao("Lỗi nhập liệu", "Vui lòng nhập đầy đủ thông tin trước khi thêm!", false);
 			return;
 		}
 
-		int tuoi, soLuong;
+		int tuoi;
 		try {
 			tuoi = Integer.parseInt(tuoiStr);
 			if (tuoi <= 0 || tuoi > 120)
@@ -173,6 +179,7 @@ public class LapPhieuDatHangCtrl {
 			return;
 		}
 
+		int soLuong;
 		try {
 			soLuong = Integer.parseInt(soLuongStr);
 			if (soLuong <= 0)
@@ -182,14 +189,18 @@ public class LapPhieuDatHangCtrl {
 			return;
 		}
 
-		Date today = new Date();
-		if (ngayUtil.before(today)) {
+		LocalDate ngayHen = ngayUtil.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+		LocalDate today = LocalDate.now();
+
+		if (ngayHen.isBefore(today)) {
 			tool.hienThiThongBao("Lỗi ngày hẹn", "Ngày hẹn phải là hôm nay hoặc sau hôm nay!", false);
 			return;
 		}
 
 		DefaultTableModel model = (DefaultTableModel) lpdhGUI.tblThuoc.getModel();
 		int stt = model.getRowCount() + 1;
+
 		Object[] row = { stt, tenThuoc, soLuong, donVi };
 		model.addRow(row);
 
@@ -210,18 +221,38 @@ public class LapPhieuDatHangCtrl {
 	}
 
 	public void setUpComboBox() {
-		// ĐƠN VỊ TÍNH
 		listDVT = dvtDAO.layListDVT();
 		lpdhGUI.cmbDonVi.addItem("");
 		for (DonViTinh dvt : listDVT) {
 			lpdhGUI.cmbDonVi.addItem(dvt.getTenDVT());
 		}
-		// THUỐC
 		listThuoc = thDAO.layListThuocHoanChinh();
 		lpdhGUI.cmbSanPham.addItem("");
 		for (Thuoc th : listThuoc) {
 			lpdhGUI.cmbSanPham.addItem(th.getTenThuoc());
 		}
+
+		lpdhGUI.cmbSanPham.addActionListener(e -> {
+			String tenThuoc = (String) lpdhGUI.cmbSanPham.getSelectedItem();
+
+			if (tenThuoc == null || tenThuoc.isEmpty()) {
+				lpdhGUI.cmbDonVi.setSelectedIndex(-1);
+				return;
+			}
+
+			String maThuoc = thDAO.layMaThuocTheoTen(tenThuoc);
+			if (maThuoc == null) {
+				lpdhGUI.cmbDonVi.setSelectedIndex(-1);
+				return;
+			}
+			String donVi = thDAO.layTenDonViTinhTheoMaThuoc(maThuoc);
+			if (donVi == null) {
+				lpdhGUI.cmbDonVi.setSelectedIndex(-1);
+				return;
+			}
+			lpdhGUI.cmbDonVi.setSelectedItem(donVi);
+		});
+
 	}
 
 	public void lamMoi() {
