@@ -2,23 +2,36 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
+
+import controller.ThemKhachHangCtrl;
 import controller.ToolCtrl;
 
 public class ThemKhachHang_GUI extends JPanel {
 
-    private JTextField txtTenKH;
-    private JTextField txtSdt;
-    private JTextField txtTuoi;
-    private JButton btnLamMoi;
-    private JButton btnThem;
-
-    private final ToolCtrl tool = new ToolCtrl();
+    public JTextField txtTenKH;
+    public JTextField txtSdt;
+    public JTextField txtTuoi;
+    public JButton btnLamMoi;
+    public JButton btnThem;
+    public ThemKhachHangCtrl tkhCtrl;
+    public ToolCtrl tool;
 
     public ThemKhachHang_GUI() {
-        setLayout(new BorderLayout());
+    	tkhCtrl = new ThemKhachHangCtrl(this);
+    	tool = new ToolCtrl();
+        khoiTaoUI();
+        setHoatDong();
+    }
+    
+    public void setHoatDong() {
+    	btnLamMoi.addActionListener(e -> tkhCtrl.lamMoi());
+    	btnThem.addActionListener(e -> tkhCtrl.ktTatCaTruocKhiThem());
+    }
+    
+    public void khoiTaoUI() {
+    	setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
-        // ===== TOP =====
         JPanel top = new JPanel(new BorderLayout());
         top.setBackground(Color.WHITE);
         top.setBorder(BorderFactory.createEmptyBorder(20, 10, 30, 10));
@@ -31,7 +44,6 @@ public class ThemKhachHang_GUI extends JPanel {
 
         add(top, BorderLayout.NORTH);
 
-        // ===== CENTER =====
         JPanel center = new JPanel();
         center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
         center.setBackground(Color.WHITE);
@@ -42,21 +54,17 @@ public class ThemKhachHang_GUI extends JPanel {
 
         center.add(Box.createVerticalStrut(10));
 
-        // --- Tên khách hàng ---
         center.add(taoDong("Tên khách hàng:", txtTenKH = tool.taoTextField("Nhập tên..."), labelWidth, fieldWidth));
         center.add(Box.createVerticalStrut(rowSpacing));
 
-        // --- Số điện thoại ---
         center.add(taoDong("Số điện thoại:", txtSdt = tool.taoTextField("Nhập số điện thoại..."), labelWidth, fieldWidth));
         center.add(Box.createVerticalStrut(rowSpacing));
 
-        // --- Tuổi ---
         center.add(taoDong("Tuổi:", txtTuoi = tool.taoTextField("Nhập tuổi..."), labelWidth, fieldWidth));
         center.add(Box.createVerticalStrut(rowSpacing));
 
         add(center, BorderLayout.CENTER);
 
-        // ===== BOTTOM =====
         JPanel bottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 20));
         bottom.setBackground(Color.WHITE);
 
@@ -67,14 +75,9 @@ public class ThemKhachHang_GUI extends JPanel {
         bottom.add(btnThem);
 
         add(bottom, BorderLayout.SOUTH);
-
-        // ===== EVENTS =====
-        btnLamMoi.addActionListener(e -> onBtnLamMoi());
-        btnThem.addActionListener(e -> onBtnThem());
     }
 
-    // === Tạo 1 hàng label + field ===
-    private JPanel taoDong(String text, JComponent comp, int labelWidth, int fieldWidth) {
+    public JPanel taoDong(String text, JComponent comp, int labelWidth, int fieldWidth) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 0));
         row.setBackground(Color.WHITE);
 
@@ -85,17 +88,6 @@ public class ThemKhachHang_GUI extends JPanel {
         row.add(lbl);
         row.add(comp);
         return row;
-    }
-
-    // ===== EVENT HANDLERS =====
-    public void onBtnLamMoi() {
-        txtTenKH.setText("");
-        txtSdt.setText("");
-        txtTuoi.setText("");
-    }
-
-    public void onBtnThem() {
-        JOptionPane.showMessageDialog(this, "Thêm khách hàng thành công (demo)");
     }
 
 }

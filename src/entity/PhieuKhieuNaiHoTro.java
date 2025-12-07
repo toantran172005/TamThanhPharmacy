@@ -2,12 +2,9 @@ package entity;
 
 import java.time.LocalDate;
 
-//import javafx.beans.property.BooleanProperty;
-//import javafx.beans.property.SimpleBooleanProperty;
 
 public class PhieuKhieuNaiHoTro {
 
-//	private BooleanProperty selected = new SimpleBooleanProperty(false);
 	private String maPhieu;
 	private NhanVien nhanVien;
 	private KhachHang khachHang;
@@ -32,26 +29,6 @@ public class PhieuKhieuNaiHoTro {
 		this.loaiDon = loaiDon;
 		this.trangThai = trangThai;
 	}
-
-//	public boolean isSelected() {
-//		return selected.get();
-//	}
-//
-//	public void setSelected(boolean selected) {
-//		this.selected.set(selected);
-//	}
-//
-//	public BooleanProperty selectedProperty() {
-//		return selected;
-//	}
-//
-//	public BooleanProperty getSelected() {
-//		return selected;
-//	}
-//
-//	public void setSelected(BooleanProperty selected) {
-//		this.selected = selected;
-//	}
 
 	public String getMaPhieu() {
 		return maPhieu;

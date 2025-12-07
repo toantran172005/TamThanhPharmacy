@@ -19,7 +19,6 @@ public class DanhSachKeThuocCtrl {
 	public DanhSachKeThuocCtrl(DanhSachKeThuoc_GUI ktGUI) {
 		super();
 		this.ktGUI = ktGUI;
-		listKe = layListKeThuoc();
 	}
 
 	public void xemChiTietKT() {
@@ -39,14 +38,15 @@ public class DanhSachKeThuocCtrl {
 				break;
 			}
 		}
-		
-		if(ke != null) {
+
+		if (ke != null) {
 			ChiTietKeThuoc_GUI ctKTGUI = new ChiTietKeThuoc_GUI(ke);
 			tool.doiPanel(ktGUI, ctKTGUI);
 		}
 	}
 
 	public void xoaKeThuoc() {
+		listKe = layListKeThuoc();
 		if (ktGUI.btnXoa.getText().equals("Xóa")) {
 			if (tool.hienThiXacNhan("Xóa kệ thuốc", "Xác nhận xóa kệ thuốc?", null)) {
 				int viewRow = ktGUI.tblKeThuoc.getSelectedRow();
@@ -64,7 +64,6 @@ public class DanhSachKeThuocCtrl {
 					}
 					if (keDAO.xoaKeThuoc(maKe)) {
 						tool.hienThiThongBao("Xóa kệ thuốc", "Đã xóa kệ thuốc thành công!", true);
-						ke.setTrangThai(false);
 					}
 
 				}
@@ -87,7 +86,6 @@ public class DanhSachKeThuocCtrl {
 					}
 					if (keDAO.khoiPhucKeThuoc(maKe)) {
 						tool.hienThiThongBao("Khôi phục kệ thuốc", "Đã khôi phục kệ thuốc thành công!", true);
-						ke.setTrangThai(true);
 					}
 
 				}
@@ -110,6 +108,7 @@ public class DanhSachKeThuocCtrl {
 	}
 
 	public void locTatCa(boolean hienThiHoatDong) {
+		listKe = layListKeThuoc();
 		ArrayList<KeThuoc> ketQua = new ArrayList<>();
 
 		String loaiKe = ktGUI.cmbLoaiKe.getSelectedItem().toString();
