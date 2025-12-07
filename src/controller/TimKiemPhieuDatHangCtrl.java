@@ -19,11 +19,10 @@ public class TimKiemPhieuDatHangCtrl {
 
 	public TimKiemPhieuDatHangCtrl(TimKiemPhieuDatHang_GUI tkpdhGUI) {
 		this.tkpdhGUI = tkpdhGUI;
-		this.dsPDH = pdhDAO.layListPhieuDatHang();
 	}
 
 	public ArrayList<PhieuDatHang> layTatCaPhieuDatHang() {
-		return dsPDH;
+		return dsPDH = pdhDAO.layListPhieuDatHang();
 	}
 
 	public PhieuDatHang timTheoMa(String maPhieu) {
@@ -50,7 +49,6 @@ public class TimKiemPhieuDatHangCtrl {
 			return;
 		}
 
-		// Chuyển sang trang chi tiết
 		if (tkpdhGUI.getMainFrameQL() != null) {
 			ChiTietPhieuDatHang_GUI chiTiet = new ChiTietPhieuDatHang_GUI(tkpdhGUI.getMainFrameQL(), pdh);
 			tool.doiPanel(tkpdhGUI, chiTiet);
@@ -61,7 +59,7 @@ public class TimKiemPhieuDatHangCtrl {
 	}
 
 	public void locTatCa() {
-
+		dsPDH = pdhDAO.layListPhieuDatHang();
 		String tenKH = tkpdhGUI.txtTenKH.getText().trim();
 		String tenNV = tkpdhGUI.txtTenNV.getText().trim();
 		String trangThai = (String) tkpdhGUI.cmbTrangThai.getSelectedItem();
@@ -119,6 +117,7 @@ public class TimKiemPhieuDatHangCtrl {
 		tkpdhGUI.txtTenKH.setText("");
 		tkpdhGUI.txtTenNV.setText("");
 		tkpdhGUI.cmbTrangThai.setSelectedItem("Tất cả");
+		locTatCa();
 	}
 
 	public void setDataChoTable(ArrayList<PhieuDatHang> list) {

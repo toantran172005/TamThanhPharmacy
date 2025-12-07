@@ -41,7 +41,7 @@ public class ThongKeKhachHang_GUI extends JPanel {
 			thongKekhCtrl.thongKeTopKhach(topN);
 		});
 		btnLamMoi.addActionListener(e -> thongKekhCtrl.lamMoi());
-
+		btnXuatExcel.addActionListener(e -> thongKekhCtrl.xuatFileExcel());
 	}
 
 	public ThongKeKhachHang_GUI() {
@@ -59,14 +59,12 @@ public class ThongKeKhachHang_GUI extends JPanel {
 		lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		topPanel.add(lblTitle);
 
-		// Separator dưới tiêu đề
 		topPanel.add(Box.createVerticalStrut(10));
 		JSeparator sep1 = new JSeparator();
 		sep1.setMaximumSize(new Dimension(Integer.MAX_VALUE, 1));
 		topPanel.add(sep1);
 		topPanel.add(Box.createVerticalStrut(10));
 
-		// Date choosers + button
 		JPanel datePanel = new JPanel();
 		datePanel.setBackground(Color.WHITE);
 		datePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 5));
@@ -86,7 +84,6 @@ public class ThongKeKhachHang_GUI extends JPanel {
 
 		topPanel.add(datePanel);
 
-		// Separator dưới date chooser
 		topPanel.add(Box.createVerticalStrut(10));
 		JSeparator sep2 = new JSeparator();
 		sep2.setMaximumSize(new Dimension(Integer.MAX_VALUE, 1));
@@ -95,13 +92,11 @@ public class ThongKeKhachHang_GUI extends JPanel {
 
 		add(topPanel, BorderLayout.NORTH);
 
-		// ===== CENTER PANEL =====
 		JPanel centerPanel = new JPanel();
 		centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 		centerPanel.setBackground(Color.WHITE);
 		centerPanel.setBorder(new EmptyBorder(10, 20, 10, 20));
 
-		// --- Tổng quan ---
 		JPanel pnlTongQuan = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 10));
 		pnlTongQuan.setBackground(Color.WHITE);
 
@@ -117,14 +112,12 @@ public class ThongKeKhachHang_GUI extends JPanel {
 
 		centerPanel.add(pnlTongQuan);
 
-		// Separator giữa tổng quan và chart
 		centerPanel.add(Box.createVerticalStrut(10));
 		JSeparator sep3 = new JSeparator();
 		sep3.setMaximumSize(new Dimension(Integer.MAX_VALUE, 1));
 		centerPanel.add(sep3);
 		centerPanel.add(Box.createVerticalStrut(10));
 
-		// --- BarChart Top khách ---
 		JPanel chartContainer = new JPanel(new BorderLayout());
 		chartContainer.setBackground(Color.WHITE);
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -134,14 +127,12 @@ public class ThongKeKhachHang_GUI extends JPanel {
 		chartContainer.add(chartPanel, BorderLayout.CENTER);
 		centerPanel.add(chartContainer);
 
-		// Separator giữa chart và bảng
 		centerPanel.add(Box.createVerticalStrut(10));
 		JSeparator sep4 = new JSeparator();
 		sep4.setMaximumSize(new Dimension(Integer.MAX_VALUE, 1));
 		centerPanel.add(sep4);
 		centerPanel.add(Box.createVerticalStrut(10));
 
-		// --- Bảng thống kê chi tiết ---
 		JPanel tblPanel = new JPanel();
 		tblPanel.setLayout(new BoxLayout(tblPanel, BoxLayout.Y_AXIS));
 		tblPanel.setBackground(Color.WHITE);
@@ -169,7 +160,6 @@ public class ThongKeKhachHang_GUI extends JPanel {
 		tblThongKeKH.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		tblThongKeKH.setSelectionBackground(new Color(0xE3F2FD));
 
-		// 🌿 Table trắng
 		tblThongKeKH.setBackground(Color.WHITE);
 		tblThongKeKH.setForeground(new Color(0x33, 0x33, 0x33));
 
@@ -179,7 +169,6 @@ public class ThongKeKhachHang_GUI extends JPanel {
 			tblThongKeKH.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		}
 
-		// Căn giữa tiêu đề cột
 		JTableHeader header = tblThongKeKH.getTableHeader();
 		header.setBackground(new Color(240, 240, 240));
 		header.setFont(new Font("Times New Roman", Font.BOLD, 15));
@@ -196,7 +185,6 @@ public class ThongKeKhachHang_GUI extends JPanel {
 
 		add(centerPanel, BorderLayout.CENTER);
 
-		// ===== BOTTOM BUTTONS =====
 		JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
 		bottomPanel.setBackground(Color.WHITE);
 
@@ -210,7 +198,6 @@ public class ThongKeKhachHang_GUI extends JPanel {
 		setHoatDong();
 	}
 
-	// === Hỗ trợ tạo info box cho tổng quan ===
 	public JPanel createInfoBox(String title, JLabel value) {
 		JPanel pnl = new JPanel();
 		pnl.setLayout(new BoxLayout(pnl, BoxLayout.Y_AXIS));
