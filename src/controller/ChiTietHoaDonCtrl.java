@@ -74,7 +74,6 @@ public class ChiTietHoaDonCtrl {
 		}
 	}
 	
-
 	// ========== IN HOÁ ĐƠN ==========
 	public void inHoaDon() {
 		tool.hienThiThongBao("In hóa đơn", "Chức năng in đang được phát triển...", true);

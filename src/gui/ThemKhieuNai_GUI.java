@@ -4,10 +4,13 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 import com.toedter.calendar.JDateChooser;
+
+import controller.ThemKhieuNaiCtrl;
 import controller.ToolCtrl;
 
 public class ThemKhieuNai_GUI extends JPanel {
 
+<<<<<<< HEAD
 	public JTextField txtTenKhachHang;
 	public JComboBox<String> cmbLoaiDon;
 	public JTextArea txaNoiDung;
@@ -15,9 +18,33 @@ public class ThemKhieuNai_GUI extends JPanel {
     public JDateChooser dateNgayLap;
 
     public ToolCtrl tool = new ToolCtrl();
+=======
+    public JTextField txtTenKhachHang, txtSdt;
+    public JComboBox<String> cmbLoaiDon;
+    public JTextArea txaNoiDung;
+    public JButton btnQuayLai, btnLamMoi, btnThem;
+    public JDateChooser dateNgayLap;
+
+    public ToolCtrl tool;
+    public ThemKhieuNaiCtrl tknCtrl;
+    
+>>>>>>> main
 
     public ThemKhieuNai_GUI() {
-        setLayout(new BorderLayout());
+    	tool = new ToolCtrl();
+    	tknCtrl = new ThemKhieuNaiCtrl(this);
+    	khoiTaoUI();
+    	ganSuKien();
+    }
+    
+    public void ganSuKien() {
+    	btnQuayLai.addActionListener(e -> tknCtrl.quayLaiDanhSach());
+    	btnLamMoi.addActionListener(e -> tknCtrl.lamMoi());
+    	btnThem.addActionListener(e -> tknCtrl.themPhieu());
+    }
+    
+    public void khoiTaoUI() {
+    	setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
         // ===== TOP =====
@@ -34,7 +61,6 @@ public class ThemKhieuNai_GUI extends JPanel {
         top.add(lblTitle, BorderLayout.CENTER);
         add(top, BorderLayout.NORTH);
 
-        // ===== CENTER =====
         JPanel center = new JPanel();
         center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
         center.setBackground(Color.WHITE);
@@ -45,21 +71,20 @@ public class ThemKhieuNai_GUI extends JPanel {
 
         center.add(Box.createVerticalStrut(10));
 
-        // --- Tên khách hàng ---
         center.add(taoDong("Tên khách hàng:", txtTenKhachHang = tool.taoTextField(""), labelWidth, fieldWidth));
         center.add(Box.createVerticalStrut(rowSpacing));
+        center.add(taoDong("Số điện thoại:", txtSdt = tool.taoTextField(""), labelWidth, fieldWidth));
+        center.add(Box.createVerticalStrut(rowSpacing));
 
-        // --- Ngày lập ---
         dateNgayLap = tool.taoDateChooser();
         center.add(taoDong("Ngày lập:", dateNgayLap, labelWidth, fieldWidth));
         center.add(Box.createVerticalStrut(rowSpacing));
 
-        // --- Loại đơn ---
-        cmbLoaiDon = tool.taoComboBox(new String[] { "Khiếu nại", "Hỗ trợ", "Khác" });
+        cmbLoaiDon = tool.taoComboBox(new String[] { "Khiếu nại", "Hỗ trợ"});
+        cmbLoaiDon.setEditable(false);
         center.add(taoDong("Loại đơn:", cmbLoaiDon, labelWidth, fieldWidth));
         center.add(Box.createVerticalStrut(rowSpacing));
 
-        // --- Nội dung ---
         txaNoiDung = tool.taoTextArea(115);
         JScrollPane scroll = new JScrollPane(txaNoiDung);
         scroll.setPreferredSize(new Dimension(fieldWidth, 115));
@@ -67,7 +92,6 @@ public class ThemKhieuNai_GUI extends JPanel {
 
         add(center, BorderLayout.CENTER);
 
-        // ===== BOTTOM =====
         JPanel bottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 20));
         bottom.setBackground(Color.WHITE);
 
@@ -79,11 +103,6 @@ public class ThemKhieuNai_GUI extends JPanel {
         bottom.add(btnLamMoi);
         bottom.add(btnThem);
         add(bottom, BorderLayout.SOUTH);
-
-        // ===== SỰ KIỆN =====
-        btnQuayLai.addActionListener(e -> onQuayLai());
-        btnLamMoi.addActionListener(e -> onLamMoi());
-        btnThem.addActionListener(e -> onThem());
     }
 
     public JPanel taoDong(String text, JComponent comp, int labelWidth, int fieldWidth) {
@@ -97,22 +116,6 @@ public class ThemKhieuNai_GUI extends JPanel {
         row.add(lbl);
         row.add(comp);
         return row;
-    }
-
-    // ===== SỰ KIỆN =====
-    public void onQuayLai() {
-        JOptionPane.showMessageDialog(this, "Quay lại clicked");
-    }
-
-    public void onLamMoi() {
-        txtTenKhachHang.setText("");
-        cmbLoaiDon.setSelectedIndex(0);
-        txaNoiDung.setText("");
-        dateNgayLap.setDate(null);
-    }
-
-    public void onThem() {
-        JOptionPane.showMessageDialog(this, "Thêm khiếu nại thành công (demo)");
     }
 
 }

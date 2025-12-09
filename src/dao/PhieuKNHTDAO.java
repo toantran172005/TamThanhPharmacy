@@ -17,6 +17,29 @@ public class PhieuKNHTDAO {
 
 	public ToolCtrl tool = new ToolCtrl();
 
+	public boolean themPhieu(PhieuKhieuNaiHoTro knht) {
+		String sql = "INSERT INTO Phieu_KhieuNai_HoTroKH (maPhieu, maNV, maKH, ngayLap, noiDung, loaiDon, trangThai) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setString(1, knht.getMaPhieu());
+			ps.setString(2, knht.getNhanVien().getMaNV());
+			ps.setString(3, knht.getKhachHang().getMaKH());
+			ps.setDate(4, java.sql.Date.valueOf(knht.getNgayLap()));
+			ps.setString(5, knht.getNoiDung());
+			ps.setString(6, knht.getLoaiDon());
+			ps.setString(7, knht.getTrangThai());
+
+			int rows = ps.executeUpdate();
+			return rows > 0;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 	public boolean capNhatPhieu(PhieuKhieuNaiHoTro knht) {
 		String sqlKhachHang = """
 				UPDATE KhachHang

@@ -26,7 +26,6 @@ public class ChiTietHoaDon_GUI extends JPanel {
 	public ToolCtrl tool = new ToolCtrl();
 	public HoaDonDAO hdDAO = new HoaDonDAO();
 
-	// Constructor
 	public ChiTietHoaDonCtrl getCtrl() {
 		return ctrl;
 	}

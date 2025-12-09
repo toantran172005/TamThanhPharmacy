@@ -164,7 +164,7 @@ public class ChiTietPhieuDoiTra_GUI extends JPanel {
 	}
 
 	// ========== TẠO THÔNG TIN ==========
-	private JPanel taoDongThongTin(String tieuDe, JLabel lblNoiDung) {
+	public JPanel taoDongThongTin(String tieuDe, JLabel lblNoiDung) {
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 50, 5));
 		panel.setBackground(Color.WHITE);
 		JLabel lblTieuDe = tool.taoLabel(tieuDe);

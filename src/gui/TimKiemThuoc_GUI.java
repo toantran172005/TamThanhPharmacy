@@ -95,7 +95,7 @@ public class TimKiemThuoc_GUI extends JPanel {
 
 		tblThuoc = new JTable(model);
 		tblThuoc.setRowHeight(38);
-		tblThuoc.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		tblThuoc.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		tblThuoc.setSelectionBackground(new Color(0xE3F2FD));
 		tblThuoc.setSelectionForeground(Color.BLACK);
 		tblThuoc.setGridColor(new Color(0xDDDDDD));
@@ -105,7 +105,7 @@ public class TimKiemThuoc_GUI extends JPanel {
 		tblThuoc.setForeground(Color.BLACK);
 
 		JTableHeader header = tblThuoc.getTableHeader();
-		header.setFont(new Font("Times New Roman", Font.BOLD, 14));
+		header.setFont(new Font("Times New Roman", Font.BOLD, 18));
 		header.setBackground(Color.WHITE);
 		header.setForeground(Color.BLACK);
 		header.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));

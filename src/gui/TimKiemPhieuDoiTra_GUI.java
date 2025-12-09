@@ -18,7 +18,11 @@ public class TimKiemPhieuDoiTra_GUI extends JPanel {
 	public JButton btnTimKiem, btnLamMoi, btnChiTiet;
 	public JTable tblPhieuDoiTra;
 	public TrangChuQL_GUI mainFrame;
+<<<<<<< HEAD
     public TrangChuNV_GUI mainFrameNV;
+=======
+	public TrangChuNV_GUI mainFrameNV;
+>>>>>>> main
 
     Font font1 = new Font("Times New Roman", Font.BOLD, 18);
     Font font2 = new Font("Times New Roman", Font.PLAIN, 15);
@@ -112,7 +116,7 @@ public class TimKiemPhieuDoiTra_GUI extends JPanel {
         // Căn giữa tiêu đề cột
         JTableHeader header = tblPhieuDoiTra.getTableHeader();
         header.setBackground(new Color(240, 240, 240));
-        header.setFont(font2);
+        header.setFont(font1);
         ((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
         add(scrollPane, BorderLayout.CENTER);

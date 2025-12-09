@@ -133,7 +133,7 @@ public class HoaDonDAO {
 
 
 	// ================= HÀM HỖ TRỢ: CHUYỂN ResultSet → HoaDon =================
-	private HoaDon mapResultSetToHoaDon(ResultSet rs) throws SQLException {
+	public HoaDon mapResultSetToHoaDon(ResultSet rs) throws SQLException {
 		KhachHang kh = khDAO.timKhachHangTheoMa(rs.getString("maKH"));
 		NhanVien nv = nvDAO.timNhanVienTheoMa(rs.getString("maNV"));
 

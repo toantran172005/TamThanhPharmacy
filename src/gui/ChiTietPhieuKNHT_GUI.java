@@ -3,70 +3,99 @@ package gui;
 import java.awt.*;
 import javax.swing.*;
 
+import controller.ChiTietPhieuKNHTCtrl;
 import controller.ToolCtrl;
+import entity.PhieuKhieuNaiHoTro;
 
 public class ChiTietPhieuKNHT_GUI extends JPanel {
 
+<<<<<<< HEAD
 	public ToolCtrl tool = new ToolCtrl();
 
 	public JTextField txtTenKH, txtSdt, txtTenNV;
 	public JComboBox<String> cmbLoaiDon, cmbTrangThai;
 	public JTextArea txaNoiDung;
 	public JButton btnCapNhat, btnQuayLai;
+=======
+	public ToolCtrl tool;
+	public JTextField txtTenKH, txtSdt, txtTenNV;
+	public JComboBox<String> cmbLoaiDon, cmbTrangThai;
+	public JTextArea txaNoiDung;
+	public JButton btnCapNhat, btnQuayLai;
+	public PhieuKhieuNaiHoTro phieu;
+	public ChiTietPhieuKNHTCtrl ctknhtCtrl;
 
-	public ChiTietPhieuKNHT_GUI() {
+	public ChiTietPhieuKNHT_GUI(PhieuKhieuNaiHoTro phieu) {
+		this.phieu = phieu;
+		ctknhtCtrl = new ChiTietPhieuKNHTCtrl(this);
+		tool = new ToolCtrl();
+		khoiTaoUI();
+		ganData();
+		ganSuKien();
+	}
+>>>>>>> main
+
+	public void ganSuKien() {
+		ctknhtCtrl.choPhepEdit(false);
+		btnQuayLai.addActionListener(e -> ctknhtCtrl.quayLaiDanhSachKNHT());
+		btnCapNhat.addActionListener(e -> ctknhtCtrl.capNhatPhieuKNHT());
+	}
+
+	public void ganData() {
+		txtTenKH.setText(phieu.getKhachHang().getTenKH());
+		txtTenNV.setText(phieu.getNhanVien().getTenNV());
+		txtSdt.setText(tool.chuyenSoDienThoai(phieu.getKhachHang().getSdt()));
+		txaNoiDung.setText(phieu.getNoiDung());
+		cmbLoaiDon.setSelectedItem(phieu.getLoaiDon());
+		cmbTrangThai.setSelectedItem(phieu.getTrangThai());
+	}
+
+	public void khoiTaoUI() {
 		setLayout(new BorderLayout());
 		setBackground(Color.WHITE);
 
-		// ===== TOP =====
 		JPanel top = new JPanel(new BorderLayout());
 		top.setBackground(Color.WHITE);
 		top.setBorder(BorderFactory.createEmptyBorder(20, 10, 30, 10));
 
 		JLabel lblTitle = tool.taoLabel("CHI TIẾT PHIẾU KHIẾU NẠI & HỖ TRỢ");
 		lblTitle.setFont(new Font("Times New Roman", Font.BOLD, 22));
-		lblTitle.setHorizontalAlignment(SwingConstants.CENTER); // Căn giữa theo chiều ngang
+		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setVerticalAlignment(SwingConstants.CENTER);
-		lblTitle.setPreferredSize(new Dimension(600, 40)); // giúp tránh text bị cắt
+		lblTitle.setPreferredSize(new Dimension(600, 40));
 
 		top.add(lblTitle, BorderLayout.CENTER);
 		add(top, BorderLayout.NORTH);
 
-		// ===== CENTER =====
 		JPanel center = new JPanel();
 		center.setLayout(new BoxLayout(center, BoxLayout.Y_AXIS));
 		center.setBackground(Color.WHITE);
 
-		// spacing giữa các hàng
 		int rowSpacing = 20;
 		int labelWidth = 150;
 		int fieldWidth = 300;
 
 		center.add(Box.createVerticalStrut(10));
 
-		// --- Tên khách hàng ---
 		center.add(taoDong("Tên khách hàng:", txtTenKH = tool.taoTextField(""), labelWidth, fieldWidth));
 		center.add(Box.createVerticalStrut(rowSpacing));
 
-		// --- Số điện thoại ---
 		center.add(taoDong("Số điện thoại:", txtSdt = tool.taoTextField(""), labelWidth, fieldWidth));
 		center.add(Box.createVerticalStrut(rowSpacing));
 
-		// --- Tên nhân viên ---
 		center.add(taoDong("Tên nhân viên:", txtTenNV = tool.taoTextField(""), labelWidth, fieldWidth));
 		center.add(Box.createVerticalStrut(rowSpacing));
 
-		// --- Loại đơn ---
-		cmbLoaiDon = tool.taoComboBox(new String[] { "Khiếu nại", "Hỗ trợ", "Khác" });
+		cmbLoaiDon = tool.taoComboBox(new String[] { "Khiếu nại", "Hỗ trợ" });
+		cmbLoaiDon.setEditable(false);
 		center.add(taoDong("Loại đơn:", cmbLoaiDon, labelWidth, fieldWidth));
 		center.add(Box.createVerticalStrut(rowSpacing));
 
-		// --- Trạng thái ---
-		cmbTrangThai = tool.taoComboBox(new String[] { "Hoạt động", "Ngừng hoạt động" });
+		cmbTrangThai = tool.taoComboBox(new String[] { "Hoàn tất", "Chờ xử lý" });
+		cmbTrangThai.setEditable(false);
 		center.add(taoDong("Trạng thái:", cmbTrangThai, labelWidth, fieldWidth));
 		center.add(Box.createVerticalStrut(rowSpacing));
 
-		// --- Nội dung ---
 		txaNoiDung = tool.taoTextArea(115);
 		JScrollPane scroll = new JScrollPane(txaNoiDung);
 		scroll.setPreferredSize(new Dimension(fieldWidth, 115));
@@ -74,7 +103,6 @@ public class ChiTietPhieuKNHT_GUI extends JPanel {
 
 		add(center, BorderLayout.CENTER);
 
-		// ===== BOTTOM =====
 		JPanel bottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 20));
 		bottom.setBackground(Color.WHITE);
 
@@ -86,7 +114,10 @@ public class ChiTietPhieuKNHT_GUI extends JPanel {
 		add(bottom, BorderLayout.SOUTH);
 	}
 
+<<<<<<< HEAD
 	// === Hàm tạo 1 hàng label + control ===
+=======
+>>>>>>> main
 	public JPanel taoDong(String text, JComponent comp, int labelWidth, int fieldWidth) {
 		JPanel row = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 0));
 		row.setBackground(Color.WHITE);
@@ -98,15 +129,6 @@ public class ChiTietPhieuKNHT_GUI extends JPanel {
 		row.add(lbl);
 		row.add(comp);
 		return row;
-	}
-	
-	public static void main(String[] args) {
-	    JFrame f = new JFrame("Chi tiết phiếu KN & HT");
-	    f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    f.setContentPane(new ChiTietPhieuKNHT_GUI());
-	    f.pack();
-	    f.setLocationRelativeTo(null);
-	    f.setVisible(true);
 	}
 
 }

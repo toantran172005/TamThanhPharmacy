@@ -12,23 +12,24 @@ import java.util.ArrayList;
 import controller.ToolCtrl;
 import connectDB.KetNoiDatabase;
 import entity.NhanVien;
+import entity.TaiKhoan;
 import entity.Thue;
 
 public class NhanVienDAO {
 	public ToolCtrl toolCtrl = new ToolCtrl();
 	public ArrayList<NhanVien> listNV = new ArrayList<>();
-	
+
 	// ========== TÌM NHÂN VIÊN THEO MÃ ==========
-		public NhanVien timNhanVienTheoMa(String maNV) {
-			if (listNV.isEmpty()) {
-		        layListNhanVien();
-		    }
-			for(NhanVien nv: listNV) {
-				if(nv.getMaNV().equalsIgnoreCase(maNV))
-					return nv;
-			}
-			return null;
+	public NhanVien timNhanVienTheoMa(String maNV) {
+		if (listNV.isEmpty()) {
+			layListNhanVien();
 		}
+		for (NhanVien nv : listNV) {
+			if (nv.getMaNV().equalsIgnoreCase(maNV))
+				return nv;
+		}
+		return null;
+	}
 
 	public ArrayList<NhanVien> layListNhanVien() {
 		listNV.clear();
@@ -60,6 +61,7 @@ public class NhanVienDAO {
 	}
 
 	public ArrayList<NhanVien> layNhanVienDangLam() {
+		layListNhanVien();
 		if (listNV.isEmpty()) {
 			layListNhanVien();
 		}
@@ -74,6 +76,7 @@ public class NhanVienDAO {
 	}
 
 	public ArrayList<NhanVien> layNhanVienNghiLam() {
+		layListNhanVien();
 		if (listNV.isEmpty()) {
 			layListNhanVien();
 		}
@@ -150,7 +153,24 @@ public class NhanVienDAO {
 		}
 	}
 	
-	
+	public boolean themTaiKhoan(TaiKhoan tk) {
+		String sql = "INSERT INTO TaiKhoan (maTK, maNV, tenDangNhap, matKhau, trangThai, loaiTK, email) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, tk.getMaTK());
+			ps.setString(2, tk.getNhanVien().getMaNV());
+			ps.setString(3, tk.getTenDangNhap());
+			ps.setString(4, tk.getMatKhau());
+			ps.setBoolean(5, tk.getTrangThai());
+			ps.setString(6, tk.getLoaiTK());
+			ps.setString(7, tk.getEmail());
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	public String layEmailNV(String maNV) {
 		String sql = """
 				SELECT tk.email
@@ -167,4 +187,23 @@ public class NhanVienDAO {
 		}
 		return "";
 	}
+	
+	public String layAnhNV(String maNV) {
+	    String sql = "SELECT anh FROM NhanVien WHERE maNV = ?";
+	    try (Connection con = KetNoiDatabase.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setString(1, maNV);
+	        ResultSet rs = ps.executeQuery();
+
+	        if (rs.next()) {
+	            return rs.getString("anh"); // có thể null
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return null; // nếu không có ảnh hoặc lỗi
+	}
+
 }

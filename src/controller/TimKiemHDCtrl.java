@@ -50,13 +50,10 @@ public class TimKiemHDCtrl {
 
 	// ========== SỰ KIỆN ==========
 	public void suKien() {
-		// Tìm kiếm
 		ActionListener setAction = e -> locHoaDon();
 		gui.getTxtKhachHang().addActionListener(setAction);
 		gui.getTxtTenNV().addActionListener(setAction);
 		gui.getBtnTimKiem().addActionListener(setAction);
-
-		// Các nút
 		gui.getBtnLamMoi().addActionListener(e -> lamMoiBang());
 		gui.getBtnChiTiet().addActionListener(e -> xemChiTiet());
 		gui.getBtnLichSuXoa().addActionListener(e -> xemLichSuXoa());

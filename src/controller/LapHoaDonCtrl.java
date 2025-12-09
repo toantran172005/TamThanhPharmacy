@@ -50,6 +50,7 @@ public class LapHoaDonCtrl {
 	}
 
 	public void init() {
+<<<<<<< HEAD
 		loadData();
 		setupEvents();
 		setupAutoComplete();
@@ -57,6 +58,15 @@ public class LapHoaDonCtrl {
 
 	// === TẢI DỮ LIỆU ===
 	public void loadData() {
+=======
+		taiDuLieu();
+		suKien();
+		goiYKhachHang();
+	}
+
+	// ========== TẢI DỮ LIỆU ==========
+	public void taiDuLieu() {
+>>>>>>> main
 		dsKhachHang = khDAO.layListKhachHang();
 		dsThuoc = thuocDAO.layListThuoc();
 
@@ -74,8 +84,13 @@ public class LapHoaDonCtrl {
 		gui.getCmbHTThanhToan().setSelectedItem("Tiền mặt");
 	}
 
+<<<<<<< HEAD
 	// === SỰ KIỆN ===
 	public void setupEvents() {
+=======
+	// ========== SỰ KIỆN ==========
+	public void suKien() {
+>>>>>>> main
 		gui.getBtnThem().addActionListener(e -> xuLyThemThuocVaoBang());
 		gui.getBtnXoa().addActionListener(e -> xuLyXoaDong());
 		gui.getBtnLamMoi().addActionListener(e -> lamMoi());
@@ -88,8 +103,13 @@ public class LapHoaDonCtrl {
 		});
 	}
 
+<<<<<<< HEAD
 	// === AUTOCOMPLETE ===
 	public void setupAutoComplete() {
+=======
+	// ========== TÌM KHÁCH HÀNG ==========
+	public void goiYKhachHang() {
+>>>>>>> main
 		gui.getTxtTenKH().addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent e) {
 				if (dangSetTenKH || gui.getTxtTenKH().getText().trim().isEmpty())
@@ -98,7 +118,7 @@ public class LapHoaDonCtrl {
 				List<KhachHang> ketQua = dsKhachHang.stream().filter(kh -> kh.getTenKH().toLowerCase().contains(input))
 						.limit(5).toList();
 				if (!ketQua.isEmpty())
-					showSuggestion(gui.getTxtTenKH(), ketQua, true);
+					hienThiListKhachHang(gui.getTxtTenKH(), ketQua, true);
 			}
 		});
 
@@ -110,12 +130,17 @@ public class LapHoaDonCtrl {
 				List<KhachHang> ketQua = dsKhachHang.stream()
 						.filter(kh -> tool.chuyenSoDienThoai(kh.getSdt()).contains(input)).limit(5).toList();
 				if (!ketQua.isEmpty())
-					showSuggestion(gui.getTxtSdt(), ketQua, false);
+					hienThiListKhachHang(gui.getTxtSdt(), ketQua, false);
 			}
 		});
 	}
 
+<<<<<<< HEAD
 	public void showSuggestion(JTextField tf, List<KhachHang> list, boolean isTen) {
+=======
+	// ========== HIỂN THỊ KHÁCH HÀNG ĐÃ CÓ ==========
+	public void hienThiListKhachHang(JTextField tf, List<KhachHang> list, boolean isTen) {
+>>>>>>> main
 		JPopupMenu pop = new JPopupMenu();
 		for (KhachHang kh : list) {
 			String text = isTen ? kh.getTenKH() + " - " + tool.chuyenSoDienThoai(kh.getSdt())
@@ -144,7 +169,11 @@ public class LapHoaDonCtrl {
 		SwingUtilities.invokeLater(() -> pop.show(tf, 0, tf.getHeight()));
 	}
 
+<<<<<<< HEAD
 	// === THÊM THUỐC ===
+=======
+	// ========== THÊM THUỐC XUỐNG BẢNG ==========
+>>>>>>> main
 	public void xuLyThemThuocVaoBang() {
 		String tenThuoc = gui.getCmbSanPham().getEditor().getItem().toString().trim();
 		if (tenThuoc.isEmpty()) {
@@ -234,13 +263,21 @@ public class LapHoaDonCtrl {
 		resetFormNhap();
 	}
 
+<<<<<<< HEAD
 	// ===== Reset form nhập =====
+=======
+	// ========== Reset form nhập ==========
+>>>>>>> main
 	public void resetFormNhap() {
 		gui.getTxtSoLuong().setText("");
 		gui.getCmbSanPham().setSelectedIndex(0);
 		gui.getCmbDonVi().setSelectedIndex(0);
 	}
 
+<<<<<<< HEAD
+=======
+	// ========== XOÁ DÒNG TRÊN BẢNG ==========
+>>>>>>> main
 	public void xuLyXoaDong() {
 		JTable table = gui.getTblThuoc();
 		int row = table.getSelectedRow();
@@ -265,11 +302,19 @@ public class LapHoaDonCtrl {
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	// ========== SETUP STT CỦA CÁC DÒNG ==========
+>>>>>>> main
 	public void capNhatSTT() {
 		for (int i = 0; i < tableModel.getRowCount(); i++)
 			tableModel.setValueAt(i + 1, i, 0);
 	}
 
+<<<<<<< HEAD
+=======
+	// ========== TÍNH TỔNG TIỀN CỦA HOÁ ĐƠN ==========
+>>>>>>> main
 	public void tinhTongTien() {
 		double tong = 0;
 
@@ -285,6 +330,10 @@ public class LapHoaDonCtrl {
 		gui.getLblTongTien().setText(tool.dinhDangVND(tong));
 	}
 
+<<<<<<< HEAD
+=======
+	// ========== TÍNH TIỀN THỪA CỦA HOÁ ĐƠN ==========
+>>>>>>> main
 	public void tinhTienThua() {
 		// Nếu không chọn "Tiền mặt" → không có tiền thừa
 		if (!"Tiền mặt".equals(gui.getCmbHTThanhToan().getSelectedItem())) {
@@ -308,6 +357,10 @@ public class LapHoaDonCtrl {
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	// ========== LÀM MỚI ==========
+>>>>>>> main
 	public void lamMoi() {
 		gui.getTxtSdt().setText("");
 		gui.getTxtTenKH().setText("");
@@ -319,6 +372,10 @@ public class LapHoaDonCtrl {
 		tinhTongTien();
 	}
 
+<<<<<<< HEAD
+=======
+	// ========== XUẤT/LƯU HOÁ ĐƠN ==========
+>>>>>>> main
 	public void xuLyXuatHoaDon() {
 		try {
 			// ==== 1. Kiểm tra dữ liệu ====

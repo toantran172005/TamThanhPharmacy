@@ -112,13 +112,13 @@ public class DonVi_GUI extends JPanel {
 
         tblDonVi = new JTable(model);
         tblDonVi.setRowHeight(50);
-        tblDonVi.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+        tblDonVi.setFont(new Font("Times New Roman", Font.PLAIN, 15));
         tblDonVi.setSelectionBackground(new Color(0xE3F2FD));
         tblDonVi.setGridColor(new Color(0xDDDDDD));
         tblDonVi.setBackground(Color.WHITE);
 
         JTableHeader header = tblDonVi.getTableHeader();
-        header.setFont(new Font("Times New Roman", Font.BOLD, 14));
+        header.setFont(new Font("Times New Roman", Font.BOLD, 18));
         header.setBackground(Color.WHITE);
         header.setForeground(new Color(0x33, 0x33, 0x33));
         
