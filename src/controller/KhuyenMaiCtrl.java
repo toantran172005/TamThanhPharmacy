@@ -11,8 +11,8 @@ import gui.DanhSachKhuyenMai_GUI;
 
 public class KhuyenMaiCtrl {
 
-	private DanhSachKhuyenMai_GUI kmGUI;
-	private KhuyenMaiDAO kmDAO = new KhuyenMaiDAO();
+	public DanhSachKhuyenMai_GUI kmGUI;
+	public KhuyenMaiDAO kmDAO = new KhuyenMaiDAO();
 	ArrayList<KhuyenMai> listKM = new ArrayList<KhuyenMai>();
 	
 	

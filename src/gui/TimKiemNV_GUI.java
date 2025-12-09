@@ -5,6 +5,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import controller.TimKiemHDCtrl;
 import controller.TimKiemNhanVienCtrl;
 import controller.ToolCtrl;
 
@@ -14,19 +15,27 @@ public class TimKiemNV_GUI extends JPanel {
 
 	public JTable tblNhanVien;
 	public JTextField txtSdt, txtTenNV;
+<<<<<<< HEAD
 	public JButton btnXemChiTiet, btnLamMoi, btnLichSuXoa;
+	Font font1 = new Font("Arial", Font.BOLD, 18);
+	Font font2 = new Font("Arial", Font.PLAIN, 15);
+	public ToolCtrl tool = new ToolCtrl();
+
+	public TrangChuQL_GUI mainFrame;
+=======
+	public JButton btnTimKiem, btnXemChiTiet, btnLamMoi, btnLichSuXoa, btnXoaHoanTac;
 	Font font1 = new Font("Time New Roman", Font.BOLD, 18);
 	Font font2 = new Font("Time New Roman", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
 
 	public TrangChuQL_GUI mainFrame;
-//	public TimKiemNhanVienCtrl tknvCtrl = new TimKiemNhanVienCtrl(this);
 	public DefaultTableModel model;
+>>>>>>> main
 
 	public TimKiemNV_GUI(TrangChuQL_GUI mainFrame) {
 		this.mainFrame = mainFrame;
-//		tknvCtrl.setDataChoTable(tknvCtrl.listNV);
 		initUI();
+		new TimKiemNhanVienCtrl(this);
 	}
 
 	public void initUI() {
@@ -53,58 +62,52 @@ public class TimKiemNV_GUI extends JPanel {
 		centerContent.setBackground(Color.WHITE);
 
 		// === Bên trái: Tìm kiếm ===
-		JPanel leftPanel = new JPanel();
-		leftPanel.setLayout(new GridLayout(2, 1, 0, 8));
-		leftPanel.setBackground(Color.WHITE);
+		JPanel leftVBox = new JPanel();
+		leftVBox.setLayout(new BoxLayout(leftVBox, BoxLayout.Y_AXIS));
+		leftVBox.setBackground(Color.WHITE);
+		leftVBox.setPreferredSize(new Dimension(480, 120));
 
-		JPanel sdtPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
-		sdtPanel.setBackground(Color.WHITE);
-		JLabel lblSdt = tool.taoLabel("Số điện thoại: ");
+		txtTenNV = tool.taoTextField("Nhập tên nhân viên...");
 		txtSdt = tool.taoTextField("Số điện thoại...");
-		sdtPanel.add(lblSdt);
-		sdtPanel.add(txtSdt);
 
-		JPanel tenPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
-		tenPanel.setBackground(Color.WHITE);
-		JLabel lblTen = tool.taoLabel("Tên nhân viên: ");
-		txtTenNV = tool.taoTextField("Tên nhân viên...");
-		tenPanel.add(lblTen);
-		tenPanel.add(txtTenNV);
+		leftVBox.add(taoDong("Tên nhân viên:", txtTenNV, 150, 255));
+		leftVBox.add(Box.createVerticalStrut(15));
+		leftVBox.add(taoDong("Số điện thoại:", txtSdt, 150, 255));
 
-		leftPanel.add(sdtPanel);
-		leftPanel.add(tenPanel);
+		// === Bên phải: Nút ===		
+		JPanel rightVBox = new JPanel();
+		rightVBox.setLayout(new BoxLayout(rightVBox, BoxLayout.Y_AXIS));
+		rightVBox.setBackground(Color.WHITE);
+		rightVBox.setPreferredSize(new Dimension(500, 120));
 
-		// === Bên phải: Nút ===
-		JPanel rightPanel = new JPanel(new GridBagLayout());
-		rightPanel.setBackground(Color.WHITE);
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(4, 6, 4, 6);
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		JPanel btnRow1 = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 0));
+		btnRow1.setBackground(Color.WHITE);
 
-		btnXemChiTiet = tool.taoButton("Xem chi tiết", "/picture/nhanVien/find.png");
-		btnLamMoi = tool.taoButton("Làm mới", "/picture/nhanVien/refresh.png");
-		btnLichSuXoa = tool.taoButton("Lịch sử xoá", "/picture/nhanVien/document.png");
+		btnTimKiem = tool.taoButton("Tìm kiếm", "/picture/khachHang/search.png");
+		btnXemChiTiet = tool.taoButton("Xem chi tiết", "/picture/khachHang/find.png");
 
-		Dimension btnSize = new Dimension(145, 38);
-		btnXemChiTiet.setPreferredSize(btnSize);
-		btnLamMoi.setPreferredSize(btnSize);
-		btnLichSuXoa.setPreferredSize(btnSize);
+		btnRow1.add(btnTimKiem);
+		btnRow1.add(btnXemChiTiet);
 
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		rightPanel.add(btnXemChiTiet, gbc);
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		rightPanel.add(btnLamMoi, gbc);
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		rightPanel.add(btnLichSuXoa, gbc);
+		JPanel btnRow2 = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
+		btnRow2.setBackground(Color.WHITE);
+
+		btnLichSuXoa = tool.taoButton("Lịch sử xóa", "/picture/khachHang/document.png");
+		btnXoaHoanTac = tool.taoButton("Xóa", "/picture/khachHang/trash.png");
+		btnLamMoi = tool.taoButton("Làm mới", "/picture/khachHang/refresh.png");
+		btnRow2.add(btnLichSuXoa);
+		btnRow2.add(btnXoaHoanTac);
+		btnRow2.add(btnLamMoi);
+
+		rightVBox.add(btnRow1);
+		rightVBox.add(Box.createVerticalStrut(10));
+		rightVBox.add(btnRow2);
 
 		// === Gom lại và căn giữa ===
 		centerContent.add(Box.createHorizontalGlue()); // Đẩy vào giữa
-		centerContent.add(leftPanel);
+		centerContent.add(leftVBox);
 		centerContent.add(Box.createHorizontalStrut(30)); // Khoảng cách giữa tìm kiếm và nút
-		centerContent.add(rightPanel);
+		centerContent.add(rightVBox);
 		centerContent.add(Box.createHorizontalGlue()); // Đẩy vào giữa
 
 		topPanel.add(centerContent);
@@ -149,11 +152,35 @@ public class TimKiemNV_GUI extends JPanel {
 		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
 		add(scrollPane, BorderLayout.CENTER);
-
-		btnXemChiTiet.addActionListener(e -> {
-			ChiTietNhanVien_GUI chiTietPanel = new ChiTietNhanVien_GUI(mainFrame);
-			mainFrame.setUpNoiDung(chiTietPanel);
-		});
 	}
+	
+	public JPanel taoDong(String text, JComponent comp, int labelWidth, int fieldWidth) {
+		JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
+		row.setBackground(Color.WHITE);
+
+		if (!text.isEmpty()) {
+			JLabel lbl = tool.taoLabel(text);
+			lbl.setPreferredSize(new Dimension(labelWidth, 25));
+			row.add(lbl);
+		}
+
+		if (comp != null) {
+			comp.setPreferredSize(new Dimension(fieldWidth, comp.getPreferredSize().height));
+			row.add(comp);
+		}
+
+		return row;
+	}
+	
+	 // ========== Getters ==========
+    public JTable getTblNhanVien() { return tblNhanVien; }
+    public JTextField getTxtSdt() { return txtSdt; }
+    public JTextField getTxtTenNV() { return txtTenNV; }
+    public JButton getBtnTimKiem() { return btnTimKiem; }
+    public JButton getBtnLamMoi() { return btnLamMoi; }
+    public JButton getBtnXemChiTiet() { return btnXemChiTiet; }
+    public JButton getBtnLichSuXoa() { return btnLichSuXoa; }
+    public TrangChuQL_GUI getMainFrame() { return mainFrame; }
+    public JButton getBtnXoaHoanTac() { return btnXoaHoanTac;}
 
 }

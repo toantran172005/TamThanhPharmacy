@@ -23,7 +23,7 @@ public class TimKiemThuoc_GUI extends JPanel {
 	public JCheckBox chkChonTatCa;
 	public JButton btnXemChiTiet, btnLamMoi, btnLichSuXoa, btnXoaTatCa;
 
-	public final ToolCtrl tool = new ToolCtrl();
+	public ToolCtrl tool = new ToolCtrl();
 	public ThuocCtrl thCtrl;
 
 	public TimKiemThuoc_GUI() {

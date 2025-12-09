@@ -9,19 +9,19 @@ import controller.ToolCtrl;
 
 public class ThemThuoc_GUI extends JPanel {
 
-    private JTextField txtTenThuoc;
-    private JTextField txtDangThuoc;
-    private JComboBox<String> cmbDonVi;
-    private JTextField txtGiaBan;
-    private JComboBox<String> cmbThue;
-    private JComboBox<String> cmbKeThuoc;
-    private JDateChooser dpHanSuDung;
-    private JLabel imgThuoc;
-    private JButton btnChonAnh, btnLamMoi, btnThem;
+	public JTextField txtTenThuoc;
+	public JTextField txtDangThuoc;
+    public JComboBox<String> cmbDonVi;
+    public JTextField txtGiaBan;
+    public JComboBox<String> cmbThue;
+    public JComboBox<String> cmbKeThuoc;
+    public JDateChooser dpHanSuDung;
+    public JLabel imgThuoc;
+    public JButton btnChonAnh, btnLamMoi, btnThem;
 
-    private final ToolCtrl tool = new ToolCtrl();
-	private JComboBox cmbQuocGia;
-	private JSpinner spSoLuongTon;
+    public ToolCtrl tool = new ToolCtrl();
+    public JComboBox cmbQuocGia;
+    public JSpinner spSoLuongTon;
 
     public ThemThuoc_GUI() {
         setLayout(new BorderLayout());
@@ -120,7 +120,7 @@ public class ThemThuoc_GUI extends JPanel {
     }
 
     // ====== Hàm tạo 1 dòng nhãn + ô nhập ======
-    private JPanel taoDong(String label, JComponent comp) {
+    public JPanel taoDong(String label, JComponent comp) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         row.setBackground(Color.WHITE);
 
@@ -134,7 +134,7 @@ public class ThemThuoc_GUI extends JPanel {
     }
 
     // ===== Event handlers =====
-    private void onBtnLamMoi() {
+    public void onBtnLamMoi() {
         txtTenThuoc.setText("");
         txtDangThuoc.setText("");
         cmbDonVi.setSelectedIndex(-1);
@@ -146,11 +146,11 @@ public class ThemThuoc_GUI extends JPanel {
         txtTenThuoc.requestFocus();
     }
 
-    private void onBtnThem() {
+    public void onBtnThem() {
         // TODO: xử lý thêm thuốc
     }
 
-    private void onBtnChonAnh() {
+    public void onBtnChonAnh() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Chọn ảnh thuốc");
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(

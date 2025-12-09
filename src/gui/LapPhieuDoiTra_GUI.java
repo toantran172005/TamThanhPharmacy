@@ -10,15 +10,15 @@ import javax.swing.table.JTableHeader;
 import java.awt.*;
 
 public class LapPhieuDoiTra_GUI extends JPanel {
-	private JLabel lblMaHD, lblKhachHang, lblTongTienHoan;
-	private JTextField txtTenThuoc, txtSoLuong;
-	private JTextArea txaLyDo, txaGhiChu;
-	private JComboBox<String> cmbMucHoan;
-	private JTable tblHDThuoc, tblPhieuDTThuoc;
-	private JButton btnThem, btnLamMoi, btnTaoPhieuDT, btnQuayLai, btnXoa;
-	private ToolCtrl toolCtrl = new ToolCtrl();
-	private TrangChuQL_GUI trangChuQL;
-	private TrangChuNV_GUI trangChuNV;
+	public JLabel lblMaHD, lblKhachHang, lblTongTienHoan;
+	public JTextField txtTenThuoc, txtSoLuong;
+	public JTextArea txaLyDo, txaGhiChu;
+	public JComboBox<String> cmbMucHoan;
+	public JTable tblHDThuoc, tblPhieuDTThuoc;
+	public JButton btnThem, btnLamMoi, btnTaoPhieuDT, btnQuayLai, btnXoa;
+	public ToolCtrl toolCtrl = new ToolCtrl();
+	public TrangChuQL_GUI trangChuQL;
+	public TrangChuNV_GUI trangChuNV;
 
 	Font font1 = new Font("Times New Roman", Font.BOLD, 18);
 	Font font2 = new Font("Times New Roman", Font.PLAIN, 15);
@@ -243,7 +243,7 @@ public class LapPhieuDoiTra_GUI extends JPanel {
 	}
 
 	// ========== Tạo dòng label + component ==========
-	private JPanel createFormRow(String label, JComponent comp, int width) {
+	public JPanel createFormRow(String label, JComponent comp, int width) {
 		JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
 		row.setBackground(Color.WHITE);
 		JLabel lbl = toolCtrl.taoLabel(label);
@@ -260,7 +260,7 @@ public class LapPhieuDoiTra_GUI extends JPanel {
 	}
 
 	// ========== Tạo dòng Mã HD / Khách hàng ==========
-	private JPanel createLeftAlignedRow(String title, String value) {
+	public JPanel createLeftAlignedRow(String title, String value) {
 		JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
 		row.setBackground(Color.WHITE);
 		row.add(toolCtrl.taoLabel(title));

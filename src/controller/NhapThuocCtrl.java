@@ -28,11 +28,11 @@ import gui.NhapThuoc_GUI;
 
 public class NhapThuocCtrl {
 	
-	private NhapThuoc_GUI nhapThuoc_gui;
-	private ToolCtrl tool = new ToolCtrl();
-	private ThuocDAO thuocDAO = new ThuocDAO();
-	private DonViTinhDAO dvtDAO = new DonViTinhDAO();
-	private ThueDAO thueDAO = new ThueDAO();
+	public NhapThuoc_GUI nhapThuoc_gui;
+	public ToolCtrl tool = new ToolCtrl();
+	public ThuocDAO thuocDAO = new ThuocDAO();
+	public DonViTinhDAO dvtDAO = new DonViTinhDAO();
+	public ThueDAO thueDAO = new ThueDAO();
 
 	public NhapThuocCtrl(NhapThuoc_GUI ntGUI) {
 		this.nhapThuoc_gui = ntGUI;

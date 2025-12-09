@@ -14,11 +14,15 @@ import controller.ToolCtrl;
 import java.awt.*;
 
 public class TimKiemPhieuDoiTra_GUI extends JPanel {
-    private JTextField txtKhachHang, txtTenNV;
-    private JButton btnTimKiem, btnLamMoi, btnChiTiet;
-    private JTable tblPhieuDoiTra;
-    private TrangChuQL_GUI mainFrame;
-    private TrangChuNV_GUI mainFrameNV;
+	public JTextField txtKhachHang, txtTenNV;
+	public JButton btnTimKiem, btnLamMoi, btnChiTiet;
+	public JTable tblPhieuDoiTra;
+	public TrangChuQL_GUI mainFrame;
+<<<<<<< HEAD
+    public TrangChuNV_GUI mainFrameNV;
+=======
+	public TrangChuNV_GUI mainFrameNV;
+>>>>>>> main
 
     Font font1 = new Font("Times New Roman", Font.BOLD, 18);
     Font font2 = new Font("Times New Roman", Font.PLAIN, 15);
@@ -38,7 +42,7 @@ public class TimKiemPhieuDoiTra_GUI extends JPanel {
         new TimKiemPhieuDoiTraCtrl(this);
     }
 
-    private void initUI() {
+    public void initUI() {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(1134, 617));
         setBackground(Color.WHITE);

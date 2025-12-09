@@ -12,21 +12,20 @@ import entity.HoaDon;
 import java.awt.*;
 
 public class ChiTietHoaDon_GUI extends JPanel {
-	private JLabel lblDiaChi, lblHotline, lblMaHD, lblNgayLap, lblNhanVien, lblKhachHang;
-	private JLabel lblGhiChu, lblTongTien, lblTienNhan, lblTienThua;
-	private JTable tblThuoc;
-	private JButton btnInHoaDon, btnQuayLai, btnTaoPhieuDoiTra;
-	private ChiTietHoaDonCtrl ctrl;
+	public JLabel lblDiaChi, lblHotline, lblMaHD, lblNgayLap, lblNhanVien, lblKhachHang;
+	public JLabel lblGhiChu, lblTongTien, lblTienNhan, lblTienThua;
+	public JTable tblThuoc;
+	public JButton btnInHoaDon, btnQuayLai, btnTaoPhieuDoiTra;
+	public ChiTietHoaDonCtrl ctrl;
 
-	private TrangChuQL_GUI mainFrameQL;
-	private TrangChuNV_GUI mainFrameNV;
+	public TrangChuQL_GUI mainFrameQL;
+	public TrangChuNV_GUI mainFrameNV;
 
 	Font font1 = new Font("Times New Roman", Font.BOLD, 18);
 	Font font2 = new Font("Times New Roman", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
-	private HoaDonDAO hdDAO = new HoaDonDAO();
+	public HoaDonDAO hdDAO = new HoaDonDAO();
 
-	// Constructor
 	public ChiTietHoaDonCtrl getCtrl() {
 		return ctrl;
 	}
@@ -145,7 +144,7 @@ public class ChiTietHoaDon_GUI extends JPanel {
 	}
 
 	// ========== TẠO THÔNG TIN ==========
-	private JPanel taoDongThongTin(String label, JLabel valueLabel) {
+	public JPanel taoDongThongTin(String label, JLabel valueLabel) {
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
 		panel.setBackground(Color.WHITE);
 		JLabel lbl = tool.taoLabel(label);

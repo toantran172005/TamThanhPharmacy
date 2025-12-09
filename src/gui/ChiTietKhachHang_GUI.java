@@ -17,7 +17,10 @@ public class ChiTietKhachHang_GUI extends JPanel {
 	public JComboBox<String> cmbTrangThai;
 	public JButton btnCapNhat;
 	public JButton btnQuayLai;
+<<<<<<< HEAD
+=======
 	public KhachHang kh;
+>>>>>>> main
 
 	public ToolCtrl tool = new ToolCtrl();
 	public ChiTietKhachHangCtrl ctkhCtrl = new ChiTietKhachHangCtrl(this);

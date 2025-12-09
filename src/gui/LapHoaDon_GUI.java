@@ -13,14 +13,14 @@ import controller.ToolCtrl;
 import java.awt.*;
 
 public class LapHoaDon_GUI extends JPanel {
-	private JTextField txtSdt, txtTenKH, txtTuoi, txtSoLuong, txtTienNhan;
-	private JComboBox<String> cmbSanPham, cmbDonVi, cmbHTThanhToan;
-	private JLabel lblTongTien, lblTienThua;
-	private JTable tblThuoc;
-	private JButton btnThem, btnLamMoi, btnTaoHD, btnXoa;
-	private TrangChuQL_GUI mainFrame;
-    private TrangChuNV_GUI mainFrameNV;
-    private LapHoaDonCtrl controller;
+	public JTextField txtSdt, txtTenKH, txtTuoi, txtSoLuong, txtTienNhan;
+	public JComboBox<String> cmbSanPham, cmbDonVi, cmbHTThanhToan;
+	public JLabel lblTongTien, lblTienThua;
+	public JTable tblThuoc;
+	public JButton btnThem, btnLamMoi, btnTaoHD, btnXoa;
+	public TrangChuQL_GUI mainFrame;
+	public TrangChuNV_GUI mainFrameNV;
+	public LapHoaDonCtrl controller;
     
 	Font font1 = new Font("Times New Roman", Font.BOLD, 18);
 	Font font2 = new Font("Times New Roman", Font.PLAIN, 15);
@@ -40,7 +40,7 @@ public class LapHoaDon_GUI extends JPanel {
         khoiTaoController();
     }
     
-    private void khoiTaoController() {
+    public void khoiTaoController() {
         this.controller = new LapHoaDonCtrl(this);
     }
 
@@ -192,13 +192,13 @@ public class LapHoaDon_GUI extends JPanel {
 	}
 
 	// ========== HÀM TẠO CÁC THÀNH PHẦN CHUNG ==========
-	private JPanel taoHang() {
+	public JPanel taoHang() {
 		JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
 		p.setBackground(Color.WHITE);
 		return p;
 	}
 
-	private JPanel taoHangTrai() {
+	public JPanel taoHangTrai() {
 		JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
 		p.setBackground(Color.WHITE);
 		return p;

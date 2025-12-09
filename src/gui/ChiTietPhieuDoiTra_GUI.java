@@ -13,16 +13,16 @@ import java.awt.*;
 
 public class ChiTietPhieuDoiTra_GUI extends JPanel {
 
-	private JLabel lblDiaChi, lblHotline, lblMaPhieuDT, lblMaHD, lblNgayLap, lblNhanVien, lblKhachHang, lblLyDo,
+	public JLabel lblDiaChi, lblHotline, lblMaPhieuDT, lblMaHD, lblNgayLap, lblNhanVien, lblKhachHang, lblLyDo,
 			lblTongTienHoan;
-	private JTable tblThuoc;
-	private JButton btnInPhieu, btnQuayLai;
-	private TrangChuQL_GUI mainFrameQL;
-	private TrangChuNV_GUI mainFrameNV;
+	public JTable tblThuoc;
+	public JButton btnInPhieu, btnQuayLai;
+	public TrangChuQL_GUI mainFrameQL;
+	public TrangChuNV_GUI mainFrameNV;
 	Font font1 = new Font("Times New Roman", Font.BOLD, 18);
 	Font font2 = new Font("Times New Roman", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
-	private ChiTietPhieuDoiTraCtrl ctrl;
+	public ChiTietPhieuDoiTraCtrl ctrl;
 
 	// Constructor
 	public ChiTietPhieuDoiTraCtrl getCtrl() {
@@ -164,7 +164,7 @@ public class ChiTietPhieuDoiTra_GUI extends JPanel {
 	}
 
 	// ========== TẠO THÔNG TIN ==========
-	private JPanel taoDongThongTin(String tieuDe, JLabel lblNoiDung) {
+	public JPanel taoDongThongTin(String tieuDe, JLabel lblNoiDung) {
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 50, 5));
 		panel.setBackground(Color.WHITE);
 		JLabel lblTieuDe = tool.taoLabel(tieuDe);

@@ -1,6 +1,10 @@
 package gui;
 
+import controller.ChiTietHoaDonCtrl;
+import controller.ChiTietNhanVienCtrl;
 import controller.ToolCtrl;
+import entity.NhanVien;
+
 import com.toedter.calendar.JDateChooser;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -9,44 +13,65 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 
 public class ChiTietNhanVien_GUI extends JPanel {
-    private JLabel imgAnhNV;
-    private JButton btnChonAnh, btnLamMoi, btnCapNhat, btnLuu;
-    private JLabel lblTrangThai;
-    private JTextField txtMaNV, txtTenNV, txtSdt, txtLuong, txtEmail, txtThue;
-    private JComboBox<String> cmbChucVu, cmbGioiTinh;
-    private JDateChooser dtpNgaySinh, dtpNgayVaoLam;
+	public JLabel imgAnhNV;
+	public JButton btnChonAnh, btnLamMoi, btnCapNhat, btnLuu;
+	public JLabel lblTrangThai;
+	public JTextField txtMaNV, txtTenNV, txtSdt, txtLuong, txtEmail, txtThue;
+	public JComboBox<String> cmbChucVu, cmbGioiTinh;
+	public JDateChooser dtpNgaySinh, dtpNgayVaoLam;
+<<<<<<< HEAD
 
-    private ToolCtrl tool = new ToolCtrl();
-    private TrangChuQL_GUI mainFrame;
+	public ToolCtrl tool = new ToolCtrl();
+	public TrangChuQL_GUI mainFrame;
 
     public ChiTietNhanVien_GUI(TrangChuQL_GUI mainFrame) {
         this.mainFrame = mainFrame;
         initUI();
     }
+=======
+	public ChiTietNhanVienCtrl ctrl;
+
+	public ToolCtrl tool = new ToolCtrl();
+	public TrangChuQL_GUI mainFrame;
+    
+ 	public ChiTietNhanVienCtrl getCtrl() {
+ 		return ctrl;
+ 	}
+ 	
+ 	public void setController(ChiTietNhanVienCtrl ctrl) {
+ 	    this.ctrl = ctrl;
+ 	}
+ 	
+ 	public ChiTietNhanVien_GUI(TrangChuQL_GUI mainFrame) {
+		this.mainFrame = mainFrame;
+		initUI();
+		this.ctrl = new ChiTietNhanVienCtrl(this);
+	}
+>>>>>>> main
 
     public void initUI() {
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(15, 25, 25, 25));
         setBackground(Color.WHITE);
 
-        // =================== TIÊU ĐỀ ===================
+        // ========== TIÊU ĐỀ ==========
         JLabel lblTitle = new JLabel("CHI TIẾT NHÂN VIÊN", SwingConstants.CENTER);
         lblTitle.setFont(new Font("Times New Roman", Font.BOLD, 22));
         lblTitle.setForeground(new Color(0x1E3A8A));
         add(lblTitle, BorderLayout.NORTH);
 
-        // =================== CENTER: Nội dung ===================
+        // ========== CENTER ==========
         JPanel centerPanel = new JPanel(new BorderLayout(30, 0));
         centerPanel.setBackground(Color.WHITE);
 
-        // =================== LEFT: Ảnh + Nút + Trạng thái ===================
+        // ========== CENTER LEFT ==========
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
         leftPanel.setBackground(Color.WHITE);
         leftPanel.setPreferredSize(new Dimension(280, 400));
 
-        // --- Ảnh nhân viên ---
-        imgAnhNV = new JLabel(loadPlaceholderImage(227, 263));
+        // ===== Ảnh nhân viên =====
+        imgAnhNV = new JLabel();
         imgAnhNV.setPreferredSize(new Dimension(227, 263));
         imgAnhNV.setHorizontalAlignment(SwingConstants.CENTER);
         imgAnhNV.setBorder(BorderFactory.createLineBorder(new Color(0xD1D1D1), 1, true));
@@ -55,13 +80,13 @@ public class ChiTietNhanVien_GUI extends JPanel {
         imgWrapper.setBackground(Color.WHITE);
         imgWrapper.add(imgAnhNV);
 
-        // --- Nút chọn ảnh ---
+        // ===== Nút chọn ảnh =====
         btnChonAnh = tool.taoButton("Chọn ảnh", "/picture/nhanVien/folder.png");
         JPanel btnWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
         btnWrapper.setBackground(Color.WHITE);
         btnWrapper.add(btnChonAnh);
 
-        // --- Trạng thái ---
+        // ===== Trạng thái =====
         JPanel statusPanel = new JPanel();
         statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.X_AXIS));
         statusPanel.setBackground(Color.WHITE);
@@ -76,7 +101,6 @@ public class ChiTietNhanVien_GUI extends JPanel {
         statusPanel.add(lblTrangThai);
         statusPanel.add(Box.createHorizontalGlue());
 
-        // --- Gom nhóm ---
         JPanel contentGroup = new JPanel();
         contentGroup.setLayout(new BoxLayout(contentGroup, BoxLayout.Y_AXIS));
         contentGroup.setBackground(Color.WHITE);
@@ -87,7 +111,7 @@ public class ChiTietNhanVien_GUI extends JPanel {
         contentGroup.add(Box.createVerticalStrut(10));
         contentGroup.add(statusPanel);
 
-        // --- Căn giữa dọc ---
+        // ===== Căn giữa dọc =====
         JPanel centeredWrapper = new JPanel(new GridBagLayout());
         centeredWrapper.setBackground(Color.WHITE);
         GridBagConstraints gbcCenter = new GridBagConstraints();
@@ -99,11 +123,10 @@ public class ChiTietNhanVien_GUI extends JPanel {
         leftPanel.add(centeredWrapper);
         centerPanel.add(leftPanel, BorderLayout.WEST);
 
-        // =================== RIGHT: Form 2 cột + Nút ===================
+        // ========== CENTER RIGHT ==========
         JPanel rightPanel = new JPanel(new BorderLayout());
         rightPanel.setBackground(Color.WHITE);
 
-        // --- Form 2 cột ---
         JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBackground(Color.WHITE);
         GridBagConstraints gbc = new GridBagConstraints();
@@ -111,10 +134,10 @@ public class ChiTietNhanVien_GUI extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.WEST;
 
-        // Khởi tạo field
+        // ===== Khởi tạo field =====
         txtMaNV = tool.taoTextField("Mã nhân viên tự động"); txtMaNV.setEnabled(false);
         txtTenNV = tool.taoTextField("Nhập tên nhân viên");
-        cmbChucVu = tool.taoComboBox(new String[]{"Quản lý", "Nhân viên", "Bảo vệ"});
+        cmbChucVu = tool.taoComboBox(new String[]{"Nhân viên quản lý", "Nhân viên bán hàng"});
         txtSdt = tool.taoTextField("Nhập số điện thoại");
         txtLuong = tool.taoTextField("Nhập lương");
 
@@ -154,7 +177,7 @@ public class ChiTietNhanVien_GUI extends JPanel {
         gbc.gridx = 1;
         formPanel.add(createFormRow("Thuế TNCN: ", txtThue), gbc);
 
-        // --- Nút hành động ---
+        // ===== Nút hành động =====
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         buttonPanel.setBackground(Color.WHITE);
         buttonPanel.setBorder(new EmptyBorder(30, 0, 0, 0));
@@ -175,16 +198,14 @@ public class ChiTietNhanVien_GUI extends JPanel {
 
         centerPanel.add(rightPanel, BorderLayout.CENTER);
         add(centerPanel, BorderLayout.CENTER);
-
-        // =================== SỰ KIỆN ===================
-        btnChonAnh.addActionListener(e -> btnChonAnhActionPerformed(e));
-        btnLamMoi.addActionListener(e -> btnLamMoiActionPerformed(e));
-        btnCapNhat.addActionListener(e -> btnCapNhatActionPerformed(e));
-        btnLuu.addActionListener(e -> btnLuuActionPerformed(e));
     }
 
+<<<<<<< HEAD
     // =================== TẠO DÒNG FORM (giữ lại) ===================
-    private JPanel createFormRow(String labelText, JComponent field) {
+=======
+    // ========== TẠO DÒNG FORM ==========
+>>>>>>> main
+    public JPanel createFormRow(String labelText, JComponent field) {
         JPanel row = new JPanel();
         row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
         row.setBackground(Color.WHITE);
@@ -204,8 +225,9 @@ public class ChiTietNhanVien_GUI extends JPanel {
         return row;
     }
 
+<<<<<<< HEAD
     // =================== PLACEHOLDER IMAGE ===================
-    private ImageIcon loadPlaceholderImage(int w, int h) {
+    public ImageIcon loadPlaceholderImage(int w, int h) {
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = img.createGraphics();
         g2.setColor(new Color(240, 240, 240));
@@ -216,49 +238,36 @@ public class ChiTietNhanVien_GUI extends JPanel {
         g2.dispose();
         return new ImageIcon(img.getScaledInstance(w, h, Image.SCALE_SMOOTH));
     }
+=======
+//    // ========== PLACEHOLDER IMAGE ==========
+//    public ImageIcon loadPlaceholderImage(int w, int h) {
+//        BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+//        Graphics2D g2 = img.createGraphics();
+//        g2.setColor(new Color(240, 240, 240));
+//        g2.fillRect(0, 0, w, h);
+//        g2.setColor(Color.GRAY);
+//        g2.setFont(new Font("Arial", Font.PLAIN, 20));
+//        g2.drawString("No Image", w / 2 - 50, h / 2);
+//        g2.dispose();
+//        return new ImageIcon(img.getScaledInstance(w, h, Image.SCALE_SMOOTH));
+//    }
+>>>>>>> main
 
-    // =================== SỰ KIỆN ===================
-    public void btnChonAnhActionPerformed(ActionEvent e) {
-        JFileChooser fc = new JFileChooser();
-        if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            try {
-                ImageIcon icon = new ImageIcon(fc.getSelectedFile().getPath());
-                Image scaled = icon.getImage().getScaledInstance(227, 263, Image.SCALE_SMOOTH);
-                imgAnhNV.setIcon(new ImageIcon(scaled));
-                tool.hienThiThongBao("Thành công", "Đã chọn ảnh!", true);
-            } catch (Exception ex) {
-                tool.hienThiThongBao("Lỗi", "Không thể tải ảnh!", false);
-            }
-        }
-    }
-
-    public void btnLamMoiActionPerformed(ActionEvent e) {
-        txtTenNV.setText("");
-        txtSdt.setText("");
-        txtLuong.setText("");
-        txtEmail.setText("");
-        cmbChucVu.setSelectedIndex(0);
-        cmbGioiTinh.setSelectedIndex(0);
-        imgAnhNV.setIcon(loadPlaceholderImage(227, 263));
-        tool.hienThiThongBao("Thành công", "Đã làm mới form!", true);
-    }
-
-    public void btnCapNhatActionPerformed(ActionEvent e) {
-        txtMaNV.setEnabled(true);
-        dtpNgaySinh.setEnabled(true);
-        dtpNgayVaoLam.setEnabled(true);
-        txtThue.setEnabled(true);
-        tool.hienThiThongBao("Thông báo", "Đã mở chế độ chỉnh sửa!", true);
-    }
-
-    public void btnLuuActionPerformed(ActionEvent e) {
-        if (txtTenNV.getText().trim().isEmpty()) {
-            tool.hienThiThongBao("Lỗi", "Vui lòng nhập tên nhân viên!", false);
-            return;
-        }
-        boolean confirm = tool.hienThiXacNhan("Xác nhận", "Lưu thông tin nhân viên?", null);
-        if (confirm) {
-            tool.hienThiThongBao("Thành công", "Lưu thành công!", true);
-        }
-    }
+ // ========== GETTER ==========
+    public JButton getBtnChonAnh() { return btnChonAnh; }
+    public JButton getBtnLamMoi() { return btnLamMoi; }
+    public JButton getBtnCapNhat() { return btnCapNhat; }
+    public JButton getBtnLuu() { return btnLuu; }
+    public JLabel getImgAnhNV() { return imgAnhNV; }
+    public JLabel getLblTrangThai() { return lblTrangThai; }
+    public JTextField getTxtMaNV() { return txtMaNV; }
+    public JTextField getTxtTenNV() { return txtTenNV; }
+    public JTextField getTxtLuong() { return txtLuong; }
+    public JTextField getTxtEmail() { return txtEmail; }
+    public JTextField getTxtSdt() { return txtSdt; }
+    public JTextField getTxtThue() { return txtThue; }
+    public JComboBox<String> getCmbChucVu() { return cmbChucVu; }
+    public JComboBox<String> getCmbGioiTinh() { return cmbGioiTinh; }
+    public JDateChooser getDtpNgaySinh() { return dtpNgaySinh; }
+    public JDateChooser getDtpNgayVaoLam() { return dtpNgayVaoLam; }
 }

@@ -29,14 +29,14 @@ import gui.ThongKeHoaDon_GUI;
 
 public class ThongKeHoaDonCtrl {
 
-    private ThongKeHoaDon_GUI gui;
-    private HoaDonDAO hdDAO = new HoaDonDAO();
-    private ToolCtrl tool = new ToolCtrl();
-    private JPanel mainCenter;
+	public ThongKeHoaDon_GUI gui;
+	public HoaDonDAO hdDAO = new HoaDonDAO();
+	public ToolCtrl tool = new ToolCtrl();
+	public JPanel mainCenter;
 
-    private Map<String, Double> tongTienMap = new HashMap<>();
-    private Map<String, Integer> tongDonMap = new HashMap<>();
-    private java.util.List<KhachHang> listKH = new ArrayList<>();
+	public Map<String, Double> tongTienMap = new HashMap<>();
+	public Map<String, Integer> tongDonMap = new HashMap<>();
+	public java.util.List<KhachHang> listKH = new ArrayList<>();
 
     public ThongKeHoaDonCtrl(ThongKeHoaDon_GUI gui) {
         this.gui = gui;
@@ -44,7 +44,7 @@ public class ThongKeHoaDonCtrl {
         dangKySuKien();
     }
 
-    private void dangKySuKien() {
+    public void dangKySuKien() {
         gui.getBtnThongKe().addActionListener(e -> thongKeKhachHang());
 //        gui.getCmbTopTK().addActionListener(e -> thongKeTop());
         gui.getBtnLamMoi().addActionListener(e -> lamMoi());
@@ -52,7 +52,7 @@ public class ThongKeHoaDonCtrl {
     }
 
     // ========== THỐNG KÊ KHÁCH HÀNG ==========
-    private void thongKeKhachHang() {
+    public void thongKeKhachHang() {
         LocalDate ngayBD = layNgay(gui.getDpNgayBatDau());
         LocalDate ngayKT = layNgay(gui.getDpNgayKetThuc());
 
@@ -68,7 +68,6 @@ public class ThongKeHoaDonCtrl {
         }
         
         listKH = hdDAO.layListKHThongKe(ngayBD, ngayKT);
-        System.out.println("Số KH lấy được: " + listKH.size());
         tongTienMap.clear();
         tongDonMap.clear();
 
@@ -78,20 +77,19 @@ public class ThongKeHoaDonCtrl {
             tongTienMap.put(kh.getMaKH(), tongTien);
             tongDonMap.put(kh.getMaKH(), tongDon);
         }
-        System.out.print("Đang thống kê");
         setDataChoLabel();
         veBieuDo(ngayBD, ngayKT);
         setDataChoTable();
     }
 
     // ========== LẤY NGÀY TỪ JDateChooser ==========
-    private LocalDate layNgay(JDateChooser chooser) {
+    public LocalDate layNgay(JDateChooser chooser) {
         if (chooser.getDate() == null) return null;
         return chooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
     // ========== CẬP NHẬT LABEL ==========
-    private void setDataChoLabel() {
+    public void setDataChoLabel() {
         int tongSoHoaDon = tongDonMap.values().stream().mapToInt(Integer::intValue).sum();
         double tongDoanhThu = tongTienMap.values().stream().mapToDouble(Double::doubleValue).sum();
         double tbDT = tongSoHoaDon == 0 ? 0 : tongDoanhThu / tongSoHoaDon;
@@ -102,7 +100,7 @@ public class ThongKeHoaDonCtrl {
     }
 
     // ========== VẼ BIỂU ĐỒ DOANH THU ==========
-    private void veBieuDo(LocalDate ngayBD, LocalDate ngayKT) {
+    public void veBieuDo(LocalDate ngayBD, LocalDate ngayKT) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
         Map<LocalDate, Double> doanhThuTheoNgay = new LinkedHashMap<>();
@@ -152,7 +150,7 @@ public class ThongKeHoaDonCtrl {
 
 
     // ========== HIỂN THỊ DỮ LIỆU BẢNG ==========
-    private void setDataChoTable() {
+    public void setDataChoTable() {
         DefaultTableModel model = (DefaultTableModel) gui.getTblThongKeHD().getModel();
         model.setRowCount(0);
 
@@ -199,7 +197,7 @@ public class ThongKeHoaDonCtrl {
 
 
     // ========== LÀM MỚI ==========
-    private void lamMoi() {
+    public void lamMoi() {
         tongTienMap.clear();
         tongDonMap.clear();
         listKH.clear();
@@ -213,7 +211,7 @@ public class ThongKeHoaDonCtrl {
     }
 
     // ========== XUẤT EXCEL ==========
-    private void xuatFileExcel() {
+    public void xuatFileExcel() {
         try {
             DefaultTableModel model = (DefaultTableModel) gui.getTblThongKeHD().getModel();
             if (model.getRowCount() == 0) {

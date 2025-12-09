@@ -9,6 +9,14 @@ import entity.PhieuKhieuNaiHoTro;
 
 public class ChiTietPhieuKNHT_GUI extends JPanel {
 
+<<<<<<< HEAD
+	public ToolCtrl tool = new ToolCtrl();
+
+	public JTextField txtTenKH, txtSdt, txtTenNV;
+	public JComboBox<String> cmbLoaiDon, cmbTrangThai;
+	public JTextArea txaNoiDung;
+	public JButton btnCapNhat, btnQuayLai;
+=======
 	public ToolCtrl tool;
 	public JTextField txtTenKH, txtSdt, txtTenNV;
 	public JComboBox<String> cmbLoaiDon, cmbTrangThai;
@@ -25,6 +33,7 @@ public class ChiTietPhieuKNHT_GUI extends JPanel {
 		ganData();
 		ganSuKien();
 	}
+>>>>>>> main
 
 	public void ganSuKien() {
 		ctknhtCtrl.choPhepEdit(false);
@@ -105,6 +114,10 @@ public class ChiTietPhieuKNHT_GUI extends JPanel {
 		add(bottom, BorderLayout.SOUTH);
 	}
 
+<<<<<<< HEAD
+	// === Hàm tạo 1 hàng label + control ===
+=======
+>>>>>>> main
 	public JPanel taoDong(String text, JComponent comp, int labelWidth, int fieldWidth) {
 		JPanel row = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 0));
 		row.setBackground(Color.WHITE);
