@@ -10,9 +10,9 @@ import entity.DonViTinh;
 
 public class DonViTinhDAO {
 
-    private ToolCtrl tool = new ToolCtrl();
+	public ToolCtrl tool = new ToolCtrl();
 
-    // 🔹 Tìm mã đơn vị tính theo tên
+    // Tìm mã đơn vị tính theo tên
     public String timMaDVTTheoTen(String tenDVT) {
         List<DonViTinh> listDVT = layListDVT();
         for (DonViTinh dvt : listDVT) {
@@ -22,7 +22,7 @@ public class DonViTinhDAO {
         return null;
     }
 
-    // 🔹 Lấy danh sách đơn vị đang hoạt động
+    // Lấy danh sách đơn vị đang hoạt động
     public ArrayList<DonViTinh> layListDVT() {
     	ArrayList<DonViTinh> listDVT = new ArrayList<>();
 
@@ -52,7 +52,7 @@ public class DonViTinhDAO {
         return listDVT;
     }
 
-    // 🔹 Lấy danh sách đơn vị đã xóa
+    // Lấy danh sách đơn vị đã xóa
     public ArrayList<DonViTinh> layDanhSachDaXoa() {
     	ArrayList<DonViTinh> listDaXoa = new ArrayList<>();
 
@@ -82,7 +82,7 @@ public class DonViTinhDAO {
         return listDaXoa;
     }
 
-    // 🔹 Xóa đơn vị tính (chuyển trạng thái sang 0)
+    // Xóa đơn vị tính (chuyển trạng thái sang 0)
     public boolean xoaDVT(String maDVT) {
         String sql = """
             UPDATE DonViTinh
@@ -102,7 +102,7 @@ public class DonViTinhDAO {
         }
     }
 
-    // 🔹 Khôi phục đơn vị tính (chuyển trạng thái sang 1)
+    // Khôi phục đơn vị tính (chuyển trạng thái sang 1)
     public boolean khoiPhucDVT(String maDVT) {
         String sql = """
             UPDATE DonViTinh
@@ -122,7 +122,7 @@ public class DonViTinhDAO {
         }
     }
 
-    // 🔹 Thêm đơn vị tính mới
+    // Thêm đơn vị tính mới
     public boolean themDVT(DonViTinh dvt) {
         String sql = """
             INSERT INTO DonViTinh (maDVT, tenDVT, trangThai)
@@ -144,7 +144,7 @@ public class DonViTinhDAO {
         }
     }
 
-    // 🔹 Tìm đơn vị tính theo tên
+    // Tìm đơn vị tính theo tên
     public DonViTinh timTheoTen(String tenDVT) {
         String sql = "SELECT * FROM DonViTinh WHERE tenDVT = ?";
 

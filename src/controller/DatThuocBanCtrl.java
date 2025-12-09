@@ -12,10 +12,10 @@ import gui.PhieuDatThuoc_GUI;
 
 public class DatThuocBanCtrl {
 	
-	private DatThuoc_GUI dtGUI;
-	private PhieuDatThuoc_GUI pdtGUI;
-	private ThuocDAO thDAO = new ThuocDAO();
-	private ToolCtrl tool = new ToolCtrl();
+	public DatThuoc_GUI dtGUI;
+	public PhieuDatThuoc_GUI pdtGUI;
+	public ThuocDAO thDAO = new ThuocDAO();
+	public ToolCtrl tool = new ToolCtrl();
 	
 	public DatThuocBanCtrl(DatThuoc_GUI datThuoc_GUI) {
 		this.dtGUI = datThuoc_GUI;
@@ -160,7 +160,7 @@ public class DatThuocBanCtrl {
 	}
 	
 	// Cập nhật lại cột STT trong bảng
-	private void capNhatSTT() {
+	public void capNhatSTT() {
 	    DefaultTableModel model = (DefaultTableModel) dtGUI.tblDatThuoc.getModel();
 	    for (int i = 0; i < model.getRowCount(); i++) {
 	        model.setValueAt(i + 1, i, 0); 

@@ -22,8 +22,8 @@ public class PhieuDatThuoc_GUI extends JPanel {
     public JLabel lblNgayDat, lblNguoiLap;
     public JButton btnLuuTep, btnTaoPhieuDat;
 
-    private final ToolCtrl tool = new ToolCtrl();
-    private DatThuocBanCtrl dtCtrl;
+    public ToolCtrl tool = new ToolCtrl();
+    public DatThuocBanCtrl dtCtrl;
 
     public PhieuDatThuoc_GUI(DatThuoc_GUI dtGUI) {
     	dtCtrl = new DatThuocBanCtrl(dtGUI,this);

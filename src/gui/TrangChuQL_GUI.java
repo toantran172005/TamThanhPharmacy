@@ -11,15 +11,15 @@ import controller.ToolCtrl;
 
 public class TrangChuQL_GUI extends JFrame {
 	
-	private static final long serialVersionUID = 1L;
+	public static final long serialVersionUID = 1L;
 	public ToolCtrl tool = new ToolCtrl();
-	private JPanel leftPanel, topPanel, contentPanel;
-	private JLabel lblTenHieuThuoc, lblTenNV, lblChucVu;
-	private JLabel imgTaiKhoan, imgDangXuat, imgLogo;
-	private Map<String, JPanel> menuItems = new HashMap<>();
-	private Map<String, String> iconPaths = new HashMap<>();
-	private Map<String, JPanel> panelMapping = new HashMap<>();
-	private String selectedMenu = "";
+	public JPanel leftPanel, topPanel, contentPanel;
+	public JLabel lblTenHieuThuoc, lblTenNV, lblChucVu;
+	public JLabel imgTaiKhoan, imgDangXuat, imgLogo;
+	public Map<String, JPanel> menuItems = new HashMap<>();
+	public Map<String, String> iconPaths = new HashMap<>();
+	public Map<String, JPanel> panelMapping = new HashMap<>();
+	public String selectedMenu = "";
 	Font font1 = new Font("Arial", Font.BOLD, 18);
 	Font font2 = new Font("Arial", Font.PLAIN, 15);
 
@@ -107,7 +107,7 @@ public class TrangChuQL_GUI extends JFrame {
 	}
 
 	/** Ánh xạ tên menu hoặc menu con sang panel tương ứng */
-	private void taoMappingPanel() {
+	public void taoMappingPanel() {
 		// Menu chính
 		panelMapping.put("Trang chủ", taoPanelTrangChu());
 		panelMapping.put("Thuốc", taoPanelTam("Thuốc"));
@@ -391,7 +391,7 @@ public class TrangChuQL_GUI extends JFrame {
 		contentPanel.repaint();
 	}
 
-	private ImageIcon setUpIcon(String path, int width, int height) {
+	public ImageIcon setUpIcon(String path, int width, int height) {
 		URL imgURL = getClass().getResource(path);
 		if (imgURL == null) {
 			System.err.println("Không tìm thấy ảnh: " + path);

@@ -17,7 +17,7 @@ import entity.PhieuDatHang;
 import connectDB.KetNoiDatabase;
 
 public class PhieuDatHangDAO {
-	private ToolCtrl toolCtrl = new ToolCtrl();
+	public ToolCtrl toolCtrl = new ToolCtrl();
 	NhanVienDAO nvDAO = new NhanVienDAO();
 	KhachHangDAO khDAO = new KhachHangDAO();
 	ThuocDAO thuocDAO = new ThuocDAO();
