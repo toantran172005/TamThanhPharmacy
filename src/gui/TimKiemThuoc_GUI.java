@@ -16,7 +16,7 @@ import entity.Thuoc;
 
 public class TimKiemThuoc_GUI extends JPanel {
 
-	public JTextField txtTenThuoc;
+	//public JTextField txtTenThuoc;
 	public JComboBox<String> cmbLoaiThuoc;
 	public JTable tblThuoc;
 	public DefaultTableModel model;
@@ -25,6 +25,10 @@ public class TimKiemThuoc_GUI extends JPanel {
 
 	public final ToolCtrl tool = new ToolCtrl();
 	public ThuocCtrl thCtrl;
+	public JButton btnXoa;
+	public JButton btnHoanTac;
+	public JButton btnQuayLai;
+	public JComboBox<String> cmbTenThuoc;
 
 	public TimKiemThuoc_GUI() {
 		this.thCtrl = new ThuocCtrl(this);
@@ -54,11 +58,12 @@ public class TimKiemThuoc_GUI extends JPanel {
 		JPanel nameBox = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
 		nameBox.setBackground(Color.WHITE);
 		JLabel lblTenThuoc = tool.taoLabel("Tên thuốc:");
-		txtTenThuoc = tool.taoTextField("Tên thuốc...");
-		txtTenThuoc.setPreferredSize(new Dimension(190, 34));
+		cmbTenThuoc = new JComboBox<String>();
+		cmbTenThuoc.setEditable(true);
+		cmbTenThuoc.setPreferredSize(new Dimension(190, 34));
 		lblTenThuoc.setPreferredSize(new Dimension(100, 25));
 		nameBox.add(lblTenThuoc);
-		nameBox.add(txtTenThuoc);
+		nameBox.add(cmbTenThuoc);
 
 		JPanel loaiBox = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
 		loaiBox.setBackground(Color.WHITE);
@@ -80,10 +85,15 @@ public class TimKiemThuoc_GUI extends JPanel {
 		btnXemChiTiet = tool.taoButton("Xem chi tiết", "/picture/keThuoc/find.png");
 		btnLamMoi = tool.taoButton("Làm mới", "/picture/keThuoc/refresh.png");
 		btnLichSuXoa = tool.taoButton("Lịch sử xoá", "/picture/nhanVien/document.png");
+		btnXoa = tool.taoButton("Xoá", "/picture/keThuoc/trash.png");
+		btnHoanTac = tool.taoButton("Hoàn tác", "/picture/keThuoc/refresh.png");
 
 		btnRow.add(btnXemChiTiet);
 		btnRow.add(btnLamMoi);
 		btnRow.add(btnLichSuXoa);
+		btnRow.add(btnXoa);
+		btnRow.add(btnHoanTac);
+		btnHoanTac.setVisible(false);
 		vboxTop.add(btnRow);
 
 		topPanel.add(vboxTop, BorderLayout.CENTER);
@@ -128,15 +138,26 @@ public class TimKiemThuoc_GUI extends JPanel {
 		scroll.setBackground(Color.WHITE);
 
 		add(scroll, BorderLayout.CENTER);
-
+		
+		//========BOTTOM: Nút quay lại =============
+		JPanel btnRowBottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+		btnRowBottom.setBackground(Color.WHITE);
+		
+		btnQuayLai = tool.taoButton("Quay lại", "/picture/thuoc/return.png");
+		
+		btnRowBottom.add(btnQuayLai);
+		btnQuayLai.setVisible(false);
+		
+		add(btnRowBottom, BorderLayout.SOUTH);
 		// ===== Sự kiện =====
 		ganSuKien();
 	}
 
 	// ================== EVENT HANDLERS ==================
 	public void onBtnLamMoi() {
-		txtTenThuoc.setText("");
-		cmbLoaiThuoc.setSelectedIndex(-1);
+		cmbTenThuoc.setSelectedItem(null);
+		cmbTenThuoc.getEditor().setItem("");
+		cmbLoaiThuoc.setSelectedItem("Tất cả");
 		model.setRowCount(0);
 		thCtrl.setDataChoTable();
 	}
@@ -146,15 +167,16 @@ public class TimKiemThuoc_GUI extends JPanel {
 		thCtrl.setDataChoTable();
 		btnXemChiTiet.addActionListener(e -> thCtrl.xemChiTiet());
 		btnLamMoi.addActionListener(e -> onBtnLamMoi());
-		btnLichSuXoa.addActionListener(e -> onBtnLichSuXoa());
+		btnLichSuXoa.addActionListener(e -> thCtrl.xemThuocDaXoa());
+		btnXoa.addActionListener(e -> thCtrl.xoaThuoc());
+		btnQuayLai.addActionListener(e -> thCtrl.quayLaiTrangTimKiem());
+		thCtrl.setKeThuoc();
+		thCtrl.setTenThuoc();
+		//ArrayList<String> dsTen = thCtrl.layDSTenThuoc();
+		//thCtrl.goiYTenThuoc(cmbTenThuoc, dsTen);
+		cmbLoaiThuoc.addActionListener(e -> thCtrl.timKiemThuocTheoLoai());
+		btnHoanTac.addActionListener(e -> thCtrl.hoanTacThuoc());
 	}
 	
-	public void onBtnLichSuXoa() {
-		/* TODO: hiển thị lịch sử xóa thuốc */
-	}
-
-	public void onBtnXoaTatCa() {
-		/* TODO: xử lý xoá tất cả thuốc được chọn */
-	}
 	
 }

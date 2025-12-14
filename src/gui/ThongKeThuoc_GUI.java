@@ -138,7 +138,7 @@ public class ThongKeThuoc_GUI extends JPanel {
     	
     	btnLamMoi.addActionListener(e -> thCtrl.onLamMoi());
     	
-    	btnLuu.addActionListener(e -> thCtrl.luuThongKe());
+    	//btnLuu.addActionListener(e -> thCtrl.luuThongKe());
     }
     
 

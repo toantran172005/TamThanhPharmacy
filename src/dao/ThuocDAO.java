@@ -15,6 +15,7 @@ import entity.KeThuoc;
 import entity.KhachHang;
 import entity.KhuyenMai;
 import entity.NhaCungCap;
+import entity.QuocGia;
 import entity.Thue;
 import entity.Thuoc;
 
@@ -757,5 +758,28 @@ public class ThuocDAO {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+	
+	//Lấy list quốc gia
+	public ArrayList<QuocGia> layListQG(){
+		ArrayList<QuocGia> listQG = new ArrayList<QuocGia>();
+		String sql = "SELECT *\r\n"
+				+ "  FROM [dbo].[QuocGia]";
+		
+		try(Connection con = KetNoiDatabase.getConnection();
+				Statement stmt = con.createStatement();
+				ResultSet rs = stmt.executeQuery(sql)) {
+			
+			while(rs.next()) {
+				QuocGia qg = new QuocGia();
+				qg.setMaQG(rs.getString("maQuocGia"));
+				qg.setTenQG(rs.getString("tenQuocGia"));
+				listQG.add(qg);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listQG;
 	}
 }
