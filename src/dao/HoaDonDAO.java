@@ -321,8 +321,7 @@ public class HoaDonDAO {
 		return 0.0;
 	}
 
-	// ================= LẤY CHI TIẾT HÓA ĐƠN (DÙNG CHO BẢNG THUỐC)
-	// =================
+	// ================= LẤY CHI TIẾT HÓA ĐƠN (DÙNG CHO BẢNG THUỐC) =================
 	public List<Object[]> layChiTietHoaDon(String maHD) {
 		List<Object[]> list = new ArrayList<>();
 		String sql = """

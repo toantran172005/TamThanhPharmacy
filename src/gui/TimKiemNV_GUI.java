@@ -15,14 +15,6 @@ public class TimKiemNV_GUI extends JPanel {
 
 	public JTable tblNhanVien;
 	public JTextField txtSdt, txtTenNV;
-<<<<<<< HEAD
-	public JButton btnXemChiTiet, btnLamMoi, btnLichSuXoa;
-	Font font1 = new Font("Arial", Font.BOLD, 18);
-	Font font2 = new Font("Arial", Font.PLAIN, 15);
-	public ToolCtrl tool = new ToolCtrl();
-
-	public TrangChuQL_GUI mainFrame;
-=======
 	public JButton btnTimKiem, btnXemChiTiet, btnLamMoi, btnLichSuXoa, btnXoaHoanTac;
 	Font font1 = new Font("Time New Roman", Font.BOLD, 18);
 	Font font2 = new Font("Time New Roman", Font.PLAIN, 15);
@@ -30,7 +22,6 @@ public class TimKiemNV_GUI extends JPanel {
 
 	public TrangChuQL_GUI mainFrame;
 	public DefaultTableModel model;
->>>>>>> main
 
 	public TimKiemNV_GUI(TrangChuQL_GUI mainFrame) {
 		this.mainFrame = mainFrame;

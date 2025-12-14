@@ -13,14 +13,6 @@ import java.awt.image.BufferedImage;
 
 public class ThemNhanVien_GUI extends JPanel {
 	public JLabel imgAnhNV;
-<<<<<<< HEAD
-    public JButton btnChonAnh, btnLamMoi, btnThem;
-    public JTextField txtTenNV, txtSdt, txtLuong, txtEmail;
-    public JComboBox<String> cmbChucVu, cmbGioiTinh, cmbThue;
-    public JDateChooser dpNgaySinh, dpNgayVaoLam;
-
-    public ToolCtrl tool = new ToolCtrl();
-=======
 	public JButton btnChonAnh, btnLamMoi, btnThem;
 	public JTextField txtTenNV, txtSdt, txtLuong, txtEmail;
 	public JComboBox<String> cmbChucVu, cmbGioiTinh;
@@ -29,7 +21,6 @@ public class ThemNhanVien_GUI extends JPanel {
 	public ThemNhanVienCtrl ctrl;
 
 	public ToolCtrl tool = new ToolCtrl();
->>>>>>> main
 
 	public ThemNhanVien_GUI() {
 		initUI();
@@ -176,25 +167,15 @@ public class ThemNhanVien_GUI extends JPanel {
 		add(centerPanel, BorderLayout.CENTER);
 	}
 
-	// =================== TẠO DÒNG FORM ===================
-	public JPanel createFormRow(String labelText, JComponent field) {
-		JPanel row = new JPanel();
-		row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
-		row.setBackground(Color.WHITE);
-		row.setMaximumSize(new Dimension(Short.MAX_VALUE, 60));
-
-<<<<<<< HEAD
     // =================== TẠO DÒNG FORM ===================
     public JPanel createFormRow(String labelText, JComponent field) {
         JPanel row = new JPanel();
         row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
         row.setBackground(Color.WHITE);
         row.setMaximumSize(new Dimension(Short.MAX_VALUE, 60));
-=======
 		JLabel lbl = tool.taoLabel(labelText);
 		lbl.setPreferredSize(new Dimension(130, 40));
 		lbl.setMinimumSize(new Dimension(130, 40));
->>>>>>> main
 
 		field.setPreferredSize(new Dimension(180, 40));
 
@@ -206,20 +187,6 @@ public class ThemNhanVien_GUI extends JPanel {
 		return row;
 	}
 
-	// =================== PLACEHOLDER IMAGE ===================
-	public ImageIcon loadPlaceholderImage(int w, int h) {
-		BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-		Graphics2D g2 = img.createGraphics();
-		g2.setColor(new Color(240, 240, 240));
-		g2.fillRect(0, 0, w, h);
-		g2.setColor(Color.GRAY);
-		g2.setFont(new Font("Arial", Font.PLAIN, 20));
-		g2.drawString("No Image", w / 2 - 50, h / 2);
-		g2.dispose();
-		return new ImageIcon(img.getScaledInstance(w, h, Image.SCALE_SMOOTH));
-	}
-
-<<<<<<< HEAD
     // =================== PLACEHOLDER IMAGE ===================
     public ImageIcon loadPlaceholderImage(int w, int h) {
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
@@ -232,12 +199,11 @@ public class ThemNhanVien_GUI extends JPanel {
         g2.dispose();
         return new ImageIcon(img.getScaledInstance(w, h, Image.SCALE_SMOOTH));
     }
-=======
+
 	// ===================== GETTER DÙNG CHO CONTROLLER =====================
 	public JButton getBtnChonAnh() {
 		return btnChonAnh;
 	}
->>>>>>> main
 
 	public JButton getBtnLamMoi() {
 		return btnLamMoi;
