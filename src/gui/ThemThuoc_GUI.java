@@ -131,7 +131,7 @@ public class ThemThuoc_GUI extends JPanel {
     }
 
     // ====== Hàm tạo 1 dòng nhãn + ô nhập ======
-    private JPanel taoDong(String label, JComponent comp) {
+    public JPanel taoDong(String label, JComponent comp) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         row.setBackground(Color.WHITE);
 
@@ -143,9 +143,8 @@ public class ThemThuoc_GUI extends JPanel {
         row.add(comp);
         return row;
     }
-
-    // ===== Sự kiện =====
-    private void onBtnLamMoi() {
+    // ===== Event handlers =====
+    public void onBtnLamMoi() {
         txtTenThuoc.setText("");
         txtDangThuoc.setText("");
         cmbDonVi.setSelectedItem("Tất cả");
@@ -158,8 +157,7 @@ public class ThemThuoc_GUI extends JPanel {
         cmbQuocGia.setSelectedItem("Tất cả");
     }
 
-
-    private void onBtnChonAnh() {
+    public void onBtnChonAnh() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Chọn ảnh thuốc");
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(

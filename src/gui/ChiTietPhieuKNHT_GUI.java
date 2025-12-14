@@ -9,7 +9,7 @@ import entity.PhieuKhieuNaiHoTro;
 
 public class ChiTietPhieuKNHT_GUI extends JPanel {
 
-	public ToolCtrl tool;
+	public ToolCtrl tool = new ToolCtrl();
 	public JTextField txtTenKH, txtSdt, txtTenNV;
 	public JComboBox<String> cmbLoaiDon, cmbTrangThai;
 	public JTextArea txaNoiDung;
@@ -105,6 +105,8 @@ public class ChiTietPhieuKNHT_GUI extends JPanel {
 		add(bottom, BorderLayout.SOUTH);
 	}
 
+
+	// === Hàm tạo 1 hàng label + control ===
 	public JPanel taoDong(String text, JComponent comp, int labelWidth, int fieldWidth) {
 		JPanel row = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 0));
 		row.setBackground(Color.WHITE);

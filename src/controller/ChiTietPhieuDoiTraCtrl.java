@@ -13,11 +13,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class ChiTietPhieuDoiTraCtrl {
-	private ChiTietPhieuDoiTra_GUI gui;
-	private PhieuDoiTraDAO phieuDTDAO = new PhieuDoiTraDAO();
-	private ToolCtrl tool = new ToolCtrl();
-	private TrangChuNV_GUI trangChuNV;
-	private TrangChuQL_GUI trangChuQL;
+	public ChiTietPhieuDoiTra_GUI gui;
+	public PhieuDoiTraDAO phieuDTDAO = new PhieuDoiTraDAO();
+	public ToolCtrl tool = new ToolCtrl();
+	public TrangChuNV_GUI trangChuNV;
+	public TrangChuQL_GUI trangChuQL;
 
 	public ChiTietPhieuDoiTraCtrl(ChiTietPhieuDoiTra_GUI gui) {
 		this.gui = gui;
@@ -25,7 +25,7 @@ public class ChiTietPhieuDoiTraCtrl {
 	}
 
 	// ========== GẮN SỰ KIỆN ==========
-	private void suKien() {
+	public void suKien() {
 		gui.getBtnQuayLai().addActionListener(e -> quayLai());
 	}
 
@@ -66,7 +66,7 @@ public class ChiTietPhieuDoiTraCtrl {
 	}
 
 	// ========== ĐƯA DỮ LIỆU VÀO BẢNG THUỐC ==========
-	private void setDataChoTable(String maPhieuDT) {
+	public void setDataChoTable(String maPhieuDT) {
 		List<Object[]> listCT = phieuDTDAO.layDanhSachThuocTheoPhieuDT(maPhieuDT);
 		DefaultTableModel model = (DefaultTableModel) gui.getTblThuoc().getModel();
 		model.setRowCount(0);
@@ -83,7 +83,7 @@ public class ChiTietPhieuDoiTraCtrl {
 	}
 
 	// ========== QUAY LẠI TRANG TÌM KIẾM PHIẾU ĐỔI TRẢ ==========
-	private void quayLai() {
+	public void quayLai() {
 		if (gui.getMainFrameQL() != null) {
 			tool.doiPanel(gui, new TimKiemPhieuDoiTra_GUI(gui.getMainFrameQL()));
 		} else if (gui.getMainFrameNV() != null) {

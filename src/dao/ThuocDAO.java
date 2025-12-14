@@ -368,6 +368,37 @@ public class ThuocDAO {
 
 		return listThuoc;
 	}
+	
+	// ========== LẤY LIST QUỐC GIA SẢN XUẤT ==========
+	public ArrayList<QuocGia> layListQuocGiaTheoThuoc(String maThuoc) {
+	    ArrayList<QuocGia> listQG = new ArrayList<>();
+
+	    String sql = """
+	        SELECT qg.maQuocGia, qg.tenQuocGia
+	        FROM Thuoc_QuocGia tqg
+	        JOIN QuocGia qg ON tqg.maQuocGia = qg.maQuocGia
+	        WHERE tqg.maThuoc = ?
+	    """;
+
+	    try (Connection con = KetNoiDatabase.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setString(1, maThuoc);
+	        ResultSet rs = ps.executeQuery();
+
+	        while (rs.next()) {
+	            String maQG = rs.getString("maQuocGia");
+	            String tenQG = rs.getString("tenQuocGia");
+	            listQG.add(new QuocGia(maQG, tenQG));
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return listQG;
+	}
+
 
 	public ArrayList<Thuoc> layListThuocHoanChinh() {
 		ArrayList<Thuoc> listThuoc = new ArrayList<>();
@@ -378,13 +409,15 @@ public class ThuocDAO {
 				        th.loaiThue, th.tyLeThue, th.moTa,
 				        dvt.tenDVT,
 				        kt.loaiKe, kt.sucChua, kt.moTa,
-				        ncc.tenNCC, ncc.sdt, ncc.diaChi, ncc.email, t.noiSanXuat
+				        ncc.tenNCC, ncc.sdt, ncc.diaChi, ncc.email, qg.tenQuocGia
 				    FROM Thuoc t
 				    LEFT JOIN CT_Kho ctK ON t.maThuoc = ctK.maThuoc
 				    LEFT JOIN Thue th ON t.maThue = th.maThue
 				    LEFT JOIN DonViTinh dvt ON t.maDVT = dvt.maDVT
 				    LEFT JOIN KeThuoc kt ON t.maKe = kt.maKe
 				    LEFT JOIN NhaCungCap ncc ON t.maNCC = ncc.maNCC
+				    LEFT JOIN Thuoc_QuocGia tqg ON t.maThuoc = tqg.maThuoc
+				    LEFT JOIN QuocGia qg ON tqg.maQuocGia = qg.maQuocGia
 				    WHERE t.trangThai = 1
 				    ORDER BY TRY_CAST(REPLACE(t.maThuoc, 'TTTH', '') AS INT)
 				""";
@@ -415,7 +448,7 @@ public class ThuocDAO {
 				boolean trangThai = rs.getBoolean("trangThai");
 				String anh = rs.getString("anh");
 				int soLuongTon = rs.getInt("soLuongTon");
-				String noiSanXuat = rs.getString("noiSanXuat");
+				String noiSanXuat = rs.getString("tenQuocGia");
 
 				// ====== Gộp thành Thuoc ======
 				Thuoc thuoc = new Thuoc(maThuoc, thue, keThuoc, dvt, ncc, tenThuoc, dangThuoc, giaBan, hanSuDung,

@@ -13,14 +13,14 @@ import controller.ToolCtrl;
 import java.awt.*;
 
 public class LapHoaDon_GUI extends JPanel {
-	private JTextField txtSdt, txtTenKH, txtTuoi, txtSoLuong, txtTienNhan;
-	private JComboBox<String> cmbSanPham, cmbDonVi, cmbHTThanhToan;
-	private JLabel lblTongTien, lblTienThua;
-	private JTable tblThuoc;
-	private JButton btnThem, btnLamMoi, btnTaoHD, btnXoa;
-	private TrangChuQL_GUI mainFrame;
-    private TrangChuNV_GUI mainFrameNV;
-    private LapHoaDonCtrl controller;
+	public JTextField txtSdt, txtTenKH, txtTuoi, txtSoLuong, txtTienNhan;
+	public JComboBox<String> cmbSanPham, cmbDonVi, cmbHTThanhToan, cmbQuocGia;
+	public JLabel lblTongTien, lblTienThua;
+	public JTable tblThuoc;
+	public JButton btnThem, btnLamMoi, btnTaoHD, btnXoa;
+	public TrangChuQL_GUI mainFrame;
+	public TrangChuNV_GUI mainFrameNV;
+	public LapHoaDonCtrl controller;
     
 	Font font1 = new Font("Times New Roman", Font.BOLD, 18);
 	Font font2 = new Font("Times New Roman", Font.PLAIN, 15);
@@ -40,7 +40,7 @@ public class LapHoaDon_GUI extends JPanel {
         khoiTaoController();
     }
     
-    private void khoiTaoController() {
+    public void khoiTaoController() {
         this.controller = new LapHoaDonCtrl(this);
     }
 
@@ -83,6 +83,11 @@ public class LapHoaDon_GUI extends JPanel {
 		cmbSanPham.setEditable(true);
 		cmbSanPham.setPreferredSize(new Dimension(180, 28));
 		row2.add(cmbSanPham);
+		row2.add(tool.taoLabel("Quốc gia sản xuất:"));
+		cmbQuocGia = tool.taoComboBox(new String[] {});
+		cmbQuocGia.setEditable(true);
+		cmbQuocGia.setPreferredSize(new Dimension(180, 28));
+		row2.add(cmbQuocGia);
 		pnlTop.add(row2);
 
 		// --- Dòng 3: Số lượng, Đơn vị, nút Thêm ---
@@ -106,7 +111,7 @@ public class LapHoaDon_GUI extends JPanel {
 		add(pnlTop, BorderLayout.NORTH);
 
 		// ===================== PHẦN GIỮA: BẢNG =====================
-		String[] cols = { "STT", "Tên thuốc", "Số lượng", "Đơn vị", "Đơn giá", "Thành tiền", "Ghi chú"};
+		String[] cols = { "STT", "Tên thuốc","Nơi sản xuất", "Số lượng", "Đơn vị", "Đơn giá", "Thành tiền", "Ghi chú"};
 		DefaultTableModel model = new DefaultTableModel(cols, 0);
 		tblThuoc = new JTable(model);
 		tblThuoc.setRowHeight(25);
@@ -192,13 +197,13 @@ public class LapHoaDon_GUI extends JPanel {
 	}
 
 	// ========== HÀM TẠO CÁC THÀNH PHẦN CHUNG ==========
-	private JPanel taoHang() {
+	public JPanel taoHang() {
 		JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
 		p.setBackground(Color.WHITE);
 		return p;
 	}
 
-	private JPanel taoHangTrai() {
+	public JPanel taoHangTrai() {
 		JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
 		p.setBackground(Color.WHITE);
 		return p;
@@ -213,6 +218,7 @@ public class LapHoaDon_GUI extends JPanel {
     public JComboBox<String> getCmbSanPham() { return cmbSanPham; }
     public JComboBox<String> getCmbDonVi() { return cmbDonVi; }
     public JComboBox<String> getCmbHTThanhToan() { return cmbHTThanhToan; }
+    public JComboBox<String> getCmbQuocGia() { return cmbQuocGia; }
     public JLabel getLblTongTien() { return lblTongTien; }
     public JLabel getLblTienThua() { return lblTienThua; }
     public JTable getTblThuoc() { return tblThuoc; }

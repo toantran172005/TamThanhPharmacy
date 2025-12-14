@@ -10,9 +10,9 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class ChiTietHoaDonCtrl {
-	private ChiTietHoaDon_GUI gui;
-	private HoaDonDAO hdDAO = new HoaDonDAO();
-	private ToolCtrl tool = new ToolCtrl();
+	public ChiTietHoaDon_GUI gui;
+	public HoaDonDAO hdDAO = new HoaDonDAO();
+	public ToolCtrl tool = new ToolCtrl();
 
 	public ChiTietHoaDonCtrl(ChiTietHoaDon_GUI gui) {
 		this.gui = gui;
@@ -20,7 +20,7 @@ public class ChiTietHoaDonCtrl {
 	}
 
 	// ========== GẮN SỰ KIỆN ==========
-	private void suKien() {
+	public void suKien() {
 		gui.getBtnQuayLai().addActionListener(e -> quayLai());
 		gui.getBtnInHoaDon().addActionListener(e -> inHoaDon());
 		gui.getBtnTaoPhieuDoiTra().addActionListener(e -> taoPhieuDoiTra());
@@ -51,7 +51,7 @@ public class ChiTietHoaDonCtrl {
 	}
 
 	// ========== HIỂN THỊ THUỐC LÊN BẢNG ==========
-	private void capNhatBangChiTiet(String maHD) {
+	public void capNhatBangChiTiet(String maHD) {
 		DefaultTableModel model = (DefaultTableModel) gui.getTblThuoc().getModel();
 		model.setRowCount(0);
 
@@ -66,7 +66,7 @@ public class ChiTietHoaDonCtrl {
 	}
 
 	// ========== QUAY LẠI TRANG TÌM KIẾM HOÁ ĐƠN ==========
-	private void quayLai() {
+	public void quayLai() {
 		if (gui.getMainFrameQL() != null) {
 			tool.doiPanel(gui, new TimKiemHD_GUI(gui.getMainFrameQL()));
 		} else if (gui.getMainFrameNV() != null) {
@@ -74,15 +74,14 @@ public class ChiTietHoaDonCtrl {
 		}
 	}
 	
-
 	// ========== IN HOÁ ĐƠN ==========
-	private void inHoaDon() {
+	public void inHoaDon() {
 		tool.hienThiThongBao("In hóa đơn", "Chức năng in đang được phát triển...", true);
 		// TODO: Dùng JasperReports, PDF, hoặc PrinterJob.print()
 	}
 
 	// ========== TẠO PHIẾU ĐỔI TRẢ ==========
-	private void taoPhieuDoiTra() {
+	public void taoPhieuDoiTra() {
 		String maHD = gui.getLblMaHD().getText();
 		if (maHD.isEmpty()) {
 			tool.hienThiThongBao("Lỗi", "Không có hóa đơn để đổi trả!", false);

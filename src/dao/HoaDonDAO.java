@@ -12,8 +12,8 @@ import entity.*;
 
 public class HoaDonDAO {
 	Connection con = KetNoiDatabase.getConnection();
-	private NhanVienDAO nvDAO = new NhanVienDAO();
-	private KhachHangDAO khDAO = new KhachHangDAO();
+	public NhanVienDAO nvDAO = new NhanVienDAO();
+	public KhachHangDAO khDAO = new KhachHangDAO();
 
 	// ================= LẤY DANH SÁCH HÓA ĐƠN CÒN HIỆU LỰC =================
 	public List<HoaDon> layListHoaDon() {
@@ -133,7 +133,7 @@ public class HoaDonDAO {
 
 
 	// ================= HÀM HỖ TRỢ: CHUYỂN ResultSet → HoaDon =================
-	private HoaDon mapResultSetToHoaDon(ResultSet rs) throws SQLException {
+	public HoaDon mapResultSetToHoaDon(ResultSet rs) throws SQLException {
 		KhachHang kh = khDAO.timKhachHangTheoMa(rs.getString("maKH"));
 		NhanVien nv = nvDAO.timNhanVienTheoMa(rs.getString("maNV"));
 
@@ -321,8 +321,7 @@ public class HoaDonDAO {
 		return 0.0;
 	}
 
-	// ================= LẤY CHI TIẾT HÓA ĐƠN (DÙNG CHO BẢNG THUỐC)
-	// =================
+	// ================= LẤY CHI TIẾT HÓA ĐƠN (DÙNG CHO BẢNG THUỐC) =================
 	public List<Object[]> layChiTietHoaDon(String maHD) {
 		List<Object[]> list = new ArrayList<>();
 		String sql = """

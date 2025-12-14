@@ -11,14 +11,14 @@ import controller.ToolCtrl;
 
 public class ThemKhuyenMai_GUI extends JPanel {
 
-    private JTextField txtTenKM, txtMucKM, txtSoLuongTang;
-    private JComboBox<String> cmbPhuongThuc;
-    private JDateChooser dpNgayBD, dpNgayKT;
-    private JButton btnCong, btnTru, btnCong1, btnTru1, btnThem, btnLamMoi;
-    private JTable tblThuocKhuyenMai;
-    private JCheckBox chkSelect;
+	public JTextField txtTenKM, txtMucKM, txtSoLuongTang;
+	public JComboBox<String> cmbPhuongThuc;
+	public JDateChooser dpNgayBD, dpNgayKT;
+	public JButton btnCong, btnTru, btnCong1, btnTru1, btnThem, btnLamMoi;
+	public JTable tblThuocKhuyenMai;
+	public JCheckBox chkSelect;
 
-    private final ToolCtrl tool = new ToolCtrl();
+	public ToolCtrl tool = new ToolCtrl();
 
     public ThemKhuyenMai_GUI() {
         setLayout(new BorderLayout());
@@ -165,7 +165,7 @@ public class ThemKhuyenMai_GUI extends JPanel {
     }
 
     // ====== HÀM TẠO DÒNG ======
-    private JPanel taoDong(String text, JComponent comp) {
+    public JPanel taoDong(String text, JComponent comp) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         row.setBackground(Color.WHITE);
 
@@ -178,7 +178,7 @@ public class ThemKhuyenMai_GUI extends JPanel {
         return row;
     }
 
-    private JPanel taoDongStepper(String labelText, JTextField txt, JButton btnMinus, JButton btnPlus) {
+    public JPanel taoDongStepper(String labelText, JTextField txt, JButton btnMinus, JButton btnPlus) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         row.setBackground(Color.WHITE);
 
@@ -200,7 +200,7 @@ public class ThemKhuyenMai_GUI extends JPanel {
     }
 
     // ====== HÀM XỬ LÝ ======
-    private void tangGiaTri(JTextField txt) {
+    public void tangGiaTri(JTextField txt) {
         try {
             int value = Integer.parseInt(txt.getText().trim());
             txt.setText(String.valueOf(value + 1));
@@ -209,7 +209,7 @@ public class ThemKhuyenMai_GUI extends JPanel {
         }
     }
 
-    private void giamGiaTri(JTextField txt) {
+    public void giamGiaTri(JTextField txt) {
         try {
             int value = Integer.parseInt(txt.getText().trim());
             if (value > 0) txt.setText(String.valueOf(value - 1));
@@ -218,13 +218,13 @@ public class ThemKhuyenMai_GUI extends JPanel {
         }
     }
 
-    private void lamMoi() {
+    public void lamMoi() {
         txtTenKM.setText("");
         txtMucKM.setText("");
         txtSoLuongTang.setText("");
     }
 
-    private void themKhuyenMai() {
+    public void themKhuyenMai() {
         JOptionPane.showMessageDialog(this, "Đã thêm khuyến mãi mới!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
     }
 }

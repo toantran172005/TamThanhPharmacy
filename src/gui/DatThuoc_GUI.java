@@ -19,8 +19,8 @@ public class DatThuoc_GUI extends JPanel {
 	public JTable tblDatThuoc;
 	public DefaultTableModel model;
 	
-	private DatThuocBanCtrl dtCtrl;
-	private final ToolCtrl tool = new ToolCtrl();
+	public DatThuocBanCtrl dtCtrl;
+	public ToolCtrl tool = new ToolCtrl();
 
 	public DatThuoc_GUI() {
 		dtCtrl = new DatThuocBanCtrl(this);

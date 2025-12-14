@@ -152,7 +152,7 @@ public class ChiTietThuoc_GUI extends JPanel {
     	btnChonAnh.addActionListener(e -> thCtrl.chonFile());
     }
 
-    private JPanel taoDong(String text, JComponent comp) {
+    public JPanel taoDong(String text, JComponent comp) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         row.setBackground(Color.WHITE);
         JLabel lbl = tool.taoLabel(text);

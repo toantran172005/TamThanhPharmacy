@@ -12,9 +12,9 @@ import gui.TimKiemThuoc_GUI;
 
 public class ChiTietThuocCtrl {
 
-	private ToolCtrl tool = new ToolCtrl();
-	private ThuocDAO thDAO = new ThuocDAO();
-	private ChiTietThuoc_GUI ctThuoc;
+	public ToolCtrl tool = new ToolCtrl();
+	public ThuocDAO thDAO = new ThuocDAO();
+	public ChiTietThuoc_GUI ctThuoc;
 	
 	public ChiTietThuocCtrl(ChiTietThuoc_GUI ctThuoc) {
 		this.ctThuoc = ctThuoc;

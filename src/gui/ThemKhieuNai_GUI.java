@@ -10,15 +10,14 @@ import controller.ToolCtrl;
 
 public class ThemKhieuNai_GUI extends JPanel {
 
+    public ToolCtrl tool = new ToolCtrl();
     public JTextField txtTenKhachHang, txtSdt;
     public JComboBox<String> cmbLoaiDon;
     public JTextArea txaNoiDung;
     public JButton btnQuayLai, btnLamMoi, btnThem;
     public JDateChooser dateNgayLap;
-
-    public ToolCtrl tool;
     public ThemKhieuNaiCtrl tknCtrl;
-    
+
 
     public ThemKhieuNai_GUI() {
     	tool = new ToolCtrl();

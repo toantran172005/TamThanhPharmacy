@@ -16,8 +16,8 @@ public class KhuyenMaiCtrl {
 	private ChiTietKhuyenMai_GUI ctGUI;
 	private KhuyenMaiDAO kmDAO = new KhuyenMaiDAO();
 	private ToolCtrl tool = new ToolCtrl();
+
 	ArrayList<KhuyenMai> listKM = new ArrayList<KhuyenMai>();
-	
 	
 	public KhuyenMaiCtrl(DanhSachKhuyenMai_GUI danhSachKhuyenMai_GUI) {
 		this.kmGUI = danhSachKhuyenMai_GUI;

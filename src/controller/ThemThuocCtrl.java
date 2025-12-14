@@ -144,7 +144,7 @@ public class ThemThuocCtrl {
 
 	    thuoc.setDvt(new DonViTinh(donVi));
 	    thuoc.setKeThuoc(new KeThuoc(keThuoc));
-	    thuoc.setQuocGia(new QuocGia(quocGia));
+	    //thuoc.setQuocGia(new QuocGia(quocGia));
 	    thuoc.setThue(thue);
 
 	    if (thuocDAO.themThuoc(thuoc)) {

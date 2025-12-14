@@ -19,8 +19,8 @@ public class ChiTietKhuyenMai_GUI extends JPanel {
     public JButton btnThemThuoc, btnCapNhat, btnQuayLai;
     public JDateChooser dpNgayBD, dpNgayKT; 
     public KhuyenMaiCtrl kmCtrl;
-    
     private final ToolCtrl tool = new ToolCtrl();
+
 
     public ChiTietKhuyenMai_GUI() {
     	kmCtrl = new KhuyenMaiCtrl(this);
@@ -154,7 +154,7 @@ public class ChiTietKhuyenMai_GUI extends JPanel {
         btnQuayLai.addActionListener(e -> tool.doiPanel(this, new DanhSachKhuyenMai_GUI()));
     }
 
-    private JPanel taoDongStepper(String labelText, JTextField txt, JButton btnMinus, JButton btnPlus) {
+    public JPanel taoDongStepper(String labelText, JTextField txt, JButton btnMinus, JButton btnPlus) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         row.setBackground(Color.WHITE);
 
@@ -174,7 +174,7 @@ public class ChiTietKhuyenMai_GUI extends JPanel {
         row.add(stepPanel);
         return row;
     }
-    
+ 
     
     public void setData(
             String maKM,
