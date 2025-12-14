@@ -19,15 +19,15 @@ public class ChiTietKeThuoc_GUI extends JPanel {
 	public JComboBox<String> cmbLoaiKe, cmbTrangThai;
 	public JTable tblChiTietKT;
 	public JButton btnCapNhat, btnThoat;
-<<<<<<< HEAD
-	public ToolCtrl tool = new ToolCtrl();
-=======
+//<<<<<<< HEAD
+//	public ToolCtrl tool = new ToolCtrl();
+//=======
 	public ToolCtrl tool;
 	public DefaultTableModel model;
 	public KeThuocDAO ktDAO;
 	public ChiTietKeThuocCtrl ctktCtrl;
 	public KeThuoc ke;
->>>>>>> main
+//>>>>>>> main
 
 	public ChiTietKeThuoc_GUI(KeThuoc ke) {
 		this.ke = ke;
@@ -113,22 +113,7 @@ public class ChiTietKeThuoc_GUI extends JPanel {
 		tblChiTietKT.getColumnModel().getColumn(0).setPreferredWidth(97);
 		tblChiTietKT.getColumnModel().getColumn(1).setPreferredWidth(199);
 		tblChiTietKT.getColumnModel().getColumn(2).setPreferredWidth(435);
-
-<<<<<<< HEAD
-    /** 
-     * Tạo 1 dòng gồm label và component, spacing đẹp và label tự giãn theo độ dài chữ.
-     */
-    public JPanel taoDong(String text, JComponent comp) {
-        JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
-        row.setBackground(Color.WHITE);
-        JLabel lbl = tool.taoLabel(text);
-        lbl.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-        comp.setPreferredSize(new Dimension(250, comp.getPreferredSize().height));
-        row.add(lbl);
-        row.add(comp);
-        return row;
-    }
-=======
+		
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		for (int i = 0; i < tblChiTietKT.getColumnCount(); i++) {
@@ -173,5 +158,4 @@ public class ChiTietKeThuoc_GUI extends JPanel {
 		row.add(comp);
 		return row;
 	}
->>>>>>> main
 }

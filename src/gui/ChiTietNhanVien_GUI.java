@@ -19,16 +19,6 @@ public class ChiTietNhanVien_GUI extends JPanel {
 	public JTextField txtMaNV, txtTenNV, txtSdt, txtLuong, txtEmail, txtThue;
 	public JComboBox<String> cmbChucVu, cmbGioiTinh;
 	public JDateChooser dtpNgaySinh, dtpNgayVaoLam;
-<<<<<<< HEAD
-
-	public ToolCtrl tool = new ToolCtrl();
-	public TrangChuQL_GUI mainFrame;
-
-    public ChiTietNhanVien_GUI(TrangChuQL_GUI mainFrame) {
-        this.mainFrame = mainFrame;
-        initUI();
-    }
-=======
 	public ChiTietNhanVienCtrl ctrl;
 
 	public ToolCtrl tool = new ToolCtrl();
@@ -47,7 +37,6 @@ public class ChiTietNhanVien_GUI extends JPanel {
 		initUI();
 		this.ctrl = new ChiTietNhanVienCtrl(this);
 	}
->>>>>>> main
 
     public void initUI() {
         setLayout(new BorderLayout());
@@ -200,11 +189,7 @@ public class ChiTietNhanVien_GUI extends JPanel {
         add(centerPanel, BorderLayout.CENTER);
     }
 
-<<<<<<< HEAD
-    // =================== TẠO DÒNG FORM (giữ lại) ===================
-=======
     // ========== TẠO DÒNG FORM ==========
->>>>>>> main
     public JPanel createFormRow(String labelText, JComponent field) {
         JPanel row = new JPanel();
         row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
@@ -225,8 +210,7 @@ public class ChiTietNhanVien_GUI extends JPanel {
         return row;
     }
 
-<<<<<<< HEAD
-    // =================== PLACEHOLDER IMAGE ===================
+    // ========== PLACEHOLDER IMAGE ==========
     public ImageIcon loadPlaceholderImage(int w, int h) {
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = img.createGraphics();
@@ -238,20 +222,7 @@ public class ChiTietNhanVien_GUI extends JPanel {
         g2.dispose();
         return new ImageIcon(img.getScaledInstance(w, h, Image.SCALE_SMOOTH));
     }
-=======
-//    // ========== PLACEHOLDER IMAGE ==========
-//    public ImageIcon loadPlaceholderImage(int w, int h) {
-//        BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-//        Graphics2D g2 = img.createGraphics();
-//        g2.setColor(new Color(240, 240, 240));
-//        g2.fillRect(0, 0, w, h);
-//        g2.setColor(Color.GRAY);
-//        g2.setFont(new Font("Arial", Font.PLAIN, 20));
-//        g2.drawString("No Image", w / 2 - 50, h / 2);
-//        g2.dispose();
-//        return new ImageIcon(img.getScaledInstance(w, h, Image.SCALE_SMOOTH));
-//    }
->>>>>>> main
+
 
  // ========== GETTER ==========
     public JButton getBtnChonAnh() { return btnChonAnh; }
