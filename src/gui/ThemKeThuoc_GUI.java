@@ -7,10 +7,10 @@ import controller.ToolCtrl;
 
 public class ThemKeThuoc_GUI extends JPanel {
 
-    private JComboBox<String> cmbLoaiKe;
-    private JTextField txtSucChua, txtMoTa;
-    private JButton btnLamMoi, btnThem;
-    private ToolCtrl tool = new ToolCtrl();
+	public JComboBox<String> cmbLoaiKe;
+	public JTextField txtSucChua, txtMoTa;
+	public JButton btnLamMoi, btnThem;
+	public ToolCtrl tool = new ToolCtrl();
 
     public ThemKeThuoc_GUI() {
         setLayout(new BorderLayout());
@@ -54,7 +54,7 @@ public class ThemKeThuoc_GUI extends JPanel {
     }
 
     // ======= Hàm tạo từng hàng Label + Input =======
-    private JPanel createInputRow(String label, JComponent input, String comboPrompt) {
+    public JPanel createInputRow(String label, JComponent input, String comboPrompt) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
         row.setBackground(Color.WHITE);
 
@@ -77,13 +77,13 @@ public class ThemKeThuoc_GUI extends JPanel {
         return row;
     }
 
-    private void lamMoi() {
+    public void lamMoi() {
         cmbLoaiKe.setSelectedIndex(-1);
         txtSucChua.setText("");
         txtMoTa.setText("");
     }
 
-    private void themKeThuoc() {
+    public void themKeThuoc() {
         String loaiKe = (String) cmbLoaiKe.getSelectedItem();
         String sucChua = txtSucChua.getText().trim();
         String moTa = txtMoTa.getText().trim();

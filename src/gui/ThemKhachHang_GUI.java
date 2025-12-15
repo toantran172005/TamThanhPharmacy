@@ -8,13 +8,14 @@ import controller.ToolCtrl;
 
 public class ThemKhachHang_GUI extends JPanel {
 
+	public ToolCtrl tool = new ToolCtrl();
     public JTextField txtTenKH;
     public JTextField txtSdt;
     public JTextField txtTuoi;
     public JButton btnLamMoi;
     public JButton btnThem;
     public ThemKhachHangCtrl tkhCtrl;
-    public ToolCtrl tool;
+
 
     public ThemKhachHang_GUI() {
     	tkhCtrl = new ThemKhachHangCtrl(this);
@@ -77,6 +78,7 @@ public class ThemKhachHang_GUI extends JPanel {
         add(bottom, BorderLayout.SOUTH);
     }
 
+    // === Tạo 1 hàng label + field ===
     public JPanel taoDong(String text, JComponent comp, int labelWidth, int fieldWidth) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 0));
         row.setBackground(Color.WHITE);

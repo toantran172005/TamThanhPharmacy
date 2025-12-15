@@ -15,15 +15,15 @@ import java.util.stream.Collectors;
 import java.awt.event.ActionListener;
 
 public class TimKiemHDCtrl {
-	private TimKiemHD_GUI gui;
-	private HoaDonDAO hdDAO = new HoaDonDAO();
-	private ToolCtrl tool = new ToolCtrl();
-	private TrangChuQL_GUI trangChuQL;
-	private TrangChuNV_GUI trangChuNV;
+	public TimKiemHD_GUI gui;
+	public HoaDonDAO hdDAO = new HoaDonDAO();
+	public ToolCtrl tool = new ToolCtrl();
+	public TrangChuQL_GUI trangChuQL;
+	public TrangChuNV_GUI trangChuNV;
 
-	private boolean tblChuaXoa = true;
-	private List<HoaDon> listHD;
-	private List<HoaDon> listHDDaXoa;
+	public boolean tblChuaXoa = true;
+	public List<HoaDon> listHD;
+	public List<HoaDon> listHDDaXoa;
 
 	public TimKiemHDCtrl(TimKiemHD_GUI gui) {
 		this.gui = gui;
@@ -50,13 +50,10 @@ public class TimKiemHDCtrl {
 
 	// ========== SỰ KIỆN ==========
 	public void suKien() {
-		// Tìm kiếm
 		ActionListener setAction = e -> locHoaDon();
 		gui.getTxtKhachHang().addActionListener(setAction);
 		gui.getTxtTenNV().addActionListener(setAction);
 		gui.getBtnTimKiem().addActionListener(setAction);
-
-		// Các nút
 		gui.getBtnLamMoi().addActionListener(e -> lamMoiBang());
 		gui.getBtnChiTiet().addActionListener(e -> xemChiTiet());
 		gui.getBtnLichSuXoa().addActionListener(e -> xemLichSuXoa());

@@ -10,12 +10,12 @@ import controller.ToolCtrl;
 
 public class DangNhap_GUI extends JFrame {
 
-    private JTextField txtTenDangNhap;
-    private JPasswordField txpPassClose;
-    private JTextField txtPassOpen;
-    private JLabel imgEye;
-    private JButton btnDangNhap;
-    private boolean hienMatKhau = false;
+	public JTextField txtTenDangNhap;
+	public JPasswordField txpPassClose;
+	public JTextField txtPassOpen;
+	public JLabel imgEye;
+	public JButton btnDangNhap;
+	public boolean hienMatKhau = false;
     public ToolCtrl tool = new ToolCtrl();
 
     Font font1 = new Font("Times New Roman", Font.BOLD, 22);
@@ -126,7 +126,7 @@ public class DangNhap_GUI extends JFrame {
     }
 
     // ======= HÀM TẠO LABEL =======
-    private JLabel taoLabel(String text) {
+    public JLabel taoLabel(String text) {
         JLabel lbl = new JLabel(text);
         lbl.setFont(font2);
         lbl.setForeground(new Color(0x333333));
@@ -146,7 +146,7 @@ public class DangNhap_GUI extends JFrame {
     }
 
     // ======= CHUYỂN TRANG =======
-    private void chuyenDenTrangChuNhanVien() {
+    public void chuyenDenTrangChuNhanVien() {
         new TrangChuQL_GUI().setVisible(true);
         this.dispose();
     }

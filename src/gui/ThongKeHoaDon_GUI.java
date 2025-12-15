@@ -18,14 +18,14 @@ import controller.ToolCtrl;
 
 public class ThongKeHoaDon_GUI extends JPanel {
 
-	private JDateChooser dpNgayBatDau, dpNgayKetThuc;
-	private JButton btnThongKe, btnXuatExcel, btnLamMoi;
-	private JLabel lblTongDoanhThu, lblTongHD, lblTBDT;
-	private JComboBox<String> cmbTopTK;
-	private JTable tblThongKeHD;
-	private JPanel mainCenter;
-	private ChartPanel chartPanel;
-	private JPanel pnlBieuDo;
+	public JDateChooser dpNgayBatDau, dpNgayKetThuc;
+	public JButton btnThongKe, btnXuatExcel, btnLamMoi;
+	public JLabel lblTongDoanhThu, lblTongHD, lblTBDT;
+	public JComboBox<String> cmbTopTK;
+	public JTable tblThongKeHD;
+	public JPanel mainCenter;
+	public ChartPanel chartPanel;
+	public JPanel pnlBieuDo;
 
 	Font font1 = new Font("Times New Roman", Font.BOLD, 18);
 	Font font2 = new Font("Times New Roman", Font.PLAIN, 15);

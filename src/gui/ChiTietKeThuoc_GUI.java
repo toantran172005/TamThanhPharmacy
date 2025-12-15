@@ -19,11 +19,15 @@ public class ChiTietKeThuoc_GUI extends JPanel {
 	public JComboBox<String> cmbLoaiKe, cmbTrangThai;
 	public JTable tblChiTietKT;
 	public JButton btnCapNhat, btnThoat;
+//<<<<<<< HEAD
+//	public ToolCtrl tool = new ToolCtrl();
+//=======
 	public ToolCtrl tool;
 	public DefaultTableModel model;
 	public KeThuocDAO ktDAO;
 	public ChiTietKeThuocCtrl ctktCtrl;
 	public KeThuoc ke;
+//>>>>>>> main
 
 	public ChiTietKeThuoc_GUI(KeThuoc ke) {
 		this.ke = ke;
@@ -109,7 +113,7 @@ public class ChiTietKeThuoc_GUI extends JPanel {
 		tblChiTietKT.getColumnModel().getColumn(0).setPreferredWidth(97);
 		tblChiTietKT.getColumnModel().getColumn(1).setPreferredWidth(199);
 		tblChiTietKT.getColumnModel().getColumn(2).setPreferredWidth(435);
-
+		
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		for (int i = 0; i < tblChiTietKT.getColumnCount(); i++) {

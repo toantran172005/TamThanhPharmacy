@@ -5,25 +5,31 @@ import javax.swing.*;
 import com.toedter.calendar.JDateChooser;
 
 import java.awt.*;
+
+import controller.ThemThuocCtrl;
+import controller.ThuocCtrl;
 import controller.ToolCtrl;
 
 public class ThemThuoc_GUI extends JPanel {
 
-    private JTextField txtTenThuoc;
-    private JTextField txtDangThuoc;
-    private JComboBox<String> cmbDonVi;
-    private JTextField txtGiaBan;
-    private JComboBox<String> cmbThue;
-    private JComboBox<String> cmbKeThuoc;
-    private JDateChooser dpHanSuDung;
-    private JLabel imgThuoc;
-    private JButton btnChonAnh, btnLamMoi, btnThem;
+    public JTextField txtTenThuoc;
+    public JTextField txtDangThuoc;
+    public JComboBox<String> cmbDonVi;
+    public JTextField txtGiaBan;
+    public JComboBox<String> cmbThue;
+    public JComboBox<String> cmbKeThuoc;
+    public JDateChooser dpHanSuDung;
+    public JLabel imgThuoc;
+    public JButton btnChonAnh, btnLamMoi, btnThem;
+    public String urlAnh = null;
 
-    private final ToolCtrl tool = new ToolCtrl();
-	private JComboBox cmbQuocGia;
-	private JSpinner spSoLuongTon;
+	public ThemThuocCtrl thCtrl;
+	private final ToolCtrl tool = new ToolCtrl();
+	public JComboBox cmbQuocGia;
+	public JSpinner spSoLuongTon;
 
     public ThemThuoc_GUI() {
+    	this.thCtrl = new ThemThuocCtrl(this);
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
@@ -60,7 +66,7 @@ public class ThemThuoc_GUI extends JPanel {
         btnChonAnh = tool.taoButton("Chọn ảnh", "/picture/keThuoc/folder.png");
         centerPanel.add(btnChonAnh, gbc);
 
-     // === Cột giữa (thông tin 1) ===
+     // === Cột giữa ===
         gbc.gridx = 1;
         gbc.gridy = 0;
         centerPanel.add(taoDong("Tên thuốc:", txtTenThuoc = tool.taoTextField("Tên thuốc...")), gbc);
@@ -71,22 +77,18 @@ public class ThemThuoc_GUI extends JPanel {
         gbc.gridy++;
         centerPanel.add(taoDong("Đơn vị:", cmbDonVi = new JComboBox<>()), gbc);
 
-        // 🟢 Thêm dòng Quốc gia
+        // Thêm dòng Quốc gia
         gbc.gridy++;
         centerPanel.add(taoDong("Quốc gia:", cmbQuocGia = new JComboBox<>()), gbc);
-        cmbQuocGia.addItem("Việt Nam");
-        cmbQuocGia.addItem("Mỹ");
-        cmbQuocGia.addItem("Pháp");
-        cmbQuocGia.addItem("Nhật Bản");
-
-        // 🟢 Thêm dòng Số lượng tồn
+        
+        // Thêm dòng Số lượng tồn
         gbc.gridy++;
         spSoLuongTon = new JSpinner(new SpinnerNumberModel(0, 0, 100000, 1));
         JTextField txtSoLuongTon = ((JSpinner.DefaultEditor) spSoLuongTon.getEditor()).getTextField();
         txtSoLuongTon.setEditable(true);
         centerPanel.add(taoDong("Số lượng tồn:", spSoLuongTon), gbc);
 
-        // === Cột phải (thông tin 2) ===
+        // === Cột phải ===
         gbc.gridy++;
         centerPanel.add(taoDong("Giá bán:", txtGiaBan = tool.taoTextField("Giá bán...")), gbc);
 
@@ -114,13 +116,22 @@ public class ThemThuoc_GUI extends JPanel {
         add(bottomPanel, BorderLayout.SOUTH);
 
         // ===== SỰ KIỆN =====
-        btnLamMoi.addActionListener(e -> onBtnLamMoi());
-        btnThem.addActionListener(e -> onBtnThem());
+        ganSuKien();
+    }
+    
+    //Gắn sự kiện
+    public void ganSuKien() {
+    	btnLamMoi.addActionListener(e -> onBtnLamMoi());
+        btnThem.addActionListener(e -> thCtrl.themThuoc());
         btnChonAnh.addActionListener(e -> onBtnChonAnh());
+        thCtrl.setCmbKeThuoc();
+        thCtrl.setCmbDonVi();
+        thCtrl.setCmbQuocGia();
+        thCtrl.setCmbThue();
     }
 
     // ====== Hàm tạo 1 dòng nhãn + ô nhập ======
-    private JPanel taoDong(String label, JComponent comp) {
+    public JPanel taoDong(String label, JComponent comp) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         row.setBackground(Color.WHITE);
 
@@ -132,25 +143,21 @@ public class ThemThuoc_GUI extends JPanel {
         row.add(comp);
         return row;
     }
-
     // ===== Event handlers =====
-    private void onBtnLamMoi() {
+    public void onBtnLamMoi() {
         txtTenThuoc.setText("");
         txtDangThuoc.setText("");
-        cmbDonVi.setSelectedIndex(-1);
+        cmbDonVi.setSelectedItem("Tất cả");
         txtGiaBan.setText("");
         dpHanSuDung.setDate(new java.util.Date());
-        cmbThue.setSelectedIndex(-1);
-        cmbKeThuoc.setSelectedIndex(-1);
+        cmbThue.setSelectedItem("Tất cả");
+        cmbKeThuoc.setSelectedItem("Tất cả");
         imgThuoc.setIcon(null);
         txtTenThuoc.requestFocus();
+        cmbQuocGia.setSelectedItem("Tất cả");
     }
 
-    private void onBtnThem() {
-        // TODO: xử lý thêm thuốc
-    }
-
-    private void onBtnChonAnh() {
+    public void onBtnChonAnh() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Chọn ảnh thuốc");
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
@@ -158,6 +165,7 @@ public class ThemThuoc_GUI extends JPanel {
 
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             java.io.File file = fileChooser.getSelectedFile();
+            urlAnh = "/picture/thuoc/" + file.getName();
             ImageIcon icon = new ImageIcon(file.getAbsolutePath());
             Image scaled = icon.getImage().getScaledInstance(160, 220, Image.SCALE_SMOOTH);
             imgThuoc.setIcon(new ImageIcon(scaled));
