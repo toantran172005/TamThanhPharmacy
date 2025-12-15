@@ -18,7 +18,7 @@ public class DatThuoc_GUI extends JPanel {
 	public JButton btnTru, btnCong, btnThem, btnLamMoi, btnTaoPhieuDat, btnXoa;
 	public JTable tblDatThuoc;
 	public DefaultTableModel model;
-	
+
 	public DatThuocBanCtrl dtCtrl;
 	public ToolCtrl tool = new ToolCtrl();
 
@@ -58,7 +58,7 @@ public class DatThuoc_GUI extends JPanel {
 		colSL.setBackground(Color.WHITE);
 		JLabel lblSL = tool.taoLabel("Số lượng đặt:");
 
-		btnTru = tool.taoButton(null,"/picture/hoaDon/minus-sign.png" );
+		btnTru = tool.taoButton(null, "/picture/hoaDon/minus-sign.png");
 		btnCong = tool.taoButton(null, "/picture/hoaDon/plus.png");
 
 		txtSoLuongDat = new JTextField("1", 4);
@@ -99,36 +99,30 @@ public class DatThuoc_GUI extends JPanel {
 
 		tblDatThuoc = new JTable(model);
 		tblDatThuoc.setRowHeight(38);
-		tblDatThuoc.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		tblDatThuoc.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		tblDatThuoc.setSelectionBackground(new Color(0xE3F2FD));
 		tblDatThuoc.setSelectionForeground(Color.BLACK);
 		tblDatThuoc.setGridColor(new Color(0xDDDDDD));
+		tblDatThuoc.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+
 		tblDatThuoc.setBackground(Color.WHITE);
 		tblDatThuoc.setForeground(new Color(0x33, 0x33, 0x33));
 
-		JTableHeader header = tblDatThuoc.getTableHeader();
-		header.setFont(new Font("Times New Roman", Font.BOLD, 14));
-		header.setBackground(Color.WHITE);
-		header.setForeground(new Color(0x33, 0x33, 0x33));
-		header.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		for (int i = 0; i < tblDatThuoc.getColumnCount(); i++) {
+			tblDatThuoc.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		}
 
-		//Căn giữa cho dữ liệu trong cột
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        TableColumnModel columnModel = tblDatThuoc.getColumnModel();
-        for (int i = 0; i < columnModel.getColumnCount(); i++) {
-            columnModel.getColumn(i).setCellRenderer(centerRenderer);
-        }
-        
-        //Căn giữa cho tiêu đề table
-        ((DefaultTableCellRenderer) tblDatThuoc.getTableHeader().getDefaultRenderer())
-        .setHorizontalAlignment(SwingConstants.CENTER);
-        
+		JTableHeader header = tblDatThuoc.getTableHeader();
+		header.setBackground(new Color(240, 240, 240));
+		header.setFont(new Font("Times New Roman", Font.BOLD, 18));
+		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+
 		JScrollPane scroll = new JScrollPane(tblDatThuoc);
 		scroll.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
 		scroll.setBackground(Color.WHITE);
 		scroll.getViewport().setBackground(Color.WHITE);
-		scroll.setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
 
 		add(scroll, BorderLayout.CENTER);
 
@@ -142,7 +136,7 @@ public class DatThuoc_GUI extends JPanel {
 		// ====== EVENT DUMMY ======
 		ganSuKien();
 	}
-	
+
 	public void ganSuKien() {
 		dtCtrl.setDataChoComboBox();
 		btnLamMoi.addActionListener(e -> dtCtrl.lamMoi());
@@ -155,13 +149,13 @@ public class DatThuoc_GUI extends JPanel {
 			if (sl > 1)
 				txtSoLuongDat.setText(String.valueOf(sl - 1));
 		});
-		
+
 		btnTaoPhieuDat.addActionListener(e -> {
 			tool.doiPanel(this, new PhieuDatThuoc_GUI(this));
 		});
-		
+
 		btnThem.addActionListener(e -> dtCtrl.addThuocVaoTable());
-		
+
 		btnXoa.addActionListener(e -> dtCtrl.xoaThuocKhoiBang());
 	}
 

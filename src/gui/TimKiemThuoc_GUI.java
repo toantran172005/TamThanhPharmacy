@@ -16,7 +16,7 @@ import entity.Thuoc;
 
 public class TimKiemThuoc_GUI extends JPanel {
 
-	//public JTextField txtTenThuoc;
+	// public JTextField txtTenThuoc;
 	public JComboBox<String> cmbLoaiThuoc;
 	public JTable tblThuoc;
 	public DefaultTableModel model;
@@ -100,54 +100,55 @@ public class TimKiemThuoc_GUI extends JPanel {
 		add(topPanel, BorderLayout.NORTH);
 
 		// ====== CENTER: Bảng thuốc ======
-		String[] cols = {"Mã thuốc", "Tên thuốc", "Phân loại", "Giá bán", "Số lượng", "Nơi sản xuất", "Đơn vị tính", "Hạn sử dụng"};
-		model = new DefaultTableModel(cols, 0);
+		String[] cols = { "Mã thuốc", "Tên thuốc", "Phân loại", "Giá bán", "Số lượng", "Nơi sản xuất", "Đơn vị tính",
+				"Hạn sử dụng" };
+		model = new DefaultTableModel(cols, 0) {
+			@Override
+			public boolean isCellEditable(int row, int col) {
+				return false;
+			}
+		};
 
 		tblThuoc = new JTable(model);
 		tblThuoc.setRowHeight(38);
 		tblThuoc.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		tblThuoc.setSelectionBackground(new Color(0xE3F2FD));
-		tblThuoc.setSelectionForeground(Color.BLACK);
-		tblThuoc.setGridColor(new Color(0xDDDDDD));
-		tblThuoc.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
 		tblThuoc.setBackground(Color.WHITE);
+		tblThuoc.getTableHeader().setBackground(new Color(240, 240, 240));
+		tblThuoc.setGridColor(new Color(200, 200, 200));
+		tblThuoc.setShowGrid(true);
+		tblThuoc.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
+
+		tblThuoc.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		tblThuoc.setForeground(Color.BLACK);
 
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		for (int i = 0; i < tblThuoc.getColumnCount(); i++) {
+			tblThuoc.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		}
+
 		JTableHeader header = tblThuoc.getTableHeader();
+		header.setBackground(new Color(240, 240, 240));
 		header.setFont(new Font("Times New Roman", Font.BOLD, 18));
-		header.setBackground(Color.WHITE);
-		header.setForeground(Color.BLACK);
-		header.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
-		
-		//Căn giữa cho dữ liệu trong cột
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        TableColumnModel columnModel = tblThuoc.getColumnModel();
-        for (int i = 0; i < columnModel.getColumnCount(); i++) {
-            columnModel.getColumn(i).setCellRenderer(centerRenderer);
-        }
-        
-        //Căn giữa cho tiêu đề table
-        ((DefaultTableCellRenderer) tblThuoc.getTableHeader().getDefaultRenderer())
-        .setHorizontalAlignment(SwingConstants.CENTER);
-		
+		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+
 		JScrollPane scroll = new JScrollPane(tblThuoc);
 		scroll.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
 		scroll.getViewport().setBackground(Color.WHITE);
 		scroll.setBackground(Color.WHITE);
 
 		add(scroll, BorderLayout.CENTER);
-		
-		//========BOTTOM: Nút quay lại =============
+
+		// ========BOTTOM: Nút quay lại =============
 		JPanel btnRowBottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
 		btnRowBottom.setBackground(Color.WHITE);
-		
+
 		btnQuayLai = tool.taoButton("Quay lại", "/picture/thuoc/return.png");
-		
+
 		btnRowBottom.add(btnQuayLai);
 		btnQuayLai.setVisible(false);
-		
+
 		add(btnRowBottom, BorderLayout.SOUTH);
 		// ===== Sự kiện =====
 		ganSuKien();
@@ -161,8 +162,8 @@ public class TimKiemThuoc_GUI extends JPanel {
 		model.setRowCount(0);
 		thCtrl.setDataChoTable();
 	}
-	
-	//gắn sự kiện
+
+	// gắn sự kiện
 	public void ganSuKien() {
 		thCtrl.setDataChoTable();
 		btnXemChiTiet.addActionListener(e -> thCtrl.xemChiTiet());
@@ -172,11 +173,10 @@ public class TimKiemThuoc_GUI extends JPanel {
 		btnQuayLai.addActionListener(e -> thCtrl.quayLaiTrangTimKiem());
 		thCtrl.setKeThuoc();
 		thCtrl.setTenThuoc();
-		//ArrayList<String> dsTen = thCtrl.layDSTenThuoc();
-		//thCtrl.goiYTenThuoc(cmbTenThuoc, dsTen);
+		// ArrayList<String> dsTen = thCtrl.layDSTenThuoc();
+		// thCtrl.goiYTenThuoc(cmbTenThuoc, dsTen);
 		cmbLoaiThuoc.addActionListener(e -> thCtrl.timKiemThuocTheoLoai());
 		btnHoanTac.addActionListener(e -> thCtrl.hoanTacThuoc());
 	}
-	
-	
+
 }

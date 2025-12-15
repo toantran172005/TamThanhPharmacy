@@ -85,7 +85,7 @@ public class LapHoaDon_GUI extends JPanel {
 		row2.add(cmbSanPham);
 		row2.add(tool.taoLabel("Quốc gia sản xuất:"));
 		cmbQuocGia = tool.taoComboBox(new String[] {});
-		cmbQuocGia.setEditable(true);
+		cmbQuocGia.setEditable(false);
 		cmbQuocGia.setPreferredSize(new Dimension(180, 28));
 		row2.add(cmbQuocGia);
 		pnlTop.add(row2);
@@ -98,6 +98,7 @@ public class LapHoaDon_GUI extends JPanel {
 
 		row3.add(tool.taoLabel("Đơn vị tính:"));
 		cmbDonVi = tool.taoComboBox(new String[] {});
+		cmbDonVi.setEditable(false);
 		cmbDonVi.setPreferredSize(new Dimension(150, 28));
 		row3.add(cmbDonVi);
 
