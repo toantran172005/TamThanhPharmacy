@@ -8,15 +8,18 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 import java.awt.*;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-
 import controller.ThuocCtrl;
 import controller.ToolCtrl;
 import entity.Thuoc;
 
 public class TimKiemThuoc_GUI extends JPanel {
 
-	// public JTextField txtTenThuoc;
 	public JComboBox<String> cmbLoaiThuoc;
 	public JTable tblThuoc;
 	public DefaultTableModel model;
@@ -122,11 +125,41 @@ public class TimKiemThuoc_GUI extends JPanel {
 		tblThuoc.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		tblThuoc.setForeground(Color.BLACK);
 
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-		for (int i = 0; i < tblThuoc.getColumnCount(); i++) {
-			tblThuoc.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-		}
+		tblThuoc.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+
+			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+					boolean hasFocus, int row, int column) {
+
+				super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+				setHorizontalAlignment(SwingConstants.CENTER);
+
+				if (!isSelected) {
+					setBackground(Color.WHITE);
+					setForeground(Color.BLACK);
+				}
+
+				int modelRow = table.convertRowIndexToModel(row);
+				Object hanSDObj = table.getModel().getValueAt(modelRow, 7);
+
+				if (hanSDObj instanceof LocalDate hanSD) {
+
+					if (column == 7) {
+						setText(hanSD.format(fmt));
+					}
+
+					long daysLeft = ChronoUnit.DAYS.between(LocalDate.now(), hanSD);
+					if (daysLeft >= 0 && daysLeft <= 30 && !isSelected) {
+						setBackground(new Color(255, 180, 180));
+					}
+				}
+
+				return this;
+			}
+		});
 
 		JTableHeader header = tblThuoc.getTableHeader();
 		header.setBackground(new Color(240, 240, 240));
