@@ -370,20 +370,20 @@ public class ThuocDAO {
 	}
 	
 	// ========== LẤY LIST QUỐC GIA SẢN XUẤT ==========
-	public ArrayList<QuocGia> layListQuocGiaTheoThuoc(String maThuoc) {
+	public ArrayList<QuocGia> layListQuocGiaTheoThuoc(String tenThuoc) {
 	    ArrayList<QuocGia> listQG = new ArrayList<>();
 
 	    String sql = """
-	        SELECT qg.maQuocGia, qg.tenQuocGia
-	        FROM Thuoc_QuocGia tqg
-	        JOIN QuocGia qg ON tqg.maQuocGia = qg.maQuocGia
-	        WHERE tqg.maThuoc = ?
+	        SELECT qg.maQuocGia, qg.tenQuocGia 
+	        FROM Thuoc t
+	        JOIN QuocGia qg ON t.maQuocGia = qg.maQuocGia
+	        WHERE t.tenThuoc = ?
 	    """;
 
 	    try (Connection con = KetNoiDatabase.getConnection();
 	         PreparedStatement ps = con.prepareStatement(sql)) {
 
-	        ps.setString(1, maThuoc);
+	        ps.setString(1, tenThuoc);
 	        ResultSet rs = ps.executeQuery();
 
 	        while (rs.next()) {
@@ -397,6 +397,25 @@ public class ThuocDAO {
 	    }
 
 	    return listQG;
+	}
+	
+	public String timMaQGTheoTen(String tenQG) {
+		String sql = "SELECT maQuocGia FROM QuocGia WHERE tenQuocGia = ?";
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setString(1, tenQG);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getString("maQuocGia");
+				} else {
+					return null; // không tìm thấy
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 
@@ -416,8 +435,7 @@ public class ThuocDAO {
 				    LEFT JOIN DonViTinh dvt ON t.maDVT = dvt.maDVT
 				    LEFT JOIN KeThuoc kt ON t.maKe = kt.maKe
 				    LEFT JOIN NhaCungCap ncc ON t.maNCC = ncc.maNCC
-				    LEFT JOIN Thuoc_QuocGia tqg ON t.maThuoc = tqg.maThuoc
-				    LEFT JOIN QuocGia qg ON tqg.maQuocGia = qg.maQuocGia
+				    LEFT JOIN QuocGia qg ON t.maQuocGia = qg.maQuocGia
 				    WHERE t.trangThai = 1
 				    ORDER BY TRY_CAST(REPLACE(t.maThuoc, 'TTTH', '') AS INT)
 				""";

@@ -23,6 +23,7 @@ public class ChiTietNhanVien_GUI extends JPanel {
 
 	public ToolCtrl tool = new ToolCtrl();
 	public TrangChuQL_GUI mainFrame;
+	public TrangChuNV_GUI nvFrame;
     
  	public ChiTietNhanVienCtrl getCtrl() {
  		return ctrl;
@@ -37,6 +38,13 @@ public class ChiTietNhanVien_GUI extends JPanel {
 		initUI();
 		this.ctrl = new ChiTietNhanVienCtrl(this);
 	}
+ 	
+ 	public ChiTietNhanVien_GUI(TrangChuNV_GUI nvFrame) {
+ 	    this.nvFrame = nvFrame;
+ 	    initUI();
+ 	    this.ctrl = new ChiTietNhanVienCtrl(this);
+ 	}
+
 
     public void initUI() {
         setLayout(new BorderLayout());

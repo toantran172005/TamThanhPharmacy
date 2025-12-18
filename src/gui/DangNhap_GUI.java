@@ -119,7 +119,7 @@ public class DangNhap_GUI extends JFrame {
         btnDangNhap.setFocusPainted(false);
         btnDangNhap.setBorderPainted(false);
         btnDangNhap.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        btnDangNhap.addActionListener(e -> chuyenDenTrangChuNhanVien());
+//        btnDangNhap.addActionListener(e -> chuyenDenTrangChuNhanVien());
 
         pnlBottom.add(btnDangNhap);
         add(pnlBottom, BorderLayout.SOUTH);
@@ -144,11 +144,13 @@ public class DangNhap_GUI extends JFrame {
         Image scaled = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(scaled);
     }
+    
+    public JButton getBtnDangNhap() { return btnDangNhap; }
 
     // ======= CHUYỂN TRANG =======
-    public void chuyenDenTrangChuNhanVien() {
-        new TrangChuQL_GUI().setVisible(true);
-        this.dispose();
-    }
+//    public void chuyenDenTrangChuNhanVien() {
+//        new TrangChuQL_GUI().setVisible(true);
+//        this.dispose();
+//    }
 
 }
