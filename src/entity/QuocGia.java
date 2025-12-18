@@ -1,5 +1,4 @@
 package entity;
-
 import java.util.Objects;
 
 public class QuocGia {
@@ -10,7 +9,6 @@ public class QuocGia {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
 	public QuocGia(String maQG, String tenQG) {
 		super();
 		this.maQG = maQG;
@@ -49,7 +47,6 @@ public class QuocGia {
 		QuocGia other = (QuocGia) obj;
 		return Objects.equals(maQG, other.maQG);
 	}
-
 	@Override
 	public String toString() {
 		return "QuocGia [maQG=" + maQG + ", tenQG=" + tenQG + "]";
