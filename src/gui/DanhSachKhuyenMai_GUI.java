@@ -72,16 +72,13 @@ public class DanhSachKhuyenMai_GUI extends JPanel {
         JLabel lblNgay = tool.taoLabel("Ngày:");
         dpNgay = tool.taoDateChooser();
 
-        btnLichSuXoa = tool.taoButton("Lịch sử xoá", "/picture/nhanVien/document.png");
+        //btnLichSuXoa = tool.taoButton("Lịch sử xoá", "/picture/nhanVien/document.png");
 
         row2.add(lblTrangThai);
         row2.add(cmbTrangThai);
         row2.add(Box.createHorizontalStrut(30));
         row2.add(lblNgay);
         row2.add(dpNgay);
-        row2.add(Box.createHorizontalStrut(30));
-        row2.add(btnLichSuXoa);
-        row2.add(Box.createHorizontalStrut(30));
         row2.add(btnXemChiTiet);
         row2.add(Box.createHorizontalStrut(30));
         row2.add(btnLamMoi);
@@ -106,14 +103,16 @@ public class DanhSachKhuyenMai_GUI extends JPanel {
         tblKhuyenMai.setRowHeight(35);
         tblKhuyenMai.setFont(new Font("Times New Roman", Font.PLAIN, 14));
         tblKhuyenMai.setSelectionBackground(new Color(0xE3F2FD));
+		tblKhuyenMai.setSelectionForeground(Color.BLACK);
         tblKhuyenMai.setGridColor(new Color(0xDDDDDD));
-        tblKhuyenMai.setBackground(Color.WHITE);
-        tblKhuyenMai.setForeground(new Color(0x33, 0x33, 0x33));
         tblKhuyenMai.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        tblKhuyenMai.setBackground(Color.WHITE);
+		tblKhuyenMai.setForeground(Color.BLACK);
 
         JTableHeader header = tblKhuyenMai.getTableHeader();
         header.setFont(new Font("Times New Roman", Font.BOLD, 14));
         header.setBackground(Color.WHITE);
+        header.setForeground(Color.BLACK);
         header.setForeground(new Color(0x33, 0x33, 0x33));
         header.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
         
@@ -136,23 +135,33 @@ public class DanhSachKhuyenMai_GUI extends JPanel {
         add(scroll, BorderLayout.CENTER);
 
         // ======= SỰ KIỆN =======
-        kmCtrl.setDataChoTable();
+        ganSuKien();
+    }
+
+    // ====== XỬ LÝ SỰ KIỆN ======
+    
+    public void ganSuKien() {
+    	kmCtrl.setDataChoTable();
         btnLamMoi.addActionListener(e -> lamMoi());
-        btnXemChiTiet.addActionListener(e -> tool.doiPanel(this, new ChiTietKhuyenMai_GUI()));
-        btnLichSuXoa.addActionListener(e -> lichSuXoa());
+        btnXemChiTiet.addActionListener(e -> {
+            JPanel parent = (JPanel) this.getParent(); 
+            kmCtrl.xemChiTietKM(parent); 
+        });
+        cmbTrangThai.addActionListener(e -> kmCtrl.locKMTheoTrangThai());
+        txtTenKM.addActionListener(e -> kmCtrl.timKiemNhanhTheoTen());
+        kmCtrl.locKMTheoNgay();
+        dpNgay.addPropertyChangeListener("date", e -> {
+        	if (dpNgay.getDate() != null) {
+                kmCtrl.locKMTheoNgay();
+            }
+        });
     }
-
-    // ====== CÁC HÀM XỬ LÝ SỰ KIỆN ======
-    private void lamMoi() {
+    
+    
+    public void lamMoi() {
         txtTenKM.setText("");
-        cmbTrangThai.setSelectedIndex(0);
+        cmbTrangThai.setSelectedItem("Tất cả");
+        kmCtrl.setDataChoTable();
     }
 
-    private void lichSuXoa() {
-        JOptionPane.showMessageDialog(this, "Mở lịch sử xoá khuyến mãi!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-    }
-
-    private void xoaTatCa() {
-        JOptionPane.showMessageDialog(this, "Xoá tất cả khuyến mãi!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-    }
 }

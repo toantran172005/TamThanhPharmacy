@@ -1,12 +1,16 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 
 import com.toedter.calendar.JDateChooser;
 
 import java.awt.*;
+
+import controller.KhuyenMaiCtrl;
 import controller.ToolCtrl;
 
 public class ThemKhuyenMai_GUI extends JPanel {
@@ -17,10 +21,20 @@ public class ThemKhuyenMai_GUI extends JPanel {
 	public JButton btnCong, btnTru, btnCong1, btnTru1, btnThem, btnLamMoi;
 	public JTable tblThuocKhuyenMai;
 	public JCheckBox chkSelect;
-
 	public ToolCtrl tool = new ToolCtrl();
+	public JTextField txtSoLuongMua;
+	public JButton btnTru2;
+	public JButton btnCong2;
+	public JComboBox<String> cmbThemThuoc;
+	public JButton btnThemThuoc;
+	public KhuyenMaiCtrl kmCtrl;
+	//private DanhSachKhuyenMai_GUI danhSachGUI;
 
     public ThemKhuyenMai_GUI() {
+    	//this.danhSachGUI = danhSachGUI;
+    	kmCtrl = new KhuyenMaiCtrl(this);
+    	//kmCtrl.setKmGUI(danhSachGUI);
+    	
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
         setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -45,7 +59,7 @@ public class ThemKhuyenMai_GUI extends JPanel {
         JPanel leftBox = new JPanel();
         leftBox.setLayout(new BoxLayout(leftBox, BoxLayout.Y_AXIS));
         leftBox.setBackground(Color.WHITE);
-        leftBox.setPreferredSize(new Dimension(500, 250));
+        leftBox.setPreferredSize(new Dimension(650, 300));
 
         // Tên khuyến mãi
         txtTenKM = tool.taoTextField("Tên khuyến mãi ...");
@@ -63,22 +77,50 @@ public class ThemKhuyenMai_GUI extends JPanel {
         JPanel pnlMKM = taoDongStepper("Mức khuyến mãi (%):", txtMucKM, btnTru, btnCong);
         leftBox.add(Box.createVerticalStrut(10));
         leftBox.add(pnlMKM);
+        
+      //Số lượng mua & Số lượng tặng
+        JPanel row4 = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 0));
+        row4.setBackground(Color.WHITE);
+
+        // Số lượng mua
+        txtSoLuongMua = tool.taoTextField("");
+        btnTru2 = tool.taoButton("", "/picture/hoaDon/minus-sign.png");
+        btnCong2 = tool.taoButton("", "/picture/hoaDon/plus.png");
+        JPanel pnlSLM = taoDongStepper("Số lượng mua:", txtSoLuongMua, btnTru2, btnCong2);
 
         // Số lượng tặng
         txtSoLuongTang = tool.taoTextField("");
         btnTru1 = tool.taoButton("", "/picture/hoaDon/minus-sign.png");
         btnCong1 = tool.taoButton("", "/picture/hoaDon/plus.png");
         JPanel pnlSLT = taoDongStepper("Số lượng tặng:", txtSoLuongTang, btnTru1, btnCong1);
-        leftBox.add(Box.createVerticalStrut(10));
-        leftBox.add(pnlSLT);
-        //pnlSLT.setVisible(false);
+
+        row4.add(pnlSLM);
+        row4.add(Box.createHorizontalStrut(20));
+        row4.add(pnlSLT);
         
+        leftBox.add(Box.createVerticalStrut(10));
+        leftBox.add(row4);
+        
+     // Thêm thuốc
+        JPanel row5 = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 0));
+        row5.setBackground(Color.WHITE);
+        String[] items = {""};
+        cmbThemThuoc = tool.taoComboBox(items);
+        btnThemThuoc = tool.taoButton("Thêm", "/picture/khachHang/plus.png");
+
+        row5.add(tool.taoLabel("Thêm thuốc:"));
+        row5.add(cmbThemThuoc);
+        row5.add(btnThemThuoc);
+        row5.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
+        
+        leftBox.add(Box.createVerticalStrut(10));
+        leftBox.add(row5);
 
         // ======= RIGHT COLUMN =======
         JPanel rightBox = new JPanel();
         rightBox.setLayout(new BoxLayout(rightBox, BoxLayout.Y_AXIS));
         rightBox.setBackground(Color.WHITE);
-        rightBox.setPreferredSize(new Dimension(500, 250));
+        rightBox.setPreferredSize(new Dimension(650, 300));
 
         // Ngày bắt đầu
         dpNgayBD = tool.taoDateChooser();
@@ -122,30 +164,37 @@ public class ThemKhuyenMai_GUI extends JPanel {
         centerPanel.add(lblDanhSach, BorderLayout.NORTH);
 
         // Table
-        String[] cols = {"", "Mã Thuốc", "Tên Thuốc", "Loại Thuốc", "Đơn vị", "Đơn giá"};
-        DefaultTableModel model = new DefaultTableModel(cols, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return column == 0; // chỉ checkbox được chọn
-            }
-
-            @Override
-            public Class<?> getColumnClass(int columnIndex) {
-                return columnIndex == 0 ? Boolean.class : String.class;
-            }
-        };
+        String[] cols = {"Mã Thuốc", "Tên Thuốc", "Loại Thuốc", "Đơn vị", "Đơn giá"};
+        DefaultTableModel model = new DefaultTableModel(cols, 0);
 
         tblThuocKhuyenMai = new JTable(model);
         tblThuocKhuyenMai.setRowHeight(35);
         tblThuocKhuyenMai.setFont(new Font("Times New Roman", Font.PLAIN, 14));
-        tblThuocKhuyenMai.setBackground(Color.WHITE);
-        tblThuocKhuyenMai.setGridColor(new Color(0xDDDDDD));
         tblThuocKhuyenMai.setSelectionBackground(new Color(0xE3F2FD));
+		tblThuocKhuyenMai.setSelectionForeground(Color.BLACK);
+        tblThuocKhuyenMai.setGridColor(new Color(0xDDDDDD));
+        tblThuocKhuyenMai.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        tblThuocKhuyenMai.setBackground(Color.WHITE);
+		tblThuocKhuyenMai.setForeground(Color.BLACK);
 
         JTableHeader header = tblThuocKhuyenMai.getTableHeader();
         header.setFont(new Font("Times New Roman", Font.BOLD, 14));
         header.setBackground(Color.WHITE);
+        header.setForeground(Color.BLACK);
         header.setForeground(new Color(0x33, 0x33, 0x33));
+        header.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
+        
+      //Căn giữa cho dữ liệu trong cột
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        TableColumnModel columnModel = tblThuocKhuyenMai.getColumnModel();
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            columnModel.getColumn(i).setCellRenderer(centerRenderer);
+        }
+        
+        //Căn giữa cho tiêu đề table
+        ((DefaultTableCellRenderer) tblThuocKhuyenMai.getTableHeader().getDefaultRenderer())
+        .setHorizontalAlignment(SwingConstants.CENTER);
 
         JScrollPane scroll = new JScrollPane(tblThuocKhuyenMai);
         scroll.getViewport().setBackground(Color.WHITE);
@@ -155,12 +204,27 @@ public class ThemKhuyenMai_GUI extends JPanel {
         add(centerPanel, BorderLayout.CENTER);
 
         // ============ EVENTS ============
-        btnLamMoi.addActionListener(e -> lamMoi());
-        btnThem.addActionListener(e -> themKhuyenMai());
+        ganSuKien();
+        
+    }
+
+
+	public void ganSuKien() {
+    	btnLamMoi.addActionListener(e -> lamMoi());
         btnCong.addActionListener(e -> tangGiaTri(txtMucKM));
         btnTru.addActionListener(e -> giamGiaTri(txtMucKM));
         btnCong1.addActionListener(e -> tangGiaTri(txtSoLuongTang));
         btnTru1.addActionListener(e -> giamGiaTri(txtSoLuongTang));
+        btnCong2.addActionListener(e -> tangGiaTri(txtSoLuongMua));
+        btnTru2.addActionListener(e -> giamGiaTri(txtSoLuongMua));
+        cmbPhuongThuc.addActionListener(e -> chonPhuongThucKM());
+        chonPhuongThucKM();
+        kmCtrl.setDuLieuChoCmbThuoc(cmbThemThuoc);
+        btnThemThuoc.addActionListener(e -> kmCtrl.themThuocVaoBangThemKM());
+        btnThem.addActionListener(e -> {
+        	kmCtrl.themKhuyenMai();
+        	lamMoi();
+        });
         
     }
 
@@ -183,10 +247,9 @@ public class ThemKhuyenMai_GUI extends JPanel {
         row.setBackground(Color.WHITE);
 
         JLabel lbl = tool.taoLabel(labelText);
-        lbl.setPreferredSize(new Dimension(170, 25));
-
         JPanel stepPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
         stepPanel.setBackground(Color.WHITE);
+
         txt.setHorizontalAlignment(JTextField.CENTER);
         txt.setPreferredSize(new Dimension(70, 35));
 
@@ -223,8 +286,31 @@ public class ThemKhuyenMai_GUI extends JPanel {
         txtMucKM.setText("");
         txtSoLuongTang.setText("");
     }
+    
+  //Chọn phương thức khuyến mãi
+    public void chonPhuongThucKM() {
+        String selected = cmbPhuongThuc.getSelectedItem().toString();
+        boolean isMuaTang = selected.equalsIgnoreCase("Mua tặng");
 
-    public void themKhuyenMai() {
-        JOptionPane.showMessageDialog(this, "Đã thêm khuyến mãi mới!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        txtMucKM.setEditable(!isMuaTang);
+        txtMucKM.setBackground(isMuaTang ? new Color(240, 240, 240) : Color.WHITE);
+        btnCong.setEnabled(!isMuaTang);
+        btnTru.setEnabled(!isMuaTang);
+        if (isMuaTang) txtMucKM.setText("0");
+
+        txtSoLuongMua.setEditable(isMuaTang);
+        txtSoLuongMua.setBackground(isMuaTang ? Color.WHITE : new Color(240, 240, 240));
+        btnCong2.setEnabled(isMuaTang);
+        btnTru2.setEnabled(isMuaTang);
+
+        txtSoLuongTang.setEditable(isMuaTang);
+        txtSoLuongTang.setBackground(isMuaTang ? Color.WHITE : new Color(240, 240, 240));
+        btnCong1.setEnabled(isMuaTang);
+        btnTru1.setEnabled(isMuaTang);
+
+        if (!isMuaTang) {
+            txtSoLuongMua.setText("0");
+            txtSoLuongTang.setText("0");
+        }
     }
 }

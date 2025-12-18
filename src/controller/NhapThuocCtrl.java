@@ -141,12 +141,13 @@ public class NhapThuocCtrl {
 	        int soLo = (int) Double.parseDouble(model.getValueAt(i, 3).toString());
 	        String dangThuoc = model.getValueAt(i, 4).toString();
 	        String dvt = model.getValueAt(i, 5).toString();
-	        LocalDate hanDung = tool.convertExcelDate(model.getValueAt(i, 6));
-	        int soLuong = (int) Double.parseDouble(model.getValueAt(i, 7).toString());
-	        double donGia = Double.parseDouble(model.getValueAt(i, 8).toString());
-	        double tyLeThue = Double.parseDouble(model.getValueAt(i, 9).toString());
-	        String loaiThue = model.getValueAt(i, 10).toString();
-	        double thanhTien = Double.parseDouble(model.getValueAt(i, 11).toString());
+	        String quocGia = model.getValueAt(i, 6).toString();
+	        LocalDate hanDung = tool.convertExcelDate(model.getValueAt(i, 7));
+	        int soLuong = (int) Double.parseDouble(model.getValueAt(i, 8).toString());
+	        double donGia = Double.parseDouble(model.getValueAt(i, 9).toString());
+	        double tyLeThue = Double.parseDouble(model.getValueAt(i, 10).toString());
+	        String loaiThue = model.getValueAt(i, 11).toString();
+	        double thanhTien = Double.parseDouble(model.getValueAt(i, 12).toString());
 	        
 	        
 	        Thuoc thuoc = new Thuoc(maThuoc, tenThuoc, soLo, dangThuoc, new DonViTinh(null, dvt), hanDung,

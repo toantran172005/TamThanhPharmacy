@@ -69,7 +69,7 @@ public class NhapThuoc_GUI extends JPanel {
         // =================== CENTER (Table) ===================
         String[] columnNames = {
             "STT", "Mã thuốc", "Tên thuốc", "Số lô", "Dạng thuốc",
-            "ĐVT", "Hạn dùng", "Số lượng", "Đơn giá", "Thuế (%)", "Loại thuế", "Thành tiền"
+            "ĐVT", "Nơi sản xuất", "Hạn dùng", "Số lượng", "Đơn giá", "Thuế (%)", "Loại thuế", "Thành tiền"
         };
 
         model = new DefaultTableModel(columnNames, 0);

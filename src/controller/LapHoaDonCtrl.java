@@ -50,24 +50,24 @@ public class LapHoaDonCtrl {
 		loadData();
 	}
 	
-	public void setComboxQuocGia() {
-	    Object selected = gui.getCmbSanPham().getSelectedItem();
-	    if (selected == null) return;
-
-	    String tenThuoc = selected.toString();
-
-	    String maThuoc = thuocDAO.layMaThuocTheoTen(tenThuoc);
-	    if (maThuoc == null) return;
-
-	    gui.getCmbQuocGia().removeAllItems();
-
-	    ArrayList<QuocGia> listQG = thuocDAO.layListQuocGiaTheoThuoc(maThuoc);
-	    if (listQG != null) {
-	        for (QuocGia qg : listQG) {
-	            gui.getCmbQuocGia().addItem(qg.getTenQG());
-	        }
-	    }
-	}
+//	public void setComboxQuocGia() {
+//	    Object selected = gui.getCmbSanPham().getSelectedItem();
+//	    if (selected == null) return;
+//
+//	    String tenThuoc = selected.toString();
+//
+//	    String maThuoc = thuocDAO.layMaThuocTheoTen(tenThuoc);
+//	    if (maThuoc == null) return;
+//
+//	    gui.getCmbQuocGia().removeAllItems();
+//
+//	    ArrayList<QuocGia> listQG = thuocDAO.layListQuocGiaTheoThuoc(maThuoc);
+//	    if (listQG != null) {
+//	        for (QuocGia qg : listQG) {
+//	            gui.getCmbQuocGia().addItem(qg.getTenQG());
+//	        }
+//	    }
+//	}
 	
 //
 //	public void init() {
@@ -81,7 +81,7 @@ public class LapHoaDonCtrl {
 		taiDuLieu();
 		suKien();
 		goiYKhachHang();
-		setComboxQuocGia();
+		//setComboxQuocGia();
 	}
 
 	// ========== TẢI DỮ LIỆU ==========
@@ -117,7 +117,7 @@ public class LapHoaDonCtrl {
 			}
 		});
 		
-		gui.getCmbSanPham().addActionListener(e -> setComboxQuocGia());
+		//gui.getCmbSanPham().addActionListener(e -> setComboxQuocGia());
 	}
 
 	// ========== TÌM KHÁCH HÀNG ==========

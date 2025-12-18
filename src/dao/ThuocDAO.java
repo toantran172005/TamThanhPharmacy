@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import controller.ToolCtrl;
 import connectDB.KetNoiDatabase;
 import entity.DonViTinh;
@@ -370,34 +372,34 @@ public class ThuocDAO {
 	}
 	
 	// ========== LẤY LIST QUỐC GIA SẢN XUẤT ==========
-	public ArrayList<QuocGia> layListQuocGiaTheoThuoc(String maThuoc) {
-	    ArrayList<QuocGia> listQG = new ArrayList<>();
-
-	    String sql = """
-	        SELECT qg.maQuocGia, qg.tenQuocGia
-	        FROM Thuoc_QuocGia tqg
-	        JOIN QuocGia qg ON tqg.maQuocGia = qg.maQuocGia
-	        WHERE tqg.maThuoc = ?
-	    """;
-
-	    try (Connection con = KetNoiDatabase.getConnection();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
-
-	        ps.setString(1, maThuoc);
-	        ResultSet rs = ps.executeQuery();
-
-	        while (rs.next()) {
-	            String maQG = rs.getString("maQuocGia");
-	            String tenQG = rs.getString("tenQuocGia");
-	            listQG.add(new QuocGia(maQG, tenQG));
-	        }
-
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-
-	    return listQG;
-	}
+//	public ArrayList<QuocGia> layListQuocGiaTheoThuoc(String maThuoc) {
+//	    ArrayList<QuocGia> listQG = new ArrayList<>();
+//
+//	    String sql = """
+//	        SELECT qg.maQuocGia, qg.tenQuocGia
+//	        FROM Thuoc_QuocGia tqg
+//	        JOIN QuocGia qg ON tqg.maQuocGia = qg.maQuocGia
+//	        WHERE tqg.maThuoc = ?
+//	    """;
+//
+//	    try (Connection con = KetNoiDatabase.getConnection();
+//	         PreparedStatement ps = con.prepareStatement(sql)) {
+//
+//	        ps.setString(1, maThuoc);
+//	        ResultSet rs = ps.executeQuery();
+//
+//	        while (rs.next()) {
+//	            String maQG = rs.getString("maQuocGia");
+//	            String tenQG = rs.getString("tenQuocGia");
+//	            listQG.add(new QuocGia(maQG, tenQG));
+//	        }
+//
+//	    } catch (SQLException e) {
+//	        e.printStackTrace();
+//	    }
+//
+//	    return listQG;
+//	}
 
 
 	public ArrayList<Thuoc> layListThuocHoanChinh() {
@@ -416,8 +418,7 @@ public class ThuocDAO {
 				    LEFT JOIN DonViTinh dvt ON t.maDVT = dvt.maDVT
 				    LEFT JOIN KeThuoc kt ON t.maKe = kt.maKe
 				    LEFT JOIN NhaCungCap ncc ON t.maNCC = ncc.maNCC
-				    LEFT JOIN Thuoc_QuocGia tqg ON t.maThuoc = tqg.maThuoc
-				    LEFT JOIN QuocGia qg ON tqg.maQuocGia = qg.maQuocGia
+				    LEFT JOIN QuocGia qg ON t.maThuoc = qg.maQuocGia
 				    WHERE t.trangThai = 1
 				    ORDER BY TRY_CAST(REPLACE(t.maThuoc, 'TTTH', '') AS INT)
 				""";
@@ -507,12 +508,44 @@ public class ThuocDAO {
 	}
 
 	public Thuoc timThuocTheoMa(String maThuoc) {
-		ArrayList<Thuoc> listThuoc = layListThuoc();
-		for (Thuoc thuoc : listThuoc) {
-			if (thuoc.getMaThuoc().equalsIgnoreCase(maThuoc))
-				return thuoc;
-		}
-		return null;
+	    String sql = """
+	            SELECT t.maThuoc, t.tenThuoc, t.giaBan, 
+	                   k.maKe, k.loaiKe, 
+	                   d.maDVT, d.tenDVT 
+	            FROM Thuoc t 
+	            LEFT JOIN KeThuoc k ON t.maKe = k.maKe 
+	            LEFT JOIN DonViTinh d ON t.maDVT = d.maDVT 
+	            WHERE t.maThuoc = ?
+	            """;
+
+	    try (Connection con = KetNoiDatabase.getConnection(); 
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+	        
+	        ps.setString(1, maThuoc);
+	        try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                Thuoc t = new Thuoc();
+	                t.setMaThuoc(rs.getString("maThuoc"));
+	                t.setTenThuoc(rs.getString("tenThuoc"));
+	                t.setGiaBan(rs.getDouble("giaBan"));
+	               
+	                KeThuoc k = new KeThuoc();
+	                k.setMaKe(rs.getString("maKe"));
+	                k.setLoaiKe(rs.getString("loaiKe")); 
+	                t.setKeThuoc(k);
+	                
+	                DonViTinh d = new DonViTinh();
+	                d.setMaDVT(rs.getString("maDVT"));
+	                d.setTenDVT(rs.getString("tenDVT")); 
+	                t.setDvt(d);
+	                
+	                return t;
+	            }
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return null;
 	}
 
 	public String layMaKMTheoMaThuoc(String maThuoc) {
@@ -815,4 +848,5 @@ public class ThuocDAO {
 		}
 		return listQG;
 	}
+	
 }

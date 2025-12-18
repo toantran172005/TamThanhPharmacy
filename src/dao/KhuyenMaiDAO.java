@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import controller.ToolCtrl;
 import connectDB.KetNoiDatabase;
@@ -44,39 +45,113 @@ public class KhuyenMaiDAO {
 		return null;
 	}
 
-	public boolean capNhatKhuyenMai(KhuyenMai km) {
-		String sql = """
-				    UPDATE KhuyenMai
-				    SET tenKM = ?,
-				        mucKM = ?,
-				        ngayBD = ?,
-				        ngayKT = ?,
-				        trangThai = ?,
-				        loaiKM = ?,
-				        soLuongMua = ?,
-				        soLuongTang = ?
-				    WHERE maKM = ?
-				""";
+//	public boolean capNhatKhuyenMai(KhuyenMai km) {
+//		String sql = """
+//				    UPDATE KhuyenMai
+//				    SET tenKM = ?,
+//				        mucKM = ?,
+//				        ngayBD = ?,
+//				        ngayKT = ?,
+//				        trangThai = ?,
+//				        loaiKM = ?,
+//				        soLuongMua = ?,
+//				        soLuongTang = ?
+//				    WHERE maKM = ?
+//				""";
+//
+//		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+//
+//			ps.setString(1, km.getTenKM());
+//			ps.setInt(2, km.getMucKM());
+//			ps.setDate(3, tool.localDateSangSqlDate(km.getNgayBD()));
+//			ps.setDate(4, tool.localDateSangSqlDate(km.getNgayKT()));
+//			ps.setBoolean(5, km.isTrangThai());
+//			ps.setString(6, km.getLoaiKM());
+//			ps.setInt(7, km.getSoLuongMua());
+//			ps.setInt(8, km.getSoLuongTang());
+//			ps.setString(9, km.getMaKM());
+//
+//			int rows = ps.executeUpdate();
+//			return rows > 0;
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return false;
+//		}
+//	}
+	
+	public boolean capNhatKhuyenMai(KhuyenMai km, List<String> danhSachMaThuoc) {
+	    Connection con = null;
+	    PreparedStatement psKM = null;
+	    PreparedStatement psThuoc = null;
+	    
+	    String sqlKM = """
+	            UPDATE KhuyenMai
+	            SET tenKM = ?,
+	                mucKM = ?,
+	                ngayBD = ?,
+	                ngayKT = ?,
+	                trangThai = ?,
+	                loaiKM = ?,
+	                soLuongMua = ?,
+	                soLuongTang = ?
+	            WHERE maKM = ?
+	            """;
+	            
+	    String sqlThuoc = "UPDATE Thuoc SET maKM = ? WHERE maThuoc = ?";
 
-		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+	    try {
+	        con = KetNoiDatabase.getConnection();
+	        con.setAutoCommit(false); 
 
-			ps.setString(1, km.getTenKM());
-			ps.setInt(2, km.getMucKM());
-			ps.setDate(3, tool.localDateSangSqlDate(km.getNgayBD()));
-			ps.setDate(4, tool.localDateSangSqlDate(km.getNgayKT()));
-			ps.setBoolean(5, km.isTrangThai());
-			ps.setString(6, km.getLoaiKM());
-			ps.setInt(7, km.getSoLuongMua());
-			ps.setInt(8, km.getSoLuongTang());
-			ps.setString(9, km.getMaKM());
+	        psKM = con.prepareStatement(sqlKM);
+	        psKM.setString(1, km.getTenKM());
+	        psKM.setInt(2, km.getMucKM());
+	        psKM.setDate(3, tool.localDateSangSqlDate(km.getNgayBD()));
+	        psKM.setDate(4, tool.localDateSangSqlDate(km.getNgayKT()));
+	        psKM.setBoolean(5, km.isTrangThai());
+	        psKM.setString(6, km.getLoaiKM());
+	        psKM.setInt(7, km.getSoLuongMua());
+	        psKM.setInt(8, km.getSoLuongTang());
+	        psKM.setString(9, km.getMaKM());
+	        
+	        int rows = psKM.executeUpdate();
 
-			int rows = ps.executeUpdate();
-			return rows > 0;
+	        if (rows > 0 && danhSachMaThuoc != null && !danhSachMaThuoc.isEmpty()) {
+	            psThuoc = con.prepareStatement(sqlThuoc);
+	            
+	            for (String maThuoc : danhSachMaThuoc) {
+	                psThuoc.setString(1, km.getMaKM()); 
+	                psThuoc.setString(2, maThuoc);      
+	                psThuoc.addBatch();
+	            }
+	            
+	            psThuoc.executeBatch(); 
+	        }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
+	        con.commit();
+	        return true;
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        try {
+	            if (con != null) con.rollback(); 
+	        } catch (SQLException ex) {
+	            ex.printStackTrace();
+	        }
+	        return false;
+	    } finally {
+	        try {
+	            if (psKM != null) psKM.close();
+	            if (psThuoc != null) psThuoc.close();
+	            if (con != null) {
+	                con.setAutoCommit(true);
+	                con.close();
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+	    }
 	}
 
 	public ArrayList<KhuyenMai> layDanhSachKM() {

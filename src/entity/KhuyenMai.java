@@ -8,7 +8,7 @@ public class KhuyenMai {
 	String maKM;
 	String tenKM;
 	String loaiKM;
-	int mucKM;
+	Integer mucKM;
 	Integer soLuongMua;
 	Integer soLuongTang;
 	LocalDate ngayBD;
@@ -84,7 +84,7 @@ public class KhuyenMai {
 	}
 
 	public int getMucKM() {
-		return mucKM;
+		return mucKM == null ? 0 : mucKM;
 	}
 
 	public void setMucKM(int mucKM) {
@@ -92,7 +92,7 @@ public class KhuyenMai {
 	}
 
 	public int getSoLuongMua() {
-		return soLuongMua;
+		return soLuongMua == null ? 0 : soLuongMua;
 	}
 
 	public void setSoLuongMua(int soLuongMua) {
@@ -100,7 +100,7 @@ public class KhuyenMai {
 	}
 
 	public int getSoLuongTang() {
-		return soLuongTang;
+		return soLuongTang == null ? 0 : soLuongTang;
 	}
 
 	public void setSoLuongTang(int soLuongTang) {
