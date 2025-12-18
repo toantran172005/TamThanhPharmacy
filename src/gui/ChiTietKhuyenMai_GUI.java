@@ -6,20 +6,24 @@ import javax.swing.table.JTableHeader;
 
 import com.toedter.calendar.JDateChooser;
 
+import controller.KhuyenMaiCtrl;
 import controller.ToolCtrl;
 import java.awt.*;
+import java.util.Date;
 
 public class ChiTietKhuyenMai_GUI extends JPanel {
 
-    private JTextField txtTenKM, txtSLM, txtSLT;
-    private JComboBox<String> cmbLoaiKM, cmbThemThuoc;
-    private JTable tblChiTietKM;
-    private JButton btnThemThuoc, btnCapNhat, btnQuayLai;
-    private JDateChooser dpNgayBD, dpNgayKT; 
-    private JCheckBox chkChonTatCa;
+    public JTextField txtTenKM, txtSLM, txtSLT;
+    public JComboBox<String> cmbLoaiKM, cmbThemThuoc;
+    public JTable tblChiTietKM;
+    public JButton btnThemThuoc, btnCapNhat, btnQuayLai;
+    public JDateChooser dpNgayBD, dpNgayKT; 
+    public KhuyenMaiCtrl kmCtrl;
     private final ToolCtrl tool = new ToolCtrl();
 
+
     public ChiTietKhuyenMai_GUI() {
+    	kmCtrl = new KhuyenMaiCtrl(this);
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
         setBorder(BorderFactory.createEmptyBorder(10, 30, 10, 30));
@@ -146,13 +150,11 @@ public class ChiTietKhuyenMai_GUI extends JPanel {
         bottomPanel.add(btnQuayLai);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        // ====== EVENT (ví dụ) ======
-        btnThemThuoc.addActionListener(e -> onBtnThemThuoc());
-        btnCapNhat.addActionListener(e -> onBtnCapNhat());
+        // ====== EVENT ======
         btnQuayLai.addActionListener(e -> tool.doiPanel(this, new DanhSachKhuyenMai_GUI()));
     }
 
-    private JPanel taoDongStepper(String labelText, JTextField txt, JButton btnMinus, JButton btnPlus) {
+    public JPanel taoDongStepper(String labelText, JTextField txt, JButton btnMinus, JButton btnPlus) {
         JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
         row.setBackground(Color.WHITE);
 
@@ -172,17 +174,20 @@ public class ChiTietKhuyenMai_GUI extends JPanel {
         row.add(stepPanel);
         return row;
     }
+ 
     
-    // ====== EVENT HANDLERS ======
-    private void onBtnThemThuoc() {
-        /* TODO: thêm thuốc vào bảng */
+    public void setData(
+            String maKM,
+            String tenKM,
+            String hinhThuc,
+            String mucKM,
+            Object ngayBD,
+            Object ngayKT
+    ) {
+        txtTenKM.setText(tenKM);
+        cmbLoaiKM.setSelectedItem(hinhThuc);
+        dpNgayBD.setDate((Date) ngayBD);
+        dpNgayKT.setDate((Date) ngayKT);
     }
 
-    private void onBtnCapNhat() {
-        /* TODO: cập nhật khuyến mãi */
-    }
-
-    private void onBtnQuayLai() {
-        /* TODO: quay lại giao diện trước */
-    }
 }

@@ -12,9 +12,9 @@ import gui.TimKiemThuoc_GUI;
 
 public class ChiTietThuocCtrl {
 
-	private ToolCtrl tool = new ToolCtrl();
-	private ThuocDAO thDAO = new ThuocDAO();
-	private ChiTietThuoc_GUI ctThuoc;
+	public ToolCtrl tool = new ToolCtrl();
+	public ThuocDAO thDAO = new ThuocDAO();
+	public ChiTietThuoc_GUI ctThuoc;
 	
 	public ChiTietThuocCtrl(ChiTietThuoc_GUI ctThuoc) {
 		this.ctThuoc = ctThuoc;
@@ -44,8 +44,18 @@ public class ChiTietThuocCtrl {
 	                }
 	                
 	                //Đổ dữ liệu
+	                String thue = t.getThue().getTiLeThue()*100 + "%";
 	                Image img = icon.getImage().getScaledInstance(240, 240, Image.SCALE_SMOOTH);
 	                ctThuoc.lblAnh.setIcon(new ImageIcon(img));
+	                ctThuoc.txtMaSP.setText(maThuoc);
+	                ctThuoc.txtTenSP.setText(t.getTenThuoc());
+	                ctThuoc.txtDangThuoc.setText(t.getDangThuoc());
+	                ctThuoc.txtGiaBan.setText(tool.dinhDangVND(t.getGiaBan()));
+	                ctThuoc.dpHanSuDung.setDate(tool.localDateSangUtilDate(t.getHanSuDung()));
+	                ctThuoc.cmbDonViTinh.setSelectedItem(t.getDvt().getTenDVT());
+	                ctThuoc.cmbThue.setSelectedItem(thue);
+	                ctThuoc.cmbKeThuoc.setSelectedItem(t.getKeThuoc().getLoaiKe());
+	                //ctThuoc.cmbQuocGia.setSelectedItem();
 					
 				}
 			}

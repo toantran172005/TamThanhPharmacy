@@ -23,6 +23,7 @@ public class ChiTietNhanVien_GUI extends JPanel {
 
 	public ToolCtrl tool = new ToolCtrl();
 	public TrangChuQL_GUI mainFrame;
+	public TrangChuNV_GUI nvFrame;
     
  	public ChiTietNhanVienCtrl getCtrl() {
  		return ctrl;
@@ -37,6 +38,13 @@ public class ChiTietNhanVien_GUI extends JPanel {
 		initUI();
 		this.ctrl = new ChiTietNhanVienCtrl(this);
 	}
+ 	
+ 	public ChiTietNhanVien_GUI(TrangChuNV_GUI nvFrame) {
+ 	    this.nvFrame = nvFrame;
+ 	    initUI();
+ 	    this.ctrl = new ChiTietNhanVienCtrl(this);
+ 	}
+
 
     public void initUI() {
         setLayout(new BorderLayout());
@@ -210,18 +218,19 @@ public class ChiTietNhanVien_GUI extends JPanel {
         return row;
     }
 
-//    // ========== PLACEHOLDER IMAGE ==========
-//    public ImageIcon loadPlaceholderImage(int w, int h) {
-//        BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-//        Graphics2D g2 = img.createGraphics();
-//        g2.setColor(new Color(240, 240, 240));
-//        g2.fillRect(0, 0, w, h);
-//        g2.setColor(Color.GRAY);
-//        g2.setFont(new Font("Arial", Font.PLAIN, 20));
-//        g2.drawString("No Image", w / 2 - 50, h / 2);
-//        g2.dispose();
-//        return new ImageIcon(img.getScaledInstance(w, h, Image.SCALE_SMOOTH));
-//    }
+    // ========== PLACEHOLDER IMAGE ==========
+    public ImageIcon loadPlaceholderImage(int w, int h) {
+        BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2 = img.createGraphics();
+        g2.setColor(new Color(240, 240, 240));
+        g2.fillRect(0, 0, w, h);
+        g2.setColor(Color.GRAY);
+        g2.setFont(new Font("Arial", Font.PLAIN, 20));
+        g2.drawString("No Image", w / 2 - 50, h / 2);
+        g2.dispose();
+        return new ImageIcon(img.getScaledInstance(w, h, Image.SCALE_SMOOTH));
+    }
+
 
  // ========== GETTER ==========
     public JButton getBtnChonAnh() { return btnChonAnh; }

@@ -21,6 +21,7 @@ public class Thuoc {
 	Boolean trangThai;
 	String anh;
 	String noiSanXuat;
+	QuocGia quocGia;
 	// Thuộc tính tạm
 	int stt;
 	int soLo;
@@ -121,6 +122,43 @@ public class Thuoc {
 		this.anh = anh;
 		this.soLuong = soLuong;
 		this.noiSanXuat = noiSanXuat;
+	}
+	
+	
+
+	public Thuoc(String maThuoc, Thue thue, KeThuoc keThuoc, DonViTinh dvt, NhaCungCap ncc, String tenThuoc,
+			String dangThuoc, double giaBan, LocalDate hanSuDung, Boolean trangThai, String anh, String noiSanXuat,
+			QuocGia quocGia, int stt, int soLo, int soLuong, String loaiThue, int soLuongBan, int doanhThu,
+			int soLuongDat) {
+		super();
+		this.maThuoc = maThuoc;
+		this.thue = thue;
+		this.keThuoc = keThuoc;
+		this.dvt = dvt;
+		this.ncc = ncc;
+		this.tenThuoc = tenThuoc;
+		this.dangThuoc = dangThuoc;
+		this.giaBan = giaBan;
+		this.hanSuDung = hanSuDung;
+		this.trangThai = trangThai;
+		this.anh = anh;
+		this.noiSanXuat = noiSanXuat;
+		this.quocGia = quocGia;
+		this.stt = stt;
+		this.soLo = soLo;
+		this.soLuong = soLuong;
+		this.loaiThue = loaiThue;
+		this.soLuongBan = soLuongBan;
+		this.doanhThu = doanhThu;
+		this.soLuongDat = soLuongDat;
+	}
+
+	public QuocGia getQuocGia() {
+		return quocGia;
+	}
+
+	public void setQuocGia(QuocGia quocGia) {
+		this.quocGia = quocGia;
 	}
 
 	public String getMaThuoc() {

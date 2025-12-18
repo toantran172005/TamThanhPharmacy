@@ -102,11 +102,13 @@ public class ThemNhanVien_GUI extends JPanel {
 		// Khởi tạo field
 		txtTenNV = tool.taoTextField("Nhập tên nhân viên");
 		cmbChucVu = tool.taoComboBox(new String[] { "Quản lý bán hàng", "Nhân viên quản lý"});
+		cmbChucVu.setEditable(false);
 		txtSdt = tool.taoTextField("Nhập số điện thoại");
 		txtLuong = tool.taoTextField("Nhập lương");
 		cmbThue = new JComboBox<>();
 
 		cmbGioiTinh = tool.taoComboBox(new String[] { "Nam", "Nữ", "Khác" });
+		cmbGioiTinh.setEditable(false);
 		dtpNgaySinh = tool.taoDateChooser();
 		dtpNgayVaoLam = tool.taoDateChooser();
 		txtEmail = tool.taoTextField("Nhập email");
@@ -167,13 +169,12 @@ public class ThemNhanVien_GUI extends JPanel {
 		add(centerPanel, BorderLayout.CENTER);
 	}
 
-	// =================== TẠO DÒNG FORM ===================
-	public JPanel createFormRow(String labelText, JComponent field) {
-		JPanel row = new JPanel();
-		row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
-		row.setBackground(Color.WHITE);
-		row.setMaximumSize(new Dimension(Short.MAX_VALUE, 60));
-
+    // =================== TẠO DÒNG FORM ===================
+    public JPanel createFormRow(String labelText, JComponent field) {
+        JPanel row = new JPanel();
+        row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
+        row.setBackground(Color.WHITE);
+        row.setMaximumSize(new Dimension(Short.MAX_VALUE, 60));
 		JLabel lbl = tool.taoLabel(labelText);
 		lbl.setPreferredSize(new Dimension(130, 40));
 		lbl.setMinimumSize(new Dimension(130, 40));
@@ -188,18 +189,18 @@ public class ThemNhanVien_GUI extends JPanel {
 		return row;
 	}
 
-	// =================== PLACEHOLDER IMAGE ===================
-	public ImageIcon loadPlaceholderImage(int w, int h) {
-		BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-		Graphics2D g2 = img.createGraphics();
-		g2.setColor(new Color(240, 240, 240));
-		g2.fillRect(0, 0, w, h);
-		g2.setColor(Color.GRAY);
-		g2.setFont(new Font("Arial", Font.PLAIN, 20));
-		g2.drawString("No Image", w / 2 - 50, h / 2);
-		g2.dispose();
-		return new ImageIcon(img.getScaledInstance(w, h, Image.SCALE_SMOOTH));
-	}
+    // =================== PLACEHOLDER IMAGE ===================
+    public ImageIcon loadPlaceholderImage(int w, int h) {
+        BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g2 = img.createGraphics();
+        g2.setColor(new Color(240, 240, 240));
+        g2.fillRect(0, 0, w, h);
+        g2.setColor(Color.GRAY);
+        g2.setFont(new Font("Arial", Font.PLAIN, 20));
+        g2.drawString("No Image", w / 2 - 50, h / 2);
+        g2.dispose();
+        return new ImageIcon(img.getScaledInstance(w, h, Image.SCALE_SMOOTH));
+    }
 
 	// ===================== GETTER DÙNG CHO CONTROLLER =====================
 	public JButton getBtnChonAnh() {

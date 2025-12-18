@@ -68,7 +68,6 @@ public class ThongKeHoaDonCtrl {
         }
         
         listKH = hdDAO.layListKHThongKe(ngayBD, ngayKT);
-        System.out.println("Số KH lấy được: " + listKH.size());
         tongTienMap.clear();
         tongDonMap.clear();
 
@@ -78,7 +77,6 @@ public class ThongKeHoaDonCtrl {
             tongTienMap.put(kh.getMaKH(), tongTien);
             tongDonMap.put(kh.getMaKH(), tongDon);
         }
-        System.out.print("Đang thống kê");
         setDataChoLabel();
         veBieuDo(ngayBD, ngayKT);
         setDataChoTable();

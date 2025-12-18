@@ -416,6 +416,9 @@ public class ToolCtrl {
 		String cotKhoa;
 
 		switch (tenBangVietTat) {
+		case "TH":
+            cotKhoa = "maThuoc";
+            break;
 		case "KT":
 			cotKhoa = "maKe";
 			break;

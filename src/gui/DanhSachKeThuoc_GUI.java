@@ -152,36 +152,27 @@ public class DanhSachKeThuoc_GUI extends JPanel {
 		tblKeThuoc = new JTable(model);
 		tblKeThuoc.setRowHeight(40);
 		tblKeThuoc.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		tblKeThuoc.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 15));
-		tblKeThuoc.setSelectionBackground(new Color(0xE3F2FD));
-		tblKeThuoc.setGridColor(new Color(0xDDDDDD));
-		tblKeThuoc.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
-		// 🌿 Làm trắng toàn bộ table
 		tblKeThuoc.setBackground(Color.WHITE);
+		tblKeThuoc.getTableHeader().setBackground(new Color(240, 240, 240));
+		tblKeThuoc.setGridColor(new Color(200, 200, 200));
+		tblKeThuoc.setShowGrid(true);
+		tblKeThuoc.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
+
+		tblKeThuoc.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		tblKeThuoc.setForeground(new Color(0x33, 0x33, 0x33));
 
-		// Căn giữa nội dung các ô
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		for (int i = 0; i < tblKeThuoc.getColumnCount(); i++) {
 			tblKeThuoc.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		}
 
-		// Căn giữa tiêu đề cột
 		JTableHeader header = tblKeThuoc.getTableHeader();
 		header.setBackground(new Color(240, 240, 240));
 		header.setFont(new Font("Times New Roman", Font.BOLD, 18));
 		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
-		// Column widths
-		tblKeThuoc.getColumnModel().getColumn(0).setPreferredWidth(127);
-		tblKeThuoc.getColumnModel().getColumn(1).setPreferredWidth(180);
-		tblKeThuoc.getColumnModel().getColumn(2).setPreferredWidth(92);
-		tblKeThuoc.getColumnModel().getColumn(3).setPreferredWidth(185);
-		tblKeThuoc.getColumnModel().getColumn(4).setPreferredWidth(138);
-
-		// 🌿 Scroll trắng hoàn toàn
 		JScrollPane scrollPane = new JScrollPane(tblKeThuoc);
 		scrollPane.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
 		scrollPane.getViewport().setBackground(Color.WHITE);

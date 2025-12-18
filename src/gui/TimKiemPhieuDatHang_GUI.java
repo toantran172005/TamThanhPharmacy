@@ -26,6 +26,7 @@ public class TimKiemPhieuDatHang_GUI extends JPanel {
 	Font font2 = new Font("Time New Roman", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
 	public TimKiemPhieuDatHangCtrl dspdhCtrl = new TimKiemPhieuDatHangCtrl(this);
+	public DefaultTableModel model;
 
 	public TimKiemPhieuDatHang_GUI(TrangChuNV_GUI mainFrameNV) {
 		this.mainFrameNV = mainFrameNV;
@@ -101,34 +102,43 @@ public class TimKiemPhieuDatHang_GUI extends JPanel {
 
 		add(topPanel, BorderLayout.NORTH);
 
-		String[] columnNames = { "Mã phiếu", "Tên nhân viên", "Tên khách hàng", "Ngày đặt", "Ngày hẹn", "Trạng thái" };
-		DefaultTableModel model = new DefaultTableModel(columnNames, 0);
-		
+		String[] cols = { "Mã phiếu", "Tên nhân viên", "Tên khách hàng", "Ngày đặt", "Ngày hẹn", "Trạng thái" };
+		model = new DefaultTableModel(cols, 0) {
+		    @Override
+		    public boolean isCellEditable(int r, int c) {
+		        return false;
+		    }
+		};
+
 		tblPhieuDatHang = new JTable(model);
 		tblPhieuDatHang.setRowHeight(38);
-		tblPhieuDatHang.setFont(font2);
+		tblPhieuDatHang.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+		tblPhieuDatHang.setSelectionBackground(new Color(0xE3F2FD));
+		tblPhieuDatHang.setGridColor(new Color(0xDDDDDD));
+		tblPhieuDatHang.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
 		tblPhieuDatHang.setBackground(Color.WHITE);
-		tblPhieuDatHang.getTableHeader().setBackground(new Color(240, 240, 240));
-		tblPhieuDatHang.setGridColor(new Color(200, 200, 200));
-		tblPhieuDatHang.setShowGrid(true);
-		tblPhieuDatHang.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
-
-		JScrollPane scrollPane = new JScrollPane(tblPhieuDatHang);
-		scrollPane.getViewport().setBackground(Color.WHITE);
+		tblPhieuDatHang.setForeground(new Color(0x33, 0x33, 0x33));
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		for (int i = 0; i < tblPhieuDatHang.getColumnCount(); i++) {
-			tblPhieuDatHang.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		    tblPhieuDatHang.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		}
 
 		JTableHeader header = tblPhieuDatHang.getTableHeader();
 		header.setBackground(new Color(240, 240, 240));
-		header.setFont(font1);
-		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+		header.setFont(new Font("Times New Roman", Font.BOLD, 18));
+		((DefaultTableCellRenderer) header.getDefaultRenderer())
+		        .setHorizontalAlignment(SwingConstants.CENTER);
+
+		JScrollPane scrollPane = new JScrollPane(tblPhieuDatHang);
+		scrollPane.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
+		scrollPane.getViewport().setBackground(Color.WHITE);
+		scrollPane.setBackground(Color.WHITE);
 
 		add(scrollPane, BorderLayout.CENTER);
+
 		dspdhCtrl.setDataChoTable(dspdhCtrl.layTatCaPhieuDatHang());
 	}
 

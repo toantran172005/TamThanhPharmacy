@@ -24,7 +24,6 @@ public class KhuyenMaiDAO {
 
 			ps.setString(1, maKM);
 			ResultSet rs = ps.executeQuery();
-
 			if (rs.next()) {
 				KhuyenMai km = new KhuyenMai();
 				km.setMaKM(rs.getString("maKM"));

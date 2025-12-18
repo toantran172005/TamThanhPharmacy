@@ -13,6 +13,7 @@ import javax.tools.Tool;
 import java.awt.Color;
 import java.awt.event.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LapHoaDonCtrl {
@@ -46,13 +47,34 @@ public class LapHoaDonCtrl {
 		this.trangChuQL = gui.getMainFrame();
 		this.trangChuNV = gui.getMainFrameNV();
 		this.tableModel = (DefaultTableModel) gui.getTblThuoc().getModel();
-		init();
+		loadData();
+	}
+	
+	public void setComboxQuocGia() {
+	    Object selected = gui.getCmbSanPham().getSelectedItem();
+	    if (selected == null) return;
+
+	    String tenThuoc = selected.toString();
+
+//	    String maThuoc = thuocDAO.layMaThuocTheoTen(tenThuoc);
+//	    if (maThuoc == null) return;
+
+	    gui.getCmbQuocGia().removeAllItems();
+
+	    ArrayList<QuocGia> listQG = thuocDAO.layListQuocGiaTheoThuoc(tenThuoc);
+	    if (listQG != null) {
+	        for (QuocGia qg : listQG) {
+	            gui.getCmbQuocGia().addItem(qg.getTenQG());
+	        }
+	    }
 	}
 
-	public void init() {
+	// === TẢI DỮ LIỆU ===
+	public void loadData() {
 		taiDuLieu();
 		suKien();
 		goiYKhachHang();
+		setComboxQuocGia();
 	}
 
 	// ========== TẢI DỮ LIỆU ==========
@@ -74,6 +96,7 @@ public class LapHoaDonCtrl {
 		gui.getCmbHTThanhToan().setSelectedItem("Tiền mặt");
 	}
 
+
 	// ========== SỰ KIỆN ==========
 	public void suKien() {
 		gui.getBtnThem().addActionListener(e -> xuLyThemThuocVaoBang());
@@ -86,6 +109,8 @@ public class LapHoaDonCtrl {
 				tinhTienThua();
 			}
 		});
+		
+		gui.getCmbSanPham().addActionListener(e -> setComboxQuocGia());
 	}
 
 	// ========== TÌM KHÁCH HÀNG ==========
@@ -173,6 +198,7 @@ public class LapHoaDonCtrl {
 		}
 
 		// ===== Lấy đơn vị tính & giá gốc =====
+		String tenQG = (String) gui.getCmbQuocGia().getSelectedItem();
 		String tenDVT = (String) gui.getCmbDonVi().getSelectedItem();
 		DonViTinh dvt = dvtDAO.timTheoTen(tenDVT);
 		double donGiaGoc = (dvt != null) ? thuocDAO.layGiaBanTheoDVT(thuoc.getMaThuoc(), dvt.getMaDVT())
@@ -228,7 +254,7 @@ public class LapHoaDonCtrl {
 
 		// ===== Thêm dòng mới =====
 		model.addRow(
-				new Object[] { model.getRowCount() + 1, thuoc.getTenThuoc(), sl, dvt != null ? dvt.getTenDVT() : "",
+				new Object[] { model.getRowCount() + 1, thuoc.getTenThuoc(), tenQG, sl, dvt != null ? dvt.getTenDVT() : "",
 						tool.dinhDangVND(donGiaGoc), tool.dinhDangVND(thanhTien), moTaKM, "Xóa" });
 
 		tinhTongTien();
@@ -278,7 +304,7 @@ public class LapHoaDonCtrl {
 		double tong = 0;
 
 		for (int i = 0; i < tableModel.getRowCount(); i++) {
-			Object giaTri = tableModel.getValueAt(i, 5); // Cột chứa giá tiền
+			Object giaTri = tableModel.getValueAt(i, 6); // Cột chứa giá tiền
 			if (giaTri != null) {
 				String text = giaTri.toString().trim();
 				double gia = tool.chuyenTienSangSo(text);
@@ -373,8 +399,15 @@ public class LapHoaDonCtrl {
 
 			// ==== 3. Tạo hóa đơn ====
 			String maHD = tool.taoKhoaChinh("HD");
-//            String maNV = layMaNhanVienHienTai(); // hoặc "TTNV1"
-			String maNV = "TTNV1";
+			String maNV;
+			if(trangChuNV != null) {
+				NhanVien nv = trangChuNV.layNhanVien();
+				maNV = nv.getMaNV();
+			}
+			else {
+				NhanVien nv = trangChuQL.layNhanVien();
+				maNV = nv.getMaNV();
+			}
 			String diaChiHT = "456 Nguyễn Huệ, TP.HCM";
 			String tenHT = "Hiệu Thuốc Tâm Thanh";
 			String hotline = "+84-912345689";
@@ -407,8 +440,8 @@ public class LapHoaDonCtrl {
 				if (t == null)
 					continue;
 
-				int soLuong = Integer.parseInt(tableModel.getValueAt(i, 2).toString());
-				double donGia = tool.chuyenTienSangSo(tableModel.getValueAt(i, 4).toString());
+				int soLuong = Integer.parseInt(tableModel.getValueAt(i, 3).toString());
+				double donGia = tool.chuyenTienSangSo(tableModel.getValueAt(i, 5).toString());
 
 				String tenDVT = (String) gui.getCmbDonVi().getSelectedItem();
 				String maDVT = dvtDAO.timMaDVTTheoTen(tenDVT); // hoặc lấy từ DAO nếu bạn có danh sách DVT
