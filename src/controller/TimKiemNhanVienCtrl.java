@@ -45,7 +45,7 @@ public class TimKiemNhanVienCtrl {
 		gui.addAncestorListener(new javax.swing.event.AncestorListener() {
 			@Override
 			public void ancestorAdded(javax.swing.event.AncestorEvent event) {
-				moLaiForm(); // Gọi khi panel được gắn vào JFrame
+				moLaiForm(); 
 			}
 
 			@Override

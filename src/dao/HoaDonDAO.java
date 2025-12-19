@@ -15,7 +15,7 @@ public class HoaDonDAO {
 	public NhanVienDAO nvDAO = new NhanVienDAO();
 	public KhachHangDAO khDAO = new KhachHangDAO();
 
-	// ================= LẤY DANH SÁCH HÓA ĐƠN CÒN HIỆU LỰC =================
+	// ========== LẤY DANH SÁCH HÓA ĐƠN CÒN HIỆU LỰC ==========
 	public List<HoaDon> layListHoaDon() {
 
 		List<HoaDon> listHD = new ArrayList<>();
@@ -40,7 +40,7 @@ public class HoaDonDAO {
 		return listHD;
 	}
 
-	// ================= LẤY DANH SÁCH HÓA ĐƠN ĐÃ XÓA =================
+	// ========== LẤY DANH SÁCH HÓA ĐƠN ĐÃ XÓA ==========
 	public List<HoaDon> layListHDDaXoa() {
 		List<HoaDon> listHDDaXoa = new ArrayList<>();
 		String sql = """
@@ -64,6 +64,7 @@ public class HoaDonDAO {
 		return listHDDaXoa;
 	}
 	
+	// ========== LẤY DOANH THU HOÁ ĐƠN THEO NGÀY ==========
 	public Map<LocalDate, Double> layDoanhThuTheoNgay(LocalDate ngayBD, LocalDate ngayKT) {
 		Map<LocalDate, Double> map = new LinkedHashMap<>();
 		String sql = """
@@ -97,6 +98,7 @@ public class HoaDonDAO {
 		return map;
 	}
 
+	// ========== LẤY LIST KHÁCH HÀNG THỐNG KÊ ==========
 	public List<KhachHang> layListKHThongKe(LocalDate ngayBD, LocalDate ngayKT) {
 		List<KhachHang> list = new ArrayList<>();
 
@@ -132,7 +134,7 @@ public class HoaDonDAO {
 	}
 
 
-	// ================= HÀM HỖ TRỢ: CHUYỂN ResultSet → HoaDon =================
+	// ========= CHUYỂN ResultSet → HoaDon ==========
 	public HoaDon mapResultSetToHoaDon(ResultSet rs) throws SQLException {
 		KhachHang kh = khDAO.timKhachHangTheoMa(rs.getString("maKH"));
 		NhanVien nv = nvDAO.timNhanVienTheoMa(rs.getString("maNV"));
@@ -142,7 +144,7 @@ public class HoaDonDAO {
 				rs.getDouble("tienNhan"), rs.getBoolean("trangThai"));
 	}
 
-	// ================= TÌM HOÁ ĐƠN THEO MÃ =================
+	// ========= TÌM HOÁ ĐƠN THEO MÃ =========
 	public HoaDon timHoaDonTheoMa(String maHD) {
 		for (HoaDon hd : layListHoaDon()) {
 			if (hd.getMaHD().equalsIgnoreCase(maHD)) {
@@ -183,7 +185,7 @@ public class HoaDonDAO {
 		}
 	}
 
-	// ================= THÊM CHI TIẾT HÓA ĐƠN =================
+	// ========= THÊM CHI TIẾT HÓA ĐƠN =========
 	public boolean themChiTietHoaDon(String maHD, String maThuoc, int soLuong, String maDVT, double donGia) {
 		String sql = """
 				INSERT INTO CT_HoaDon (maHD, maThuoc, soLuong, maDVT, donGia)
@@ -202,7 +204,7 @@ public class HoaDonDAO {
 		}
 	}
 
-	// ================= XÓA / KHÔI PHỤC =================
+	// ========= XÓA / KHÔI PHỤC =========
 	public boolean xoaHD(String maHD) {
 		String sql = "UPDATE HoaDon SET trangThai = 0 WHERE maHD = ?";
 		try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -214,6 +216,7 @@ public class HoaDonDAO {
 		}
 	}
 
+	// ========= KHÔI PHỤC HOÁ ĐƠN =========
 	public boolean khoiPhucHD(String maHD) {
 		String sql = "UPDATE HoaDon SET trangThai = 1 WHERE maHD = ?";
 		try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -225,6 +228,7 @@ public class HoaDonDAO {
 		}
 	}
 
+	// ========= LẤY TỔNG HOÁ ĐƠN CỦA KHÁCH HÀNG =========
 	public int layTongDonHang(String maKH) {
 		String sql = "SELECT COUNT(DISTINCT maHD) FROM HoaDon WHERE maKH = ?";
 		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -238,6 +242,7 @@ public class HoaDonDAO {
 		return 0;
 	}
 
+	// ========= TÍNH TỔNG TIỀN CỦA CÁC HOÁ ĐƠN CỦA KHÁCH HÀNG =========
 	public double layTongTien(String maKH) {
 		String sql = """
 				SELECT SUM(
@@ -266,6 +271,7 @@ public class HoaDonDAO {
 		return 0;
 	}
 
+	// ========= TÍNH TỔNG TIỀN THEO SẢN PHẨM =========
 	public double layTongTienTheoSanPham(String maHD, String maSP) {
 		String sql = """
 				SELECT SUM(
@@ -293,7 +299,7 @@ public class HoaDonDAO {
 		return 0;
 	}
 
-	// ================= TÍNH TỔNG TIỀN THEO HÓA ĐƠN =================
+	// ========= TÍNH TỔNG TIỀN THEO HÓA ĐƠN =========
 	public double tinhTongTienTheoHoaDon(String maHD) {
 		String sql = """
 				SELECT SUM(
@@ -321,7 +327,7 @@ public class HoaDonDAO {
 		return 0.0;
 	}
 
-	// ================= LẤY CHI TIẾT HÓA ĐƠN (DÙNG CHO BẢNG THUỐC) =================
+	// ========= LẤY CHI TIẾT HÓA ĐƠN (DÙNG CHO BẢNG THUỐC) =========
 	public List<Object[]> layChiTietHoaDon(String maHD) {
 		List<Object[]> list = new ArrayList<>();
 		String sql = """
@@ -353,7 +359,7 @@ public class HoaDonDAO {
 		return list;
 	}
 
-	// ================= CÁC HÀM KHÁC (giữ nguyên) =================
+	// ========= LẤY MÃ HOÁ ĐƠN MỚI NHẤT =========
 	public String layMaHoaDonMoiNhat() {
 		String sql = "SELECT TOP 1 maHD FROM HoaDon ORDER BY TRY_CAST(SUBSTRING(maHD, 5, LEN(maHD)) AS INT) DESC";
 		try (PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {

@@ -33,6 +33,8 @@ import dao.PhieuDatHangDAO;
 import dao.ThuocDAO;
 import entity.DonViTinh;
 import entity.KhachHang;
+import entity.NhanVien;
+import entity.QuocGia;
 import entity.Thuoc;
 import gui.LapPhieuDatHang_GUI;
 
@@ -72,7 +74,15 @@ public class LapPhieuDatHangCtrl {
 			return;
 		}
 
-		String maNV = "TTNV1";
+		NhanVien nvDangNhap = null;
+
+		if (lpdhGUI.getTrangChuQL() != null) {
+			nvDangNhap = lpdhGUI.getTrangChuQL().layNhanVien();
+		} else if (lpdhGUI.getTrangChuNV() != null) {
+			nvDangNhap = lpdhGUI.getTrangChuNV().layNhanVien();
+		}
+
+		String maNV = nvDangNhap.getMaNV();
 		Date ngayDat = new Date();
 		Date ngayHen = lpdhGUI.ngayHen.getDate();
 		String ghiChu = lpdhGUI.txaGhiChu.getText().trim();
@@ -81,20 +91,16 @@ public class LapPhieuDatHangCtrl {
 
 		for (int i = 0; i < lpdhGUI.model.getRowCount(); i++) {
 			String tenThuoc = lpdhGUI.model.getValueAt(i, 1).toString();
-			int soLuong = Integer.parseInt(lpdhGUI.model.getValueAt(i, 2).toString());
-			String tenDVT = lpdhGUI.model.getValueAt(i, 3).toString();
+			int soLuong = Integer.parseInt(lpdhGUI.model.getValueAt(i, 4).toString());
+			String tenDVT = lpdhGUI.model.getValueAt(i, 5).toString();
 
 			String maDVT = dvtDAO.timMaDVTTheoTen(tenDVT);
 
 			String maThuoc = null;
 			double donGia = 0;
-			for (Thuoc t : listThuoc) {
-				if (t.getTenThuoc().equalsIgnoreCase(tenThuoc)) {
-					maThuoc = t.getMaThuoc();
-					donGia = t.getGiaBan();
-					break;
-				}
-			}
+			maThuoc = lpdhGUI.model.getValueAt(i, 0).toString();
+			donGia = thDAO.layDonGiaTheoMaThuoc(maThuoc);
+
 
 			if (maThuoc == null) {
 				tool.hienThiThongBao("Chi tiết phiếu đặt", "Không tìm thấy thuốc: " + tenThuoc, false);
@@ -118,6 +124,7 @@ public class LapPhieuDatHangCtrl {
 		switch (ketQua) {
 		case 1:
 			tool.hienThiThongBao("Thêm phiếu đặt thuốc", "Thêm phiếu đặt thuốc thành công!", true);
+			lamMoi();
 			break;
 		case 0:
 			tool.hienThiThongBao("Thêm phiếu đặt thuốc", "Không đủ tồn kho cho thuốc trong bảng!", false);
@@ -200,8 +207,11 @@ public class LapPhieuDatHangCtrl {
 
 		DefaultTableModel model = (DefaultTableModel) lpdhGUI.tblThuoc.getModel();
 		int stt = model.getRowCount() + 1;
+		String tenQG = (String) lpdhGUI.getCmbQuocGia().getSelectedItem();
 
-		Object[] row = { stt, tenThuoc, soLuong, donVi };
+
+		String maThuoc = thDAO.layMaThuocTheoTenVaQG(tenThuoc, tenQG);
+		Object[] row = { maThuoc, stt, tenThuoc, tenQG, soLuong, donVi };
 		model.addRow(row);
 
 		lpdhGUI.cmbSanPham.setSelectedIndex(-1);
@@ -221,6 +231,7 @@ public class LapPhieuDatHangCtrl {
 	}
 
 	public void setUpComboBox() {
+
 		listDVT = dvtDAO.layListDVT();
 		lpdhGUI.cmbDonVi.addItem("");
 		for (DonViTinh dvt : listDVT) {
@@ -251,6 +262,17 @@ public class LapPhieuDatHangCtrl {
 				return;
 			}
 			lpdhGUI.cmbDonVi.setSelectedItem(donVi);
+
+			lpdhGUI.getCmbQuocGia().removeAllItems();
+
+			ArrayList<QuocGia> listQG = thDAO.layListQuocGiaTheoThuoc(tenThuoc);
+			if (listQG != null) {
+				for (QuocGia qg : listQG) {
+					lpdhGUI.getCmbQuocGia().addItem(qg.getTenQG());
+				}
+			}
+			lpdhGUI.cmbQuocGia.setSelectedIndex(0);
+
 		});
 
 	}
@@ -384,6 +406,7 @@ public class LapPhieuDatHangCtrl {
 				SwingUtilities.invokeLater(() -> popup.setVisible(false));
 			}
 		});
+
 	}
 
 	public void batGoiYChoTextField(JTextField txt, ArrayList<KhachHang> danhSachKH, Consumer<KhachHang> onSelect) {

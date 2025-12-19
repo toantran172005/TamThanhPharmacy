@@ -42,9 +42,9 @@ public class ChiTietPDHCtrl {
 		DefaultTableModel model = ctpdhGUI.model;
 		for (int i = 0; i < model.getRowCount(); i++) {
 			String maThuoc = thDAO.layMaThuocTheoTen(model.getValueAt(i, 0).toString());
-			int soLuong = Integer.parseInt(model.getValueAt(i, 1).toString());
+			int soLuong = Integer.parseInt(model.getValueAt(i, 2).toString());
 			double donGia = thDAO.layDonGiaTheoMaThuoc(maThuoc);
-			String maDVT = dvtDAO.timMaDVTTheoTen(model.getValueAt(i, 2).toString());
+			String maDVT = dvtDAO.timMaDVTTheoTen(model.getValueAt(i, 3).toString());
 
 			dsChiTiet.add(new Object[] { maThuoc, soLuong, donGia, maDVT });
 		}
@@ -95,12 +95,26 @@ public class ChiTietPDHCtrl {
 		return false;
 	}
 
+	// CODE CŨ
+//	public void quayLaiTrangDanhSach() {
+//		if (ctpdhGUI.mainFrameQL != null) {
+//			tool.doiPanel(ctpdhGUI, new TimKiemPhieuDatHang_GUI(ctpdhGUI.mainFrameQL));
+//		} else {
+//			tool.doiPanel(ctpdhGUI, new TimKiemPhieuDatHang_GUI(ctpdhGUI.mainFrameNV));
+//		}
+//	}
+	
+	// CODE MỚI
 	public void quayLaiTrangDanhSach() {
-		if (ctpdhGUI.mainFrameQL != null) {
-			tool.doiPanel(ctpdhGUI, new TimKiemPhieuDatHang_GUI(ctpdhGUI.mainFrameQL));
-		} else {
-			tool.doiPanel(ctpdhGUI, new TimKiemPhieuDatHang_GUI(ctpdhGUI.mainFrameNV));
-		}
+	    if (ctpdhGUI.mainFrameQL != null) {
+	        ctpdhGUI.mainFrameQL.setUpNoiDung(
+	            new TimKiemPhieuDatHang_GUI(ctpdhGUI.mainFrameQL)
+	        );
+	    } else {
+	        ctpdhGUI.mainFrameNV.setUpNoiDung(
+	            new TimKiemPhieuDatHang_GUI(ctpdhGUI.mainFrameNV)
+	        );
+	    }
 	}
 
 }

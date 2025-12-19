@@ -31,6 +31,7 @@ public class NhanVienDAO {
 		return null;
 	}
 
+	// ========== LẤY LIST NHÂN VIÊN ==========
 	public ArrayList<NhanVien> layListNhanVien() {
 		listNV.clear();
 
@@ -45,7 +46,6 @@ public class NhanVienDAO {
 
 				NhanVien nv = new NhanVien(rs.getString("maNV"), rs.getString("tenNV"), rs.getString("chucVu"),
 
-						// ✅ Dùng hàm ToolCtrl để chuyển đổi
 						toolCtrl.sqlDateSangLocalDate(rs.getDate("ngaySinh")), rs.getBoolean("gioiTinh"),
 						rs.getString("sdt"), toolCtrl.sqlDateSangLocalDate(rs.getDate("ngayVaoLam")),
 
@@ -60,6 +60,7 @@ public class NhanVienDAO {
 		return listNV;
 	}
 
+	// ========== LIST NHÂN VIÊN CÒN LÀM ==========
 	public ArrayList<NhanVien> layNhanVienDangLam() {
 		layListNhanVien();
 		if (listNV.isEmpty()) {
@@ -67,7 +68,7 @@ public class NhanVienDAO {
 		}
 		ArrayList<NhanVien> listDangLam = new ArrayList<>();
 		for (NhanVien nv : listNV) {
-			if (nv.isTrangThai()) { // hoặc nv.getTrangThai() == true
+			if (nv.isTrangThai()) {
 				listDangLam.add(nv);
 			}
 		}
@@ -75,6 +76,7 @@ public class NhanVienDAO {
 		return listDangLam;
 	}
 
+	// ========== LIST NHÂN VIÊN ĐÃ NGHỈ ==========
 	public ArrayList<NhanVien> layNhanVienNghiLam() {
 		layListNhanVien();
 		if (listNV.isEmpty()) {
@@ -82,7 +84,7 @@ public class NhanVienDAO {
 		}
 		ArrayList<NhanVien> listDaNghi = new ArrayList<>();
 		for (NhanVien nv : listNV) {
-			if (!nv.isTrangThai()) { // hoặc nv.getTrangThai() == true
+			if (!nv.isTrangThai()) {
 				listDaNghi.add(nv);
 			}
 		}
@@ -90,6 +92,7 @@ public class NhanVienDAO {
 		return listDaNghi;
 	}
 
+	// ========== XOÁ NHÂN VIÊN THEO MÃ ==========
 	public boolean xoaNhanVien(String maNV) {
 		String sql = "UPDATE NhanVien SET trangThai = 0 WHERE maNV = ?";
 		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -102,6 +105,7 @@ public class NhanVienDAO {
 		}
 	}
 
+	// ========== KHÔI PHỤC NHÂN VIÊN THEO MÃ ==========
 	public boolean khoiPhucNhanVien(String maNV) {
 		String sql = "UPDATE NhanVien SET trangThai = 1 WHERE maNV = ?";
 		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -114,6 +118,7 @@ public class NhanVienDAO {
 		}
 	}
 
+	// ========== CẬP NHẬT THÔNG TIN NHÂN VIÊN ==========
 	public boolean capNhatNhanVien(NhanVien nv) {
 		String sql = "UPDATE NhanVien SET tenNV=?, chucVu=?, gioiTinh=?, luong=?, sdt=?, anh=? WHERE maNV=?";
 		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -131,6 +136,7 @@ public class NhanVienDAO {
 		}
 	}
 
+	// ========== THÊM NHÂN VIÊN ==========
 	public boolean themNhanVien(NhanVien nv) {
 		String sql = "INSERT INTO NhanVien (maNV, tenNV, chucVu, ngaySinh, gioiTinh, sdt, ngayVaoLam, luong, maThue, trangThai, anh) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -153,6 +159,7 @@ public class NhanVienDAO {
 		}
 	}
 	
+	// ========== THÊM TÀI KHOẢN NHÂN VIÊN ==========
 	public boolean themTaiKhoan(TaiKhoan tk) {
 		String sql = "INSERT INTO TaiKhoan (maTK, maNV, tenDangNhap, matKhau, trangThai, loaiTK, email) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -171,6 +178,7 @@ public class NhanVienDAO {
 		}
 	}
 
+	// ========== LẤY EMAIL CỦA NHÂN VIÊN ==========
 	public String layEmailNV(String maNV) {
 		String sql = """
 				SELECT tk.email
@@ -188,6 +196,7 @@ public class NhanVienDAO {
 		return "";
 	}
 	
+	// ========== LẤY ẢNH CỦA NHÂN VIÊN ==========
 	public String layAnhNV(String maNV) {
 	    String sql = "SELECT anh FROM NhanVien WHERE maNV = ?";
 	    try (Connection con = KetNoiDatabase.getConnection();
@@ -197,13 +206,13 @@ public class NhanVienDAO {
 	        ResultSet rs = ps.executeQuery();
 
 	        if (rs.next()) {
-	            return rs.getString("anh"); // có thể null
+	            return rs.getString("anh"); 
 	        }
 
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
-	    return null; // nếu không có ảnh hoặc lỗi
+	    return null; 
 	}
 
 }

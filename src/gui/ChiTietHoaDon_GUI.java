@@ -87,7 +87,7 @@ public class ChiTietHoaDon_GUI extends JPanel {
 
 		add(pnlTop, BorderLayout.NORTH);
 
-		// ========== CENTER TABLE ==========
+		// ========== BẢNG ==========
 		String[] columnNames = { "Tên thuốc", "Nơi sản xuất", "Số lượng", "Đơn vị", "Đơn giá", "Thành tiền" };
 		DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
 			@Override

@@ -25,14 +25,12 @@ public class TimKiemPhieuDoiTra_GUI extends JPanel {
 	Font font2 = new Font("Times New Roman", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
 
-	// Constructor cho Quản lý
 	public TimKiemPhieuDoiTra_GUI(TrangChuQL_GUI mainFrame) {
 		this.mainFrame = mainFrame;
 		initUI();
 		new TimKiemPhieuDoiTraCtrl(this);
 	}
 
-	// Constructor cho Nhân viên
 	public TimKiemPhieuDoiTra_GUI(TrangChuNV_GUI mainFrameNV) {
 		this.mainFrameNV = mainFrameNV;
 		initUI();
@@ -50,14 +48,14 @@ public class TimKiemPhieuDoiTra_GUI extends JPanel {
 		pnlTop.setBackground(Color.WHITE);
 		pnlTop.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-		// Tiêu đề
+		// ===== Tiêu đề =====
 		JLabel lblTitle = new JLabel("DANH SÁCH PHIẾU ĐỔI TRẢ", SwingConstants.CENTER);
 		lblTitle.setFont(font1);
 		lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		pnlTop.add(lblTitle);
 		pnlTop.add(Box.createVerticalStrut(10));
 
-		// Hàng tìm kiếm
+		// ===== Tìm kiếm =====
 		JPanel row1 = new JPanel(new FlowLayout(FlowLayout.CENTER, 25, 5));
 		row1.setBackground(Color.WHITE);
 
@@ -74,7 +72,7 @@ public class TimKiemPhieuDoiTra_GUI extends JPanel {
 		row1.add(btnTimKiem);
 		pnlTop.add(row1);
 
-		// Hàng chức năng
+		// ===== Chức năng =====
 		JPanel row2 = new JPanel(new FlowLayout(FlowLayout.CENTER, 100, 5));
 		row2.setBackground(Color.WHITE);
 		btnLamMoi = tool.taoButton("Làm mới", "/picture/hoaDon/refresh.png");
@@ -85,7 +83,7 @@ public class TimKiemPhieuDoiTra_GUI extends JPanel {
 
 		add(pnlTop, BorderLayout.NORTH);
 
-		// ========== CENTER (TABLE) ==========
+		// ========== BẢNG DỮ LIỆU ==========
 		String[] cols = { "Mã phiếu", "Tên nhân viên", "Tên khách hàng", "Ngày lập", "Lý do" };
 		model = new DefaultTableModel(cols, 0) {
 			@Override
@@ -125,7 +123,6 @@ public class TimKiemPhieuDoiTra_GUI extends JPanel {
 
 		add(scrollPane, BorderLayout.CENTER);
 
-		// Focus mặc định
 		txtKhachHang.requestFocusInWindow();
 	}
 

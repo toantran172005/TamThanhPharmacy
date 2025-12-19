@@ -34,24 +34,21 @@ public class LapPhieuDoiTra_GUI extends JPanel {
 		pnlTop.setBackground(Color.WHITE);
 		pnlTop.setBorder(new EmptyBorder(10, 20, 10, 20));
 
-		// Tiêu đề
+		// ===== Tiêu đề =====
 		JLabel lblTieuDe = new JLabel("LẬP PHIẾU ĐỔI TRẢ", SwingConstants.CENTER);
 		lblTieuDe.setFont(font1);
 		lblTieuDe.setAlignmentX(Component.CENTER_ALIGNMENT);
 		pnlTop.add(lblTieuDe);
 		pnlTop.add(Box.createVerticalStrut(10));
 
-		// Mã hóa đơn
-		JPanel pnlMaHD = createLeftAlignedRow("Mã hóa đơn:", "");
+		JPanel pnlMaHD = taoLabelHD("Mã hóa đơn:", "");
 		lblMaHD = (JLabel) ((JPanel) pnlMaHD.getComponent(1)).getComponent(0);
 		pnlTop.add(pnlMaHD);
 
-		// Khách hàng
-		JPanel pnlKhach = createLeftAlignedRow("Khách hàng:", "");
+		JPanel pnlKhach = taoLabelHD("Khách hàng:", "");
 		lblKhachHang = (JLabel) ((JPanel) pnlKhach.getComponent(1)).getComponent(0);
 		pnlTop.add(pnlKhach);
 
-		// Tiêu đề bảng thuốc đã mua
 		JLabel lblDanhSachHD = new JLabel("DANH SÁCH THUỐC ĐÃ MUA", SwingConstants.CENTER);
 		lblDanhSachHD.setFont(font1);
 		lblDanhSachHD.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -60,30 +57,25 @@ public class LapPhieuDoiTra_GUI extends JPanel {
 		add(pnlTop, BorderLayout.NORTH);
 
 		// ========== CENTER PANEL ==========
-		String[] colsHD = { "Mã thuốc", "Tên thuốc", "Số lượng", "Đơn vị", "Đơn giá", "Thành tiền" };
+		String[] colsHD = { "Mã thuốc", "Tên thuốc", "Nơi sản xuất", "Số lượng", "Đơn vị", "Đơn giá", "Thành tiền" };
 		DefaultTableModel modelHD = new DefaultTableModel(colsHD, 0);
 		tblHDThuoc = new JTable(modelHD);
 		tblHDThuoc.setFont(font2);
 		tblHDThuoc.getTableHeader().setFont(font2);
 
-		// Đặt nền trắng cho bảng
 		tblHDThuoc.setBackground(Color.WHITE);
-
-		// Viền cho bảng
 		tblHDThuoc.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
-
-		// Nền của JScrollPane (bao quanh bảng)
 		JScrollPane scrollPane = new JScrollPane(tblHDThuoc);
-		scrollPane.getViewport().setBackground(Color.WHITE); // nền vùng chứa bảng
+		scrollPane.getViewport().setBackground(Color.WHITE);
 
-		// Căn giữa nội dung các ô
+		// ===== Căn giữa nội dung =====
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		for (int i = 0; i < tblHDThuoc.getColumnCount(); i++) {
 			tblHDThuoc.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		}
 
-		// Căn giữa tiêu đề cột
+		// ===== Căn giữa tiêu đề cột =====
 		JTableHeader header = tblHDThuoc.getTableHeader();
 		header.setBackground(new Color(240, 240, 240));
 		header.setFont(font2);
@@ -96,43 +88,43 @@ public class LapPhieuDoiTra_GUI extends JPanel {
 		pnlBottom.setBackground(Color.WHITE);
 		pnlBottom.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-		// --- TOP: Danh sách đổi trả + Form nhập ---
+		// ===== Danh sách đổi trả =====
 		JPanel pnlTopBottom = new JPanel();
 		pnlTopBottom.setLayout(new BoxLayout(pnlTopBottom, BoxLayout.Y_AXIS));
 		pnlTopBottom.setBackground(Color.WHITE);
 
-		// Tiêu đề
+		// ===== Tiêu đề  =====
 		JLabel lblDSThuocDT = new JLabel("DANH SÁCH THUỐC ĐỔI TRẢ", SwingConstants.CENTER);
 		lblDSThuocDT.setFont(font1);
 		lblDSThuocDT.setAlignmentX(Component.CENTER_ALIGNMENT);
 		pnlTopBottom.add(lblDSThuocDT);
 		pnlTopBottom.add(Box.createVerticalStrut(10));
 
-		// --- FORM NHẬP: 3 cột như FXML ---
+		// ===== Form nhập =====
 		JPanel pnlForm = new JPanel(new GridBagLayout());
 		pnlForm.setBackground(Color.WHITE);
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(5, 10, 5, 10);
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		// Cột 1: Tên thuốc + Mức hoàn
+		// ===== Tên thuốc + Mức hoàn =====
 		JPanel col1 = new JPanel();
 		col1.setLayout(new BoxLayout(col1, BoxLayout.Y_AXIS));
 		col1.setBackground(Color.WHITE);
-		col1.add(createFormRow("Tên thuốc:", txtTenThuoc = toolCtrl.taoTextField("Tên thuốc..."), 180));
+		col1.add(taoLabelPDT("Tên thuốc:", txtTenThuoc = toolCtrl.taoTextField("Tên thuốc..."), 180));
 		col1.add(Box.createVerticalStrut(10));
-		col1.add(createFormRow("Mức hoàn:",
+		col1.add(taoLabelPDT("Mức hoàn:",
 				cmbMucHoan = toolCtrl.taoComboBox(new String[] { "100%", "75%", "50%", "25%" }), 100));
 
-		// Cột 2: Số lượng + Ghi chú
+		// ===== Số lượng + Ghi chú =====
 		JPanel col2 = new JPanel();
 		col2.setLayout(new BoxLayout(col2, BoxLayout.Y_AXIS));
 		col2.setBackground(Color.WHITE);
-		col2.add(createFormRow("Số lượng:", txtSoLuong = toolCtrl.taoTextField("Số lượng..."), 80));
+		col2.add(taoLabelPDT("Số lượng:", txtSoLuong = toolCtrl.taoTextField("Số lượng..."), 80));
 		col2.add(Box.createVerticalStrut(10));
-		col2.add(createFormRow("Ghi chú:", txaGhiChu = toolCtrl.taoTextArea(20), 150));
+		col2.add(taoLabelPDT("Ghi chú:", txaGhiChu = toolCtrl.taoTextArea(20), 150));
 
-		// Cột 3: Nút Thêm
+		// ===== Nút Thêm và Xoá =====
 		JPanel col3 = new JPanel();
 		col3.setLayout(new BoxLayout(col3, BoxLayout.Y_AXIS));
 		col3.setBackground(Color.WHITE);
@@ -144,7 +136,7 @@ public class LapPhieuDoiTra_GUI extends JPanel {
 		btnWrapper.add(btnXoa);
 		col3.add(btnWrapper);
 
-		// Đặt 3 cột vào GridBag
+		// ===== Đặt 3 cột vào GridBag =====
 		gbc.gridx = 0;
 		gbc.weightx = 0.4;
 		pnlForm.add(col1, gbc);
@@ -158,31 +150,26 @@ public class LapPhieuDoiTra_GUI extends JPanel {
 		pnlTopBottom.add(pnlForm);
 		pnlTopBottom.add(Box.createVerticalStrut(10));
 
-		// Bảng đổi trả
-		String[] colsDT = { "Tên thuốc", "Số lượng", "Đơn vị", "Đơn giá", "Mức hoàn", "Tiền hoàn", "Ghi chú"};
+		// ===== Bảng đổi trả =====
+		String[] colsDT = { "Tên thuốc", "Nơi sản xuất", "Số lượng", "Đơn vị", "Đơn giá", "Mức hoàn", "Tiền hoàn", "Ghi chú"};
 		DefaultTableModel modelDT = new DefaultTableModel(colsDT, 0);
 		tblPhieuDTThuoc = new JTable(modelDT);
 		tblPhieuDTThuoc.setFont(font2);
 		tblPhieuDTThuoc.getTableHeader().setFont(font2);
 
-		// Đặt nền trắng cho bảng
 		tblPhieuDTThuoc.setBackground(Color.WHITE);
-
-		// Viền cho bảng
 		tblPhieuDTThuoc.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
-
-		// Nền của JScrollPane (bao quanh bảng)
 		JScrollPane scrollPanePDT = new JScrollPane(tblPhieuDTThuoc);
-		scrollPanePDT.getViewport().setBackground(Color.WHITE); // nền vùng chứa bảng
+		scrollPanePDT.getViewport().setBackground(Color.WHITE);
 
-		// Căn giữa nội dung các ô
+		// ===== Căn giữa nội dung các ô =====
 		DefaultTableCellRenderer centerRendererPDT = new DefaultTableCellRenderer();
 		centerRendererPDT.setHorizontalAlignment(SwingConstants.CENTER);
 		for (int i = 0; i < tblPhieuDTThuoc.getColumnCount(); i++) {
 			tblPhieuDTThuoc.getColumnModel().getColumn(i).setCellRenderer(centerRendererPDT);
 		}
 
-		// Căn giữa tiêu đề cột
+		// ===== Căn giữa tiêu đề cột =====
 		JTableHeader headerPDT = tblPhieuDTThuoc.getTableHeader();
 		headerPDT.setBackground(new Color(240, 240, 240));
 		headerPDT.setFont(font2);
@@ -194,11 +181,11 @@ public class LapPhieuDoiTra_GUI extends JPanel {
 
 		pnlBottom.add(pnlTopBottom, BorderLayout.NORTH);
 
-		// ========== BOTTOM (Lý do + Tổng tiền + Nút) ==========
+		// ===== Lý do + Tổng tiền + Nút =====
 		JPanel pnlFooter = new JPanel(new BorderLayout());
 		pnlFooter.setBackground(Color.WHITE);
 
-		// Lý do + Tổng tiền
+		// ===== Lý do + Tổng tiền =====
 		JPanel pnlInfo = new JPanel(new FlowLayout(FlowLayout.LEFT, 40, 10));
 		pnlInfo.setBackground(Color.WHITE);
 
@@ -218,14 +205,14 @@ public class LapPhieuDoiTra_GUI extends JPanel {
 		pnlInfo.add(pnlLyDoWrapper);
 		pnlInfo.add(pnlTongTienWrapper);
 
-		// Nút hành động
+		// ===== Các nút =====
 		JPanel pnlButtons = new JPanel(new FlowLayout(FlowLayout.CENTER, 100, 10));
 		pnlButtons.setBackground(Color.WHITE);
 		btnLamMoi = toolCtrl.taoButton("Làm mới", "/picture/hoaDon/return.png");
 		btnTaoPhieuDT = toolCtrl.taoButton("Tạo phiếu đổi trả", "/picture/hoaDon/plus.png");
 		btnQuayLai = toolCtrl.taoButton("Quay lại", "/picture/hoaDon/signOut.png");
 
-		// Đặt kích thước nút
+		// ===== Đặt kích thước nút =====
 		Dimension btnSize = new Dimension(160, 36);
 		btnLamMoi.setPreferredSize(btnSize);
 		btnTaoPhieuDT.setPreferredSize(btnSize);
@@ -241,9 +228,22 @@ public class LapPhieuDoiTra_GUI extends JPanel {
 		pnlBottom.add(pnlFooter, BorderLayout.SOUTH);
 		add(pnlBottom, BorderLayout.SOUTH);
 	}
+	
+	// ========== TẠO LABEL HOÁ ĐƠN ==========
+	public JPanel taoLabelHD(String title, String value) {
+		JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
+		row.setBackground(Color.WHITE);
+		row.add(toolCtrl.taoLabel(title));
+		JLabel lblValue = toolCtrl.taoLabel(value);
+		JPanel valuePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		valuePanel.setBackground(Color.WHITE);
+		valuePanel.add(lblValue);
+		row.add(valuePanel);
+		return row;
+	}
 
-	// ========== Tạo dòng label + component ==========
-	public JPanel createFormRow(String label, JComponent comp, int width) {
+	// ========== TẠO LABEL PHIẾU ĐỔI TRẢ ==========
+	public JPanel taoLabelPDT(String label, JComponent comp, int width) {
 		JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
 		row.setBackground(Color.WHITE);
 		JLabel lbl = toolCtrl.taoLabel(label);
@@ -259,20 +259,7 @@ public class LapPhieuDoiTra_GUI extends JPanel {
 		return row;
 	}
 
-	// ========== Tạo dòng Mã HD / Khách hàng ==========
-	public JPanel createLeftAlignedRow(String title, String value) {
-		JPanel row = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
-		row.setBackground(Color.WHITE);
-		row.add(toolCtrl.taoLabel(title));
-		JLabel lblValue = toolCtrl.taoLabel(value);
-		JPanel valuePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		valuePanel.setBackground(Color.WHITE);
-		valuePanel.add(lblValue);
-		row.add(valuePanel);
-		return row;
-	}
-
-	// ==================== GETTERS ====================
+	// ========== GETTERS ==========
 	public JLabel getLblMaHD() {
 		return lblMaHD;
 	}

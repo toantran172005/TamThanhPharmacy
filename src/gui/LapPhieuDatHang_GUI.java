@@ -17,7 +17,7 @@ import java.util.Date;
 
 public class LapPhieuDatHang_GUI extends JPanel {
 	public JTextField txtSdt, txtTenKH, txtTuoi, txtSoLuong;
-	public JComboBox<String> cmbSanPham, cmbDonVi;
+	public JComboBox<String> cmbSanPham, cmbDonVi, cmbQuocGia;
 	public JTable tblThuoc;
 	public JTextArea txaGhiChu;
 	public JButton btnThem, btnLamMoi, btnTaoPhieuDat, btnXoa;
@@ -27,6 +27,8 @@ public class LapPhieuDatHang_GUI extends JPanel {
 	public ToolCtrl tool = new ToolCtrl();
 	public LapPhieuDatHangCtrl lpdhCtrl = new LapPhieuDatHangCtrl(this);
 	public DefaultTableModel model;
+	public TrangChuQL_GUI trangChuQL;
+	public TrangChuNV_GUI trangChuNV;
 	
 	public void setUpDuLieu() {
 		lpdhCtrl.setUpComboBox();
@@ -39,8 +41,22 @@ public class LapPhieuDatHang_GUI extends JPanel {
 		btnXoa.addActionListener(e -> lpdhCtrl.xoaThuoc());
 		btnTaoPhieuDat.addActionListener(e -> lpdhCtrl.taoPhieuDat());
 	}
+	
+	public LapPhieuDatHang_GUI(TrangChuQL_GUI trangChuQL) {
+	    this.trangChuQL = trangChuQL;
+	    initUI();
+	    setUpDuLieu();
+	    setHoatDong();
+	}
+	
+	public LapPhieuDatHang_GUI(TrangChuNV_GUI trangChuNV) {
+	    this.trangChuNV = trangChuNV;
+	    initUI();
+	    setUpDuLieu();
+	    setHoatDong();
+	}
 
-	public LapPhieuDatHang_GUI() {
+	public void initUI() {
 		setLayout(new BorderLayout(0, 15));
 		setBackground(Color.WHITE);
 		setPreferredSize(new Dimension(1027, 900));
@@ -91,6 +107,12 @@ public class LapPhieuDatHang_GUI extends JPanel {
 		row2.add(tool.taoLabel("Số lượng:"));
 		txtSoLuong = tool.taoTextField("Số lượng...");
 		row2.add(txtSoLuong);
+		
+		row2.add(tool.taoLabel("Quốc gia sản xuất:"));
+		cmbQuocGia = tool.taoComboBox(new String[] {});
+		cmbQuocGia.setEditable(false);
+		cmbQuocGia.setPreferredSize(new Dimension(180, 28));
+		row2.add(cmbQuocGia);
 		pnlTop.add(row2);
 
 		// --- Hàng 3: Ngày hẹn, Đơn vị, Thêm ---
@@ -117,12 +139,17 @@ public class LapPhieuDatHang_GUI extends JPanel {
 		add(pnlTop, BorderLayout.NORTH);
 
 		// =================== CENTER ===================
-		String[] cols = { "STT", "Tên thuốc", "Số lượng", "Đơn vị"};
+		String[] cols = {"Mã thuốc", "STT", "Tên thuốc", "Nơi sản xuất", "Số lượng", "Đơn vị"};
 		model = new DefaultTableModel(cols, 0);
 		tblThuoc = new JTable(model);
 		tblThuoc.setRowHeight(25);
 		tblThuoc.setFont(font2);
 		tblThuoc.getTableHeader().setFont(font2);
+		
+		// Ẩn cột mã thuốc
+		tblThuoc.getColumnModel().getColumn(0).setMinWidth(0);
+		tblThuoc.getColumnModel().getColumn(0).setMaxWidth(0);
+		tblThuoc.getColumnModel().getColumn(0).setPreferredWidth(0);
 
 		// Đặt nền trắng cho bảng
 		tblThuoc.setBackground(Color.WHITE);
@@ -178,8 +205,25 @@ public class LapPhieuDatHang_GUI extends JPanel {
 
 		pnlBottom.add(rowBtns);
 		add(pnlBottom, BorderLayout.SOUTH);
-		setHoatDong();
-		setUpDuLieu();
 	}
 
+	public TrangChuQL_GUI getTrangChuQL() {
+		return trangChuQL;
+	}
+
+	public TrangChuNV_GUI getTrangChuNV() {
+		return trangChuNV;
+	}
+
+	public void setTrangChuQL(TrangChuQL_GUI trangChuQL) {
+		this.trangChuQL = trangChuQL;
+	}
+
+	public void setTrangChuNV(TrangChuNV_GUI trangChuNV) {
+		this.trangChuNV = trangChuNV;
+	}
+	
+	public JComboBox<String> getCmbSanPham() { return cmbSanPham; }
+	public JComboBox<String> getCmbQuocGia() { return cmbQuocGia; }
+	
 }

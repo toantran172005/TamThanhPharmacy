@@ -32,23 +32,23 @@ public class ThemNhanVien_GUI extends JPanel {
 		setBorder(new EmptyBorder(15, 25, 25, 25));
 		setBackground(Color.WHITE);
 
-		// =================== TIÊU ĐỀ ===================
+		// ========== TIÊU ĐỀ ==========
 		JLabel lblTitle = new JLabel("THÊM NHÂN VIÊN", SwingConstants.CENTER);
 		lblTitle.setFont(new Font("Times New Roman", Font.BOLD, 22));
 		lblTitle.setForeground(new Color(0x1E3A8A));
 		add(lblTitle, BorderLayout.NORTH);
 
-		// =================== CENTER: Nội dung ===================
+		// ===== Nội dung =====
 		JPanel centerPanel = new JPanel(new BorderLayout(30, 0));
 		centerPanel.setBackground(Color.WHITE);
 
-		// =================== LEFT: Ảnh + Chọn ảnh ===================
+		// ===== Ảnh + Chọn ảnh =====
 		JPanel leftPanel = new JPanel();
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 		leftPanel.setBackground(Color.WHITE);
 		leftPanel.setPreferredSize(new Dimension(280, 400));
 
-		// --- Ảnh ---
+		// ===== Ảnh =====
 		imgAnhNV = new JLabel(loadPlaceholderImage(227, 269));
 		imgAnhNV.setPreferredSize(new Dimension(227, 269));
 		imgAnhNV.setHorizontalAlignment(SwingConstants.CENTER);
@@ -58,13 +58,12 @@ public class ThemNhanVien_GUI extends JPanel {
 		imgWrapper.setBackground(Color.WHITE);
 		imgWrapper.add(imgAnhNV);
 
-		// --- Nút chọn ảnh ---
+		// ===== Nút chọn ảnh =====
 		btnChonAnh = tool.taoButton("Chọn ảnh", "/picture/nhanVien/folder.png");
 		JPanel btnWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		btnWrapper.setBackground(Color.WHITE);
 		btnWrapper.add(btnChonAnh);
 
-		// --- Gom nhóm ---
 		JPanel contentGroup = new JPanel();
 		contentGroup.setLayout(new BoxLayout(contentGroup, BoxLayout.Y_AXIS));
 		contentGroup.setBackground(Color.WHITE);
@@ -73,7 +72,7 @@ public class ThemNhanVien_GUI extends JPanel {
 		contentGroup.add(Box.createVerticalStrut(15));
 		contentGroup.add(btnWrapper);
 
-		// --- Căn giữa dọc ---
+		// ===== Căn giữa dọc =====
 		JPanel centeredWrapper = new JPanel(new GridBagLayout());
 		centeredWrapper.setBackground(Color.WHITE);
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -87,11 +86,10 @@ public class ThemNhanVien_GUI extends JPanel {
 		leftPanel.add(centeredWrapper);
 		centerPanel.add(leftPanel, BorderLayout.WEST);
 
-		// =================== RIGHT: Form 2 cột + Nút ===================
+		// ========== RIGHT: ĐIỀN THÔNG TIN ==========
 		JPanel rightPanel = new JPanel(new BorderLayout());
 		rightPanel.setBackground(Color.WHITE);
 
-		// --- Form 2 cột ---
 		JPanel formPanel = new JPanel(new GridBagLayout());
 		formPanel.setBackground(Color.WHITE);
 		GridBagConstraints formGbc = new GridBagConstraints();
@@ -99,7 +97,7 @@ public class ThemNhanVien_GUI extends JPanel {
 		formGbc.fill = GridBagConstraints.HORIZONTAL;
 		formGbc.anchor = GridBagConstraints.WEST;
 
-		// Khởi tạo field
+		// ===== Khởi tạo field =====
 		txtTenNV = tool.taoTextField("Nhập tên nhân viên");
 		cmbChucVu = tool.taoComboBox(new String[] { "Quản lý bán hàng", "Nhân viên quản lý"});
 		cmbChucVu.setEditable(false);
@@ -146,7 +144,7 @@ public class ThemNhanVien_GUI extends JPanel {
 		formGbc.gridy = 4;
 		formPanel.add(createFormRow("Thuế: ", cmbThue), formGbc);
 
-		// --- Nút hành động ---
+		// ===== Các nút =====
 		JPanel buttonPanel = new JPanel(new GridBagLayout());
 		buttonPanel.setBackground(Color.WHITE);
 		buttonPanel.setBorder(new EmptyBorder(30, 0, 0, 0));
@@ -169,7 +167,7 @@ public class ThemNhanVien_GUI extends JPanel {
 		add(centerPanel, BorderLayout.CENTER);
 	}
 
-    // =================== TẠO DÒNG FORM ===================
+    // ========== TẠO DÒNG FORM ==========
     public JPanel createFormRow(String labelText, JComponent field) {
         JPanel row = new JPanel();
         row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
@@ -189,7 +187,7 @@ public class ThemNhanVien_GUI extends JPanel {
 		return row;
 	}
 
-    // =================== PLACEHOLDER IMAGE ===================
+    // ========== PLACEHOLDER IMAGE ==========
     public ImageIcon loadPlaceholderImage(int w, int h) {
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = img.createGraphics();
@@ -202,7 +200,7 @@ public class ThemNhanVien_GUI extends JPanel {
         return new ImageIcon(img.getScaledInstance(w, h, Image.SCALE_SMOOTH));
     }
 
-	// ===================== GETTER DÙNG CHO CONTROLLER =====================
+	// ========== GETTER ==========
 	public JButton getBtnChonAnh() {
 		return btnChonAnh;
 	}

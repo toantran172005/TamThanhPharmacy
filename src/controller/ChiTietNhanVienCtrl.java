@@ -36,7 +36,6 @@ public class ChiTietNhanVienCtrl {
 	public ChiTietNhanVienCtrl(ChiTietNhanVien_GUI gui) {
 		this.gui = gui;
 
-		// ánh xạ các component từ GUI
 		this.cmbGioiTinh = gui.getCmbGioiTinh();
 		this.cmbChucVu = gui.getCmbChucVu();
 		this.btnChonAnh = gui.getBtnChonAnh();
@@ -106,7 +105,6 @@ public class ChiTietNhanVienCtrl {
 	// ========== TẢI HÌNH ẢNH ==========
 	public Image taiAnh(String duongDanTuDB) {
 	    try {
-	        // nếu DB trả về null hoặc empty → dùng ảnh default
 	        if (duongDanTuDB == null || duongDanTuDB.trim().isEmpty()) {
 	            return new ImageIcon(System.getProperty("user.dir") + "/resource/picture/default.png").getImage();
 	        }

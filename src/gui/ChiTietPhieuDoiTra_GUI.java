@@ -24,7 +24,6 @@ public class ChiTietPhieuDoiTra_GUI extends JPanel {
 	public ToolCtrl tool = new ToolCtrl();
 	public ChiTietPhieuDoiTraCtrl ctrl;
 
-	// Constructor
 	public ChiTietPhieuDoiTraCtrl getCtrl() {
 		return ctrl;
 	}
@@ -81,7 +80,7 @@ public class ChiTietPhieuDoiTra_GUI extends JPanel {
 		lblChiTietTieuDe.setAlignmentX(Component.CENTER_ALIGNMENT);
 		pnlTop.add(lblChiTietTieuDe);
 
-		// Thông tin phiếu
+		// ===== Thông tin phiếu =====
 		pnlTop.add(taoDongThongTin("Mã phiếu đổi trả:", lblMaPhieuDT = tool.taoLabel("")));
 		pnlTop.add(taoDongThongTin("Mã hoá đơn:", lblMaHD = tool.taoLabel("")));
 		pnlTop.add(taoDongThongTin("Ngày lập:", lblNgayLap = tool.taoLabel("")));
@@ -90,39 +89,34 @@ public class ChiTietPhieuDoiTra_GUI extends JPanel {
 
 		add(pnlTop, BorderLayout.NORTH);
 
-		// ========== CENTER PANEL ==========
+		// ========== BẢNG DỮ LIỆU ==========
 		JPanel pnlCenter = new JPanel();
 		pnlCenter.setLayout(new BoxLayout(pnlCenter, BoxLayout.Y_AXIS));
 		pnlCenter.setBackground(Color.WHITE);
 
-		String[] columns = { "Tên thuốc", "Số lượng", "Đơn vị", "Mức hoàn", "Tiền hoàn", "Ghi chú" };
+		String[] columns = { "Tên thuốc", "Nơi sản xuất", "Số lượng", "Đơn vị", "Mức hoàn", "Tiền hoàn", "Ghi chú" };
 		DefaultTableModel model = new DefaultTableModel(columns, 0);
 		tblThuoc = new JTable(model);
 
-		// Đặt nền trắng cho bảng
 		tblThuoc.setBackground(Color.WHITE);
-
-		// Đặt nền trắng cho vùng header và vùng chứa
-		tblThuoc.getTableHeader().setBackground(new Color(240, 240, 240)); // xám rất nhạt
-		tblThuoc.setGridColor(new Color(200, 200, 200)); // Màu đường kẻ ô (nhẹ)
-		tblThuoc.setShowGrid(true); // Bật hiển thị đường kẻ
+		tblThuoc.getTableHeader().setBackground(new Color(240, 240, 240));
+		tblThuoc.setGridColor(new Color(200, 200, 200));
+		tblThuoc.setShowGrid(true); 
 		tblThuoc.setFont(font2);
 		
-		// Viền cho bảng
 		tblThuoc.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
 
-		// Nền của JScrollPane (bao quanh bảng)
 		JScrollPane scrollPane = new JScrollPane(tblThuoc);
-		scrollPane.getViewport().setBackground(Color.WHITE); // nền vùng chứa bảng
+		scrollPane.getViewport().setBackground(Color.WHITE);
 
-		// Căn giữa nội dung các ô
+		// ===== Căn giữa nội dung các ô =====
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		for (int i = 0; i < tblThuoc.getColumnCount(); i++) {
 			tblThuoc.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		}
 
-		// Căn giữa tiêu đề cột
+		// ===== Căn giữa tiêu đề cột =====
 		JTableHeader header = tblThuoc.getTableHeader();
 		header.setBackground(new Color(240, 240, 240));
 		header.setFont(font2);
