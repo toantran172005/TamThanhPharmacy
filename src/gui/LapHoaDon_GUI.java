@@ -26,14 +26,12 @@ public class LapHoaDon_GUI extends JPanel {
 	Font font2 = new Font("Times New Roman", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
 	
-	 // Constructor cho Quản lý
     public LapHoaDon_GUI(TrangChuQL_GUI mainFrame) {
         this.mainFrame = mainFrame;
         initUI();
         khoiTaoController();
     }
 
-    // Constructor cho Nhân viên
     public LapHoaDon_GUI(TrangChuNV_GUI mainFrameNV) {
         this.mainFrameNV = mainFrameNV;
         initUI();
@@ -50,7 +48,7 @@ public class LapHoaDon_GUI extends JPanel {
 		setPreferredSize(new Dimension(1027, 900));
 		setBorder(new EmptyBorder(10, 20, 10, 20));
 
-		// ===================== PHẦN TRÊN =====================
+		// ========== PHẦN TRÊN ==========
 		JPanel pnlTop = new JPanel();
 		pnlTop.setLayout(new BoxLayout(pnlTop, BoxLayout.Y_AXIS));
 		pnlTop.setBackground(Color.WHITE);
@@ -63,7 +61,7 @@ public class LapHoaDon_GUI extends JPanel {
 		pnlTop.add(Box.createVerticalStrut(10));
 		pnlTop.add(new JSeparator());
 
-		// --- Dòng 1: SDT & Tên KH ---
+		// ===== SDT & Tên KH =====
 		JPanel row1 = taoHang();
 		row1.add(tool.taoLabel("Số điện thoại:"));
 		txtSdt = tool.taoTextField("Số điện thoại...");
@@ -73,7 +71,7 @@ public class LapHoaDon_GUI extends JPanel {
 		row1.add(txtTenKH);
 		pnlTop.add(row1);
 
-		// --- Dòng 2: Tuổi & Sản phẩm ---
+		// ===== Tuổi & Sản phẩm & Quốc gia=====
 		JPanel row2 = taoHang();
 		row2.add(tool.taoLabel("Tuổi:"));
 		txtTuoi = tool.taoTextField("Tuổi...");
@@ -90,7 +88,7 @@ public class LapHoaDon_GUI extends JPanel {
 		row2.add(cmbQuocGia);
 		pnlTop.add(row2);
 
-		// --- Dòng 3: Số lượng, Đơn vị, nút Thêm ---
+		// ===== Số lượng, Đơn vị, nút Thêm, Xoá =====
 		JPanel row3 = taoHang();
 		row3.add(tool.taoLabel("Số lượng:"));
 		txtSoLuong = tool.taoTextField("Nhập số lượng...");
@@ -111,7 +109,7 @@ public class LapHoaDon_GUI extends JPanel {
 
 		add(pnlTop, BorderLayout.NORTH);
 
-		// ===================== PHẦN GIỮA: BẢNG =====================
+		// ========== BẢNG DỮ LIỆU ==========
 		String[] cols = { "STT", "Tên thuốc","Nơi sản xuất", "Số lượng", "Đơn vị", "Đơn giá", "Thành tiền", "Ghi chú"};
 		DefaultTableModel model = new DefaultTableModel(cols, 0);
 		tblThuoc = new JTable(model);
@@ -119,29 +117,24 @@ public class LapHoaDon_GUI extends JPanel {
 		tblThuoc.setFont(font2);
 		tblThuoc.getTableHeader().setFont(font2);
 
-		// Đặt nền trắng cho bảng
 		tblThuoc.setBackground(Color.WHITE);
+		tblThuoc.getTableHeader().setBackground(new Color(240, 240, 240)); 
+		tblThuoc.setGridColor(new Color(200, 200, 200)); 
+		tblThuoc.setShowGrid(true); 
 
-		// Đặt nền trắng cho vùng header và vùng chứa
-		tblThuoc.getTableHeader().setBackground(new Color(240, 240, 240)); // xám rất nhạt
-		tblThuoc.setGridColor(new Color(200, 200, 200)); // Màu đường kẻ ô (nhẹ)
-		tblThuoc.setShowGrid(true); // Bật hiển thị đường kẻ
-
-		// Viền cho bảng
 		tblThuoc.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
 
-		// Nền của JScrollPane (bao quanh bảng)
 		JScrollPane scrollPane = new JScrollPane(tblThuoc);
-		scrollPane.getViewport().setBackground(Color.WHITE); // nền vùng chứa bảng
+		scrollPane.getViewport().setBackground(Color.WHITE);
 
-		// Căn giữa nội dung các ô
+		// ===== Căn giữa nội dung các ô =====
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		for (int i = 0; i < tblThuoc.getColumnCount(); i++) {
 			tblThuoc.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		}
 
-		// Căn giữa tiêu đề cột
+		// ===== Căn giữa tiêu đề cột =====
 		JTableHeader header = tblThuoc.getTableHeader();
 		header.setBackground(new Color(240, 240, 240));
 		header.setFont(font2);
@@ -149,13 +142,13 @@ public class LapHoaDon_GUI extends JPanel {
 
 		add(scrollPane, BorderLayout.CENTER);
 
-		// ===================== PHẦN DƯỚI =====================
+		// ========== PHẦN DƯỚI ==========
 		JPanel pnlBottom = new JPanel();
 		pnlBottom.setLayout(new BoxLayout(pnlBottom, BoxLayout.Y_AXIS));
 		pnlBottom.setBackground(Color.WHITE);
 		pnlBottom.setBorder(new EmptyBorder(10, 0, 10, 0));
 
-		// --- Thanh toán ---
+		// ===== Thanh toán =====
 		JPanel row4 = taoHangTrai();
 		row4.add(tool.taoLabel("Phương thức thanh toán:"));
 		cmbHTThanhToan = tool.taoComboBox(new String[] { "Tiền mặt", "Chuyển khoản" });
@@ -163,28 +156,28 @@ public class LapHoaDon_GUI extends JPanel {
 		row4.add(cmbHTThanhToan);
 		pnlBottom.add(row4);
 
-		// --- Tổng tiền ---
+		// ===== Tổng tiền =====
 		JPanel row5 = taoHangTrai();
 		row5.add(tool.taoLabel("Tổng tiền:"));
 		lblTongTien = tool.taoLabel("0 VND");
 		row5.add(lblTongTien);
 		pnlBottom.add(row5);
 
-		// --- Tiền nhận ---
+		// ===== Tiền nhận =====
 		JPanel row6 = taoHangTrai();
 		row6.add(tool.taoLabel("Tiền nhận:"));
 		txtTienNhan = tool.taoTextField("Tiền nhận...");
 		row6.add(txtTienNhan);
 		pnlBottom.add(row6);
 
-		// --- Tiền thừa ---
+		// ===== Tiền thừa =====
 		JPanel row7 = taoHangTrai();
 		row7.add(tool.taoLabel("Tiền thừa:"));
 		lblTienThua = tool.taoLabel("0 VND");
 		row7.add(lblTienThua);
 		pnlBottom.add(row7);
 
-		// --- Nút thao tác ---
+		// ===== Các nút =====
 		JPanel row8 = taoHang();
 		row8.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnLamMoi = tool.taoButton("Làm mới", "/picture/hoaDon/refresh.png");

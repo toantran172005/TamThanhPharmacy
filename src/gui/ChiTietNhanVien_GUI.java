@@ -45,7 +45,6 @@ public class ChiTietNhanVien_GUI extends JPanel {
  	    this.ctrl = new ChiTietNhanVienCtrl(this);
  	}
 
-
     public void initUI() {
         setLayout(new BorderLayout());
         setBorder(new EmptyBorder(15, 25, 25, 25));
@@ -230,7 +229,6 @@ public class ChiTietNhanVien_GUI extends JPanel {
         g2.dispose();
         return new ImageIcon(img.getScaledInstance(w, h, Image.SCALE_SMOOTH));
     }
-
 
  // ========== GETTER ==========
     public JButton getBtnChonAnh() { return btnChonAnh; }

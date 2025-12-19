@@ -1,18 +1,24 @@
 package controller;
 
 import dao.HoaDonDAO;
+import dao.ThuocDAO;
 import entity.HoaDon;
 import gui.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 public class ChiTietHoaDonCtrl {
 	public ChiTietHoaDon_GUI gui;
 	public HoaDonDAO hdDAO = new HoaDonDAO();
 	public ToolCtrl tool = new ToolCtrl();
+	public ThuocDAO thuocDao = new ThuocDAO();
 
 	public ChiTietHoaDonCtrl(ChiTietHoaDon_GUI gui) {
 		this.gui = gui;
@@ -22,7 +28,7 @@ public class ChiTietHoaDonCtrl {
 	// ========== GẮN SỰ KIỆN ==========
 	public void suKien() {
 		gui.getBtnQuayLai().addActionListener(e -> quayLai());
-		gui.getBtnInHoaDon().addActionListener(e -> inHoaDon());
+		gui.getBtnInHoaDon().addActionListener(e -> xuatHoaDonRaTXT());
 		gui.getBtnTaoPhieuDoiTra().addActionListener(e -> taoPhieuDoiTra());
 	}
 
@@ -54,15 +60,89 @@ public class ChiTietHoaDonCtrl {
 	public void capNhatBangChiTiet(String maHD) {
 		DefaultTableModel model = (DefaultTableModel) gui.getTblThuoc().getModel();
 		model.setRowCount(0);
+		String noiSanXuat;
 
 		List<Object[]> chiTietList = hdDAO.layChiTietHoaDon(maHD);
 		for (Object[] ct : chiTietList) {
+			noiSanXuat = thuocDao.timTenQGTheoMaThuoc(ct[1].toString());
 			model.addRow(new Object[] { ct[2], // tenThuoc
-					ct[3], // soLuong
+					noiSanXuat, ct[3], // soLuong
 					ct[5], // donVi
 					tool.dinhDangVND(ct[6] instanceof Number ? ((Number) ct[6]).doubleValue() : 0),
 					tool.dinhDangVND(ct[7] instanceof Number ? ((Number) ct[7]).doubleValue() : 0) });
 		}
+	}
+
+	// ========== IN HOÁ ĐƠN ==========
+	public void xuatHoaDonRaTXT() {
+	    String maHD = gui.getLblMaHD().getText();
+	    if (maHD == null || maHD.isEmpty()) {
+	        tool.hienThiThongBao("Lỗi", "Không có hóa đơn để xuất!", false);
+	        return;
+	    }
+
+	    JFileChooser chooser = new JFileChooser();
+	    chooser.setDialogTitle("Lưu hóa đơn (.txt)");
+	    chooser.setSelectedFile(new File("HoaDon_" + maHD + ".txt"));
+
+	    if (chooser.showSaveDialog(gui) != JFileChooser.APPROVE_OPTION) {
+	        return;
+	    }
+
+	    File file = chooser.getSelectedFile();
+
+	    try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+
+	        // ===== TIÊU ĐỀ =====
+	        bw.write("=========================================\n");
+	        bw.write("         HÓA ĐƠN BÁN THUỐC TAM THANH       \n");
+	        bw.write("=========================================\n\n");
+
+	        // ===== THÔNG TIN CHUNG =====
+	        bw.write("Mã hóa đơn   : " + gui.getLblMaHD().getText() + "\n");
+	        bw.write("Ngày lập     : " + gui.getLblNgayLap().getText() + "\n");
+	        bw.write("Nhân viên    : " + gui.getLblNhanVien().getText() + "\n");
+	        bw.write("Khách hàng   : " + gui.getLblKhachHang().getText() + "\n");
+	        bw.write("Địa chỉ      : " + gui.getLblDiaChi().getText() + "\n");
+	        bw.write("Hotline      : " + gui.getLblHotline().getText() + "\n");
+	        bw.write("Ghi chú      : " + gui.getLblGhiChu().getText() + "\n\n");
+
+	        // ===== BẢNG CHI TIẾT =====
+	        bw.write(String.format(
+	                "%-25s %-15s %-8s %-10s %-15s %-15s%n",
+	                "Tên thuốc", "Nơi SX", "SL", "Đơn vị", "Đơn giá", "Thành tiền"));
+	        bw.write("--------------------------------------------------------------------------\n");
+
+	        DefaultTableModel model = (DefaultTableModel) gui.getTblThuoc().getModel();
+	        for (int i = 0; i < model.getRowCount(); i++) {
+	            bw.write(String.format(
+	                    "%-25s %-15s %-8s %-10s %-15s %-15s%n",
+	                    model.getValueAt(i, 0),
+	                    model.getValueAt(i, 1),
+	                    model.getValueAt(i, 2),
+	                    model.getValueAt(i, 3),
+	                    model.getValueAt(i, 4),
+	                    model.getValueAt(i, 5)
+	            ));
+	        }
+
+	        bw.write("\n-----------------------------------------\n");
+
+	        // ===== TỔNG TIỀN =====
+	        bw.write("Tổng tiền : " + gui.getLblTongTien().getText() + "\n");
+	        bw.write("Tiền nhận : " + gui.getLblTienNhan().getText() + "\n");
+	        bw.write("Tiền thừa : " + gui.getLblTienThua().getText() + "\n");
+
+	        bw.write("\n=========================================\n");
+	        bw.write("   CẢM ƠN QUÝ KHÁCH - HẸN GẶP LẠI!   \n");
+	        bw.write("=========================================\n");
+
+	        tool.hienThiThongBao("Xuất hóa đơn", "Xuất file TXT thành công!", true);
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        tool.hienThiThongBao("Lỗi", "Không thể ghi file TXT!", false);
+	    }
 	}
 
 	// ========== QUAY LẠI TRANG TÌM KIẾM HOÁ ĐƠN ==========
@@ -72,12 +152,6 @@ public class ChiTietHoaDonCtrl {
 		} else if (gui.getMainFrameNV() != null) {
 			tool.doiPanel(gui, new TimKiemHD_GUI(gui.getMainFrameNV()));
 		}
-	}
-	
-	// ========== IN HOÁ ĐƠN ==========
-	public void inHoaDon() {
-		tool.hienThiThongBao("In hóa đơn", "Chức năng in đang được phát triển...", true);
-		// TODO: Dùng JasperReports, PDF, hoặc PrinterJob.print()
 	}
 
 	// ========== TẠO PHIẾU ĐỔI TRẢ ==========

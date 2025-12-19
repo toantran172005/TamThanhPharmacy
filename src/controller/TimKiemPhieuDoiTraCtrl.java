@@ -123,13 +123,13 @@ public class TimKiemPhieuDoiTraCtrl {
 	}
 
 	// ================== CẬP NHẬT BẢNG ==================
-	public void capNhatBang(List<PhieuDoiTra> data) {
-		this.listPDT = data;
+	public void capNhatBang(List<PhieuDoiTra> list) {
+		this.listPDT = list;
 		DefaultTableModel model = (DefaultTableModel) gui.getTblPhieuDoiTra().getModel();
 		model.setRowCount(0);
 
-		for (PhieuDoiTra pdt : data) {
-			model.addRow(new Object[] { pdt.getMaPhieuDT(), pdt.getHoaDon().getNhanVien().getTenNV(),
+		for (PhieuDoiTra pdt : list) {
+			model.addRow(new Object[] { pdt.getMaPhieuDT(), pdt.getNhanVien().getTenNV(),
 					pdt.getHoaDon().getKhachHang().getTenKH(), tool.dinhDangLocalDate(pdt.getNgayDoiTra()),
 					pdt.getLyDo() });
 		}

@@ -1,6 +1,7 @@
 package controller;
 
 import dao.PhieuDoiTraDAO;
+import dao.ThuocDAO;
 import entity.PhieuDoiTra;
 import gui.ChiTietPhieuDoiTra_GUI;
 import gui.TimKiemHD_GUI;
@@ -18,6 +19,7 @@ public class ChiTietPhieuDoiTraCtrl {
 	public ToolCtrl tool = new ToolCtrl();
 	public TrangChuNV_GUI trangChuNV;
 	public TrangChuQL_GUI trangChuQL;
+	public ThuocDAO thuocDao = new ThuocDAO();
 
 	public ChiTietPhieuDoiTraCtrl(ChiTietPhieuDoiTra_GUI gui) {
 		this.gui = gui;
@@ -50,17 +52,14 @@ public class ChiTietPhieuDoiTraCtrl {
 		gui.getLblHotline().setText(tool.chuyenSoDienThoai(hotline));
 		gui.getLblLyDo().setText(lyDo);
 
-		// Ngày lập
 		if (phieuDT.getNgayDoiTra() instanceof LocalDate ngayDoiTra) {
 			gui.getLblNgayLap().setText(tool.dinhDangLocalDate(ngayDoiTra));
 		} else {
 			gui.getLblNgayLap().setText("");
 		}
 
-		// Load chi tiết thuốc
 		setDataChoTable(maPhieuDT);
 
-		// Tính tổng tiền hoàn
 		double tongTienHoan = phieuDTDAO.tinhTongTienHoanTheoPhieuDT(maPhieuDT);
 		gui.getLblTongTienHoan().setText(tool.dinhDangVND(tongTienHoan));
 	}
@@ -70,14 +69,19 @@ public class ChiTietPhieuDoiTraCtrl {
 		List<Object[]> listCT = phieuDTDAO.layDanhSachThuocTheoPhieuDT(maPhieuDT);
 		DefaultTableModel model = (DefaultTableModel) gui.getTblThuoc().getModel();
 		model.setRowCount(0);
+		String noiSanXuat;
 
 		for (Object[] row : listCT) {
 			double tienHoan = row[7] instanceof Number ? ((Number) row[7]).doubleValue() : 0;
+			System.out.print(row[1]);
+			noiSanXuat = thuocDao.timTenQGTheoMaThuoc(row[1].toString());
 			model.addRow(new Object[] { row[2], // tên thuốc
+					noiSanXuat,
 					row[3], // số lượng
 					row[5], // đơn vị
 					row[6], // mức hoàn
-					tool.dinhDangVND(tienHoan), row[8] // ghi chú
+					tool.dinhDangVND(tienHoan), 
+					row[8] // ghi chú
 			});
 		}
 	}

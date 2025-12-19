@@ -34,25 +34,25 @@ public class TimKiemNV_GUI extends JPanel {
 		setPreferredSize(new Dimension(1058, 509));
 		setBackground(Color.WHITE);
 
-		// ====== TOP PANEL (CẢ TÌM KIẾM VÀ NÚT ĐỀU Ở GIỮA) ======
+		// =========== TOP PANEL ===========
 		JPanel topPanel = new JPanel();
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
 		topPanel.setPreferredSize(new Dimension(1058, 140));
 		topPanel.setBackground(Color.WHITE);
 
-		// Tiêu đề
+		// ===== Tiêu đề =====
 		JLabel lblTitle = new JLabel("DANH SÁCH NHÂN VIÊN", SwingConstants.CENTER);
 		lblTitle.setFont(font1);
 		lblTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 		topPanel.add(lblTitle);
 		topPanel.add(Box.createVerticalStrut(15));
 
-		// --- Panel chứa tìm kiếm + nút (căn giữa) ---
+		// ===== tìm kiếm + nút =====
 		JPanel centerContent = new JPanel();
 		centerContent.setLayout(new BoxLayout(centerContent, BoxLayout.X_AXIS));
 		centerContent.setBackground(Color.WHITE);
 
-		// === Bên trái: Tìm kiếm ===
+		// ===== Tìm kiếm =====
 		JPanel leftVBox = new JPanel();
 		leftVBox.setLayout(new BoxLayout(leftVBox, BoxLayout.Y_AXIS));
 		leftVBox.setBackground(Color.WHITE);
@@ -65,7 +65,7 @@ public class TimKiemNV_GUI extends JPanel {
 		leftVBox.add(Box.createVerticalStrut(15));
 		leftVBox.add(taoDong("Số điện thoại:", txtSdt, 150, 255));
 
-		// === Bên phải: Nút ===
+		// ===== Các nút =====
 		JPanel rightVBox = new JPanel();
 		rightVBox.setLayout(new BoxLayout(rightVBox, BoxLayout.Y_AXIS));
 		rightVBox.setBackground(Color.WHITE);
@@ -94,19 +94,18 @@ public class TimKiemNV_GUI extends JPanel {
 		rightVBox.add(Box.createVerticalStrut(10));
 		rightVBox.add(btnRow2);
 
-		// === Gom lại và căn giữa ===
-		centerContent.add(Box.createHorizontalGlue()); // Đẩy vào giữa
+		centerContent.add(Box.createHorizontalGlue()); 
 		centerContent.add(leftVBox);
-		centerContent.add(Box.createHorizontalStrut(30)); // Khoảng cách giữa tìm kiếm và nút
+		centerContent.add(Box.createHorizontalStrut(30));
 		centerContent.add(rightVBox);
-		centerContent.add(Box.createHorizontalGlue()); // Đẩy vào giữa
+		centerContent.add(Box.createHorizontalGlue());
 
 		topPanel.add(centerContent);
 		topPanel.add(Box.createVerticalStrut(10));
 
 		add(topPanel, BorderLayout.NORTH);
 
-		// ====== CENTER PANEL (Table) ======
+		// ========== CENTER PANEL ==========
 		String[] cols = { "Mã nhân viên", "Tên nhân viên", "Số điện thoại", "Giới tính", "Chức vụ" };
 		model = new DefaultTableModel(cols, 0) {
 			@Override
@@ -166,7 +165,7 @@ public class TimKiemNV_GUI extends JPanel {
 		return row;
 	}
 
-	// ========== Getters ==========
+	// ========== GETTERS ==========
 	public JTable getTblNhanVien() {
 		return tblNhanVien;
 	}

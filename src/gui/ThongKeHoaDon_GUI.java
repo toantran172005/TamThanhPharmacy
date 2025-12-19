@@ -41,7 +41,7 @@ public class ThongKeHoaDon_GUI extends JPanel {
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		add(mainPanel);
 
-		// ======== TOP ========
+		// ========== TOP PANEL ==========
 		JPanel topPanel = new JPanel();
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
 		topPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -71,12 +71,12 @@ public class ThongKeHoaDon_GUI extends JPanel {
 		topPanel.add(filterPanel);
 		mainPanel.add(topPanel, BorderLayout.NORTH);
 
-		// ======== CENTER ========
+		// ========== CENTER ==========
 		mainCenter = new JPanel();
 		mainCenter.setLayout(new BoxLayout(mainCenter, BoxLayout.Y_AXIS));
 		mainCenter.setBackground(Color.WHITE);
 
-		// --- Thông tin tổng quan ---
+		// ===== Thông tin tổng quan =====
 		JPanel summaryPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 10));
 		summaryPanel.setBackground(Color.WHITE);
 		lblTongDoanhThu = tool.taoLabel("Tổng doanh thu: 0 VND");
@@ -87,7 +87,7 @@ public class ThongKeHoaDon_GUI extends JPanel {
 		}
 		mainCenter.add(summaryPanel);
 
-		// --- Biểu đồ doanh thu ---
+		// ===== Biểu đồ doanh thu =====
 		pnlBieuDo = new JPanel(new BorderLayout());
 		pnlBieuDo.setBackground(Color.WHITE);
 		pnlBieuDo.setBorder(BorderFactory.createTitledBorder("Biểu đồ doanh thu"));
@@ -111,11 +111,11 @@ public class ThongKeHoaDon_GUI extends JPanel {
 		chartPanel.setDomainZoomable(false);
 		chartPanel.setRangeZoomable(false);
 
-		// Đảm bảo biểu đồ không tự mở rộng trong BoxLayout
+		// ===== Đảm bảo biểu đồ không tự mở rộng trong BoxLayout =====
 		pnlBieuDo.add(chartPanel, BorderLayout.CENTER);
 		mainCenter.add(pnlBieuDo);
 
-		// --- Bảng Top khách hàng ---
+		// ===== Bảng Top khách hàng =====
 		JPanel tablePanel = new JPanel(new BorderLayout(10, 10));
 		tablePanel.setBackground(Color.WHITE);
 		tablePanel.setBorder(BorderFactory.createTitledBorder("Top khách hàng"));
@@ -139,12 +139,12 @@ public class ThongKeHoaDon_GUI extends JPanel {
 		tblThongKeHD.setGridColor(new Color(200, 200, 200));
 		tblThongKeHD.setShowGrid(true);
 
-		// Căn giữa header
+		// ===== Căn giữa header =====
 		DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) tblThongKeHD.getTableHeader()
 				.getDefaultRenderer();
 		headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
-		// Áp dụng renderer cho header
+		// ===== Áp dụng renderer cho header =====
 		JTableHeader header = tblThongKeHD.getTableHeader();
 		header.setDefaultRenderer(headerRenderer);
 		header.setPreferredSize(new Dimension(header.getWidth(), 28));
@@ -153,7 +153,7 @@ public class ThongKeHoaDon_GUI extends JPanel {
 		scrollPaneTable.getViewport().setBackground(Color.WHITE);
 		tablePanel.add(scrollPaneTable, BorderLayout.CENTER);
 
-		// --- Nút dưới cùng ---
+		// ===== Các nút =====
 		JPanel bottomButtons = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 10));
 		bottomButtons.setBackground(Color.WHITE);
 		btnXuatExcel = tool.taoButton("Xuất Excel", "/picture/hoaDon/export.png");
@@ -164,7 +164,7 @@ public class ThongKeHoaDon_GUI extends JPanel {
 
 		mainCenter.add(tablePanel);
 
-		// --- Thêm cuộn ---
+		// ===== Thanh cuộn =====
 		JScrollPane scrollMainCenter = new JScrollPane(mainCenter);
 		scrollMainCenter.setBorder(null);
 		scrollMainCenter.getVerticalScrollBar().setUnitIncrement(16);
@@ -175,7 +175,7 @@ public class ThongKeHoaDon_GUI extends JPanel {
 		new controller.ThongKeHoaDonCtrl(this);
 	}
 
-	// === Getter cho Controller ===
+	// ========== GETTER ==========
 	public JButton getBtnThongKe() {
 		return btnThongKe;
 	}

@@ -104,10 +104,10 @@ public class TimKiemPhieuDatHang_GUI extends JPanel {
 
 		String[] cols = { "Mã phiếu", "Tên nhân viên", "Tên khách hàng", "Ngày đặt", "Ngày hẹn", "Trạng thái" };
 		model = new DefaultTableModel(cols, 0) {
-		    @Override
-		    public boolean isCellEditable(int r, int c) {
-		        return false;
-		    }
+			@Override
+			public boolean isCellEditable(int r, int c) {
+				return false;
+			}
 		};
 
 		tblPhieuDatHang = new JTable(model);
@@ -123,14 +123,13 @@ public class TimKiemPhieuDatHang_GUI extends JPanel {
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		for (int i = 0; i < tblPhieuDatHang.getColumnCount(); i++) {
-		    tblPhieuDatHang.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+			tblPhieuDatHang.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
 		}
 
 		JTableHeader header = tblPhieuDatHang.getTableHeader();
 		header.setBackground(new Color(240, 240, 240));
 		header.setFont(new Font("Times New Roman", Font.BOLD, 18));
-		((DefaultTableCellRenderer) header.getDefaultRenderer())
-		        .setHorizontalAlignment(SwingConstants.CENTER);
+		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
 		JScrollPane scrollPane = new JScrollPane(tblPhieuDatHang);
 		scrollPane.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));

@@ -21,17 +21,16 @@ public class TimKiemHD_GUI extends JPanel {
 	Font font2 = new Font("Times New Roman", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
 
-	// Constructor
 	public TimKiemHD_GUI(TrangChuQL_GUI mainFrame) {
 		this.mainFrame = mainFrame;
 		initUI();
-		new TimKiemHDCtrl(this); // Khởi tạo controller
+		new TimKiemHDCtrl(this);
 	}
 
 	public TimKiemHD_GUI(TrangChuNV_GUI mainFrameNV) {
 		this.mainFrameNV = mainFrameNV;
 		initUI();
-		new TimKiemHDCtrl(this); // Khởi tạo controller
+		new TimKiemHDCtrl(this);
 	}
 
 	public void initUI() {
@@ -39,18 +38,18 @@ public class TimKiemHD_GUI extends JPanel {
 		setPreferredSize(new Dimension(1058, 509));
 		setBackground(Color.WHITE);
 
-		// ======== TOP PANEL ========
+		// ========== TOP PANEL ==========
 		JPanel topPanel = new JPanel(new BorderLayout());
 		topPanel.setBackground(Color.WHITE);
 		topPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		add(topPanel, BorderLayout.NORTH);
 
-		// Tiêu đề
+		// ===== Tiêu đề =====
 		JLabel lblTitle = new JLabel("DANH SÁCH HOÁ ĐƠN", SwingConstants.CENTER);
 		lblTitle.setFont(font1);
 		topPanel.add(lblTitle, BorderLayout.NORTH);
 
-		// tìm kiếm
+		// ===== Tìm kiếm =====
 		JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
 		searchPanel.setBackground(Color.WHITE);
 
@@ -67,7 +66,7 @@ public class TimKiemHD_GUI extends JPanel {
 		searchPanel.add(btnTimKiem);
 		topPanel.add(searchPanel, BorderLayout.CENTER);
 
-		// các nút
+		// ===== Các nút =====
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 10));
 		buttonPanel.setBackground(Color.WHITE);
 		btnLamMoi = tool.taoButton("Làm mới", "/picture/hoaDon/refresh.png");
@@ -81,7 +80,7 @@ public class TimKiemHD_GUI extends JPanel {
 		buttonPanel.add(btnXoaHoanTac);
 		topPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-		// ========== CENTER TABLE ==========
+		// ========== BẢNG DỮ LIỆU ==========
 		String[] cols = { "Mã hoá đơn", "Tên nhân viên", "Tên khách hàng", "Thời gian", "Tổng tiền hàng" };
 		model = new DefaultTableModel(cols, 0) {
 			@Override

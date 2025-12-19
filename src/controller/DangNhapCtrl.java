@@ -22,6 +22,17 @@ public class DangNhapCtrl {
 
     public void ganSuKien() {
         gui.getBtnDangNhap().addActionListener(e -> xuLyDangNhap());
+        
+        gui.txtTenDangNhap.addActionListener(e -> {
+            if (gui.hienMatKhau) {
+                gui.txtPassOpen.requestFocus();
+            } else {
+                gui.txpPassClose.requestFocus();
+            }
+        });
+
+        gui.txpPassClose.addActionListener(e -> xuLyDangNhap());
+        gui.txtPassOpen.addActionListener(e -> xuLyDangNhap());
     }
     
     public void xuLyDangNhap() {

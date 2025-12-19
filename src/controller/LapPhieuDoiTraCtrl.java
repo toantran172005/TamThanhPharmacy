@@ -7,6 +7,7 @@ import dao.PhieuDoiTraDAO;
 import dao.ThuocDAO;
 import entity.DonViTinh;
 import entity.HoaDon;
+import entity.NhanVien;
 import entity.PhieuDoiTra;
 import gui.ChiTietHoaDon_GUI;
 import gui.LapPhieuDoiTra_GUI;
@@ -81,11 +82,14 @@ public class LapPhieuDoiTraCtrl {
 	public void capNhatBangThuocDaMua(String maHD) {
 		DefaultTableModel model = (DefaultTableModel) gui.getTblHDThuoc().getModel();
 		model.setRowCount(0);
+		String noiSanXuat;
 
 		List<Object[]> chiTietList = hdDAO.layChiTietHoaDon(maHD);
 		for (Object[] ct : chiTietList) {
+			noiSanXuat = thuocDAO.timTenQGTheoMaThuoc(ct[1].toString());
 			model.addRow(new Object[] { ct[1], // maThuoc
 					ct[2], // tenThuoc
+					noiSanXuat,
 					ct[3], // soLuong
 					ct[5], // donVi
 					tool.dinhDangVND(ct[6] instanceof Number ? ((Number) ct[6]).doubleValue() : 0),
@@ -133,13 +137,13 @@ public class LapPhieuDoiTraCtrl {
 			return;
 		}
 
-		int slMua = Integer.parseInt(tblHD.getValueAt(row, 2).toString().replaceAll("[^0-9]", ""));
+		int slMua = Integer.parseInt(tblHD.getValueAt(row, 3).toString().replaceAll("[^0-9]", ""));
 		if (soLuong > slMua) {
 			tool.hienThiThongBao("Lỗi", "Số lượng đổi trả không được vượt quá số lượng đã mua!", false);
 			return;
 		}
 
-		double donGia = tool.chuyenTienSangSo((String) tblHD.getValueAt(row, 4));
+		double donGia = tool.chuyenTienSangSo((String) tblHD.getValueAt(row, 5));
 		double thanhTien = donGia * soLuong;
 		double mucHoan = Double.parseDouble(mucHoanStr.replace("%", "")) / 100.0;
 		double tienHoan = thanhTien * mucHoan;
@@ -148,8 +152,8 @@ public class LapPhieuDoiTraCtrl {
 
 		// Thêm vào bảng phiếu đổi trả
 		DefaultTableModel modelDT = (DefaultTableModel) gui.getTblPhieuDTThuoc().getModel();
-		modelDT.addRow(new Object[] { tenThuoc, soLuong, tblHD.getValueAt(row, 3), // đơn vị
-				tblHD.getValueAt(row, 4), // đơn giá
+		modelDT.addRow(new Object[] { tenThuoc, tblHD.getValueAt(row, 2), soLuong, tblHD.getValueAt(row, 4), // đơn vị
+				tblHD.getValueAt(row, 5), // đơn giá
 				mucHoanStr, tool.dinhDangVND(tienHoan), ghiChu.isEmpty() ? "Không" : ghiChu, "Xóa" });
 
 		tinhTongTienHoan();
@@ -245,11 +249,22 @@ public class LapPhieuDoiTraCtrl {
 		PhieuDoiTra pdt = new PhieuDoiTra();
 		pdt.setMaPhieuDT(tool.taoKhoaChinh("PDT"));
 		pdt.setHoaDon(hd);
-		pdt.setNhanVien(hd.getNhanVien());
+		
+		NhanVien nvDangNhap = null;
+
+		if (gui.getTrangChuQL() != null) {
+		    nvDangNhap = gui.getTrangChuQL().layNhanVien();
+		} else if (gui.getTrangChuNV() != null) {
+		    nvDangNhap = gui.getTrangChuNV().layNhanVien();
+		}
+
+		pdt.setNhanVien(nvDangNhap);
+
+		
 		pdt.setNgayDoiTra(LocalDate.now());
 		pdt.setLyDo(lyDo);
 
-		String maNV = hd.getNhanVien() != null ? hd.getNhanVien().getMaNV() : null;
+		String maNV = nvDangNhap.getMaNV();
 		String maHDHienTai = maHD;
 
 		// Thêm phiếu đổi trả

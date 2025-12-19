@@ -42,6 +42,30 @@ public class ThuocDAO {
 		}
 		return null;
 	}
+	
+	public String layMaThuocTheoTenVaQG(String tenThuoc, String tenQG) {
+	    String sql = """
+	        SELECT t.maThuoc
+	        FROM Thuoc t
+	        JOIN QuocGia qg ON t.maQuocGia = qg.maQuocGia
+	        WHERE t.tenThuoc = ? AND qg.tenQuocGia = ?
+	    """;
+	    try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+			pst.setString(1, tenThuoc);
+			pst.setString(2, tenQG);
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				return rs.getString("maThuoc");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 
 	public QuocGia layQuocGiaTheoMa(String maQG) {
 	    QuocGia res = null;
@@ -449,6 +473,25 @@ public class ThuocDAO {
 			try (ResultSet rs = ps.executeQuery()) {
 				if (rs.next()) {
 					return rs.getString("maQuocGia");
+				} else {
+					return null; // không tìm thấy
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public String timTenQGTheoMaThuoc(String maThuoc) {
+		String sql = "SELECT tenQuocGia FROM QuocGia qg JOIN Thuoc t ON qg.maQuocGia = t.maQuocGia WHERE t.maThuoc = ?";
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setString(1, maThuoc);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getString("tenQuocGia");
 				} else {
 					return null; // không tìm thấy
 				}

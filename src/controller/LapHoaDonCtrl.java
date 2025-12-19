@@ -49,32 +49,47 @@ public class LapHoaDonCtrl {
 		this.tableModel = (DefaultTableModel) gui.getTblThuoc().getModel();
 		loadData();
 	}
-	
-	public void setComboxQuocGia() {
-	    Object selected = gui.getCmbSanPham().getSelectedItem();
-	    if (selected == null) return;
 
-	    String tenThuoc = selected.toString();
-
-//	    String maThuoc = thuocDAO.layMaThuocTheoTen(tenThuoc);
-//	    if (maThuoc == null) return;
-
-	    gui.getCmbQuocGia().removeAllItems();
-
-	    ArrayList<QuocGia> listQG = thuocDAO.layListQuocGiaTheoThuoc(tenThuoc);
-	    if (listQG != null) {
-	        for (QuocGia qg : listQG) {
-	            gui.getCmbQuocGia().addItem(qg.getTenQG());
-	        }
-	    }
-	}
-
-	// === TẢI DỮ LIỆU ===
+	// ========== TẢI DỮ LIỆU ==========
 	public void loadData() {
 		taiDuLieu();
 		suKien();
 		goiYKhachHang();
 		//setComboxQuocGia();
+	}
+	
+	// ========== SỰ KIỆN ==========
+	public void suKien() {
+		gui.getBtnThem().addActionListener(e -> xuLyThemThuocVaoBang());
+		gui.getBtnXoa().addActionListener(e -> xuLyXoaDong());
+		gui.getBtnLamMoi().addActionListener(e -> lamMoi());
+		gui.getBtnTaoHD().addActionListener(e -> xuLyXuatHoaDon());
+		gui.getCmbHTThanhToan().addActionListener(e -> tinhTienThua());
+		gui.getTxtTienNhan().addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				tinhTienThua();
+			}
+		});
+
+		gui.getCmbSanPham().addActionListener(e -> setComboxQuocGia());
+	}
+
+	// ========== SETUP COMBOX ==========
+	public void setComboxQuocGia() {
+		Object selected = gui.getCmbSanPham().getSelectedItem();
+		if (selected == null)
+			return;
+
+		String tenThuoc = selected.toString();
+
+		gui.getCmbQuocGia().removeAllItems();
+
+		ArrayList<QuocGia> listQG = thuocDAO.layListQuocGiaTheoThuoc(tenThuoc);
+		if (listQG != null) {
+			for (QuocGia qg : listQG) {
+				gui.getCmbQuocGia().addItem(qg.getTenQG());
+			}
+		}
 	}
 
 	// ========== TẢI DỮ LIỆU ==========
@@ -98,20 +113,20 @@ public class LapHoaDonCtrl {
 
 
 	// ========== SỰ KIỆN ==========
-	public void suKien() {
-		gui.getBtnThem().addActionListener(e -> xuLyThemThuocVaoBang());
-		gui.getBtnXoa().addActionListener(e -> xuLyXoaDong());
-		gui.getBtnLamMoi().addActionListener(e -> lamMoi());
-		gui.getBtnTaoHD().addActionListener(e -> xuLyXuatHoaDon());
-		gui.getCmbHTThanhToan().addActionListener(e -> tinhTienThua());
-		gui.getTxtTienNhan().addKeyListener(new KeyAdapter() {
-			public void keyReleased(KeyEvent e) {
-				tinhTienThua();
-			}
-		});
-		
-		//gui.getCmbSanPham().addActionListener(e -> setComboxQuocGia());
-	}
+//	public void suKien() {
+//		gui.getBtnThem().addActionListener(e -> xuLyThemThuocVaoBang());
+//		gui.getBtnXoa().addActionListener(e -> xuLyXoaDong());
+//		gui.getBtnLamMoi().addActionListener(e -> lamMoi());
+//		gui.getBtnTaoHD().addActionListener(e -> xuLyXuatHoaDon());
+//		gui.getCmbHTThanhToan().addActionListener(e -> tinhTienThua());
+//		gui.getTxtTienNhan().addKeyListener(new KeyAdapter() {
+//			public void keyReleased(KeyEvent e) {
+//				tinhTienThua();
+//			}
+//		});
+//		
+//		//gui.getCmbSanPham().addActionListener(e -> setComboxQuocGia());
+//	}
 
 	// ========== TÌM KHÁCH HÀNG ==========
 	public void goiYKhachHang() {
@@ -253,9 +268,9 @@ public class LapHoaDonCtrl {
 		}
 
 		// ===== Thêm dòng mới =====
-		model.addRow(
-				new Object[] { model.getRowCount() + 1, thuoc.getTenThuoc(), tenQG, sl, dvt != null ? dvt.getTenDVT() : "",
-						tool.dinhDangVND(donGiaGoc), tool.dinhDangVND(thanhTien), moTaKM, "Xóa" });
+		model.addRow(new Object[] { model.getRowCount() + 1, thuoc.getTenThuoc(), tenQG, sl,
+				dvt != null ? dvt.getTenDVT() : "", tool.dinhDangVND(donGiaGoc), tool.dinhDangVND(thanhTien), moTaKM,
+				"Xóa" });
 
 		tinhTongTien();
 		resetFormNhap();
@@ -400,11 +415,10 @@ public class LapHoaDonCtrl {
 			// ==== 3. Tạo hóa đơn ====
 			String maHD = tool.taoKhoaChinh("HD");
 			String maNV;
-			if(trangChuNV != null) {
+			if (trangChuNV != null) {
 				NhanVien nv = trangChuNV.layNhanVien();
 				maNV = nv.getMaNV();
-			}
-			else {
+			} else {
 				NhanVien nv = trangChuQL.layNhanVien();
 				maNV = nv.getMaNV();
 			}

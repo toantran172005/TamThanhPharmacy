@@ -9,6 +9,7 @@ import javax.swing.table.JTableHeader;
 import controller.ChiTietPDHCtrl;
 import controller.ToolCtrl;
 import dao.PhieuDatHangDAO;
+import dao.ThuocDAO;
 import entity.PhieuDatHang;
 
 import java.awt.*;
@@ -30,6 +31,7 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 	public ToolCtrl tool = new ToolCtrl();
 	public PhieuDatHang pdh;
 	public ChiTietPDHCtrl ctpdhCtrl = new ChiTietPDHCtrl(this);
+	public ThuocDAO thDAO = new ThuocDAO();
 
 	public ChiTietPhieuDatHang_GUI(TrangChuQL_GUI mainFrame, PhieuDatHang pdh) {
 		this.mainFrameQL = mainFrame;
@@ -90,14 +92,22 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 		}
 
 		for (Object[] row : pdhDAO.layDanhSachThuocTheoPDH(pdh.getMaPDH())) {
-			String tenThuoc = row[2].toString();
-			int soLuong = (int) row[3];
-			String tenDVT = row[5].toString();
-			double donGia = (double) row[6];
-			double thanhTien = soLuong * donGia;
 
-			modelThuoc.addRow(
-					new Object[] { tenThuoc, soLuong, tenDVT, tool.dinhDangVND(donGia), tool.dinhDangVND(thanhTien) });
+		    String tenThuoc = row[2].toString();
+		    String noiSanXuat = thDAO.timTenQGTheoMaThuoc(row[1].toString());
+		    int soLuong = (int) row[3];
+		    String tenDVT = row[5].toString();
+		    double donGia = (double) row[6];
+		    double thanhTien = soLuong * donGia;
+
+		    modelThuoc.addRow(new Object[] {
+		        tenThuoc,
+		        noiSanXuat,              
+		        soLuong,
+		        tenDVT,
+		        tool.dinhDangVND(donGia),
+		        tool.dinhDangVND(thanhTien)
+		    });
 		}
 
 	}
@@ -153,7 +163,7 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 		pnlCenter.setBorder(new EmptyBorder(10, 20, 10, 20));
 		pnlCenter.setBackground(Color.WHITE);
 
-		String[] columnNames = { "Tên thuốc", "Số lượng", "Đơn vị", "Đơn giá", "Thành tiền" };
+		String[] columnNames = { "Tên thuốc", "Nơi sản xuất", "Số lượng", "Đơn vị", "Đơn giá", "Thành tiền" };
 		model = new DefaultTableModel(columnNames, 0);
 		tblThuoc = new JTable(model);
 		tblThuoc.setRowHeight(28);
