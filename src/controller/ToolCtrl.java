@@ -25,6 +25,8 @@ import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -69,14 +71,20 @@ import entity.KhachHang;
 
 public class ToolCtrl {
 	
-	public LocalDate convertExcelDate(Object value) {
-	    if (value instanceof Date)
-	        return utilDateSangLocalDate((Date) value);
-	    else if (value instanceof Double)
-	        return utilDateSangLocalDate(DateUtil.getJavaDate((Double) value));
-	    else if (value instanceof String && !((String) value).isEmpty())
-	        return LocalDate.parse((String) value);
-	    return null;
+	public LocalDate convertExcelDate(Object input) {
+	    if (input == null || input.toString().trim().isEmpty()) {
+	        return null;
+	    }
+
+	    String dateStr = input.toString();
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+	    try {
+	        return LocalDate.parse(dateStr, formatter);
+	    } catch (DateTimeParseException e) {
+	        e.printStackTrace();
+	        return null; 
+	    }
 	}
 
 	// ===== ĐỔI PANEL =====
@@ -416,6 +424,9 @@ public class ToolCtrl {
 		String cotKhoa;
 
 		switch (tenBangVietTat) {
+		case "TH":
+            cotKhoa = "maThuoc";
+            break;
 		case "KT":
 			cotKhoa = "maKe";
 			break;

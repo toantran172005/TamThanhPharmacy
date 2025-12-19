@@ -65,12 +65,13 @@ public class Thuoc {
 		this.trangThai = trangThai;
 	}
 
-	public Thuoc(String maThuoc, String tenThuoc, int soLo, String dangThuoc, DonViTinh dvt,
+	public Thuoc(String maThuoc, String tenThuoc, int soLo, String dangThuoc, DonViTinh dvt, QuocGia quocGia,
 			LocalDate hanSuDung, int soLuong, double giaBan, Thue thue, String loaiThue) {
 		super();
 		this.maThuoc = maThuoc;
 		this.thue = thue;
 		this.dvt = dvt;
+		this.quocGia = quocGia;
 		this.tenThuoc = tenThuoc;
 		this.dangThuoc = dangThuoc;
 		this.giaBan = giaBan;
@@ -232,7 +233,7 @@ public class Thuoc {
 		this.hanSuDung = hanSuDung;
 	}
 
-	public Boolean getTrangThai() {
+	public Boolean isTrangThai() {
 		return trangThai;
 	}
 

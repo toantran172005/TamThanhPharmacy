@@ -2,6 +2,7 @@ package controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,6 +23,7 @@ import dao.DonViTinhDAO;
 import dao.ThueDAO;
 import dao.ThuocDAO;
 import entity.DonViTinh;
+import entity.QuocGia;
 import entity.Thue;
 import entity.Thuoc;
 import gui.NhapThuoc_GUI;
@@ -79,32 +81,39 @@ public class NhapThuocCtrl {
 					continue;
 				}
 				
-				Object[] rowData = new Object[12];
+				Object[] rowData = new Object[13];
 				rowData[0] = stt++;
 				
-				for(int i = 1; i < 12; i++) {
+				for(int i = 1; i < 13; i++) {
 					Cell cell = row.getCell(i);
 					if(cell == null) {
 						rowData[i] = "";
 					} else {
-						switch (cell.getCellType()) {
-						case STRING: 
-							rowData[i] = cell.getStringCellValue();
-							break;
-						case NUMERIC:
-							if(DateUtil.isCellDateFormatted(cell)) {
-								rowData[i] = cell.getDateCellValue();
-							} else {
-								rowData[i] = cell.getNumericCellValue();
-							}
-							break;
-						case BOOLEAN:
-							rowData[i] = cell.getBooleanCellValue();
-							break;
-						
-						default:
-							rowData[i] = "";
-						}
+						if (i == 7 && cell.getCellType() == org.apache.poi.ss.usermodel.CellType.NUMERIC) {
+				            Date date = cell.getDateCellValue(); 
+				            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				            rowData[i] = sdf.format(date);
+				        } 
+				        else {
+				            switch (cell.getCellType()) {
+				                case STRING: 
+				                    rowData[i] = cell.getStringCellValue();
+				                    break;
+				                case NUMERIC:
+				                    if(DateUtil.isCellDateFormatted(cell)) {
+				                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				                        rowData[i] = sdf.format(cell.getDateCellValue());
+				                    } else {
+				                        rowData[i] = cell.getNumericCellValue();
+				                    }
+				                    break;
+				                case BOOLEAN:
+				                    rowData[i] = cell.getBooleanCellValue();
+				                    break;
+				                default:
+				                    rowData[i] = "";
+				            }
+				        }
 					}
 				}
 				model.addRow(rowData);
@@ -149,8 +158,10 @@ public class NhapThuocCtrl {
 	        String loaiThue = model.getValueAt(i, 11).toString();
 	        double thanhTien = Double.parseDouble(model.getValueAt(i, 12).toString());
 	        
+	        String maQG = thuocDAO.layMaQuocGiaTheoTen(tenThuoc);
+	        QuocGia qg = thuocDAO.layQuocGiaTheoMa(maQG);
 	        
-	        Thuoc thuoc = new Thuoc(maThuoc, tenThuoc, soLo, dangThuoc, new DonViTinh(null, dvt), hanDung,
+	        Thuoc thuoc = new Thuoc(maThuoc, tenThuoc, soLo, dangThuoc, new DonViTinh(null, dvt), qg, hanDung,
 					soLuong, donGia, new Thue(null, tyLeThue), loaiThue);
 	        
 	        listThuoc.add(thuoc);

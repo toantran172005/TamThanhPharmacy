@@ -2,6 +2,8 @@ package main;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+
+import controller.DangNhapCtrl;
 import gui.DangNhap_GUI;
 
 public class Main {
@@ -12,8 +14,10 @@ public class Main {
 	        e.printStackTrace();
 	    }
 	    SwingUtilities.invokeLater(() -> {
-	        new DangNhap_GUI().setVisible(true);
-	    });
+	    	DangNhap_GUI gui = new DangNhap_GUI();
+	        new DangNhapCtrl(gui);  
+	        gui.setVisible(true);
+	        });
 	}
 
 }

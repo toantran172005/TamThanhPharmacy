@@ -50,11 +50,16 @@ public class TimKiemKhachHangCtrl {
 	}
 
 	public void xoaKhachHang() {
+		
 		listKH = layListKhachHang();
-		if (tkkhGUI.btnXoa.getText().equals("Xóa")) {
-			if (tool.hienThiXacNhan("Xóa khách hàng", "Xác nhận xóa khách hàng?", null)) {
-				int viewRow = tkkhGUI.tblKhachHang.getSelectedRow();
-				if (viewRow != -1) {
+		
+		if (tkkhGUI.btnXoa.getText().equals("Xóa")) {	
+			int viewRow = tkkhGUI.tblKhachHang.getSelectedRow();
+			if(viewRow == -1) {
+				tool.hienThiThongBao("Lỗi!", "Vui lòng chọn khách hàng cần xoá", false);
+				return;	
+			} else {
+				if (tool.hienThiXacNhan("Xóa khách hàng", "Xác nhận xóa khách hàng?", null)) {
 					int modelRow = tkkhGUI.tblKhachHang.convertRowIndexToModel(viewRow);
 					Object maObj = tkkhGUI.tblKhachHang.getModel().getValueAt(modelRow, 0);
 					String maKh = maObj == null ? "" : maObj.toString();
@@ -68,15 +73,18 @@ public class TimKiemKhachHangCtrl {
 					}
 					if (khDAO.xoaKhachHang(maKh)) {
 						tool.hienThiThongBao("Xóa khách hàng", "Đã xóa khách hàng thành công!", true);
+					
 					}
-
 				}
-				locTatCa(hienThiHoatDong);
-			}
+			}		
+			locTatCa(hienThiHoatDong);
 		} else {
-			if (tool.hienThiXacNhan("Khôi phục khách hàng", "Xác nhận khôi phục khách hàng?", null)) {
-				int viewRow = tkkhGUI.tblKhachHang.getSelectedRow();
-				if (viewRow != -1) {
+			int viewRow = tkkhGUI.tblKhachHang.getSelectedRow();
+			if(viewRow == -1) {
+				tool.hienThiThongBao("Lỗi!", "Vui lòng chọn khách hàng cần khôi phục", false);
+				return;
+			} else {
+				if (tool.hienThiXacNhan("Khôi phục khách hàng", "Xác nhận khôi phục khách hàng?", null)) {
 					int modelRow = tkkhGUI.tblKhachHang.convertRowIndexToModel(viewRow);
 					Object maObj = tkkhGUI.tblKhachHang.getModel().getValueAt(modelRow, 0);
 					String maKh = maObj == null ? "" : maObj.toString();
@@ -92,8 +100,8 @@ public class TimKiemKhachHangCtrl {
 						tool.hienThiThongBao("Khôi phục khách hàng", "Đã khôi phục khách hàng thành công!", true);
 					}
 				}
-				locTatCa(hienThiHoatDong);
 			}
+			locTatCa(hienThiHoatDong);
 		}
 	}
 

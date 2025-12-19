@@ -102,11 +102,13 @@ public class ThemNhanVien_GUI extends JPanel {
 		// Khởi tạo field
 		txtTenNV = tool.taoTextField("Nhập tên nhân viên");
 		cmbChucVu = tool.taoComboBox(new String[] { "Quản lý bán hàng", "Nhân viên quản lý"});
+		cmbChucVu.setEditable(false);
 		txtSdt = tool.taoTextField("Nhập số điện thoại");
 		txtLuong = tool.taoTextField("Nhập lương");
 		cmbThue = new JComboBox<>();
 
 		cmbGioiTinh = tool.taoComboBox(new String[] { "Nam", "Nữ", "Khác" });
+		cmbGioiTinh.setEditable(false);
 		dtpNgaySinh = tool.taoDateChooser();
 		dtpNgayVaoLam = tool.taoDateChooser();
 		txtEmail = tool.taoTextField("Nhập email");

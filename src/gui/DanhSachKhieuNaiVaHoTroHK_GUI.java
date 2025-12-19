@@ -21,12 +21,11 @@ public class DanhSachKhieuNaiVaHoTroHK_GUI extends JPanel {
 	public DanhSachKNHTCtrl knhtCtrl;
 
 	public DanhSachKhieuNaiVaHoTroHK_GUI() {
-	    knhtCtrl = new DanhSachKNHTCtrl(this);
-	    khoiTaoUI();
-	    setHoatDong();
-	    knhtCtrl.locTatCa();
+		knhtCtrl = new DanhSachKNHTCtrl(this);
+		khoiTaoUI();
+		setHoatDong();
+		knhtCtrl.locTatCa();
 	}
-
 
 	public void setHoatDong() {
 		btnTimKiem.addActionListener(e -> knhtCtrl.locTatCa());
@@ -112,12 +111,14 @@ public class DanhSachKhieuNaiVaHoTroHK_GUI extends JPanel {
 		tblKNHT = new JTable(model);
 		tblKNHT.setRowHeight(38);
 		tblKNHT.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		tblKNHT.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 15));
-		tblKNHT.setSelectionBackground(new Color(0xE3F2FD));
-		tblKNHT.setGridColor(new Color(0xDDDDDD));
-		tblKNHT.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
 		tblKNHT.setBackground(Color.WHITE);
+		tblKNHT.getTableHeader().setBackground(new Color(240, 240, 240));
+		tblKNHT.setGridColor(new Color(200, 200, 200));
+		tblKNHT.setShowGrid(true);
+		tblKNHT.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
+
+		tblKNHT.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		tblKNHT.setForeground(new Color(0x33, 0x33, 0x33));
 
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -128,7 +129,7 @@ public class DanhSachKhieuNaiVaHoTroHK_GUI extends JPanel {
 
 		JTableHeader header = tblKNHT.getTableHeader();
 		header.setBackground(new Color(240, 240, 240));
-		header.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+		header.setFont(new Font("Times New Roman", Font.BOLD, 18));
 		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
 		JScrollPane scrollTable = new JScrollPane(tblKNHT);

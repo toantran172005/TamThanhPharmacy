@@ -121,12 +121,6 @@ public class TimKiemKH_GUI extends JPanel {
 		header.setFont(new Font("Times New Roman", Font.BOLD, 18));
 		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
-		tblKhachHang.getColumnModel().getColumn(0).setPreferredWidth(130);
-		tblKhachHang.getColumnModel().getColumn(1).setPreferredWidth(152);
-		tblKhachHang.getColumnModel().getColumn(2).setPreferredWidth(171);
-		tblKhachHang.getColumnModel().getColumn(3).setPreferredWidth(84);
-		tblKhachHang.getColumnModel().getColumn(4).setPreferredWidth(125);
-
 		JScrollPane scrollTable = new JScrollPane(tblKhachHang);
 		scrollTable.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
 		scrollTable.getViewport().setBackground(Color.WHITE);

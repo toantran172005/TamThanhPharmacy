@@ -55,18 +55,22 @@ public class ChiTietThuoc_GUI extends JPanel {
 
         // Ảnh thuốc
         lblAnh = new JLabel();
-        lblAnh.setPreferredSize(new Dimension(240, 240));
+        lblAnh.setPreferredSize(new Dimension(240, 240));   
+        lblAnh.setMaximumSize(new Dimension(240, 240)); 
         lblAnh.setHorizontalAlignment(SwingConstants.CENTER);
         lblAnh.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
+        lblAnh.setAlignmentX(Component.CENTER_ALIGNMENT); 
 
         // Nút chọn ảnh
         btnChonAnh = tool.taoButton("Chọn ảnh", "/picture/nhanVien/folder.png");
-        btnChonAnh.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JPanel pnlButton = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        pnlButton.setBackground(Color.WHITE);
+        pnlButton.add(btnChonAnh);
 
-        leftPanel.add(Box.createVerticalStrut(10));
+        leftPanel.add(Box.createVerticalStrut(30)); 
         leftPanel.add(lblAnh);
-        leftPanel.add(Box.createVerticalStrut(15));
-        leftPanel.add(btnChonAnh);
+        leftPanel.add(Box.createVerticalStrut(15)); 
+        leftPanel.add(pnlButton);
 
         // ======= CỘT PHẢI: DẠNG HBOX 2 VBOX =======
         JPanel rightPanel = new JPanel();
@@ -141,6 +145,7 @@ public class ChiTietThuoc_GUI extends JPanel {
         
         //=========== GẮN SỰ KIỆN ================
         ganSuKien();
+        thietLapKhoaChinhSua(false);
     }
     
     //========= XỬ LÝ ================
@@ -149,7 +154,8 @@ public class ChiTietThuoc_GUI extends JPanel {
     public void ganSuKien() {
     	ctCtrl.xemChiTietThuoc(maThuoc);
     	btnQuayLai.addActionListener(e -> ctCtrl.quayLaiTrangTimKiem());
-    	btnChonAnh.addActionListener(e -> thCtrl.chonFile());
+    	btnChonAnh.addActionListener(e -> ctCtrl.chonAnh());
+    	btnCapNhat.addActionListener(e -> ctCtrl.xuLyCapNhat());
     }
 
     public JPanel taoDong(String text, JComponent comp) {
@@ -160,5 +166,24 @@ public class ChiTietThuoc_GUI extends JPanel {
         row.add(comp);
 
         return row;
+    }
+    
+    public void thietLapKhoaChinhSua(boolean choPhep) {
+        txtTenSP.setEditable(choPhep);
+        txtDangThuoc.setEditable(choPhep);
+        txtGiaBan.setEditable(choPhep);
+        
+        dpHanSuDung.setEnabled(choPhep);
+        cmbDonViTinh.setEnabled(choPhep);
+        cmbThue.setEnabled(choPhep);
+        cmbKeThuoc.setEnabled(choPhep);
+        cmbQuocGia.setEnabled(choPhep);
+        
+        btnChonAnh.setEnabled(choPhep);
+        
+        Color mauNen = choPhep ? Color.WHITE : new Color(245, 245, 245);
+        txtTenSP.setBackground(mauNen);
+        txtDangThuoc.setBackground(mauNen);
+        txtGiaBan.setBackground(mauNen);
     }
 }

@@ -28,13 +28,11 @@ public class ThemKhuyenMai_GUI extends JPanel {
 	public JComboBox<String> cmbThemThuoc;
 	public JButton btnThemThuoc;
 	public KhuyenMaiCtrl kmCtrl;
-	//private DanhSachKhuyenMai_GUI danhSachGUI;
+	public JButton btnXoaThuoc;
 
     public ThemKhuyenMai_GUI() {
-    	//this.danhSachGUI = danhSachGUI;
     	kmCtrl = new KhuyenMaiCtrl(this);
-    	//kmCtrl.setKmGUI(danhSachGUI);
-    	
+ 
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
         setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -79,7 +77,8 @@ public class ThemKhuyenMai_GUI extends JPanel {
         leftBox.add(pnlMKM);
         
       //Số lượng mua & Số lượng tặng
-        JPanel row4 = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 0));
+        JPanel row4 = new JPanel();
+        row4.setLayout(new BoxLayout(row4, BoxLayout.X_AXIS));
         row4.setBackground(Color.WHITE);
 
         // Số lượng mua
@@ -107,10 +106,12 @@ public class ThemKhuyenMai_GUI extends JPanel {
         String[] items = {""};
         cmbThemThuoc = tool.taoComboBox(items);
         btnThemThuoc = tool.taoButton("Thêm", "/picture/khachHang/plus.png");
-
+        btnXoaThuoc = tool.taoButton("Xoá thuốc", "/picture/keThuoc/trash.png");
+        
         row5.add(tool.taoLabel("Thêm thuốc:"));
         row5.add(cmbThemThuoc);
         row5.add(btnThemThuoc);
+        row5.add(btnXoaThuoc);
         row5.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
         
         leftBox.add(Box.createVerticalStrut(10));
@@ -225,6 +226,7 @@ public class ThemKhuyenMai_GUI extends JPanel {
         	kmCtrl.themKhuyenMai();
         	lamMoi();
         });
+        btnXoaThuoc.addActionListener(e -> kmCtrl.xoaThuocTuBang(tblThuocKhuyenMai));
         
     }
 

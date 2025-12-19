@@ -105,7 +105,7 @@ public class ChiTietKeThuocCtrl {
 		ctktGUI.model.setRowCount(0);
 
 		for (Thuoc thuoc : list) {
-			Object[] row = { thuoc.getMaThuoc(), thuoc.getTenThuoc(), thuoc.getTrangThai() ? "Hoạt động" : "Đã xóa" };
+			Object[] row = { thuoc.getMaThuoc(), thuoc.getTenThuoc(), thuoc.isTrangThai() ? "Hoạt động" : "Đã xóa" };
 			ctktGUI.model.addRow(row);
 		}
 	}

@@ -29,6 +29,7 @@ import dao.KeThuocDAO;
 import dao.ThuocDAO;
 import entity.DonViTinh;
 import entity.KeThuoc;
+import entity.KhachHang;
 import entity.Thuoc;
 import gui.ChiTietThuoc_GUI;
 import gui.ThemThuoc_GUI;
@@ -37,14 +38,17 @@ import gui.TimKiemThuoc_GUI;
 
 public class ThuocCtrl {
 	
-	private ThuocDAO thuocDAO = new ThuocDAO();
-	private KeThuocDAO keThuocDao = new KeThuocDAO();
-	private DonViTinhDAO dvtDao = new DonViTinhDAO();
-	private ToolCtrl tool = new ToolCtrl();
-	private ThongKeThuoc_GUI tkThuoc;
-	private TimKiemThuoc_GUI thuoc;
-	private ChiTietThuoc_GUI ctThuoc;
-	private ThemThuoc_GUI themThuoc;
+	public ThuocDAO thuocDAO = new ThuocDAO();
+	public KeThuocDAO keThuocDao = new KeThuocDAO();
+	public DonViTinhDAO dvtDao = new DonViTinhDAO();
+	public ToolCtrl tool = new ToolCtrl();
+	public ThongKeThuoc_GUI tkThuoc;
+	public TimKiemThuoc_GUI thuoc;
+	public ChiTietThuoc_GUI ctThuoc;
+	public ThemThuoc_GUI themThuoc;
+	public boolean isHienThi = true;
+	public int dangNhap = 1;
+	ArrayList<Thuoc> listThuoc = thuocDAO.layListThuocHoanChinh();
 	
 	public ThuocCtrl(ThongKeThuoc_GUI tkThuoc) {
 		this.tkThuoc = tkThuoc;
@@ -96,78 +100,50 @@ public class ThuocCtrl {
 	
 	//xoá thuốc
 	public void xoaThuoc() {
-		int selectedRow = thuoc.tblThuoc.getSelectedRow();
-		if(selectedRow == -1) {
-			tool.hienThiThongBao("Lỗi", "Vui lòng chọn 1 thuốc để xem chi tiết", false);
-			return;
-		}
-		int modelRow = thuoc.tblThuoc.convertRowIndexToModel(selectedRow);
-		String maThuoc = thuoc.tblThuoc.getModel().getValueAt(selectedRow, 0).toString();
-		
-		int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xoá thuốc này?", "Xác nhận!", JOptionPane.YES_NO_OPTION);
-		if(confirm == JOptionPane.YES_OPTION) {
-			if(thuocDAO.xoaThuoc(maThuoc)) {
-				tool.hienThiThongBao("Thông báo", "Xoá thành công!", true);
-				thuoc.onBtnLamMoi();
-			} else {
-				tool.hienThiThongBao("Thông báo", "Xoá thất bại!", false);
+		listThuoc = thuocDAO.layListThuocHoanChinh();
+		if (thuoc.btnXoa.getText().equalsIgnoreCase("Xoá")) {
+			if (tool.hienThiXacNhan("Xóa thuốc", "Xác nhận xóa thuốc?", null)) {
+				int viewRow = thuoc.tblThuoc.getSelectedRow();
+				if (viewRow != -1) {
+					int modelRow = thuoc.tblThuoc.convertRowIndexToModel(viewRow);
+					Object maObj = thuoc.tblThuoc.getModel().getValueAt(modelRow, 0);
+					String maTh = maObj == null ? "" : maObj.toString();
+
+					Thuoc th = null;
+					for (Thuoc t : listThuoc) {
+						if (t.getMaThuoc().equals(maTh)) {
+							th = t;
+							break;
+						}
+					}
+					if (thuocDAO.xoaThuoc(maTh)) {
+						tool.hienThiThongBao("Xóa thuốc", "Đã xóa thuốc thành công!", true);
+					}
+
+				}
+				locTatCa(isHienThi);
 			}
-		}
-		
-			
-	}
-	
-	
-	//Xem thuốc đã xoá
-	public void xemThuocDaXoa() {
-		ArrayList<Thuoc> listDaXoa = thuocDAO.layDanhSachDaXoa();
-		thuoc.model.setRowCount(0);
-		for(Thuoc t : listDaXoa) {
-			thuoc.model.addRow(new Object[] {
-					t.getMaThuoc(),
-					t.getTenThuoc(),
-					t.getKeThuoc().getLoaiKe(),
-					tool.dinhDangVND(t.getGiaBan()),
-					t.getSoLuong(),
-					t.getNoiSanXuat(),
-					t.getDvt().getTenDVT(),
-					t.getHanSuDung()
-			});
-		}
-		
-		thuoc.btnXemChiTiet.setVisible(false);
-		thuoc.btnLichSuXoa.setVisible(false);
-		thuoc.btnXoa.setVisible(false);
-		thuoc.btnHoanTac.setVisible(true);
-		thuoc.btnQuayLai.setVisible(true);
-		
-	}
-	
-	//quay lại trang tìm kiếm
-	public void quayLaiTrangTimKiem() {
-		setDataChoTable();
-		thuoc.btnXemChiTiet.setVisible(true);
-		thuoc.btnLichSuXoa.setVisible(true);
-		thuoc.btnXoa.setVisible(true);
-		thuoc.btnHoanTac.setVisible(false);
-		thuoc.btnQuayLai.setVisible(false);
-	}
-	
-	//đổ dữ liệu lên bảng tìm kiếm thuốc
-	public void setDataChoTable() {
-		ArrayList<Thuoc> listThuoc = thuocDAO.layListThuocHoanChinh();
-		thuoc.model.setRowCount(0);
-		for(Thuoc t : listThuoc) {
-			thuoc.model.addRow(new Object[] {
-					t.getMaThuoc(),
-					t.getTenThuoc(),
-					t.getKeThuoc().getLoaiKe(),
-					tool.dinhDangVND(t.getGiaBan()),
-					t.getSoLuong(),
-					t.getNoiSanXuat(),
-					t.getDvt().getTenDVT(),
-					t.getHanSuDung()
-			});
+		} else {
+			if (tool.hienThiXacNhan("Khôi phục thuốc", "Xác nhận khôi phục thuốc?", null)) {
+				int viewRow = thuoc.tblThuoc.getSelectedRow();
+				if (viewRow != -1) {
+					int modelRow = thuoc.tblThuoc.convertRowIndexToModel(viewRow);
+					Object maObj = thuoc.tblThuoc.getModel().getValueAt(modelRow, 0);
+					String maTh = maObj == null ? "" : maObj.toString();
+
+					Thuoc th = null;
+					for (Thuoc t : listThuoc) {
+						if (t.getMaThuoc().equalsIgnoreCase(maTh)) {
+							th = t;
+							break;
+						}
+					}
+					if (thuocDAO.khoiPhucTH(maTh)) {
+						tool.hienThiThongBao("Khôi phục thuốc", "Đã khôi phục thuốc thành công!", true);
+					}
+				}
+				locTatCa(isHienThi);
+			}
 		}
 	}
 	
@@ -256,87 +232,57 @@ public class ThuocCtrl {
 		return listTen;
 	}
 	
-	//Hoàn tác thuốc đã xoá
-	public void hoanTacThuoc() {
-		int selectedRow = thuoc.tblThuoc.getSelectedRow();
-		if(selectedRow == -1) {
-			tool.hienThiThongBao("Lỗi", "Vui lòng chọn 1 thuốc để hoàn tác", false);
-			return;
-		}
-		int modelRow = thuoc.tblThuoc.convertRowIndexToModel(selectedRow);
-		String maThuoc = thuoc.tblThuoc.getModel().getValueAt(selectedRow, 0).toString();
-		
-		int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn hoàn tác thuốc này?", "Xác nhận!", JOptionPane.YES_NO_OPTION);
-		if (confirm == JOptionPane.YES_OPTION) {
-	        if (thuocDAO.khoiPhucTH(maThuoc)) {
-	            thuoc.model.removeRow(modelRow);
-	            tool.hienThiThongBao("Thông báo", "Hoàn tác thành công!", true);
-	            if (thuoc.model.getRowCount() == 0) {
-	                tool.hienThiThongBao("Thông báo", "Không còn thuốc nào trong lịch sử xoá", true);
-	            }
-	        } else {
-	            tool.hienThiThongBao("Thông báo", "Hoàn tác thất bại!", false);
-	        }
-	    }
+
+	public void xuLyBtnLichSuXoa() {
+		isHienThi = !isHienThi;
+		thuoc.btnLichSuXoa.setText(!isHienThi ? "Danh sách hiện tại" : "Lịch sử xoá");
+		thuoc.btnXoa.setText(!isHienThi ? "Khôi phục" : "Xoá");
+		locTatCa(isHienThi);
 	}
 	
-	//Gợi ý tên thuốc
-//	public void goiYTenThuoc(JComboBox<String> comboBox, ArrayList<String> dsTenThuoc) {
-//
-//	    comboBox.setEditable(true);
-//
-//	    JTextField txt = (JTextField) comboBox.getEditor().getEditorComponent();
-//	    DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>();
-//
-//	    comboBox.setModel(model);
-//
-//	    txt.getDocument().addDocumentListener(new DocumentListener() {
-//	        @Override
-//	        public void insertUpdate(DocumentEvent e) { loc(); }
-//
-//	        @Override
-//	        public void removeUpdate(DocumentEvent e) { loc(); }
-//
-//	        @Override
-//	        public void changedUpdate(DocumentEvent e) {}
-//
-//	        private void loc() {
-//	            SwingUtilities.invokeLater(() -> {
-//	                String text = txt.getText().toLowerCase();
-//
-//	                model.removeAllElements();
-//
-//	                if (text.isEmpty()) {
-//	                    comboBox.hidePopup();
-//	                    return;
-//	                }
-//
-//	                for (String ten : dsTenThuoc) {
-//	                    if (ten.toLowerCase().startsWith(text)) {
-//	                        model.addElement(ten);
-//	                    }
-//	                }
-//
-//	                txt.setText(text);
-//	                txt.setCaretPosition(text.length());
-//
-//	                if (model.getSize() > 0) {
-//	                    comboBox.showPopup();
-//	                } else {
-//	                    comboBox.hidePopup();
-//	                }
-//	            });
-//	        }
-//	    });
-//	}
+	public void locTatCa(boolean isHienThi) {
+	    listThuoc = thuocDAO.layListThuocHoanChinh(); 
+	    ArrayList<Thuoc> ketQua = new ArrayList<>();
 
+	    Object tenObj = thuoc.cmbTenThuoc.getSelectedItem();
+	    String tuKhoaTen = (tenObj != null) ? tenObj.toString().trim().toLowerCase() : "";
+	    Object loaiObj = thuoc.cmbLoaiThuoc.getSelectedItem();
+	    String tuKhoaLoai = (loaiObj != null) ? loaiObj.toString().trim().toLowerCase() : "";
+	    
+	    if (tuKhoaLoai.equals("tất cả")) {
+	        tuKhoaLoai = "";
+	    }
 
+	    if (listThuoc != null) {
+	        for (Thuoc t : listThuoc) {
+	            boolean matchTen = tuKhoaTen.isEmpty() 
+	                    || t.getTenThuoc().toLowerCase().contains(tuKhoaTen);
+	            boolean matchLoai = tuKhoaLoai.isEmpty() 
+	                    || (t.getKeThuoc() != null && t.getKeThuoc().getLoaiKe().toLowerCase().contains(tuKhoaLoai));
+	            boolean matchTrangThai = (t.isTrangThai() == isHienThi);
 
-
-	//Tìm kiếm theo tên
-	public void timKiemThuocTheoTen() {
-		
-		
+	            if (matchTen && matchLoai && matchTrangThai) {
+	                ketQua.add(t);
+	            }
+	        }
+	    }
+	    setDataChoTable(ketQua);
+	}
+	
+	public void setDataChoTable(ArrayList<Thuoc> list) {
+		thuoc.model.setRowCount(0);
+		for(Thuoc t : list) {
+			thuoc.model.addRow(new Object[] {
+					t.getMaThuoc(),
+					t.getTenThuoc(),
+					t.getKeThuoc().getLoaiKe(),
+					tool.dinhDangVND(t.getGiaBan()),
+					t.getSoLuong(),
+					t.getNoiSanXuat(),
+					t.getDvt().getTenDVT(),
+					t.getHanSuDung()
+			});
+		}
 	}
 	
 	//Tìm kiếm theo loại

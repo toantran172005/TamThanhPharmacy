@@ -25,6 +25,49 @@ public class ThuocDAO {
 
 	ToolCtrl tool = new ToolCtrl();
 
+	public String layMaQuocGiaTheoTen(String tenQG) {
+		String sql = "SELECT maQuocGia\r\n" + "FROM dbo.QuocGia\r\n" + "WHERE tenQuocGia = ?";
+
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement pst = con.prepareStatement(sql)) {
+
+			pst.setString(1, tenQG);
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				return rs.getString("maQuocGia");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public QuocGia layQuocGiaTheoMa(String maQG) {
+	    QuocGia res = null;
+	    
+	    String sql = "SELECT * FROM QuocGia WHERE maQuocGia = ?";
+
+	    try (Connection conn = KetNoiDatabase.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+	        ps.setString(1, maQG);
+
+	        ResultSet rs = ps.executeQuery();
+
+	        if (rs.next()) {
+	            String ma = rs.getString("maQuocGia");
+	            String ten = rs.getString("tenQuocGia");     
+	            res = new QuocGia(ma, ten);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return res;
+	}
+
 	public String layTenDonViTinhTheoMaThuoc(String maThuoc) {
 		String sql = "SELECT dvt.tenDVT FROM Thuoc t " + "JOIN DonViTinh dvt ON t.maDVT = dvt.maDVT "
 				+ "WHERE t.maThuoc = ?";
@@ -370,37 +413,52 @@ public class ThuocDAO {
 
 		return listThuoc;
 	}
-	
-	// ========== LẤY LIST QUỐC GIA SẢN XUẤT ==========
-//	public ArrayList<QuocGia> layListQuocGiaTheoThuoc(String maThuoc) {
-//	    ArrayList<QuocGia> listQG = new ArrayList<>();
-//
-//	    String sql = """
-//	        SELECT qg.maQuocGia, qg.tenQuocGia
-//	        FROM Thuoc_QuocGia tqg
-//	        JOIN QuocGia qg ON tqg.maQuocGia = qg.maQuocGia
-//	        WHERE tqg.maThuoc = ?
-//	    """;
-//
-//	    try (Connection con = KetNoiDatabase.getConnection();
-//	         PreparedStatement ps = con.prepareStatement(sql)) {
-//
-//	        ps.setString(1, maThuoc);
-//	        ResultSet rs = ps.executeQuery();
-//
-//	        while (rs.next()) {
-//	            String maQG = rs.getString("maQuocGia");
-//	            String tenQG = rs.getString("tenQuocGia");
-//	            listQG.add(new QuocGia(maQG, tenQG));
-//	        }
-//
-//	    } catch (SQLException e) {
-//	        e.printStackTrace();
-//	    }
-//
-//	    return listQG;
-//	}
 
+	// ========== LẤY LIST QUỐC GIA SẢN XUẤT ==========
+	public ArrayList<QuocGia> layListQuocGiaTheoThuoc(String tenThuoc) {
+		ArrayList<QuocGia> listQG = new ArrayList<>();
+
+		String sql = """
+				    SELECT qg.maQuocGia, qg.tenQuocGia
+				    FROM Thuoc t
+				    JOIN QuocGia qg ON t.maQuocGia = qg.maQuocGia
+				    WHERE t.tenThuoc = ?
+				""";
+
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, tenThuoc);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				String maQG = rs.getString("maQuocGia");
+				String tenQG = rs.getString("tenQuocGia");
+				listQG.add(new QuocGia(maQG, tenQG));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return listQG;
+	}
+	
+	public String timMaQGTheoTen(String tenQG) {
+		String sql = "SELECT maQuocGia FROM QuocGia WHERE tenQuocGia = ?";
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, tenQG);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getString("maQuocGia");
+				} else {
+					return null; // không tìm thấy
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	public ArrayList<Thuoc> layListThuocHoanChinh() {
 		ArrayList<Thuoc> listThuoc = new ArrayList<>();
@@ -418,8 +476,7 @@ public class ThuocDAO {
 				    LEFT JOIN DonViTinh dvt ON t.maDVT = dvt.maDVT
 				    LEFT JOIN KeThuoc kt ON t.maKe = kt.maKe
 				    LEFT JOIN NhaCungCap ncc ON t.maNCC = ncc.maNCC
-				    LEFT JOIN QuocGia qg ON t.maThuoc = qg.maQuocGia
-				    WHERE t.trangThai = 1
+				    LEFT JOIN QuocGia qg ON t.maQuocGia = qg.maQuocGia
 				    ORDER BY TRY_CAST(REPLACE(t.maThuoc, 'TTTH', '') AS INT)
 				""";
 
@@ -617,13 +674,14 @@ public class ThuocDAO {
 				        th.loaiThue, th.tyLeThue, th.moTa,
 				        dvt.tenDVT,
 				        kt.loaiKe, kt.sucChua, kt.moTa,
-				        ncc.tenNCC, ncc.sdt, ncc.diaChi, ncc.email
+				        ncc.tenNCC, ncc.sdt, ncc.diaChi, ncc.email, qg.tenQuocGia
 				    FROM Thuoc t
-				    JOIN CT_Kho ctK ON t.maThuoc = ctK.maThuoc
-				    JOIN Thue th ON t.maThue = th.maThue
-				    JOIN DonViTinh dvt ON t.maDVT = dvt.maDVT
-				    JOIN KeThuoc kt ON t.maKe = kt.maKe
-				    JOIN NhaCungCap ncc ON t.maNCC = ncc.maNCC
+				    LEFT JOIN CT_Kho ctK ON t.maThuoc = ctK.maThuoc
+				    LEFT JOIN Thue th ON t.maThue = th.maThue
+				    LEFT JOIN DonViTinh dvt ON t.maDVT = dvt.maDVT
+				    LEFT JOIN KeThuoc kt ON t.maKe = kt.maKe
+				    LEFT JOIN NhaCungCap ncc ON t.maNCC = ncc.maNCC
+				    LEFT JOIN QuocGia qg ON t.maQuocGia = qg.maQuocGia
 				    WHERE t.trangThai = 0
 				    ORDER BY TRY_CAST(REPLACE(t.maThuoc, 'TTTH', '') AS INT)
 				""";
@@ -694,7 +752,7 @@ public class ThuocDAO {
 			ps.setString(6, thuoc.getThue().getMaThue());
 			ps.setString(7, thuoc.getKeThuoc().getMaKe());
 			ps.setString(8, thuoc.getAnh());
-			ps.setBoolean(9, thuoc.getTrangThai());
+			ps.setBoolean(9, thuoc.isTrangThai());
 			ps.setString(10, thuoc.getMaThuoc());
 
 			return ps.executeUpdate() > 0;
@@ -724,29 +782,52 @@ public class ThuocDAO {
 
 	// Thêm thuốc
 	public boolean themThuoc(Thuoc thuoc) {
-		String sql = "INSERT INTO Thuoc (maThuoc, maThue, maNCC, maKe, tenThuoc, dangThuoc, giaBan, hanSuDung, trangThai, anh, maDVT) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+		String sqlThuoc = "INSERT INTO Thuoc (maThuoc, maThue, maNCC, maKe, tenThuoc, dangThuoc, giaBan, hanSuDung, trangThai, anh, maDVT, maQuocGia) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+		String sqlKho = "INSERT INTO CT_Kho (maKho, maThuoc, soLuongTon, ghiChu) " + "VALUES (?, ?, ?, ?)";
+
 		String maThue = thuoc.getThue().getMaThue();
-		String maNCC = thuoc.getNcc().getMaNCC();
+		String maNCC = "TTNCC1";
 		String maKe = thuoc.getKeThuoc().getMaKe();
 		String maDVT = thuoc.getDvt().getMaDVT();
 
-		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+		try (Connection con = KetNoiDatabase.getConnection()) {
+			con.setAutoCommit(false);
 
-			ps.setString(1, thuoc.getMaThuoc());
-			ps.setString(2, maThue);
-			ps.setString(3, maNCC);
-			ps.setString(4, maKe);
-			ps.setString(5, thuoc.getTenThuoc());
-			ps.setString(6, thuoc.getDangThuoc());
-			ps.setDouble(7, thuoc.getGiaBan());
-			ps.setDate(8, tool.localDateSangSqlDate(thuoc.getHanSuDung()));
-			ps.setBoolean(9, thuoc.getTrangThai());
-			ps.setString(10, thuoc.getAnh());
-			ps.setString(11, maDVT);
+			// ===== INSERT THUOC =====
+			try (PreparedStatement psThuoc = con.prepareStatement(sqlThuoc)) {
 
-			int result = ps.executeUpdate();
-			return result > 0;
+				psThuoc.setString(1, thuoc.getMaThuoc());
+				psThuoc.setString(2, maThue);
+				psThuoc.setString(3, maNCC);
+				psThuoc.setString(4, maKe);
+				psThuoc.setString(5, thuoc.getTenThuoc());
+				psThuoc.setString(6, thuoc.getDangThuoc());
+				psThuoc.setDouble(7, thuoc.getGiaBan());
+				psThuoc.setDate(8, tool.localDateSangSqlDate(thuoc.getHanSuDung()));
+				psThuoc.setBoolean(9, true);
+				psThuoc.setString(10, thuoc.getAnh());
+				psThuoc.setString(11, maDVT);
+				psThuoc.setString(12, thuoc.getQuocGia().getMaQG());
+
+				psThuoc.executeUpdate();
+			}
+
+			// ===== INSERT CT_KHO =====
+			try (PreparedStatement psKho = con.prepareStatement(sqlKho)) {
+
+				psKho.setString(1, "TTK1"); // mã kho cố định
+				psKho.setString(2, thuoc.getMaThuoc());
+				psKho.setInt(3, thuoc.getSoLuong());
+				psKho.setString(4, "Nhập kho ban đầu");
+
+				psKho.executeUpdate();
+			}
+
+			con.commit();
+			return true;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -825,24 +906,23 @@ public class ThuocDAO {
 		}
 		return 0;
 	}
-	
-	//Lấy list quốc gia
-	public ArrayList<QuocGia> layListQG(){
+
+	// Lấy list quốc gia
+	public ArrayList<QuocGia> layListQG() {
 		ArrayList<QuocGia> listQG = new ArrayList<QuocGia>();
-		String sql = "SELECT *\r\n"
-				+ "  FROM [dbo].[QuocGia]";
-		
-		try(Connection con = KetNoiDatabase.getConnection();
+		String sql = "SELECT *\r\n" + "  FROM [dbo].[QuocGia]";
+
+		try (Connection con = KetNoiDatabase.getConnection();
 				Statement stmt = con.createStatement();
 				ResultSet rs = stmt.executeQuery(sql)) {
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				QuocGia qg = new QuocGia();
 				qg.setMaQG(rs.getString("maQuocGia"));
 				qg.setTenQG(rs.getString("tenQuocGia"));
 				listQG.add(qg);
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

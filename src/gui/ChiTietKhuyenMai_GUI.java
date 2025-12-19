@@ -32,6 +32,7 @@ public class ChiTietKhuyenMai_GUI extends JPanel {
 	public JButton btnTru;
 	public JButton btnCong;
 	public boolean dangChinhSua = false;
+	public JButton btnXoaThuoc;
 
 
 
@@ -125,10 +126,12 @@ public class ChiTietKhuyenMai_GUI extends JPanel {
         String[] items = {""};
         cmbThemThuoc = tool.taoComboBox(items);
         btnThemThuoc = tool.taoButton("Thêm", "/picture/khachHang/plus.png");
+        btnXoaThuoc = tool.taoButton("Xoá thuốc", "/picture/keThuoc/trash.png");
 
         row5.add(tool.taoLabel("Thêm thuốc:"));
         row5.add(cmbThemThuoc);
         row5.add(btnThemThuoc);
+        row5.add(btnXoaThuoc);
         row5.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
         topPanel.add(row5);
         add(topPanel, BorderLayout.NORTH);
@@ -212,6 +215,7 @@ public class ChiTietKhuyenMai_GUI extends JPanel {
         chonPhuongThucKM();
         kmCtrl.setDuLieuChoCmbThuoc(cmbThemThuoc);
         btnThemThuoc.addActionListener(e -> kmCtrl.themThuocVaoBang());
+        btnXoaThuoc.addActionListener(e -> kmCtrl.xoaThuocTuBang(tblChiTietKM));
     }
     
     public void tangGiaTri(JTextField txt) {
@@ -283,7 +287,6 @@ public class ChiTietKhuyenMai_GUI extends JPanel {
         String selected = cmbLoaiKM.getSelectedItem().toString();
         boolean isMuaTang = selected.equalsIgnoreCase("Mua tặng");
 
-        // Chỉ mở khóa nếu 'editable' từ Ctrl là true VÀ đúng phương thức khuyến mãi
         txtMucKM.setEditable(!isMuaTang && editable);
         btnCong.setEnabled(!isMuaTang && editable);
         btnTru.setEnabled(!isMuaTang && editable);
@@ -296,7 +299,6 @@ public class ChiTietKhuyenMai_GUI extends JPanel {
         btnCong1.setEnabled(isMuaTang && editable);
         btnTru1.setEnabled(isMuaTang && editable);
         
-        // Đổi màu nền để nhận diện trực quan
         Color bg = editable ? Color.WHITE : new Color(240, 240, 240);
         txtTenKM.setBackground(bg);
     }

@@ -8,15 +8,18 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 import java.awt.*;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-
 import controller.ThuocCtrl;
 import controller.ToolCtrl;
 import entity.Thuoc;
 
 public class TimKiemThuoc_GUI extends JPanel {
 
-	//public JTextField txtTenThuoc;
 	public JComboBox<String> cmbLoaiThuoc;
 	public JTable tblThuoc;
 	public DefaultTableModel model;
@@ -86,69 +89,97 @@ public class TimKiemThuoc_GUI extends JPanel {
 		btnLamMoi = tool.taoButton("Làm mới", "/picture/keThuoc/refresh.png");
 		btnLichSuXoa = tool.taoButton("Lịch sử xoá", "/picture/nhanVien/document.png");
 		btnXoa = tool.taoButton("Xoá", "/picture/keThuoc/trash.png");
-		btnHoanTac = tool.taoButton("Hoàn tác", "/picture/keThuoc/refresh.png");
 
 		btnRow.add(btnXemChiTiet);
 		btnRow.add(btnLamMoi);
 		btnRow.add(btnLichSuXoa);
 		btnRow.add(btnXoa);
-		btnRow.add(btnHoanTac);
-		btnHoanTac.setVisible(false);
 		vboxTop.add(btnRow);
 
 		topPanel.add(vboxTop, BorderLayout.CENTER);
 		add(topPanel, BorderLayout.NORTH);
 
 		// ====== CENTER: Bảng thuốc ======
-		String[] cols = {"Mã thuốc", "Tên thuốc", "Phân loại", "Giá bán", "Số lượng", "Nơi sản xuất", "Đơn vị tính", "Hạn sử dụng"};
-		model = new DefaultTableModel(cols, 0);
+		String[] cols = { "Mã thuốc", "Tên thuốc", "Phân loại", "Giá bán", "Số lượng", "Nơi sản xuất", "Đơn vị tính",
+				"Hạn sử dụng" };
+		model = new DefaultTableModel(cols, 0) {
+			@Override
+			public boolean isCellEditable(int row, int col) {
+				return false;
+			}
+		};
 
 		tblThuoc = new JTable(model);
 		tblThuoc.setRowHeight(38);
 		tblThuoc.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-		tblThuoc.setSelectionBackground(new Color(0xE3F2FD));
-		tblThuoc.setSelectionForeground(Color.BLACK);
-		tblThuoc.setGridColor(new Color(0xDDDDDD));
-		tblThuoc.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
 		tblThuoc.setBackground(Color.WHITE);
+		tblThuoc.getTableHeader().setBackground(new Color(240, 240, 240));
+		tblThuoc.setGridColor(new Color(200, 200, 200));
+		tblThuoc.setShowGrid(true);
+		tblThuoc.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
+
+		tblThuoc.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		tblThuoc.setForeground(Color.BLACK);
 
+		tblThuoc.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+
+			DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+					boolean hasFocus, int row, int column) {
+
+				super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+				setHorizontalAlignment(SwingConstants.CENTER);
+
+				if (!isSelected) {
+					setBackground(Color.WHITE);
+					setForeground(Color.BLACK);
+				}
+
+				int modelRow = table.convertRowIndexToModel(row);
+				Object hanSDObj = table.getModel().getValueAt(modelRow, 7);
+
+				if (hanSDObj instanceof LocalDate hanSD) {
+
+					if (column == 7) {
+						setText(hanSD.format(fmt));
+					}
+
+					long daysLeft = ChronoUnit.DAYS.between(LocalDate.now(), hanSD);
+					if (daysLeft >= 0 && daysLeft <= 30 && !isSelected) {
+						setBackground(new Color(255, 180, 180));
+					}
+				}
+
+				return this;
+			}
+		});
+
 		JTableHeader header = tblThuoc.getTableHeader();
+		header.setBackground(new Color(240, 240, 240));
 		header.setFont(new Font("Times New Roman", Font.BOLD, 18));
-		header.setBackground(Color.WHITE);
-		header.setForeground(Color.BLACK);
-		header.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
-		
-		//Căn giữa cho dữ liệu trong cột
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        TableColumnModel columnModel = tblThuoc.getColumnModel();
-        for (int i = 0; i < columnModel.getColumnCount(); i++) {
-            columnModel.getColumn(i).setCellRenderer(centerRenderer);
-        }
-        
-        //Căn giữa cho tiêu đề table
-        ((DefaultTableCellRenderer) tblThuoc.getTableHeader().getDefaultRenderer())
-        .setHorizontalAlignment(SwingConstants.CENTER);
-		
+		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+
 		JScrollPane scroll = new JScrollPane(tblThuoc);
 		scroll.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
 		scroll.getViewport().setBackground(Color.WHITE);
 		scroll.setBackground(Color.WHITE);
 
 		add(scroll, BorderLayout.CENTER);
-		
-		//========BOTTOM: Nút quay lại =============
-		JPanel btnRowBottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
-		btnRowBottom.setBackground(Color.WHITE);
-		
-		btnQuayLai = tool.taoButton("Quay lại", "/picture/thuoc/return.png");
-		
-		btnRowBottom.add(btnQuayLai);
-		btnQuayLai.setVisible(false);
-		
-		add(btnRowBottom, BorderLayout.SOUTH);
+
+//		// ========BOTTOM: Nút quay lại =============
+//		JPanel btnRowBottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+//		btnRowBottom.setBackground(Color.WHITE);
+//
+//		btnQuayLai = tool.taoButton("Quay lại", "/picture/thuoc/return.png");
+//
+//		btnRowBottom.add(btnQuayLai);
+//		btnQuayLai.setVisible(false);
+//
+//		add(btnRowBottom, BorderLayout.SOUTH);
 		// ===== Sự kiện =====
 		ganSuKien();
 	}
@@ -159,24 +190,20 @@ public class TimKiemThuoc_GUI extends JPanel {
 		cmbTenThuoc.getEditor().setItem("");
 		cmbLoaiThuoc.setSelectedItem("Tất cả");
 		model.setRowCount(0);
-		thCtrl.setDataChoTable();
+		thCtrl.locTatCa(true);;
 	}
-	
-	//gắn sự kiện
+
+	// gắn sự kiện
 	public void ganSuKien() {
-		thCtrl.setDataChoTable();
+		thCtrl.locTatCa(true);
 		btnXemChiTiet.addActionListener(e -> thCtrl.xemChiTiet());
 		btnLamMoi.addActionListener(e -> onBtnLamMoi());
-		btnLichSuXoa.addActionListener(e -> thCtrl.xemThuocDaXoa());
+		btnLichSuXoa.addActionListener(e -> thCtrl.xuLyBtnLichSuXoa());
 		btnXoa.addActionListener(e -> thCtrl.xoaThuoc());
-		btnQuayLai.addActionListener(e -> thCtrl.quayLaiTrangTimKiem());
 		thCtrl.setKeThuoc();
 		thCtrl.setTenThuoc();
-		//ArrayList<String> dsTen = thCtrl.layDSTenThuoc();
-		//thCtrl.goiYTenThuoc(cmbTenThuoc, dsTen);
-		cmbLoaiThuoc.addActionListener(e -> thCtrl.timKiemThuocTheoLoai());
-		btnHoanTac.addActionListener(e -> thCtrl.hoanTacThuoc());
+		cmbLoaiThuoc.addActionListener(e -> thCtrl.locTatCa(thCtrl.isHienThi));
+		cmbTenThuoc.addActionListener(e -> thCtrl.locTatCa(thCtrl.isHienThi));
 	}
-	
-	
+
 }

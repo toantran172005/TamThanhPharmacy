@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -211,12 +213,12 @@ public class KhuyenMaiCtrl {
 	    ctGUI.dpNgayKT.setEnabled(status);
 	    ctGUI.cmbThemThuoc.setEnabled(status);
 	    ctGUI.btnThemThuoc.setEnabled(status);
+	    ctGUI.btnXoaThuoc.setEnabled(status);
 	    
 	    ctGUI.setTrangThaiCacNutBam(status);
 
 	    if (status) {
 	        ctGUI.btnCapNhat.setText("Lưu thay đổi");
-	        // đổi icon
 	    } else {
 	        ctGUI.btnCapNhat.setText("Cập nhật");
 	    }
@@ -522,5 +524,43 @@ public class KhuyenMaiCtrl {
 			tool.hienThiThongBao("Lỗi hệ thống", "Đã xảy ra lỗi không mong muốn: " + e.getMessage(), false);
 		}
 	}
+	
+	
+	//Xoá thuốc khỏi bảng chọn
+	public void xoaThuocTuBang(JTable table) {
+		int selectedRow = table.getSelectedRow();
+		
+		if(selectedRow == -1) {
+			tool.hienThiThongBao("Lỗi!", "Vui lòng chọn 1 thuốc để xoá.", false);
+			return;
+		}
+		
+		int confirm = JOptionPane.showConfirmDialog(null, 
+				"Bạn có chắc chắn muốn xoá thuốc này khỏi danh sách áp dụng không?",
+				"Xác nhận!", JOptionPane.YES_NO_OPTION);
+		
+		if(confirm == JOptionPane.YES_OPTION) {
+			try {
+				DefaultTableModel model = (DefaultTableModel) table.getModel();
+				int modelRow = table.convertRowIndexToModel(selectedRow);
+				model.removeRow(modelRow);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

@@ -44,66 +44,107 @@ public class KhuyenMaiDAO {
 		}
 		return null;
 	}
-
-//	public boolean capNhatKhuyenMai(KhuyenMai km) {
-//		String sql = """
-//				    UPDATE KhuyenMai
-//				    SET tenKM = ?,
-//				        mucKM = ?,
-//				        ngayBD = ?,
-//				        ngayKT = ?,
-//				        trangThai = ?,
-//				        loaiKM = ?,
-//				        soLuongMua = ?,
-//				        soLuongTang = ?
-//				    WHERE maKM = ?
-//				""";
+	
+//	public boolean capNhatKhuyenMai(KhuyenMai km, List<String> danhSachMaThuoc) {
+//	    Connection con = null;
+//	    PreparedStatement psKM = null;
+//	    PreparedStatement psThuoc = null;
+//	    
+//	    String sqlKM = """
+//	            UPDATE KhuyenMai
+//	            SET tenKM = ?,
+//	                mucKM = ?,
+//	                ngayBD = ?,
+//	                ngayKT = ?,
+//	                trangThai = ?,
+//	                loaiKM = ?,
+//	                soLuongMua = ?,
+//	                soLuongTang = ?
+//	            WHERE maKM = ?
+//	            """;
+//	            
+//	    String sqlThuoc = "UPDATE Thuoc SET maKM = ? WHERE maThuoc = ?";
 //
-//		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+//	    try {
+//	        con = KetNoiDatabase.getConnection();
+//	        con.setAutoCommit(false); 
 //
-//			ps.setString(1, km.getTenKM());
-//			ps.setInt(2, km.getMucKM());
-//			ps.setDate(3, tool.localDateSangSqlDate(km.getNgayBD()));
-//			ps.setDate(4, tool.localDateSangSqlDate(km.getNgayKT()));
-//			ps.setBoolean(5, km.isTrangThai());
-//			ps.setString(6, km.getLoaiKM());
-//			ps.setInt(7, km.getSoLuongMua());
-//			ps.setInt(8, km.getSoLuongTang());
-//			ps.setString(9, km.getMaKM());
+//	        psKM = con.prepareStatement(sqlKM);
+//	        psKM.setString(1, km.getTenKM());
+//	        psKM.setInt(2, km.getMucKM());
+//	        psKM.setDate(3, tool.localDateSangSqlDate(km.getNgayBD()));
+//	        psKM.setDate(4, tool.localDateSangSqlDate(km.getNgayKT()));
+//	        psKM.setBoolean(5, km.isTrangThai());
+//	        psKM.setString(6, km.getLoaiKM());
+//	        psKM.setInt(7, km.getSoLuongMua());
+//	        psKM.setInt(8, km.getSoLuongTang());
+//	        psKM.setString(9, km.getMaKM());
+//	        
+//	        int rows = psKM.executeUpdate();
 //
-//			int rows = ps.executeUpdate();
-//			return rows > 0;
+//	        if (rows > 0 && danhSachMaThuoc != null && !danhSachMaThuoc.isEmpty()) {
+//	            psThuoc = con.prepareStatement(sqlThuoc);
+//	            
+//	            for (String maThuoc : danhSachMaThuoc) {
+//	                psThuoc.setString(1, km.getMaKM()); 
+//	                psThuoc.setString(2, maThuoc);      
+//	                psThuoc.addBatch();
+//	            }
+//	            
+//	            psThuoc.executeBatch(); 
+//	        }
 //
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return false;
-//		}
+//	        con.commit();
+//	        return true;
+//
+//	    } catch (Exception e) {
+//	        e.printStackTrace();
+//	        try {
+//	            if (con != null) con.rollback(); 
+//	        } catch (SQLException ex) {
+//	            ex.printStackTrace();
+//	        }
+//	        return false;
+//	    } finally {
+//	        try {
+//	            if (psKM != null) psKM.close();
+//	            if (psThuoc != null) psThuoc.close();
+//	            if (con != null) {
+//	                con.setAutoCommit(true);
+//	                con.close();
+//	            }
+//	        } catch (SQLException e) {
+//	            e.printStackTrace();
+//	        }
+//	    }
 //	}
 	
 	public boolean capNhatKhuyenMai(KhuyenMai km, List<String> danhSachMaThuoc) {
 	    Connection con = null;
 	    PreparedStatement psKM = null;
+	    PreparedStatement psResetThuoc = null; // Statement để gỡ bỏ thuốc cũ
 	    PreparedStatement psThuoc = null;
 	    
+	    // Câu lệnh Update thông tin khuyến mãi
 	    String sqlKM = """
 	            UPDATE KhuyenMai
-	            SET tenKM = ?,
-	                mucKM = ?,
-	                ngayBD = ?,
-	                ngayKT = ?,
-	                trangThai = ?,
-	                loaiKM = ?,
-	                soLuongMua = ?,
-	                soLuongTang = ?
+	            SET tenKM = ?, mucKM = ?, ngayBD = ?, ngayKT = ?, 
+	                trangThai = ?, loaiKM = ?, soLuongMua = ?, soLuongTang = ?
 	            WHERE maKM = ?
 	            """;
 	            
+	    // BƯỚC QUAN TRỌNG: Gỡ bỏ tất cả thuốc đang thuộc KM này trước
+	    // Set maKM về NULL cho tất cả thuốc đang có maKM này
+	    String sqlResetThuoc = "UPDATE Thuoc SET maKM = NULL WHERE maKM = ?";
+
+	    // Câu lệnh gán lại thuốc mới vào KM
 	    String sqlThuoc = "UPDATE Thuoc SET maKM = ? WHERE maThuoc = ?";
 
 	    try {
 	        con = KetNoiDatabase.getConnection();
-	        con.setAutoCommit(false); 
+	        con.setAutoCommit(false); // Bắt đầu Transaction
 
+	        // 1. Cập nhật thông tin chung Khuyến Mãi
 	        psKM = con.prepareStatement(sqlKM);
 	        psKM.setString(1, km.getTenKM());
 	        psKM.setInt(2, km.getMucKM());
@@ -115,27 +156,33 @@ public class KhuyenMaiDAO {
 	        psKM.setInt(8, km.getSoLuongTang());
 	        psKM.setString(9, km.getMaKM());
 	        
-	        int rows = psKM.executeUpdate();
+	        psKM.executeUpdate();
 
-	        if (rows > 0 && danhSachMaThuoc != null && !danhSachMaThuoc.isEmpty()) {
+	        // 2. [FIX LỖI] Reset toàn bộ thuốc cũ của KM này về trạng thái chưa có KM
+	        psResetThuoc = con.prepareStatement(sqlResetThuoc);
+	        psResetThuoc.setString(1, km.getMaKM());
+	        psResetThuoc.executeUpdate();
+
+	        // 3. Cập nhật danh sách thuốc mới từ GUI vào KM
+	        if (danhSachMaThuoc != null && !danhSachMaThuoc.isEmpty()) {
 	            psThuoc = con.prepareStatement(sqlThuoc);
 	            
 	            for (String maThuoc : danhSachMaThuoc) {
-	                psThuoc.setString(1, km.getMaKM()); 
-	                psThuoc.setString(2, maThuoc);      
+	                psThuoc.setString(1, km.getMaKM()); // Gán maKM
+	                psThuoc.setString(2, maThuoc);      // Cho thuốc này
 	                psThuoc.addBatch();
 	            }
 	            
 	            psThuoc.executeBatch(); 
 	        }
 
-	        con.commit();
+	        con.commit(); // Xác nhận thành công
 	        return true;
 
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        try {
-	            if (con != null) con.rollback(); 
+	            if (con != null) con.rollback(); // Hoàn tác nếu lỗi
 	        } catch (SQLException ex) {
 	            ex.printStackTrace();
 	        }
@@ -143,6 +190,7 @@ public class KhuyenMaiDAO {
 	    } finally {
 	        try {
 	            if (psKM != null) psKM.close();
+	            if (psResetThuoc != null) psResetThuoc.close(); // Đóng psReset
 	            if (psThuoc != null) psThuoc.close();
 	            if (con != null) {
 	                con.setAutoCommit(true);
