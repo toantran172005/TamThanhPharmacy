@@ -110,9 +110,10 @@ public class LapPhieuDatHang_GUI extends JPanel {
 		
 		row2.add(tool.taoLabel("Quốc gia sản xuất:"));
 		cmbQuocGia = tool.taoComboBox(new String[] {});
-		cmbQuocGia.setEditable(false);
+		cmbQuocGia.setEditable(true);
 		cmbQuocGia.setPreferredSize(new Dimension(180, 28));
 		row2.add(cmbQuocGia);
+		setFieldHeight(cmbQuocGia);
 		pnlTop.add(row2);
 
 		// --- Hàng 3: Ngày hẹn, Đơn vị, Thêm ---
@@ -127,7 +128,7 @@ public class LapPhieuDatHang_GUI extends JPanel {
 
 		row3.add(tool.taoLabel("Đơn vị:"));
 		cmbDonVi = tool.taoComboBox(new String[] {});
-		cmbDonVi.setEditable(false);
+		cmbDonVi.setEditable(true);
 		row3.add(cmbDonVi);
 
 		btnThem = tool.taoButton("Thêm", "/picture/hoaDon/plus.png");
@@ -139,7 +140,7 @@ public class LapPhieuDatHang_GUI extends JPanel {
 		add(pnlTop, BorderLayout.NORTH);
 
 		// =================== CENTER ===================
-		String[] cols = {"Mã thuốc", "STT", "Tên thuốc", "Nơi sản xuất", "Số lượng", "Đơn vị", "Đơn giá", "Thành tiền"};
+		String[] cols = {"Mã thuốc", "STT", "Tên thuốc", "Nơi sản xuất", "Số lượng", "Đơn vị", "Đơn giá", "Thành tiền", "Ghi chú"};
 		model = new DefaultTableModel(cols, 0);
 		tblThuoc = new JTable(model);
 		tblThuoc.setRowHeight(25);
@@ -150,6 +151,7 @@ public class LapPhieuDatHang_GUI extends JPanel {
 		tblThuoc.getColumnModel().getColumn(0).setMinWidth(0);
 		tblThuoc.getColumnModel().getColumn(0).setMaxWidth(0);
 		tblThuoc.getColumnModel().getColumn(0).setPreferredWidth(0);
+		tblThuoc.getColumnModel().getColumn(8).setPreferredWidth(120);
 
 		// Đặt nền trắng cho bảng
 		tblThuoc.setBackground(Color.WHITE);
@@ -176,7 +178,7 @@ public class LapPhieuDatHang_GUI extends JPanel {
 		// Căn giữa tiêu đề cột
 		JTableHeader header = tblThuoc.getTableHeader();
 		header.setBackground(new Color(240, 240, 240));
-		header.setFont(font2);
+		header.setFont(new Font("Times New Roman", Font.BOLD, 17));
 		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
 		add(scrollPane, BorderLayout.CENTER);
@@ -205,6 +207,12 @@ public class LapPhieuDatHang_GUI extends JPanel {
 
 		pnlBottom.add(rowBtns);
 		add(pnlBottom, BorderLayout.SOUTH);
+	}
+	
+	public void setFieldHeight(JComponent comp) {
+		Dimension d = comp.getPreferredSize();
+		d.height = 36;
+		comp.setPreferredSize(d);
 	}
 
 	public TrangChuQL_GUI getTrangChuQL() {

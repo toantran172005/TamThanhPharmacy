@@ -96,8 +96,7 @@ public class ChiTietHoaDon_GUI extends JPanel {
 			}
 		};
 		tblThuoc = new JTable(model);
-		tblThuoc.setRowHeight(28);
-		tblThuoc.getTableHeader().setFont(font2);
+		tblThuoc.setRowHeight(30);
 		tblThuoc.setFont(font2);
 		tblThuoc.setBackground(Color.WHITE);
 		tblThuoc.getTableHeader().setBackground(new Color(240, 240, 240));
@@ -116,7 +115,7 @@ public class ChiTietHoaDon_GUI extends JPanel {
 
 		JTableHeader header = tblThuoc.getTableHeader();
 		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
-
+		header.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		add(scrollPane, BorderLayout.CENTER);
 
 		// ========== BOTTOM PANEL ==========

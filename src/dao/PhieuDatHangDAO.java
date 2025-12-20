@@ -240,17 +240,25 @@ public class PhieuDatHangDAO {
 		ArrayList<Object[]> list = new ArrayList<>();
 		String sql = """
 				    SELECT
-				        ct.maPDH,
-				        ct.maThuoc,
-				        t.tenThuoc,
-				        ct.soLuong,
-				        ct.maDVT,
-				        dvt.tenDVT,
-				        ct.donGia
-				    FROM CT_PhieuDatHang ct
-				    JOIN Thuoc t ON ct.maThuoc = t.maThuoc
-				    JOIN DonViTinh dvt ON ct.maDVT = dvt.maDVT
-				    WHERE ct.maPDH = ?
+				    ct.maPDH,
+				    ct.maThuoc,
+				    t.tenThuoc,
+				    ct.soLuong,
+				    ct.maDVT,
+				    dvt.tenDVT,
+				    ct.donGia,
+					SUM(CASE
+				       WHEN km.loaiKM = N'Giảm giá' THEN ct.soLuong * ct.donGia * (1 - km.mucKM / 100.0)
+				       WHEN km.loaiKM = N'Mua tặng' THEN
+				           (ct.soLuong - FLOOR(ct.soLuong / (km.soLuongMua + km.soLuongTang)) * km.soLuongTang) * ct.donGia
+				       ELSE ct.soLuong * ct.donGia
+				   END) AS thanhTien
+				FROM CT_PhieuDatHang ct
+				JOIN Thuoc t ON ct.maThuoc = t.maThuoc
+				JOIN DonViTinh dvt ON ct.maDVT = dvt.maDVT
+				LEFT JOIN KhuyenMai km ON t.maKM = km.maKM
+				WHERE ct.maPDH = ?
+				GROUP BY  ct.maPDH, ct.maThuoc, t.tenThuoc, ct.soLuong, ct.maDVT, dvt.tenDVT, ct.donGia
 				""";
 
 		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -260,7 +268,7 @@ public class PhieuDatHangDAO {
 
 			while (rs.next()) {
 				Object[] row = { rs.getString("maPDH"), rs.getString("maThuoc"), rs.getString("tenThuoc"),
-						rs.getInt("soLuong"), rs.getString("maDVT"), rs.getString("tenDVT"), rs.getDouble("donGia") };
+						rs.getInt("soLuong"), rs.getString("maDVT"), rs.getString("tenDVT"), rs.getDouble("donGia"), rs.getDouble("thanhTien") };
 				list.add(row);
 			}
 

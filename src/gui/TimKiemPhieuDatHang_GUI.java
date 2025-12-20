@@ -84,7 +84,7 @@ public class TimKiemPhieuDatHang_GUI extends JPanel {
 
 		JLabel lblTrangThai = tool.taoLabel("Trạng thái:");
 		cmbTrangThai = tool.taoComboBox(new String[] { "Tất cả", "Chờ hàng", "Đã giao", "Đã hủy" });
-		cmbTrangThai.setEditable(false);
+		cmbTrangThai.setEditable(true);
 
 		btnChiTiet = tool.taoButton("Xem chi tiết", "/picture/hoaDon/xemChiTiet.png");
 		btnLamMoi = tool.taoButton("Làm mới", "/picture/hoaDon/refresh.png");

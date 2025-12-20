@@ -114,7 +114,7 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 			String tenDVT = row[5].toString();
 			double donGia = (double) row[6];
 
-			double thanhTien = layThanhTien(thuoc, soLuong);
+			double thanhTien = (double) row[7];
 
 			modelThuoc.addRow(new Object[] { tenThuoc, noiSanXuat, soLuong, tenDVT, tool.dinhDangVND(donGia),
 					tool.dinhDangVND(thanhTien) });
@@ -129,36 +129,36 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 				.toLowerCase().trim();
 	}
 
-	public double layThanhTien(Thuoc thuoc, int sl) {
-
-		if (thuoc == null || sl <= 0)
-			return 0;
-
-		double donGia = thuoc.getGiaBan();
-		double giaGoc = donGia * sl;
-
-		String maKM = thDAO.layMaKMTheoMaThuoc(thuoc.getMaThuoc());
-		if (maKM == null || maKM.isEmpty())
-			return giaGoc;
-
-		KhuyenMai km = kmDAO.layKhuyenMaiTheoMa(maKM);
-		if (km == null)
-			return giaGoc;
-
-		if (!km.isTrangThai())
-			return giaGoc;
-
-		LocalDate homNay = LocalDate.now();
-		if (homNay.isBefore(km.getNgayBD()) || homNay.isAfter(km.getNgayKT()))
-			return giaGoc;
-
-		String loaiKM = boDau(km.getLoaiKM());
-		if (loaiKM.contains("giam")) {
-			return giaGoc * (1 - km.getMucKM() / 100.0);
-		}
-
-		return giaGoc;
-	}
+//	public double layThanhTien(Thuoc thuoc, int sl) {
+//
+//		if (thuoc == null || sl <= 0)
+//			return 0;
+//
+//		double donGia = thuoc.getGiaBan();
+//		double giaGoc = donGia * sl;
+//
+//		String maKM = thDAO.layMaKMTheoMaThuoc(thuoc.getMaThuoc());
+//		if (maKM == null || maKM.isEmpty())
+//			return giaGoc;
+//
+//		KhuyenMai km = kmDAO.layKhuyenMaiTheoMa(maKM);
+//		if (km == null)
+//			return giaGoc;
+//
+//		if (!km.isTrangThai())
+//			return giaGoc;
+//
+//		LocalDate homNay = LocalDate.now();
+//		if (homNay.isBefore(km.getNgayBD()) || homNay.isAfter(km.getNgayKT()))
+//			return giaGoc;
+//
+//		String loaiKM = boDau(km.getLoaiKM());
+//		if (loaiKM.contains("giam")) {
+//			return giaGoc * (1 - km.getMucKM() / 100.0);
+//		}
+//
+//		return giaGoc;
+//	}
 
 	public void initUI() {
 		setLayout(new BorderLayout());
