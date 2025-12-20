@@ -98,7 +98,7 @@ public class TrangChuQL_GUI extends JFrame {
 	    this.nhanVien = tk.getNhanVien();
 		setThuocTinhMainMenu();
 		hienThiTrangChu();
-		taoMappingPanel();
+		//taoMappingPanel();
 		hienThiThongTinNhanVien();
 		ganSuKien();
 
@@ -185,40 +185,94 @@ public class TrangChuQL_GUI extends JFrame {
 
 
 	/** Ánh xạ tên menu hoặc menu con sang panel tương ứng */
-	public void taoMappingPanel() {
-		// Menu chính
-		panelMapping.put("Trang chủ", taoPanelTrangChu());
-		panelMapping.put("Thuốc", taoPanelTam("Thuốc"));
-		panelMapping.put("Kệ Thuốc", taoPanelTam("Kệ Thuốc"));
-		panelMapping.put("Khách Hàng", taoPanelTam("Khách Hàng"));
-		panelMapping.put("Hóa Đơn", taoPanelTam("Hóa Đơn"));
-		panelMapping.put("Nhân Viên", taoPanelTam("Nhân Viên"));
-		panelMapping.put("Khuyến Mãi", taoPanelTam("Khuyến Mãi"));
-
-		// Menu con
-		panelMapping.put("Tìm kiếm thuốc", new TimKiemThuoc_GUI());
-		panelMapping.put("Thêm thuốc", new ThemThuoc_GUI());
-		panelMapping.put("Nhập thuốc", new NhapThuoc_GUI());
-		//panelMapping.put("Đặt thuốc bán", new DatThuoc_GUI());
-		panelMapping.put("Thống kê thuốc", new ThongKeThuoc_GUI());
-		panelMapping.put("Đơn vị", new DonVi_GUI());
-		panelMapping.put("Thuế", new Thue_GUI());
-		panelMapping.put("Danh sách kệ", new DanhSachKeThuoc_GUI());
-		panelMapping.put("Thêm kệ thuốc", new ThemKeThuoc_GUI());
-		panelMapping.put("Tìm kiếm khách hàng", new TimKiemKH_GUI());
-		panelMapping.put("Thêm khách hàng", new ThemKhachHang_GUI());
-		panelMapping.put("Khiếu nại & Hỗ trợ", new DanhSachKhieuNaiVaHoTroHK_GUI());
-		panelMapping.put("Thống kê khách hàng", new ThongKeKhachHang_GUI());
-		panelMapping.put("Tìm kiếm hóa đơn", new TimKiemHD_GUI(this));
-		panelMapping.put("Danh sách phiếu đặt thuốc", new TimKiemPhieuDatHang_GUI(this));
-		panelMapping.put("Lập hóa đơn", new LapHoaDon_GUI(this));
-		panelMapping.put("Đặt thuốc", new LapPhieuDatHang_GUI(this));
-		panelMapping.put("Danh sách phiếu đổi trả", new TimKiemPhieuDoiTra_GUI(this));
-		panelMapping.put("Thống kê hóa đơn", new ThongKeHoaDon_GUI());
-		panelMapping.put("Tìm kiếm nhân viên", new TimKiemNV_GUI(this));
-		panelMapping.put("Thêm nhân viên", new ThemNhanVien_GUI());
-		panelMapping.put("Danh sách khuyến mãi", new DanhSachKhuyenMai_GUI());
-		panelMapping.put("Thêm Khuyến Mãi", new ThemKhuyenMai_GUI());
+//	public void taoMappingPanel() {
+//		// Menu chính
+//		panelMapping.put("Trang chủ", taoPanelTrangChu());
+//		panelMapping.put("Thuốc", taoPanelTam("Thuốc"));
+//		panelMapping.put("Kệ Thuốc", taoPanelTam("Kệ Thuốc"));
+//		panelMapping.put("Khách Hàng", taoPanelTam("Khách Hàng"));
+//		panelMapping.put("Hóa Đơn", taoPanelTam("Hóa Đơn"));
+//		panelMapping.put("Nhân Viên", taoPanelTam("Nhân Viên"));
+//		panelMapping.put("Khuyến Mãi", taoPanelTam("Khuyến Mãi"));
+//
+//		// Menu con
+//		panelMapping.put("Tìm kiếm thuốc", new TimKiemThuoc_GUI());
+//		panelMapping.put("Thêm thuốc", new ThemThuoc_GUI());
+//		panelMapping.put("Nhập thuốc", new NhapThuoc_GUI());
+//		//panelMapping.put("Đặt thuốc bán", new DatThuoc_GUI());
+//		panelMapping.put("Thống kê thuốc", new ThongKeThuoc_GUI());
+//		panelMapping.put("Đơn vị", new DonVi_GUI());
+//		panelMapping.put("Thuế", new Thue_GUI());
+//		panelMapping.put("Danh sách kệ", new DanhSachKeThuoc_GUI());
+//		panelMapping.put("Thêm kệ thuốc", new ThemKeThuoc_GUI());
+//		panelMapping.put("Tìm kiếm khách hàng", new TimKiemKH_GUI());
+//		panelMapping.put("Thêm khách hàng", new ThemKhachHang_GUI());
+//		panelMapping.put("Khiếu nại & Hỗ trợ", new DanhSachKhieuNaiVaHoTroHK_GUI());
+//		panelMapping.put("Thống kê khách hàng", new ThongKeKhachHang_GUI());
+//		panelMapping.put("Tìm kiếm hóa đơn", new TimKiemHD_GUI(this));
+//		panelMapping.put("Danh sách phiếu đặt thuốc", new TimKiemPhieuDatHang_GUI(this));
+//		panelMapping.put("Lập hóa đơn", new LapHoaDon_GUI(this));
+//		panelMapping.put("Đặt thuốc", new LapPhieuDatHang_GUI(this));
+//		panelMapping.put("Danh sách phiếu đổi trả", new TimKiemPhieuDoiTra_GUI(this));
+//		panelMapping.put("Thống kê hóa đơn", new ThongKeHoaDon_GUI());
+//		panelMapping.put("Tìm kiếm nhân viên", new TimKiemNV_GUI(this));
+//		panelMapping.put("Thêm nhân viên", new ThemNhanVien_GUI());
+//		panelMapping.put("Danh sách khuyến mãi", new DanhSachKhuyenMai_GUI());
+//		panelMapping.put("Thêm Khuyến Mãi", new ThemKhuyenMai_GUI());
+//	}
+	
+	public JPanel taoPanelTheoTenMenu(String tenMenu) {
+	    switch (tenMenu) {
+	        // === TRANG CHỦ ===
+	        case "Trang chủ": return taoPanelTrangChu();
+	        
+	        // === MENU CON CỦA THUỐC ===
+	        case "Tìm kiếm thuốc": return new TimKiemThuoc_GUI();
+	        case "Thêm thuốc": return new ThemThuoc_GUI();
+	        case "Nhập thuốc": return new NhapThuoc_GUI();
+	        // case "Đặt thuốc bán": return new DatThuoc_GUI();
+	        case "Thống kê thuốc": return new ThongKeThuoc_GUI();
+	        case "Đơn vị": return new DonVi_GUI();
+	        case "Thuế": return new Thue_GUI();
+	        
+	        // === MENU CON CỦA KỆ THUỐC ===
+	        case "Danh sách kệ": return new DanhSachKeThuoc_GUI();
+	        case "Thêm kệ thuốc": return new ThemKeThuoc_GUI();
+	        
+	        // === MENU CON CỦA KHÁCH HÀNG ===
+	        case "Tìm kiếm khách hàng": return new TimKiemKH_GUI();
+	        case "Thêm khách hàng": return new ThemKhachHang_GUI();
+	        case "Khiếu nại & Hỗ trợ": return new DanhSachKhieuNaiVaHoTroHK_GUI();
+	        case "Thống kê khách hàng": return new ThongKeKhachHang_GUI();
+	        
+	        // === MENU CON CỦA HÓA ĐƠN ===
+	        // Lưu ý: Các GUI này cần truyền 'this' (TrangChuQL_GUI) vào constructor
+	        case "Tìm kiếm hóa đơn": return new TimKiemHD_GUI(this);
+	        case "Danh sách phiếu đặt thuốc": return new TimKiemPhieuDatHang_GUI(this);
+	        case "Lập hóa đơn": return new LapHoaDon_GUI(this);
+	        case "Đặt thuốc": return new LapPhieuDatHang_GUI(this);
+	        case "Danh sách phiếu đổi trả": return new TimKiemPhieuDoiTra_GUI(this);
+	        case "Thống kê hóa đơn": return new ThongKeHoaDon_GUI();
+	        
+	        // === MENU CON CỦA NHÂN VIÊN ===
+	        case "Tìm kiếm nhân viên": return new TimKiemNV_GUI(this);
+	        case "Thêm nhân viên": return new ThemNhanVien_GUI();
+	        
+	        // === MENU CON CỦA KHUYẾN MÃI ===
+	        case "Danh sách khuyến mãi": return new DanhSachKhuyenMai_GUI();
+	        case "Thêm Khuyến Mãi": return new ThemKhuyenMai_GUI();
+	        
+	        // === MENU CHA (Dùng panel tạm) ===
+	        case "Thuốc":
+	        case "Kệ Thuốc":
+	        case "Khách Hàng":
+	        case "Hóa Đơn":
+	        case "Nhân Viên":
+	        case "Khuyến Mãi":
+	            return taoPanelTam(tenMenu);
+	            
+	        default: return taoPanelTam(tenMenu);
+	    }
 	}
 
 	// ================== THÊM MENU ==================
@@ -251,8 +305,8 @@ public class TrangChuQL_GUI extends JFrame {
 
 				// CHỈ "TRANG CHỦ" MỚI ĐỔI NỘI DUNG
 				if ("Trang chủ".equals(text)) {
-					JPanel p = panelMapping.getOrDefault(text, taoPanelTam(text));
-					setUpNoiDung(p);
+					JPanel p = taoPanelTheoTenMenu(text);
+			        setUpNoiDung(p);
 				}
 				// Các menu khác → chỉ mở submenu, không đổi nội dung
 			}
@@ -350,8 +404,8 @@ public class TrangChuQL_GUI extends JFrame {
 					lbl.setForeground(Color.decode("#00ADFE"));
 					lbl.setFont(font2.deriveFont(Font.BOLD));
 
-					JPanel p = panelMapping.getOrDefault(sub, taoPanelTam(sub));
-					setUpNoiDung(p);
+					JPanel p = taoPanelTheoTenMenu(sub); 
+				    setUpNoiDung(p);
 					selectedMenu = sub;
 
 					// Tự động mở submenu khi chọn menu con

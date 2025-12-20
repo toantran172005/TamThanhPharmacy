@@ -336,4 +336,92 @@ public class PhieuDatHangDAO {
 			return false;
 		}
 	}
+
+	public PhieuDatHang timTheoMa(String maPDH) {
+		PhieuDatHang pdh = null;
+
+		String sql = """
+				    SELECT pdh.maPDH,
+				           pdh.ngayDat,
+				           pdh.ngayHen,
+				           pdh.diaChiHT,
+				           pdh.tenHT,
+				           pdh.ghiChu,
+				           pdh.hotline,
+				           pdh.trangThai,
+				           kh.maKH,
+				           kh.tenKH,
+				           kh.sdt,
+				           kh.tuoi,
+				           nv.maNV,
+				           nv.tenNV
+				    FROM PhieuDatHang pdh
+				    JOIN KhachHang kh ON pdh.maKH = kh.maKH
+				    JOIN NhanVien nv ON pdh.maNV = nv.maNV
+				    WHERE pdh.maPDH = ?
+				""";
+
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setString(1, maPDH);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+
+				KhachHang kh = new KhachHang(rs.getString("maKH"), rs.getString("tenKH"), rs.getInt("tuoi"),
+						rs.getString("sdt"));
+
+				NhanVien nv = new NhanVien(rs.getString("maNV"), rs.getString("tenNV"));
+
+				pdh = new PhieuDatHang(rs.getString("maPDH"), kh, nv, rs.getDate("ngayDat").toLocalDate(),
+						rs.getDate("ngayHen") != null ? rs.getDate("ngayHen").toLocalDate() : null,
+						rs.getString("diaChiHT"), rs.getString("tenHT"), rs.getString("ghiChu"),
+						rs.getString("hotline"), rs.getString("trangThai"));
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return pdh;
+	}
+
+	public List<Object[]> layChiTietPhieuDatHang(String maPDH) {
+		List<Object[]> ds = new ArrayList<>();
+		String sql = """
+				    SELECT t.tenThuoc,
+				           qg.tenQuocGia,
+				           ct.soLuong,
+				           dvt.tenDVT,
+				           ct.donGia,
+				           (ct.soLuong * ct.donGia) AS thanhTien
+				    FROM CT_PhieuDatHang ct
+				    JOIN Thuoc t ON ct.maThuoc = t.maThuoc
+				    JOIN QuocGia qg ON t.maQuocGia = qg.maQuocGia
+				    JOIN DonViTinh dvt ON ct.maDVT = dvt.maDVT
+				    WHERE ct.maPDH = ?
+				""";
+
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setString(1, maPDH);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				Object[] row = new Object[] { rs.getString("tenThuoc"), // [0]
+						rs.getString("tenQuocGia"), // [1]
+						rs.getInt("soLuong"), // [2]
+						rs.getString("tenDVT"), // [3]
+						rs.getDouble("donGia"), // [4]
+						rs.getDouble("thanhTien") // [5]
+				};
+				ds.add(row);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ds;
+	}
+
 }

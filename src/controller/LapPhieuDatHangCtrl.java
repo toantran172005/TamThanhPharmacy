@@ -7,6 +7,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.Normalizer;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -29,19 +30,18 @@ import javax.swing.table.DefaultTableModel;
 
 import dao.DonViTinhDAO;
 import dao.KhachHangDAO;
+import dao.KhuyenMaiDAO;
 import dao.PhieuDatHangDAO;
 import dao.ThuocDAO;
 import entity.DonViTinh;
 import entity.KhachHang;
+import entity.KhuyenMai;
 import entity.NhanVien;
 import entity.QuocGia;
 import entity.Thuoc;
 import gui.LapPhieuDatHang_GUI;
 
 public class LapPhieuDatHangCtrl {
-
-//	String maThuoc = thDAO.layMaThuocTheoTen(tenThuoc);
-//	donVi = thDAO.layTenDonViTinhTheoMaThuoc(maThuoc);
 
 	public LapPhieuDatHang_GUI lpdhGUI;
 	public PhieuDatHangDAO pdhDAO = new PhieuDatHangDAO();
@@ -52,6 +52,7 @@ public class LapPhieuDatHangCtrl {
 	public ArrayList<Thuoc> listThuoc;
 	public ToolCtrl tool = new ToolCtrl();
 	public ArrayList<KhachHang> listKH = khDAO.layListKhachHang();
+	public KhuyenMaiDAO kmDAO = new KhuyenMaiDAO();
 
 	public LapPhieuDatHangCtrl(LapPhieuDatHang_GUI lpdhGUI) {
 		super();
@@ -100,7 +101,6 @@ public class LapPhieuDatHangCtrl {
 			double donGia = 0;
 			maThuoc = lpdhGUI.model.getValueAt(i, 0).toString();
 			donGia = thDAO.layDonGiaTheoMaThuoc(maThuoc);
-
 
 			if (maThuoc == null) {
 				tool.hienThiThongBao("Chi tiết phiếu đặt", "Không tìm thấy thuốc: " + tenThuoc, false);
@@ -159,6 +159,45 @@ public class LapPhieuDatHangCtrl {
 		tool.hienThiThongBao("Thành công", "Đã xóa thuốc khỏi danh sách!", true);
 	}
 
+	public static String boDau(String s) {
+		if (s == null)
+			return "";
+		return Normalizer.normalize(s, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
+				.toLowerCase().trim();
+	}
+
+	public double layThanhTien(Thuoc thuoc, int sl) {
+
+	    if (thuoc == null || sl <= 0)
+	        return 0;
+
+	    double donGia = thuoc.getGiaBan();
+	    double giaGoc = donGia * sl;
+
+	    String maKM = thDAO.layMaKMTheoMaThuoc(thuoc.getMaThuoc());
+	    if (maKM == null || maKM.isEmpty())
+	        return giaGoc;
+
+	    KhuyenMai km = kmDAO.layKhuyenMaiTheoMa(maKM);
+	    if (km == null)
+	        return giaGoc;
+	    System.out.print(km.getLoaiKM());
+
+	    if (!km.isTrangThai())
+	        return giaGoc;
+
+	    LocalDate homNay = LocalDate.now();
+	    if (homNay.isBefore(km.getNgayBD()) || homNay.isAfter(km.getNgayKT()))
+	        return giaGoc;
+
+	    String loaiKM = boDau(km.getLoaiKM());
+	    if (loaiKM.contains("giam")) {
+	        return giaGoc * (1 - km.getMucKM() / 100.0);
+	    }
+
+	    return giaGoc;
+	}
+
 	public void themVaoTable() {
 
 		String sdt = lpdhGUI.txtSdt.getText().trim();
@@ -167,6 +206,14 @@ public class LapPhieuDatHangCtrl {
 		String tenThuoc = (String) lpdhGUI.cmbSanPham.getSelectedItem();
 		String donVi = (String) lpdhGUI.cmbDonVi.getSelectedItem();
 		String soLuongStr = lpdhGUI.txtSoLuong.getText().trim();
+
+		String tenQG = (String) lpdhGUI.getCmbQuocGia().getSelectedItem();
+		String maThuoc = thDAO.layMaThuocTheoTenVaQG(tenThuoc, tenQG);
+
+		double donGia = thDAO.layDonGiaTheoMaThuoc(maThuoc);
+
+		Thuoc thuoc = thDAO.timThuocTheoMa(maThuoc);
+		double thanhTien = layThanhTien(thuoc, Integer.parseInt(soLuongStr));
 		java.util.Date ngayUtil = lpdhGUI.ngayHen.getDate();
 
 		if (sdt.isEmpty() || tenKH.isEmpty() || tuoiStr.isEmpty() || tenThuoc == null || tenThuoc.isEmpty()
@@ -207,11 +254,9 @@ public class LapPhieuDatHangCtrl {
 
 		DefaultTableModel model = (DefaultTableModel) lpdhGUI.tblThuoc.getModel();
 		int stt = model.getRowCount() + 1;
-		String tenQG = (String) lpdhGUI.getCmbQuocGia().getSelectedItem();
 
-
-		String maThuoc = thDAO.layMaThuocTheoTenVaQG(tenThuoc, tenQG);
-		Object[] row = { maThuoc, stt, tenThuoc, tenQG, soLuong, donVi };
+		Object[] row = { maThuoc, stt, tenThuoc, tenQG, soLuong, donVi, tool.dinhDangVND(donGia),
+				tool.dinhDangVND(thanhTien) };
 		model.addRow(row);
 
 		lpdhGUI.cmbSanPham.setSelectedIndex(-1);
@@ -240,7 +285,9 @@ public class LapPhieuDatHangCtrl {
 		listThuoc = thDAO.layListThuocHoanChinh();
 		lpdhGUI.cmbSanPham.addItem("");
 		for (Thuoc th : listThuoc) {
-			lpdhGUI.cmbSanPham.addItem(th.getTenThuoc());
+			if (th.isTrangThai()) {
+				lpdhGUI.cmbSanPham.addItem(th.getTenThuoc());
+			}
 		}
 
 		lpdhGUI.cmbSanPham.addActionListener(e -> {

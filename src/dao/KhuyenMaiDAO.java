@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class KhuyenMaiDAO {
 	ThuocDAO thuocDAO = new ThuocDAO();
 
 	public KhuyenMai layKhuyenMaiTheoMa(String maKM) {
-		String sql = "SELECT * FROM KhuyenMai WHERE maKM = ? AND trangThai = 1";
+		String sql = "SELECT * FROM KhuyenMai WHERE maKM = ?";
 		try (Connection conn = KetNoiDatabase.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
 			ps.setString(1, maKM);
@@ -43,6 +44,26 @@ public class KhuyenMaiDAO {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public void capNhatTrangThaiHetHan() {
+	    String sql = "UPDATE KhuyenMai SET trangThai = 0 WHERE ngayKT < ? AND trangThai = 1";
+	    try (Connection con = KetNoiDatabase.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        java.sql.Date homNay = java.sql.Date.valueOf(LocalDate.now());
+
+	        ps.setDate(1, homNay);
+	        
+	        int rows = ps.executeUpdate();
+	        
+	        if (rows > 0) {
+	            System.out.println("Đã tự động ngưng hoạt động " + rows + " khuyến mãi hết hạn.");
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 //	public boolean capNhatKhuyenMai(KhuyenMai km, List<String> danhSachMaThuoc) {
@@ -122,29 +143,23 @@ public class KhuyenMaiDAO {
 	public boolean capNhatKhuyenMai(KhuyenMai km, List<String> danhSachMaThuoc) {
 	    Connection con = null;
 	    PreparedStatement psKM = null;
-	    PreparedStatement psResetThuoc = null; // Statement để gỡ bỏ thuốc cũ
+	    PreparedStatement psResetThuoc = null;
 	    PreparedStatement psThuoc = null;
 	    
-	    // Câu lệnh Update thông tin khuyến mãi
 	    String sqlKM = """
 	            UPDATE KhuyenMai
 	            SET tenKM = ?, mucKM = ?, ngayBD = ?, ngayKT = ?, 
 	                trangThai = ?, loaiKM = ?, soLuongMua = ?, soLuongTang = ?
 	            WHERE maKM = ?
 	            """;
-	            
-	    // BƯỚC QUAN TRỌNG: Gỡ bỏ tất cả thuốc đang thuộc KM này trước
-	    // Set maKM về NULL cho tất cả thuốc đang có maKM này
 	    String sqlResetThuoc = "UPDATE Thuoc SET maKM = NULL WHERE maKM = ?";
 
-	    // Câu lệnh gán lại thuốc mới vào KM
 	    String sqlThuoc = "UPDATE Thuoc SET maKM = ? WHERE maThuoc = ?";
 
 	    try {
 	        con = KetNoiDatabase.getConnection();
-	        con.setAutoCommit(false); // Bắt đầu Transaction
+	        con.setAutoCommit(false); 
 
-	        // 1. Cập nhật thông tin chung Khuyến Mãi
 	        psKM = con.prepareStatement(sqlKM);
 	        psKM.setString(1, km.getTenKM());
 	        psKM.setInt(2, km.getMucKM());
@@ -158,7 +173,6 @@ public class KhuyenMaiDAO {
 	        
 	        psKM.executeUpdate();
 
-	        // 2. [FIX LỖI] Reset toàn bộ thuốc cũ của KM này về trạng thái chưa có KM
 	        psResetThuoc = con.prepareStatement(sqlResetThuoc);
 	        psResetThuoc.setString(1, km.getMaKM());
 	        psResetThuoc.executeUpdate();
@@ -168,21 +182,21 @@ public class KhuyenMaiDAO {
 	            psThuoc = con.prepareStatement(sqlThuoc);
 	            
 	            for (String maThuoc : danhSachMaThuoc) {
-	                psThuoc.setString(1, km.getMaKM()); // Gán maKM
-	                psThuoc.setString(2, maThuoc);      // Cho thuốc này
+	                psThuoc.setString(1, km.getMaKM());
+	                psThuoc.setString(2, maThuoc);      
 	                psThuoc.addBatch();
 	            }
 	            
 	            psThuoc.executeBatch(); 
 	        }
 
-	        con.commit(); // Xác nhận thành công
+	        con.commit();
 	        return true;
 
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        try {
-	            if (con != null) con.rollback(); // Hoàn tác nếu lỗi
+	            if (con != null) con.rollback(); 
 	        } catch (SQLException ex) {
 	            ex.printStackTrace();
 	        }
@@ -190,7 +204,7 @@ public class KhuyenMaiDAO {
 	    } finally {
 	        try {
 	            if (psKM != null) psKM.close();
-	            if (psResetThuoc != null) psResetThuoc.close(); // Đóng psReset
+	            if (psResetThuoc != null) psResetThuoc.close();
 	            if (psThuoc != null) psThuoc.close();
 	            if (con != null) {
 	                con.setAutoCommit(true);
@@ -205,7 +219,7 @@ public class KhuyenMaiDAO {
 	public ArrayList<KhuyenMai> layDanhSachKM() {
 		ArrayList<KhuyenMai> list = new ArrayList<>();
 
-		String query = "select *\r\n" + "from [dbo].[KhuyenMai]\r\n" + "where [trangThai] = 1\r\n"
+		String query = "select *\r\n" + "from [dbo].[KhuyenMai]\r\n"
 				+ "order by TRY_CAST(REPLACE([maKM], 'TTKM', '') as int)";
 
 		try (Connection con = KetNoiDatabase.getConnection();

@@ -105,10 +105,14 @@ public class ChiTietThuoc_GUI extends JPanel {
         vboxRight.setLayout(new BoxLayout(vboxRight, BoxLayout.Y_AXIS));
         vboxRight.setBackground(Color.WHITE);
 
-        cmbDonViTinh = tool.taoComboBox(new String[]{"Viên", "Vỉ", "Hộp"});
-        cmbThue = tool.taoComboBox(new String[]{"0%", "5%", "8%", "10%"});
-        cmbKeThuoc = tool.taoComboBox(new String[]{"Kệ A", "Kệ B", "Kệ C"});
-        cmbQuocGia = tool.taoComboBox(new String[] {"Việt Nam", "Mỹ", "Nhật Bản"});
+        cmbDonViTinh = new JComboBox<String>();
+        cmbDonViTinh.setPreferredSize(new Dimension(190, 34));
+        cmbThue = new JComboBox<String>();
+        cmbThue.setPreferredSize(new Dimension(190, 34));
+        cmbKeThuoc = new JComboBox<String>();
+        cmbKeThuoc.setPreferredSize(new Dimension(190, 34));
+        cmbQuocGia = new JComboBox<String>();
+        cmbQuocGia.setPreferredSize(new Dimension(190, 34));
 
         vboxRight.add(taoDong("Đơn vị tính:", cmbDonViTinh));
         vboxRight.add(Box.createVerticalStrut(5));
@@ -152,6 +156,11 @@ public class ChiTietThuoc_GUI extends JPanel {
 
 	//gắn sự kiện
     public void ganSuKien() {
+    	ctCtrl.setCmbDonVi();
+    	ctCtrl.setCmbKeThuoc();
+    	ctCtrl.setCmbQuocGia();
+    	ctCtrl.setCmbThue();
+    	
     	ctCtrl.xemChiTietThuoc(maThuoc);
     	btnQuayLai.addActionListener(e -> ctCtrl.quayLaiTrangTimKiem());
     	btnChonAnh.addActionListener(e -> ctCtrl.chonAnh());

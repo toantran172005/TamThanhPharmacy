@@ -47,24 +47,21 @@ public class KhuyenMaiCtrl {
 	public KhuyenMaiCtrl(ThemKhuyenMai_GUI themKhuyenMai_GUI) {
 		this.themKmGUI = themKhuyenMai_GUI;
 	}
-	
-//	public void setKmGUI(DanhSachKhuyenMai_GUI kmGUI) {
-//	    this.kmGUI = kmGUI;
-//	}
 
 	//Đổ dữ liệu lên bảng
 	public void setDataChoTable() {
+		kmDAO.capNhatTrangThaiHetHan();
 		listKM = kmDAO.layDanhSachKM();
 		DefaultTableModel model = (DefaultTableModel) kmGUI.tblKhuyenMai.getModel();
-		
+		model.setRowCount(0);
 		for(KhuyenMai km : listKM) {
 			model.addRow(new Object[] {
 					km.getMaKM(),
 					km.getTenKM(),
 					km.getLoaiKM(),
 					km.getMucKhuyenMai(),
-					km.getNgayBD(),
-					km.getNgayKT(),
+					tool.dinhDangLocalDate(km.getNgayBD()),
+					tool.dinhDangLocalDate(km.getNgayKT()),
 					km.getTrangThaiHD()
 			});
 			

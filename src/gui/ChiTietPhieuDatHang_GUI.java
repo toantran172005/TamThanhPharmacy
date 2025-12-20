@@ -8,11 +8,18 @@ import javax.swing.table.JTableHeader;
 
 import controller.ChiTietPDHCtrl;
 import controller.ToolCtrl;
+import dao.DonViTinhDAO;
+import dao.KhuyenMaiDAO;
 import dao.PhieuDatHangDAO;
 import dao.ThuocDAO;
+import entity.DonViTinh;
+import entity.KhuyenMai;
 import entity.PhieuDatHang;
+import entity.Thuoc;
 
 import java.awt.*;
+import java.text.Normalizer;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ChiTietPhieuDatHang_GUI extends JPanel {
@@ -26,12 +33,18 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 	public TrangChuQL_GUI mainFrameQL;
 	public TrangChuNV_GUI mainFrameNV;
 	public PhieuDatHangDAO pdhDAO = new PhieuDatHangDAO();
+	public KhuyenMaiDAO kmDAO = new KhuyenMaiDAO();
+	public DonViTinhDAO dvtDAO = new DonViTinhDAO();
 	Font font1 = new Font("Time New Roman", Font.BOLD, 18);
 	Font font2 = new Font("Time New Roman", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
 	public PhieuDatHang pdh;
 	public ChiTietPDHCtrl ctpdhCtrl = new ChiTietPDHCtrl(this);
 	public ThuocDAO thDAO = new ThuocDAO();
+	public JComboBox<String> cmbPTThanhToan;
+	public JLabel lblTongTien;
+	public JTextField txtTienNhan;
+	public JLabel lblTienThua;
 
 	public ChiTietPhieuDatHang_GUI(TrangChuQL_GUI mainFrame, PhieuDatHang pdh) {
 		this.mainFrameQL = mainFrame;
@@ -93,23 +106,58 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 
 		for (Object[] row : pdhDAO.layDanhSachThuocTheoPDH(pdh.getMaPDH())) {
 
-		    String tenThuoc = row[2].toString();
-		    String noiSanXuat = thDAO.timTenQGTheoMaThuoc(row[1].toString());
-		    int soLuong = (int) row[3];
-		    String tenDVT = row[5].toString();
-		    double donGia = (double) row[6];
-		    double thanhTien = soLuong * donGia;
+			String tenThuoc = row[2].toString();
+			Thuoc thuoc = thDAO.timThuocTheoMa(thDAO.layMaThuocTheoTen(tenThuoc));
 
-		    modelThuoc.addRow(new Object[] {
-		        tenThuoc,
-		        noiSanXuat,              
-		        soLuong,
-		        tenDVT,
-		        tool.dinhDangVND(donGia),
-		        tool.dinhDangVND(thanhTien)
-		    });
+			String noiSanXuat = thDAO.timTenQGTheoMaThuoc(row[1].toString());
+			int soLuong = (int) row[3];
+			String tenDVT = row[5].toString();
+			double donGia = (double) row[6];
+
+			double thanhTien = layThanhTien(thuoc, soLuong);
+
+			modelThuoc.addRow(new Object[] { tenThuoc, noiSanXuat, soLuong, tenDVT, tool.dinhDangVND(donGia),
+					tool.dinhDangVND(thanhTien) });
 		}
 
+	}
+
+	public static String boDau(String s) {
+		if (s == null)
+			return "";
+		return Normalizer.normalize(s, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
+				.toLowerCase().trim();
+	}
+
+	public double layThanhTien(Thuoc thuoc, int sl) {
+
+		if (thuoc == null || sl <= 0)
+			return 0;
+
+		double donGia = thuoc.getGiaBan();
+		double giaGoc = donGia * sl;
+
+		String maKM = thDAO.layMaKMTheoMaThuoc(thuoc.getMaThuoc());
+		if (maKM == null || maKM.isEmpty())
+			return giaGoc;
+
+		KhuyenMai km = kmDAO.layKhuyenMaiTheoMa(maKM);
+		if (km == null)
+			return giaGoc;
+
+		if (!km.isTrangThai())
+			return giaGoc;
+
+		LocalDate homNay = LocalDate.now();
+		if (homNay.isBefore(km.getNgayBD()) || homNay.isAfter(km.getNgayKT()))
+			return giaGoc;
+
+		String loaiKM = boDau(km.getLoaiKM());
+		if (loaiKM.contains("giam")) {
+			return giaGoc * (1 - km.getMucKM() / 100.0);
+		}
+
+		return giaGoc;
 	}
 
 	public void initUI() {
@@ -117,6 +165,7 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 		setPreferredSize(new Dimension(1058, 509));
 		setBackground(Color.WHITE);
 
+		// ===== TOP =====
 		JPanel pnlTop = new JPanel();
 		pnlTop.setLayout(new BoxLayout(pnlTop, BoxLayout.Y_AXIS));
 		pnlTop.setBorder(new EmptyBorder(10, 0, 10, 0));
@@ -130,23 +179,20 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 		pnlTop.add(Box.createVerticalStrut(10));
 		JPanel pnlDiaChi = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
 		pnlDiaChi.setBackground(Color.WHITE);
-		JLabel lblDC = tool.taoLabel("Địa chỉ: ");
+		pnlDiaChi.add(tool.taoLabel("Địa chỉ: "));
 		lblDiaChi = tool.taoLabel("");
-		pnlDiaChi.add(lblDC);
 		pnlDiaChi.add(lblDiaChi);
 		pnlTop.add(pnlDiaChi);
 
 		JPanel pnlHotline = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
 		pnlHotline.setBackground(Color.WHITE);
-		JLabel lblHL = tool.taoLabel("Hotline: ");
+		pnlHotline.add(tool.taoLabel("Hotline: "));
 		lblHotline = tool.taoLabel("");
-		pnlHotline.add(lblHL);
 		pnlHotline.add(lblHotline);
 		pnlTop.add(pnlHotline);
 
 		JLabel lblChiTiet = new JLabel("CHI TIẾT PHIẾU ĐẶT THUỐC", SwingConstants.CENTER);
 		lblChiTiet.setFont(font1);
-		lblChiTiet.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblChiTiet.setBorder(new EmptyBorder(10, 0, 10, 0));
 		pnlTop.add(lblChiTiet);
 
@@ -158,6 +204,7 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 
 		add(pnlTop, BorderLayout.NORTH);
 
+		// ===== CENTER =====
 		JPanel pnlCenter = new JPanel();
 		pnlCenter.setLayout(new BoxLayout(pnlCenter, BoxLayout.Y_AXIS));
 		pnlCenter.setBorder(new EmptyBorder(10, 20, 10, 20));
@@ -190,21 +237,61 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 		pnlCenter.add(scrollPane);
 
 		pnlCenter.add(Box.createVerticalStrut(15));
-		pnlCenter.add(taoDongThongTin("Ghi chú:", txaGhiChu = tool.taoTextArea(30)));
 
-		pnlCenter.add(Box.createVerticalStrut(10));
+		JPanel pnlThongTin = new JPanel(new BorderLayout(30, 0));
+		pnlThongTin.setBackground(Color.WHITE);
+
+		JPanel pnlLeft = new JPanel();
+		pnlLeft.setLayout(new BoxLayout(pnlLeft, BoxLayout.Y_AXIS));
+		pnlLeft.setBackground(Color.WHITE);
+
+		pnlLeft.add(taoDongThongTin("Ghi chú:", txaGhiChu = tool.taoTextArea(30)));
+		pnlLeft.add(Box.createVerticalStrut(10));
+
 		JPanel trangThaiPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
 		trangThaiPanel.setBackground(Color.WHITE);
-		JLabel lblTrangThai = tool.taoLabel("Trạng thái:");
-		cmbTrangThai = tool.taoComboBox(new String[] {"Đã giao","Chờ hàng", "Đã hủy" });
+		trangThaiPanel.add(tool.taoLabel("Trạng thái:"));
+		cmbTrangThai = tool.taoComboBox(new String[] { "Đã giao", "Chờ hàng", "Đã hủy" });
 		cmbTrangThai.setPreferredSize(new Dimension(150, 30));
-		cmbTrangThai.setEditable(false);
-		trangThaiPanel.add(lblTrangThai);
 		trangThaiPanel.add(cmbTrangThai);
-		pnlCenter.add(trangThaiPanel);
+		pnlLeft.add(trangThaiPanel);
 
+		JPanel pnlRight = new JPanel();
+		pnlRight.setLayout(new BoxLayout(pnlRight, BoxLayout.Y_AXIS));
+		pnlRight.setBackground(Color.WHITE);
+
+		JPanel row1 = taoHangTrai();
+		row1.add(tool.taoLabel("Phương thức thanh toán:"));
+		cmbPTThanhToan = tool.taoComboBox(new String[] { "Tiền mặt", "Chuyển khoản" });
+		cmbPTThanhToan.setEditable(false);
+		row1.add(cmbPTThanhToan);
+		pnlRight.add(row1);
+
+		JPanel row2 = taoHangTrai();
+		row2.add(tool.taoLabel("Tổng tiền:"));
+		lblTongTien = tool.taoLabel("0 VND");
+		row2.add(lblTongTien);
+		pnlRight.add(row2);
+
+		JPanel row3 = taoHangTrai();
+		row3.add(tool.taoLabel("Tiền nhận:"));
+		txtTienNhan = tool.taoTextField("Tiền nhận...");
+		row3.add(txtTienNhan);
+		pnlRight.add(row3);
+
+		JPanel row4 = taoHangTrai();
+		row4.add(tool.taoLabel("Tiền thừa:"));
+		lblTienThua = tool.taoLabel("0 VND");
+		row4.add(lblTienThua);
+		pnlRight.add(row4);
+
+		pnlThongTin.add(pnlLeft, BorderLayout.CENTER);
+		pnlThongTin.add(pnlRight, BorderLayout.EAST);
+
+		pnlCenter.add(pnlThongTin);
 		add(pnlCenter, BorderLayout.CENTER);
 
+		// ===== BOTTOM =====
 		JPanel pnlBottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 50, 10));
 		pnlBottom.setBackground(Color.WHITE);
 
@@ -217,6 +304,12 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 		pnlBottom.add(btnQuayLai);
 
 		add(pnlBottom, BorderLayout.SOUTH);
+	}
+
+	public JPanel taoHangTrai() {
+		JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
+		p.setBackground(Color.WHITE);
+		return p;
 	}
 
 	public JPanel taoDongThongTin(String tieuDe, JComponent noiDung) {
@@ -238,6 +331,18 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 		}
 
 		return panel;
+	}
+	
+	public JLabel getLblMaPhieuDat() {
+		return lblMaPhieu;
+	}
+
+	public TrangChuQL_GUI getMainFrameQL() {
+		return mainFrameQL;
+	}
+
+	public TrangChuNV_GUI getMainFrameNV() {
+		return mainFrameNV;
 	}
 
 }

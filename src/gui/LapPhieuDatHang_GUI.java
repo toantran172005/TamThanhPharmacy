@@ -139,7 +139,7 @@ public class LapPhieuDatHang_GUI extends JPanel {
 		add(pnlTop, BorderLayout.NORTH);
 
 		// =================== CENTER ===================
-		String[] cols = {"Mã thuốc", "STT", "Tên thuốc", "Nơi sản xuất", "Số lượng", "Đơn vị"};
+		String[] cols = {"Mã thuốc", "STT", "Tên thuốc", "Nơi sản xuất", "Số lượng", "Đơn vị", "Đơn giá", "Thành tiền"};
 		model = new DefaultTableModel(cols, 0);
 		tblThuoc = new JTable(model);
 		tblThuoc.setRowHeight(25);

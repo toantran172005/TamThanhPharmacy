@@ -12,6 +12,8 @@ import controller.KhuyenMaiCtrl;
 import controller.ToolCtrl;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class DanhSachKhuyenMai_GUI extends JPanel {
 
@@ -148,7 +150,12 @@ public class DanhSachKhuyenMai_GUI extends JPanel {
             kmCtrl.xemChiTietKM(parent); 
         });
         cmbTrangThai.addActionListener(e -> kmCtrl.locKMTheoTrangThai());
-        txtTenKM.addActionListener(e -> kmCtrl.timKiemNhanhTheoTen());
+        txtTenKM.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                kmCtrl.timKiemNhanhTheoTen();
+            }
+        });
         kmCtrl.locKMTheoNgay();
         dpNgay.addPropertyChangeListener("date", e -> {
         	if (dpNgay.getDate() != null) {
@@ -160,6 +167,7 @@ public class DanhSachKhuyenMai_GUI extends JPanel {
     
     public void lamMoi() {
         txtTenKM.setText("");
+        dpNgay.setDate(null);
         cmbTrangThai.setSelectedItem("Tất cả");
         kmCtrl.setDataChoTable();
     }

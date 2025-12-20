@@ -171,13 +171,12 @@ public class DonVi_GUI extends JPanel {
 	    btnXoa.addActionListener(e -> dvCtrl.xoaDonVi());
 	    btnLichSuXoa.addActionListener(e -> dvCtrl.xuLyBtnLichSuXoa());
 	    btnLamMoi.addActionListener(e -> dvCtrl.lamMoi());
-//	    txtTimDV.addKeyListener(new java.awt.event.KeyAdapter() {
-//	        @Override
-//	        public void keyReleased(java.awt.event.KeyEvent evt) {
-//	            dvCtrl.locTatCa(dvCtrl.isHienThi);
-//	        }
-//	    });
-	    txtTimDV.addActionListener(e -> dvCtrl.locTatCa(dvCtrl.isHienThi));
+	    txtTimDV.addKeyListener(new java.awt.event.KeyAdapter() {
+	        @Override
+	        public void keyReleased(java.awt.event.KeyEvent evt) {
+	            dvCtrl.locTatCa(dvCtrl.isHienThi);
+	        }
+	    });
 	}
 
 }

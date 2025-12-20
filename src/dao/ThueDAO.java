@@ -8,57 +8,104 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import connectDB.KetNoiDatabase;
-import entity.KeThuoc;
 import entity.Thue;
 
 public class ThueDAO {
-	public ArrayList<Thue> listThue = new ArrayList<>();
+    
+    // Lấy toàn bộ danh sách thuế
+    public ArrayList<Thue> layListThue() {
+        ArrayList<Thue> listThue = new ArrayList<>();
+        try (Connection con = KetNoiDatabase.getConnection();
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM Thue")) {
 
-	public ArrayList<Thue> layListThue() {
-		listThue.clear();
+            while (rs.next()) {
+                Thue thue = new Thue(
+                    rs.getString("maThue"), 
+                    rs.getString("loaiThue"),
+                    rs.getDouble("tyLeThue"),
+                    rs.getString("moTa")
+                );
+                listThue.add(thue);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listThue;
+    }
 
-		try (Connection con = KetNoiDatabase.getConnection();
-				Statement stmt = con.createStatement();
-				ResultSet rs = stmt.executeQuery(
-						"SELECT * FROM Thue ")) {
+    // Thêm thuế mới
+    public boolean themThue(Thue t) {
+        String sql = "INSERT INTO Thue (maThue, loaiThue, tyLeThue, moTa) VALUES (?, ?, ?, ?)";
+        try (Connection con = KetNoiDatabase.getConnection(); 
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setString(1, t.getMaThue());
+            ps.setString(2, t.getLoaiThue());
+            ps.setDouble(3, t.getTiLeThue());
+            ps.setString(4, t.getMoTa());
+            
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-			while (rs.next()) {
+    // Cập nhật thông tin thuế
+    public boolean capNhatThue(Thue t) {
+        String sql = "UPDATE Thue SET loaiThue = ?, tyLeThue = ?, moTa = ? WHERE maThue = ?";
+        try (Connection con = KetNoiDatabase.getConnection(); 
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setString(1, t.getLoaiThue());
+            ps.setDouble(2, t.getTiLeThue());
+            ps.setString(3, t.getMoTa());
+            ps.setString(4, t.getMaThue());
+            
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
-				Thue thue = new Thue(
-						rs.getString("maThue"), 
-						rs.getString("loaiThue"),
-						rs.getDouble("tyLeThue"),
-						rs.getString("moTa")
-						
-						);
-						
-				listThue.add(thue);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+    // Xóa thuế (Cần cẩn thận nếu thuế đang được dùng trong Thuốc/Hóa đơn)
+    public boolean xoaThue(String maThue) throws SQLException {
+        String sql = "DELETE FROM Thue WHERE maThue = ?";
+        try (Connection con = KetNoiDatabase.getConnection(); 
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            ps.setString(1, maThue);
+            return ps.executeUpdate() > 0;
+        }
+    }
 
-		return listThue;
-	}
-	
-	public Thue timTheoTen(Double tyLeThue) {
-	    String sql = "SELECT * FROM Thue WHERE tyLeThue = ?";
-	    try (Connection con = KetNoiDatabase.getConnection();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
-
-	        ps.setDouble(1, tyLeThue);
-	        ResultSet rs = ps.executeQuery();
-	        if (rs.next()) {
-	            return new Thue(
-	                rs.getString("maThue"),
-	                rs.getString("loaiThue"),
-	                rs.getDouble("tyLeThue"),
-	                rs.getString("moTa")
-	            );
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return null;
-	}
+    // Tìm kiếm theo tên hoặc mã
+    public ArrayList<Thue> timKiem(String tuKhoa) {
+        ArrayList<Thue> list = new ArrayList<>();
+        String sql = "SELECT * FROM Thue WHERE maThue LIKE ? OR loaiThue LIKE ?";
+        
+        try (Connection con = KetNoiDatabase.getConnection(); 
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            
+            String query = "%" + tuKhoa + "%";
+            ps.setString(1, query);
+            ps.setString(2, query);
+            
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Thue thue = new Thue(
+                    rs.getString("maThue"),
+                    rs.getString("loaiThue"),
+                    rs.getDouble("tyLeThue"),
+                    rs.getString("moTa")
+                );
+                list.add(thue);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }
