@@ -8,12 +8,14 @@ import javax.swing.table.JTableHeader;
 import controller.DanhSachKNHTCtrl;
 import controller.ToolCtrl;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class DanhSachKhieuNaiVaHoTroHK_GUI extends JPanel {
 
 	public JTextField txtTenKH, txtTenNV;
 	public JComboBox<String> cmbLoaiDon, cmbTrangThai;
-	public JButton btnXemCT, btnLamMoi, btnTimKiem, btnThem;
+	public JButton btnXemCT, btnLamMoi, btnThem;
 	public JTable tblKNHT;
 	public ToolCtrl tool = new ToolCtrl();
 	public DefaultTableModel model;
@@ -28,12 +30,25 @@ public class DanhSachKhieuNaiVaHoTroHK_GUI extends JPanel {
 	}
 
 	public void setHoatDong() {
-		btnTimKiem.addActionListener(e -> knhtCtrl.locTatCa());
+		//btnTimKiem.addActionListener(e -> knhtCtrl.locTatCa());
 		btnLamMoi.addActionListener(e -> knhtCtrl.lamMoi());
 		cmbLoaiDon.addActionListener(e -> knhtCtrl.locTatCa());
 		cmbTrangThai.addActionListener(e -> knhtCtrl.locTatCa());
 		btnXemCT.addActionListener(e -> knhtCtrl.chuyenSangChiTiet());
 		btnThem.addActionListener(e -> knhtCtrl.chuyenSangThem());
+		txtTenKH.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				knhtCtrl.locTatCa();
+			}
+		});
+		
+		txtTenNV.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				knhtCtrl.locTatCa();
+			}
+		});
 	}
 
 	public void khoiTaoUI() {
@@ -88,11 +103,11 @@ public class DanhSachKhieuNaiVaHoTroHK_GUI extends JPanel {
 		btnPanel.setBackground(Color.WHITE);
 
 		btnThem = tool.taoButton("Thêm", "/picture/khachHang/plus.png");
-		btnTimKiem = tool.taoButton("Tìm kiếm", "/picture/khachHang/search.png");
+		//btnTimKiem = tool.taoButton("Tìm kiếm", "/picture/khachHang/search.png");
 		btnXemCT = tool.taoButton("Xem chi tiết", "/picture/khachHang/find.png");
 		btnLamMoi = tool.taoButton("Làm mới", "/picture/khachHang/return.png");
 
-		btnPanel.add(btnTimKiem);
+		//btnPanel.add(btnTimKiem);
 		btnPanel.add(btnXemCT);
 		btnPanel.add(btnThem);
 		btnPanel.add(btnLamMoi);

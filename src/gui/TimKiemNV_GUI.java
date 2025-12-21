@@ -15,7 +15,7 @@ public class TimKiemNV_GUI extends JPanel {
 
 	public JTable tblNhanVien;
 	public JTextField txtSdt, txtTenNV;
-	public JButton btnTimKiem, btnXemChiTiet, btnLamMoi, btnLichSuXoa, btnXoaHoanTac;
+	public JButton btnXemChiTiet, btnLamMoi, btnLichSuXoa, btnXoaHoanTac;
 	Font font1 = new Font("Time New Roman", Font.BOLD, 18);
 	Font font2 = new Font("Time New Roman", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
@@ -74,10 +74,10 @@ public class TimKiemNV_GUI extends JPanel {
 		JPanel btnRow1 = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 0));
 		btnRow1.setBackground(Color.WHITE);
 
-		btnTimKiem = tool.taoButton("Tìm kiếm", "/picture/khachHang/search.png");
+		//btnTimKiem = tool.taoButton("Tìm kiếm", "/picture/khachHang/search.png");
 		btnXemChiTiet = tool.taoButton("Xem chi tiết", "/picture/khachHang/find.png");
 
-		btnRow1.add(btnTimKiem);
+		//btnRow1.add(btnTimKiem);
 		btnRow1.add(btnXemChiTiet);
 
 		JPanel btnRow2 = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
@@ -178,9 +178,9 @@ public class TimKiemNV_GUI extends JPanel {
 		return txtTenNV;
 	}
 
-	public JButton getBtnTimKiem() {
-		return btnTimKiem;
-	}
+//	public JButton getBtnTimKiem() {
+//		return btnTimKiem;
+//	}
 
 	public JButton getBtnLamMoi() {
 		return btnLamMoi;

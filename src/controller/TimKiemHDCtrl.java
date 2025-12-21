@@ -13,6 +13,8 @@ import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class TimKiemHDCtrl {
 	public TimKiemHD_GUI gui;
@@ -51,9 +53,19 @@ public class TimKiemHDCtrl {
 	// ========== SỰ KIỆN ==========
 	public void suKien() {
 		ActionListener setAction = e -> locHoaDon();
-		gui.getTxtKhachHang().addActionListener(setAction);
-		gui.getTxtTenNV().addActionListener(setAction);
-		gui.getBtnTimKiem().addActionListener(setAction);
+		gui.getTxtKhachHang().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				locHoaDon();
+			}
+		});
+		gui.getTxtTenNV().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				locHoaDon();
+			}
+		});;
+		//gui.getBtnTimKiem().addActionListener(setAction);
 		gui.getBtnLamMoi().addActionListener(e -> lamMoiBang());
 		gui.getBtnChiTiet().addActionListener(e -> xemChiTiet());
 		gui.getBtnLichSuXoa().addActionListener(e -> xemLichSuXoa());
@@ -84,7 +96,7 @@ public class TimKiemHDCtrl {
 				.collect(Collectors.toList());
 
 		if (ketQua.isEmpty()) {
-			tool.hienThiThongBao("Kết quả", "Không tìm thấy hoá đơn phù hợp.", false);
+			//tool.hienThiThongBao("Kết quả", "Không tìm thấy hoá đơn phù hợp.", false);
 			capNhatBang(danhSach);
 		} else {
 			capNhatBang(ketQua);

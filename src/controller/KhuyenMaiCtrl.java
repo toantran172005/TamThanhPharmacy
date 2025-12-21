@@ -6,11 +6,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import dao.KhuyenMaiDAO;
@@ -35,6 +37,7 @@ public class KhuyenMaiCtrl {
 	public ToolCtrl tool = new ToolCtrl();
 
 	ArrayList<KhuyenMai> listKM = new ArrayList<KhuyenMai>();
+	private ArrayList<Thuoc> listThuocTam;
 	
 	public KhuyenMaiCtrl(DanhSachKhuyenMai_GUI danhSachKhuyenMai_GUI) {
 		this.kmGUI = danhSachKhuyenMai_GUI;
@@ -221,14 +224,17 @@ public class KhuyenMaiCtrl {
 	    }
 	}
 	
-	//set dữ liệu cho cmb thuốc trong gui_ChiTiet
 	public void setDuLieuChoCmbThuoc(JComboBox<String> cmb) {
-		ArrayList<Thuoc> list = thuocDao.layListThuocHoanChinh();
-		
-		for(Thuoc t : list) {
-			cmb.addItem(t.getTenThuoc());
-		}
-	}
+        cmb.removeAllItems();
+        if (listThuocTam == null || listThuocTam.isEmpty()) {
+            listThuocTam = thuocDao.layListThuocHoanChinh();
+        }
+        cmb.addItem("");
+        for(Thuoc t : listThuocTam) {
+            cmb.addItem(t.getTenThuoc());
+        }
+        caiDatGoiYThuoc(cmb);
+    }
 
 	//lưu cập nhật
 	public void luuCapNhat() {
@@ -375,6 +381,7 @@ public class KhuyenMaiCtrl {
 			hienThiMucKM,      
 			"Đang áp dụng"
 		});
+		ctGUI.cmbThemThuoc.setSelectedItem("");
 	}
 	
 	//Thêm thuốc vào bảng cho giao diện thêm khuyến mãi
@@ -417,6 +424,7 @@ public class KhuyenMaiCtrl {
 	        tenDVT,            
 	        t.getGiaBan()      
 	    });
+	    themKmGUI.cmbThemThuoc.setSelectedItem("");
 	}
 	
 	// Thêm khuyến mãi mới
@@ -547,7 +555,55 @@ public class KhuyenMaiCtrl {
 		}
 	}
 	
-	
+	public void caiDatGoiYThuoc(JComboBox<String> cmb) {
+        cmb.setEditable(true);
+        final JTextField textfield = (JTextField) cmb.getEditor().getEditorComponent();
+
+        textfield.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                // Bỏ qua các phím điều hướng để người dùng có thể chọn bằng mũi tên
+                if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_DOWN || 
+                    e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_LEFT || 
+                    e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    return;
+                }
+
+                SwingUtilities.invokeLater(() -> {
+                    String text = textfield.getText();
+                    int caretPos = textfield.getCaretPosition(); 
+                    ArrayList<String> ketQuaLoc = new ArrayList<>();
+                    
+                    if (listThuocTam == null) listThuocTam = thuocDao.layListThuocHoanChinh();
+
+                    for (Thuoc t : listThuocTam) {
+                        if (t.getTenThuoc().toLowerCase().contains(text.toLowerCase())) {
+                            ketQuaLoc.add(t.getTenThuoc());
+                        }
+                    }
+                    
+                    DefaultComboBoxModel<String> model = (DefaultComboBoxModel<String>) cmb.getModel();
+                    model.removeAllElements();
+                    
+                    for (String s : ketQuaLoc) {
+                        model.addElement(s);
+                    }
+
+                    textfield.setText(text);
+                    try {
+                        textfield.setCaretPosition(caretPos); 
+                    } catch (Exception ex) {    
+                    }
+
+                    if (!ketQuaLoc.isEmpty() && !text.isEmpty()) {
+                        cmb.showPopup();
+                    } else if (text.isEmpty()) {
+                        cmb.hidePopup();
+                    }
+                });
+            }
+        });
+    }
 	
 	
 	

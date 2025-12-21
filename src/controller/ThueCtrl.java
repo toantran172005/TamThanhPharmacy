@@ -119,32 +119,25 @@ public class ThueCtrl {
             tool.hienThiThongBao("Lỗi", "Vui lòng chọn dòng cần xóa!", false);
             return;
         }
-
-        String maThue = thueGUI.txtMaThue.getText();
+        String maThue = thueGUI.tblThue.getValueAt(row, 0).toString();
         
         int confirm = JOptionPane.showConfirmDialog(thueGUI, 
-                "Bạn có chắc chắn muốn xóa loại thuế này?", 
-                "Xác nhận", JOptionPane.YES_NO_OPTION);
+                "Bạn có chắc chắn muốn NGƯNG SỬ DỤNG loại thuế này?\n", 
+                "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
             try {
                 if (thueDAO.xoaThue(maThue)) {
-                    tool.hienThiThongBao("Thành công", "Xóa thành công!", true);
-                    lamMoi();
+                    tool.hienThiThongBao("Thành công", "Đã xóa (ngưng sử dụng) loại thuế!", true);
+                    lamMoi(); 
                     loadData();
                 } else {
-                    tool.hienThiThongBao("Thất bại", "Không tìm thấy dữ liệu để xóa!", false);
+                    tool.hienThiThongBao("Thất bại", "Không tìm thấy dữ liệu!", false);
                 }
                 
             } catch (java.sql.SQLException e) {
-                if (e.getErrorCode() == 547) {
-                    tool.hienThiThongBao("Cảnh báo", 
-                        "Không thể xóa loại thuế này vì đang được áp dụng cho Thuốc hoặc Nhân Viên!", 
-                        false);
-                } else {
-                    e.printStackTrace(); 
-                    tool.hienThiThongBao("Lỗi hệ thống", "Lỗi cơ sở dữ liệu: " + e.getMessage(), false);
-                }
+                e.printStackTrace(); 
+                tool.hienThiThongBao("Lỗi hệ thống", "Lỗi CSDL: " + e.getMessage(), false);
             }
         }
     }

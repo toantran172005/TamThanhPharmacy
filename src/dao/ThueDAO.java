@@ -17,7 +17,7 @@ public class ThueDAO {
         ArrayList<Thue> listThue = new ArrayList<>();
         try (Connection con = KetNoiDatabase.getConnection();
              Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM Thue")) {
+             ResultSet rs = stmt.executeQuery("SELECT * FROM Thue WHERE trangThai = 1")) {
 
             while (rs.next()) {
                 Thue thue = new Thue(
@@ -70,9 +70,9 @@ public class ThueDAO {
         }
     }
 
-    // Xóa thuế (Cần cẩn thận nếu thuế đang được dùng trong Thuốc/Hóa đơn)
+    // Xóa thuế 
     public boolean xoaThue(String maThue) throws SQLException {
-        String sql = "DELETE FROM Thue WHERE maThue = ?";
+        String sql = "UPDATE Thue SET trangThai = 0 WHERE maThue = ?";
         try (Connection con = KetNoiDatabase.getConnection(); 
              PreparedStatement ps = con.prepareStatement(sql)) {
             
@@ -84,7 +84,7 @@ public class ThueDAO {
     // Tìm kiếm theo tên hoặc mã
     public ArrayList<Thue> timKiem(String tuKhoa) {
         ArrayList<Thue> list = new ArrayList<>();
-        String sql = "SELECT * FROM Thue WHERE maThue LIKE ? OR loaiThue LIKE ?";
+        String sql = "SELECT * FROM Thue WHERE (maThue LIKE ? OR loaiThue LIKE ?) AND trangThai = 1";
         
         try (Connection con = KetNoiDatabase.getConnection(); 
              PreparedStatement ps = con.prepareStatement(sql)) {

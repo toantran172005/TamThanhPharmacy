@@ -1,6 +1,8 @@
 package controller;
 
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,8 +63,19 @@ public class TimKiemNhanVienCtrl {
 	public void suKien() {
 		ActionListener setAction = e -> locNhanVien();
 		gui.getTxtTenNV().addActionListener(setAction);
-		gui.getTxtSdt().addActionListener(setAction);
-		gui.getBtnTimKiem().addActionListener(setAction);
+		gui.getTxtSdt().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				locNhanVien();
+			}
+		});
+		//gui.getBtnTimKiem().addActionListener(setAction);
+		gui.txtTenNV.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				locNhanVien();
+			}
+		});
 
 		gui.getBtnLamMoi().addActionListener(e -> lamMoiBang());
 		gui.getBtnXemChiTiet().addActionListener(e -> xemChiTiet());
@@ -93,7 +106,7 @@ public class TimKiemNhanVienCtrl {
 				.collect(Collectors.toList());
 
 		if (ketQua.isEmpty()) {
-			tool.hienThiThongBao("Kết quả", "Không tìm thấy nhân viên phù hợp.", false);
+			//tool.hienThiThongBao("Kết quả", "Không tìm thấy nhân viên phù hợp.", false);
 			capNhatBang(danhSach);
 		} else {
 			capNhatBang(ketQua);

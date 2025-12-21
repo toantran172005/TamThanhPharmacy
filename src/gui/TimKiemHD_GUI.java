@@ -12,7 +12,7 @@ import java.awt.*;
 public class TimKiemHD_GUI extends JPanel {
 	public JTable tblHoaDon;
 	public JTextField txtKhachHang, txtTenNV;
-	public JButton btnTimKiem, btnLamMoi, btnChiTiet, btnLichSuXoa, btnXoaHoanTac;
+	public JButton btnLamMoi, btnChiTiet, btnLichSuXoa, btnXoaHoanTac;
 	public TrangChuQL_GUI mainFrame;
 	public TrangChuNV_GUI mainFrameNV;
 	public DefaultTableModel model;
@@ -57,13 +57,13 @@ public class TimKiemHD_GUI extends JPanel {
 		txtKhachHang = tool.taoTextField("Tên khách hàng...");
 		JLabel lblNhanVien = tool.taoLabel("Tên nhân viên: ");
 		txtTenNV = tool.taoTextField("Tên nhân viên...");
-		btnTimKiem = tool.taoButton("Tìm kiếm", "/picture/hoaDon/search.png");
+		//btnTimKiem = tool.taoButton("Tìm kiếm", "/picture/hoaDon/search.png");
 
 		searchPanel.add(lblKhachHang);
 		searchPanel.add(txtKhachHang);
 		searchPanel.add(lblNhanVien);
 		searchPanel.add(txtTenNV);
-		searchPanel.add(btnTimKiem);
+		//searchPanel.add(btnTimKiem);
 		topPanel.add(searchPanel, BorderLayout.CENTER);
 
 		// ===== Các nút =====
@@ -135,9 +135,9 @@ public class TimKiemHD_GUI extends JPanel {
 		return txtTenNV;
 	}
 
-	public JButton getBtnTimKiem() {
-		return btnTimKiem;
-	}
+//	public JButton getBtnTimKiem() {
+//		return btnTimKiem;
+//	}
 
 	public JButton getBtnLamMoi() {
 		return btnLamMoi;

@@ -1,10 +1,11 @@
 package entity;
 
 public class Thue {
-	private String maThue;
-	private String loaiThue;
-	private Double tyLeThue;
-	private String moTa;
+	public String maThue;
+	public String loaiThue;
+	public Double tiLeThue;
+	public String moTa;
+	public Boolean trangThai;
 
 	public Thue() {
 		super();
@@ -19,15 +20,26 @@ public class Thue {
 	public Thue(String maThue, Double tyLeThue) {
 		super();
 		this.maThue = maThue;
-		this.tyLeThue = tyLeThue;
+		this.tiLeThue = tyLeThue;
 	}
 
 	public Thue(String maThue, String loaiThue, Double tiLeThue, String moTa) {
 		super();
 		this.maThue = maThue;
 		this.loaiThue = loaiThue;
-		this.tyLeThue = tiLeThue;
+		this.tiLeThue = tiLeThue;
 		this.moTa = moTa;
+	}
+	
+	
+
+	public Thue(String maThue, String loaiThue, Double tiLeThue, String moTa, Boolean trangThai) {
+		super();
+		this.maThue = maThue;
+		this.loaiThue = loaiThue;
+		this.tiLeThue = tiLeThue;
+		this.moTa = moTa;
+		this.trangThai = trangThai;
 	}
 
 	public String getMaThue() {
@@ -47,11 +59,11 @@ public class Thue {
 	}
 
 	public Double getTiLeThue() {
-		return tyLeThue;
+		return tiLeThue;
 	}
 
 	public void setTiLeThue(Double tyLeThue) {
-		this.tyLeThue = tyLeThue;
+		this.tiLeThue = tyLeThue;
 	}
 
 	public String getMoTa() {
@@ -61,10 +73,20 @@ public class Thue {
 	public void setMoTa(String moTa) {
 		this.moTa = moTa;
 	}
+	
+	
+
+	public Boolean isTrangThai() {
+		return trangThai;
+	}
+
+	public void setTrangThai(Boolean trangThai) {
+		this.trangThai = trangThai;
+	}
 
 	@Override
 	public String toString() {
-		return loaiThue + " - " + tyLeThue + "%";
+		return loaiThue + " - " + tiLeThue + "%";
 	}
 
 }
