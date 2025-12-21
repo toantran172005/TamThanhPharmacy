@@ -12,6 +12,8 @@ import dao.PhieuDatHangDAO;
 import entity.PhieuDatHang;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 public class TimKiemPhieuDatHang_GUI extends JPanel {
@@ -19,7 +21,7 @@ public class TimKiemPhieuDatHang_GUI extends JPanel {
 	public JTable tblPhieuDatHang;
 	public JTextField txtTenKH, txtTenNV;
 	public JComboBox<String> cmbTrangThai;
-	public JButton btnTimKiem, btnChiTiet, btnLamMoi;
+	public JButton btnChiTiet, btnLamMoi;
 	public TrangChuQL_GUI mainFrameQL;
 	public TrangChuNV_GUI mainFrameNV;
 	Font font1 = new Font("Time New Roman", Font.BOLD, 18);
@@ -42,8 +44,19 @@ public class TimKiemPhieuDatHang_GUI extends JPanel {
 
 	public void setHoatDong() {
 		btnLamMoi.addActionListener(e -> dspdhCtrl.lamMoi());
-		btnTimKiem.addActionListener(e -> dspdhCtrl.locTatCa());
 		btnChiTiet.addActionListener(e -> dspdhCtrl.moTrangChiTiet());
+		txtTenKH.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				dspdhCtrl.locTatCa();
+			}
+		});
+		txtTenNV.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				dspdhCtrl.locTatCa();
+			}
+		});
 	}
 
 	public void initUI() {
@@ -71,13 +84,13 @@ public class TimKiemPhieuDatHang_GUI extends JPanel {
 		JLabel lblNV = tool.taoLabel("Tên nhân viên:");
 		txtTenNV = tool.taoTextField("Tên nhân viên...");
 
-		btnTimKiem = tool.taoButton("Tìm kiếm", "/picture/hoaDon/search.png");
+		//btnTimKiem = tool.taoButton("Tìm kiếm", "/picture/hoaDon/search.png");
 
 		searchPanel.add(lblKH);
 		searchPanel.add(txtTenKH);
 		searchPanel.add(lblNV);
 		searchPanel.add(txtTenNV);
-		searchPanel.add(btnTimKiem);
+		//searchPanel.add(btnTimKiem);
 
 		JPanel functionPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 60, 10));
 		functionPanel.setBackground(Color.WHITE);

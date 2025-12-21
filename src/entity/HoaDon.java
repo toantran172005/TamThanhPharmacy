@@ -37,6 +37,10 @@ public class HoaDon {
 		this.trangThai = trangThai;
 	}
 
+	public HoaDon(String string) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getMaHD() {
 		return maHD;
 	}

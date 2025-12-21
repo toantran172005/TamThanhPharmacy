@@ -128,11 +128,14 @@ public class ChiTietHoaDonCtrl {
 
 	        bw.write("\n-----------------------------------------\n");
 
-	        // ===== TỔNG TIỀN =====
+	     // ===== TỔNG TIỀN =====
 	        bw.write("Tổng tiền : " + gui.getLblTongTien().getText() + "\n");
 	        bw.write("Tiền nhận : " + gui.getLblTienNhan().getText() + "\n");
 	        bw.write("Tiền thừa : " + gui.getLblTienThua().getText() + "\n");
 
+	        bw.write("\n-----------------------------------------\n");
+	        bw.write("(Giá trên đã bao gồm thuế GTGT)\n");
+	        
 	        bw.write("\n=========================================\n");
 	        bw.write("   CẢM ƠN QUÝ KHÁCH - HẸN GẶP LẠI!   \n");
 	        bw.write("=========================================\n");

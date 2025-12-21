@@ -52,7 +52,7 @@ public class TimKiemHDCtrl {
 
 	// ========== SỰ KIỆN ==========
 	public void suKien() {
-		ActionListener setAction = e -> locHoaDon();
+		//ActionListener setAction = e -> locHoaDon();
 		gui.getTxtKhachHang().addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {

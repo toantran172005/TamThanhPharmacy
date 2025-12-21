@@ -41,6 +41,10 @@ public class KhachHang {
 		this.tuoi = tuoi;
 	}
 
+	public KhachHang(String string) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getMaKH() {
 		return maKH;
 	}

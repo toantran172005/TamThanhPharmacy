@@ -97,9 +97,9 @@ public class ThemThuocCtrl {
 
 		int soLuong = (int) themThuoc.spSoLuongTon.getValue();
 		String giaBanStr = themThuoc.txtGiaBan.getText().trim();
-		LocalDate hanSuDung = tool.utilDateSangLocalDate(themThuoc.dpHanSuDung.getDate());
+		java.util.Date dateChooser = themThuoc.dpHanSuDung.getDate();
 		String anh = themThuoc.urlAnh;
-
+		
 		if (tenThuoc.isEmpty() || dangThuoc.isEmpty()) {
 			tool.hienThiThongBao("Lỗi", "Tên thuốc và dạng thuốc không được để trống!", false);
 			return;
@@ -120,8 +120,14 @@ public class ThemThuocCtrl {
 			return;
 		}
 
-		if (hanSuDung == null || hanSuDung.isBefore(LocalDate.now())) {
-			tool.hienThiThongBao("Lỗi", "Hạn sử dụng không hợp lệ!", false);
+		if (dateChooser == null) {
+			tool.hienThiThongBao("Lỗi", "Vui lòng chọn hạn sử dụng!", false);
+			return;
+		}
+
+		LocalDate hanSuDung = tool.utilDateSangLocalDate(dateChooser);
+		if (hanSuDung.isBefore(LocalDate.now())) {
+			tool.hienThiThongBao("Lỗi", "Hạn sử dụng phải sau ngày hiện tại!", false);
 			return;
 		}
 
@@ -140,8 +146,17 @@ public class ThemThuocCtrl {
 			return;
 		}
 
+		String maQG = thuocDAO.layMaQuocGiaTheoTen(quocGia);
+
+		if (thuocDAO.kiemTraTrungTenVaQuocGia(tenThuoc, maQG)) {
+			tool.hienThiThongBao("Cảnh báo", 
+					"Thuốc '" + tenThuoc + "' thuộc quốc gia '" + quocGia + "' đã tồn tại trong hệ thống!", 
+					false);
+			return; 
+		}
+		
 		Thue thue = getThueDangChon();
-		QuocGia qg = new QuocGia(thuocDAO.layMaQuocGiaTheoTen(quocGia), quocGia);
+		QuocGia qgObj = new QuocGia(maQG, quocGia);
 		Thuoc thuoc = new Thuoc();
 
 		thuoc.setMaThuoc(tool.taoKhoaChinh("TH"));
@@ -150,11 +165,11 @@ public class ThemThuocCtrl {
 		thuoc.setSoLuong(soLuong);
 		thuoc.setGiaBan(giaBan);
 		thuoc.setHanSuDung(hanSuDung);
-		thuoc.setQuocGia(qg);
+		thuoc.setQuocGia(qgObj);
 		thuoc.setAnh(anh);
 
-		thuoc.setDvt(dvtDao.timTheoTen(themThuoc.cmbDonVi.getSelectedItem().toString()));
-		thuoc.setKeThuoc(keThuocDao.timTheoTen(themThuoc.cmbKeThuoc.getSelectedItem().toString()));
+		thuoc.setDvt(dvtDao.timTheoTen(donVi));
+		thuoc.setKeThuoc(keThuocDao.timTheoTen(keThuoc));
 
 		thuoc.setThue(thue);
 
@@ -172,6 +187,7 @@ public class ThemThuocCtrl {
 		themThuoc.txtGiaBan.setText("");
 		themThuoc.spSoLuongTon.setValue(0);
 		themThuoc.dpHanSuDung.setDate(null);
+		themThuoc.imgThuoc.setIcon(null);
 
 		themThuoc.cmbDonVi.setSelectedIndex(0);
 		themThuoc.cmbQuocGia.setSelectedIndex(0);

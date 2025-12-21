@@ -37,8 +37,10 @@ import entity.DonViTinh;
 import entity.KhachHang;
 import entity.KhuyenMai;
 import entity.NhanVien;
+import entity.PhieuDatHang;
 import entity.QuocGia;
 import entity.Thuoc;
+import gui.ChiTietPhieuDatHang_GUI;
 import gui.LapPhieuDatHang_GUI;
 
 public class LapPhieuDatHangCtrl {
@@ -124,8 +126,26 @@ public class LapPhieuDatHangCtrl {
 		switch (ketQua) {
 		case 1:
 			tool.hienThiThongBao("Thêm phiếu đặt thuốc", "Thêm phiếu đặt thuốc thành công!", true);
-			lamMoi();
-			break;
+
+            PhieuDatHang pdh = pdhDAO.timTheoMa(maPDH);
+            if (pdh == null) {
+                tool.hienThiThongBao("Lỗi", "Không tìm thấy thông tin phiếu đặt!", false);
+                return;
+            }
+
+            ChiTietPhieuDatHang_GUI chiTiet;
+            if (lpdhGUI.getTrangChuQL() != null) {
+                chiTiet = new ChiTietPhieuDatHang_GUI(
+                        lpdhGUI.getTrangChuQL(), pdh);
+                lpdhGUI.getTrangChuQL().setUpNoiDung(chiTiet);
+            } else {
+                chiTiet = new ChiTietPhieuDatHang_GUI(
+                        lpdhGUI.getTrangChuNV(), pdh);
+                lpdhGUI.getTrangChuNV().setUpNoiDung(chiTiet);
+            }
+
+            lamMoi();
+            break;
 		case 0:
 			tool.hienThiThongBao("Thêm phiếu đặt thuốc", "Không đủ tồn kho cho thuốc trong bảng!", false);
 			break;
@@ -283,7 +303,7 @@ public class LapPhieuDatHangCtrl {
 		for (DonViTinh dvt : listDVT) {
 			lpdhGUI.cmbDonVi.addItem(dvt.getTenDVT());
 		}
-		listThuoc = thDAO.layListThuocHoanChinh();
+		listThuoc = thDAO.layListThuoc();
 		lpdhGUI.cmbSanPham.addItem("");
 		for (Thuoc th : listThuoc) {
 			if (th.isTrangThai()) {

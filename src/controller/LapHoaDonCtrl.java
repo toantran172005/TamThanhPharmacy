@@ -2,6 +2,7 @@ package controller;
 
 import dao.*;
 import entity.*;
+import gui.ChiTietHoaDon_GUI;
 import gui.LapHoaDon_GUI;
 import gui.TrangChuNV_GUI;
 import gui.TrangChuQL_GUI;
@@ -58,6 +59,7 @@ public class LapHoaDonCtrl {
 		taiDuLieu();
 		suKien();
 		goiYKhachHang();
+        goiYThuoc();
 		setComboxQuocGia();
 	}
 
@@ -104,6 +106,15 @@ public class LapHoaDonCtrl {
 				gui.getCmbQuocGia().addItem(qg.getTenQG());
 			}
 		}
+		
+		String maThuoc = thuocDAO.layMaThuocTheoTen(tenThuoc);
+		String donVi = thuocDAO.layTenDonViTinhTheoMaThuoc(maThuoc);
+		if (donVi == null) {
+			gui.cmbDonVi.setSelectedIndex(-1);
+			return;
+		}
+		gui.cmbDonVi.setSelectedItem(donVi);
+
 	}
 
 	// ========== TẢI DỮ LIỆU ==========
@@ -485,10 +496,24 @@ public class LapHoaDonCtrl {
 
 			// ==== 5. Thông báo thành công & làm mới giao diện ====
 			tool.hienThiThongBao("Thành công", "Xuất hóa đơn thành công!", true);
-			
 
-			daLapHoaDon = true;     // khóa cứng
+			daLapHoaDon = true;   
 			lapTuPhieuDatHang = false;
+			
+			HoaDon hoaDon = hdDAO.timHoaDonTheoMa(maHD);
+
+			ChiTietHoaDon_GUI chiTietPanel;
+			if (trangChuQL != null) {
+				chiTietPanel = new ChiTietHoaDon_GUI(trangChuQL);
+				trangChuQL.setUpNoiDung(chiTietPanel);
+			} else if (trangChuNV != null) {
+				chiTietPanel = new ChiTietHoaDon_GUI(trangChuNV);
+				trangChuNV.setUpNoiDung(chiTietPanel);
+			} else
+				return;
+
+			chiTietPanel.getCtrl().hienThiThongTinHoaDon(hoaDon);
+			
 			lamMoi();
 
 			return; 
@@ -572,5 +597,67 @@ public class LapHoaDonCtrl {
 		String trangThai = "Đã giao";
 		pdhDAO.capNhatTrangThaiPhieu(maPDH, trangThai);
 	}
+	
+	public void goiYThuoc() {
+        // Lấy component soạn thảo (JTextField) bên trong JComboBox
+        JTextField txtTimThuoc = (JTextField) gui.getCmbSanPham().getEditor().getEditorComponent();
+
+        txtTimThuoc.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent e) {
+                // Bỏ qua các phím điều hướng để người dùng có thể chọn bằng phím mũi tên nếu muốn
+                if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_UP 
+                        || e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_LEFT 
+                        || e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    return;
+                }
+
+                String input = txtTimThuoc.getText().trim().toLowerCase();
+                // Nếu chưa nhập gì thì không gợi ý
+                if (input.isEmpty()) return;
+
+                // Lọc danh sách thuốc theo tên (có chứa từ khóa)
+                List<Thuoc> ketQua = dsThuoc.stream()
+                        .filter(t -> t.getTenThuoc().toLowerCase().contains(input))
+                        .limit(10) // Giới hạn 10 kết quả để bảng không quá dài
+                        .toList();
+
+                if (!ketQua.isEmpty()) {
+                    hienThiListThuoc(txtTimThuoc, ketQua);
+                }
+            }
+        });
+    }
+
+    // Hiển thị Popup menu gợi ý thuốc
+    public void hienThiListThuoc(JTextField tf, List<Thuoc> list) {
+        JPopupMenu pop = new JPopupMenu();
+        
+        for (Thuoc t : list) {
+            JMenuItem item = new JMenuItem(t.getTenThuoc());
+            
+            item.addActionListener(e -> {
+                // 1. Set text cho ô nhập liệu
+                tf.setText(t.getTenThuoc());
+                
+                // 2. Set item được chọn cho ComboBox (để logic lấy dữ liệu hoạt động đúng)
+                gui.getCmbSanPham().setSelectedItem(t.getTenThuoc());
+                
+                // 3. Cập nhật ComboBox Quốc gia ngay lập tức
+                setComboxQuocGia();
+                
+                // 4. Ẩn popup
+                pop.setVisible(false);
+            });
+            
+            pop.add(item);
+        }
+        
+        // Hiển thị popup ngay dưới ô nhập liệu
+        // Dùng SwingUtilities để đảm bảo luồng giao diện mượt mà
+        SwingUtilities.invokeLater(() -> {
+            pop.show(tf, 0, tf.getHeight());
+            tf.requestFocus(); // Giữ focus lại vào ô nhập sau khi popup hiện
+        });
+    }
 
 }

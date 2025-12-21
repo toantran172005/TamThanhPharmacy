@@ -605,15 +605,4 @@ public class KhuyenMaiCtrl {
         });
     }
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

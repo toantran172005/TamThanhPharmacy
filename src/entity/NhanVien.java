@@ -59,6 +59,10 @@ public class NhanVien {
 //		return selected;
 //	}
 
+	public NhanVien(String string) {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getMaNV() {
 		return maNV;
 	}

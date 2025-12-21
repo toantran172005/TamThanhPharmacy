@@ -73,7 +73,6 @@ public class ChiTietPhieuDoiTraCtrl {
 
 		for (Object[] row : listCT) {
 			double tienHoan = row[7] instanceof Number ? ((Number) row[7]).doubleValue() : 0;
-			System.out.print(row[1]);
 			noiSanXuat = thuocDao.timTenQGTheoMaThuoc(row[1].toString());
 			model.addRow(new Object[] { row[2], // tên thuốc
 					noiSanXuat,

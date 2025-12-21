@@ -58,87 +58,13 @@ public class KhuyenMaiDAO {
 	        int rows = ps.executeUpdate();
 	        
 	        if (rows > 0) {
-	            System.out.println("Đã tự động ngưng hoạt động " + rows + " khuyến mãi hết hạn.");
+	            //System.out.println("Đã tự động ngưng hoạt động " + rows + " khuyến mãi hết hạn.");
 	        }
 
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
 	}
-	
-//	public boolean capNhatKhuyenMai(KhuyenMai km, List<String> danhSachMaThuoc) {
-//	    Connection con = null;
-//	    PreparedStatement psKM = null;
-//	    PreparedStatement psThuoc = null;
-//	    
-//	    String sqlKM = """
-//	            UPDATE KhuyenMai
-//	            SET tenKM = ?,
-//	                mucKM = ?,
-//	                ngayBD = ?,
-//	                ngayKT = ?,
-//	                trangThai = ?,
-//	                loaiKM = ?,
-//	                soLuongMua = ?,
-//	                soLuongTang = ?
-//	            WHERE maKM = ?
-//	            """;
-//	            
-//	    String sqlThuoc = "UPDATE Thuoc SET maKM = ? WHERE maThuoc = ?";
-//
-//	    try {
-//	        con = KetNoiDatabase.getConnection();
-//	        con.setAutoCommit(false); 
-//
-//	        psKM = con.prepareStatement(sqlKM);
-//	        psKM.setString(1, km.getTenKM());
-//	        psKM.setInt(2, km.getMucKM());
-//	        psKM.setDate(3, tool.localDateSangSqlDate(km.getNgayBD()));
-//	        psKM.setDate(4, tool.localDateSangSqlDate(km.getNgayKT()));
-//	        psKM.setBoolean(5, km.isTrangThai());
-//	        psKM.setString(6, km.getLoaiKM());
-//	        psKM.setInt(7, km.getSoLuongMua());
-//	        psKM.setInt(8, km.getSoLuongTang());
-//	        psKM.setString(9, km.getMaKM());
-//	        
-//	        int rows = psKM.executeUpdate();
-//
-//	        if (rows > 0 && danhSachMaThuoc != null && !danhSachMaThuoc.isEmpty()) {
-//	            psThuoc = con.prepareStatement(sqlThuoc);
-//	            
-//	            for (String maThuoc : danhSachMaThuoc) {
-//	                psThuoc.setString(1, km.getMaKM()); 
-//	                psThuoc.setString(2, maThuoc);      
-//	                psThuoc.addBatch();
-//	            }
-//	            
-//	            psThuoc.executeBatch(); 
-//	        }
-//
-//	        con.commit();
-//	        return true;
-//
-//	    } catch (Exception e) {
-//	        e.printStackTrace();
-//	        try {
-//	            if (con != null) con.rollback(); 
-//	        } catch (SQLException ex) {
-//	            ex.printStackTrace();
-//	        }
-//	        return false;
-//	    } finally {
-//	        try {
-//	            if (psKM != null) psKM.close();
-//	            if (psThuoc != null) psThuoc.close();
-//	            if (con != null) {
-//	                con.setAutoCommit(true);
-//	                con.close();
-//	            }
-//	        } catch (SQLException e) {
-//	            e.printStackTrace();
-//	        }
-//	    }
-//	}
 	
 	public boolean capNhatKhuyenMai(KhuyenMai km, List<String> danhSachMaThuoc) {
 	    Connection con = null;
