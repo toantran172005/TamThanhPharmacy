@@ -96,9 +96,6 @@ public class ThongKeHoaDon_GUI extends JPanel {
 		pnlBieuDo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-//		dataset.addValue(2000000, "Doanh thu", "01/10");
-//		dataset.addValue(2500000, "Doanh thu", "02/10");
-//		dataset.addValue(1800000, "Doanh thu", "03/10");
 
 		JFreeChart chart = ChartFactory.createLineChart("Doanh thu theo ngày", "Ngày", "Doanh thu (VND)", dataset,
 				PlotOrientation.VERTICAL, false, true, false);
@@ -125,6 +122,7 @@ public class ThongKeHoaDon_GUI extends JPanel {
 		topTablePanel.setBackground(Color.WHITE);
 		topTablePanel.add(new JLabel("Thống kê theo top:"));
 		cmbTopTK = new JComboBox<>(new String[] { "5", "10", "20" });
+		cmbTopTK.setPreferredSize(new Dimension(40, 25));
 		topTablePanel.add(cmbTopTK);
 		tablePanel.add(topTablePanel, BorderLayout.NORTH);
 
