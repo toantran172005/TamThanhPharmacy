@@ -350,8 +350,8 @@ public class HoaDonDAO {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				list.add(new Object[] { rs.getString("maHD"), rs.getString("maThuoc"), rs.getString("tenThuoc"),
-						rs.getInt("soLuong"), rs.getString("maDVT"), rs.getString("tenDVT"), rs.getDouble("donGia"),
-						rs.getDouble("thanhTien") });
+						rs.getInt("soLuong"), rs.getString("maDVT"), rs.getString("tenDVT"), rs.getDouble("donGia"), rs.getDouble("thanhTien")
+						 });
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

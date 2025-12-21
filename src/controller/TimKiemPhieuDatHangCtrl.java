@@ -50,16 +50,6 @@ public class TimKiemPhieuDatHangCtrl {
 			return;
 		}
 
-		// CODE CŨ
-//		if (tkpdhGUI.getMainFrameQL() != null) {
-//			ChiTietPhieuDatHang_GUI chiTiet = new ChiTietPhieuDatHang_GUI(tkpdhGUI.getMainFrameQL(), pdh);
-//			tool.doiPanel(tkpdhGUI, chiTiet);
-//		} else {
-//			ChiTietPhieuDatHang_GUI chiTiet = new ChiTietPhieuDatHang_GUI(tkpdhGUI.getMainFrameNV(), pdh);
-//			tool.doiPanel(tkpdhGUI, chiTiet);
-//		}
-		
-		// CODE MỚI
 		ChiTietPhieuDatHang_GUI chiTiet;
 		if (tkpdhGUI.getMainFrameQL() != null) {
 	        chiTiet = new ChiTietPhieuDatHang_GUI(tkpdhGUI.getMainFrameQL(), pdh);

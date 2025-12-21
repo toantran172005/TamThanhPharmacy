@@ -166,38 +166,6 @@ public class LapPhieuDatHangCtrl {
 				.toLowerCase().trim();
 	}
 
-	public double layThanhTien(Thuoc thuoc, int sl) {
-
-	    if (thuoc == null || sl <= 0)
-	        return 0;
-
-	    double donGia = thuoc.getGiaBan();
-	    double giaGoc = donGia * sl;
-
-	    String maKM = thDAO.layMaKMTheoMaThuoc(thuoc.getMaThuoc());
-	    if (maKM == null || maKM.isEmpty())
-	        return giaGoc;
-
-	    KhuyenMai km = kmDAO.layKhuyenMaiTheoMa(maKM);
-	    if (km == null)
-	        return giaGoc;
-	    System.out.print(km.getLoaiKM());
-
-	    if (!km.isTrangThai())
-	        return giaGoc;
-
-	    LocalDate homNay = LocalDate.now();
-	    if (homNay.isBefore(km.getNgayBD()) || homNay.isAfter(km.getNgayKT()))
-	        return giaGoc;
-
-	    String loaiKM = boDau(km.getLoaiKM());
-	    if (loaiKM.contains("giam")) {
-	        return giaGoc * (1 - km.getMucKM() / 100.0);
-	    }
-
-	    return giaGoc;
-	}
-
 	public void themVaoTable() {
 
 		String sdt = lpdhGUI.txtSdt.getText().trim();
@@ -213,7 +181,6 @@ public class LapPhieuDatHangCtrl {
 		double donGia = thDAO.layDonGiaTheoMaThuoc(maThuoc);
 
 		Thuoc thuoc = thDAO.timThuocTheoMa(maThuoc);
-		double thanhTien = layThanhTien(thuoc, Integer.parseInt(soLuongStr));
 		java.util.Date ngayUtil = lpdhGUI.ngayHen.getDate();
 
 		if (sdt.isEmpty() || tenKH.isEmpty() || tuoiStr.isEmpty() || tenThuoc == null || tenThuoc.isEmpty()
@@ -252,11 +219,45 @@ public class LapPhieuDatHangCtrl {
 			return;
 		}
 
+		// ===== Tính khuyến mãi =====
+		double donGiaSauKM = donGia;
+		double thanhTien = donGiaSauKM * soLuong;
+		double mucGiam;
+		String moTaKM = "Không có";
+		String maKM = thDAO.layMaKMTheoMaThuoc(thuoc.getMaThuoc());
+		LocalDate homNay = LocalDate.now();
+
+		if (maKM != null && !maKM.isEmpty()) {
+			KhuyenMai km = kmDAO.layKhuyenMaiTheoMa(maKM);
+			if (km != null && !homNay.isBefore(km.getNgayBD()) && !homNay.isAfter(km.getNgayKT())) {
+				switch (km.getLoaiKM().toLowerCase()) {
+				case "giảm giá":
+					mucGiam = (double) km.getMucKM();
+					donGiaSauKM = donGiaSauKM * (1 - (mucGiam / 100.0));
+					System.out.println("mã Khuyến mãi: " + km.getMaKM() + " Loại khuyến mãi: " + km.getLoaiKM()
+							+ " Mức KM: " + km.getMucKM() + " Đơn giá: " + donGiaSauKM);
+					thanhTien = donGiaSauKM * soLuong;
+					moTaKM = "Giảm " + mucGiam + "%";
+					break;
+
+				case "mua tặng":
+					int soLuongTang = (soLuong / km.getSoLuongMua()) * km.getSoLuongTang();
+					if (soLuongTang > 0) {
+						moTaKM = String.format("Mua %d tặng %d (Tặng: %d)", km.getSoLuongMua(), km.getSoLuongTang(),
+								soLuongTang);
+						thanhTien = donGia * soLuong; // chỉ tính phần mua
+						soLuong += soLuongTang;
+					}
+					break;
+				}
+			}
+		}
+
 		DefaultTableModel model = (DefaultTableModel) lpdhGUI.tblThuoc.getModel();
 		int stt = model.getRowCount() + 1;
 
 		Object[] row = { maThuoc, stt, tenThuoc, tenQG, soLuong, donVi, tool.dinhDangVND(donGia),
-				tool.dinhDangVND(thanhTien) };
+				tool.dinhDangVND(thanhTien), moTaKM };
 		model.addRow(row);
 
 		lpdhGUI.cmbSanPham.setSelectedIndex(-1);

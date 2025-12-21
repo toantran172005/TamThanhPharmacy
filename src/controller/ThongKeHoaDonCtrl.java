@@ -46,7 +46,7 @@ public class ThongKeHoaDonCtrl {
 
     public void dangKySuKien() {
         gui.getBtnThongKe().addActionListener(e -> thongKeKhachHang());
-//        gui.getCmbTopTK().addActionListener(e -> thongKeTop());
+        gui.getCmbTopTK().addActionListener(e -> thongKeTop());
         gui.getBtnLamMoi().addActionListener(e -> lamMoi());
         gui.getBtnXuatExcel().addActionListener(e -> xuatFileExcel());
     }
@@ -77,9 +77,11 @@ public class ThongKeHoaDonCtrl {
             tongTienMap.put(kh.getMaKH(), tongTien);
             tongDonMap.put(kh.getMaKH(), tongDon);
         }
+        
+        String top = (String) gui.getCmbTopTK().getSelectedItem();
         setDataChoLabel();
         veBieuDo(ngayBD, ngayKT);
-        setDataChoTable();
+        setDataChoTable(top);
     }
 
     // ========== LẤY NGÀY TỪ JDateChooser ==========
@@ -147,10 +149,14 @@ public class ThongKeHoaDonCtrl {
         pnlBieuDo.repaint();
     }
 
-
+    // ========== THỐNG KÊ THEO TOP ==========
+    public void thongKeTop() {
+    	String top = (String) gui.getCmbTopTK().getSelectedItem();
+    	setDataChoTable(top);
+    }
 
     // ========== HIỂN THỊ DỮ LIỆU BẢNG ==========
-    public void setDataChoTable() {
+    public void setDataChoTable(String top) {
         DefaultTableModel model = (DefaultTableModel) gui.getTblThongKeHD().getModel();
         model.setRowCount(0);
 
@@ -161,14 +167,15 @@ public class ThongKeHoaDonCtrl {
                 tongTienMap.getOrDefault(kh2.getMaKH(), 0.0),
                 tongTienMap.getOrDefault(kh1.getMaKH(), 0.0)));
 
-        String value = (String) gui.getCmbTopTK().getSelectedItem();
-        int top = 0;
+//        String value = (String) gui.getCmbTopTK().getSelectedItem();
+        int topKH = 0;
+        String value = top;
         if (value != null && !value.equals("Tất cả")) {
-            top = Integer.parseInt(value);
+        	topKH = Integer.parseInt(value);
         }
 
-        java.util.List<KhachHang> tempList = top > 0
-                ? listKH.subList(0, Math.min(top, listKH.size()))
+        java.util.List<KhachHang> tempList = topKH > 0
+                ? listKH.subList(0, Math.min(topKH, listKH.size()))
                 : listKH;
 
         int stt = 1;

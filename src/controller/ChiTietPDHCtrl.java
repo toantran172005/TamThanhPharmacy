@@ -26,47 +26,6 @@ public class ChiTietPDHCtrl {
 		this.ctpdhGUI = ctpdhGUI;
 	}
 
-//	public void taoHoaDon() {
-//		String maHD = tool.taoKhoaChinh("HD");
-//		String maKH = ctpdhGUI.pdh.getKhachHang().getMaKH();
-//		String maNV = ctpdhGUI.pdh.getNhanVien().getMaNV();
-//		LocalDate ngayLap = LocalDate.now();
-//		String diaChiHT = "456 Nguyễn Huệ, TP.HCM";
-//		String tenHT = "Hiệu Thuốc Tam Thanh";
-//		String hotline = "+84-912345689";
-//		String loaiTT = "Chuyển khoản";
-//		String ghiChu = ctpdhGUI.txaGhiChu.getText().trim();
-//		double tienNhan = 0;
-//		boolean trangThai = true;
-//
-//		List<Object[]> dsChiTiet = new ArrayList<>();
-//		DefaultTableModel model = ctpdhGUI.model;
-//		for (int i = 0; i < model.getRowCount(); i++) {
-//			String maThuoc = thDAO.layMaThuocTheoTen(model.getValueAt(i, 0).toString());
-//			int soLuong = Integer.parseInt(model.getValueAt(i, 2).toString());
-//			double donGia = thDAO.layDonGiaTheoMaThuoc(maThuoc);
-//			String maDVT = dvtDAO.timMaDVTTheoTen(model.getValueAt(i, 3).toString());
-//
-//			dsChiTiet.add(new Object[] { maThuoc, soLuong, donGia, maDVT });
-//		}
-//
-//		if (dsChiTiet.isEmpty()) {
-//			tool.hienThiThongBao("Tạo hóa đơn", "Danh sách chi tiết hóa đơn trống!", false);
-//			return;
-//		}
-//
-//		int ketQua = pdhDAO.taoHoaDonVaChiTiet(maHD, maKH, maNV, loaiTT, ngayLap, diaChiHT, tenHT, ghiChu, hotline,
-//				tienNhan, trangThai, dsChiTiet);
-//
-//		if (ketQua == 1 && pdhDAO.capNhatMaHDChoPhieuDatHang(ctpdhGUI.pdh.getMaPDH(), maHD)
-//				&& pdhDAO.capNhatTrangThaiPhieu(ctpdhGUI.pdh.getMaPDH(), "Đã giao")) {
-//			tool.hienThiThongBao("Tạo hóa đơn", "Tạo hóa đơn thành công!", true);
-//			ctpdhGUI.cmbTrangThai.setSelectedItem(trangThai);
-//		} else {
-//			tool.hienThiThongBao("Tạo hóa đơn", "Không thể tạo hóa đơn! Vui lòng thử lại.", false);
-//		}
-//	}
-	
 	public void taoHoaDon() {
 	    String maPDH = ctpdhGUI.getLblMaPhieuDat().getText();
 
@@ -108,16 +67,6 @@ public class ChiTietPDHCtrl {
 		return false;
 	}
 
-	// CODE CŨ
-//	public void quayLaiTrangDanhSach() {
-//		if (ctpdhGUI.mainFrameQL != null) {
-//			tool.doiPanel(ctpdhGUI, new TimKiemPhieuDatHang_GUI(ctpdhGUI.mainFrameQL));
-//		} else {
-//			tool.doiPanel(ctpdhGUI, new TimKiemPhieuDatHang_GUI(ctpdhGUI.mainFrameNV));
-//		}
-//	}
-	
-	// CODE MỚI
 	public void quayLaiTrangDanhSach() {
 	    if (ctpdhGUI.mainFrameQL != null) {
 	        ctpdhGUI.mainFrameQL.setUpNoiDung(

@@ -97,6 +97,7 @@ public class ChiTietPhieuDoiTra_GUI extends JPanel {
 		String[] columns = { "Tên thuốc", "Nơi sản xuất", "Số lượng", "Đơn vị", "Mức hoàn", "Tiền hoàn", "Ghi chú" };
 		DefaultTableModel model = new DefaultTableModel(columns, 0);
 		tblThuoc = new JTable(model);
+		tblThuoc.setRowHeight(30);
 
 		tblThuoc.setBackground(Color.WHITE);
 		tblThuoc.getTableHeader().setBackground(new Color(240, 240, 240));
@@ -119,7 +120,7 @@ public class ChiTietPhieuDoiTra_GUI extends JPanel {
 		// ===== Căn giữa tiêu đề cột =====
 		JTableHeader header = tblThuoc.getTableHeader();
 		header.setBackground(new Color(240, 240, 240));
-		header.setFont(font2);
+		header.setFont(new Font("Times New Roman", Font.BOLD, 17));
 		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 		pnlCenter.add(scrollPane);
 

@@ -34,9 +34,10 @@ public class LapHoaDonCtrl {
 	public List<KhachHang> dsKhachHang;
 	public List<Thuoc> dsThuoc;
 	public DefaultTableModel tableModel;
-
 	public boolean dangSetTenKH = false;
 	public boolean dangSetSdtKH = false;
+	private boolean lapTuPhieuDatHang = false;
+	private boolean daLapHoaDon = false;
 
 	public LapHoaDonCtrl() {
 		this(null);
@@ -62,6 +63,11 @@ public class LapHoaDonCtrl {
 
 	// ========== SỰ KIỆN ==========
 	public void suKien() {
+		resetActionListener(gui.getBtnTaoHD());
+	    resetActionListener(gui.getBtnThem());
+	    resetActionListener(gui.getBtnXoa());
+	    resetActionListener(gui.getBtnLamMoi());
+		
 		gui.getBtnThem().addActionListener(e -> xuLyThemThuocVaoBang());
 		gui.getBtnXoa().addActionListener(e -> xuLyXoaDong());
 		gui.getBtnLamMoi().addActionListener(e -> lamMoi());
@@ -74,6 +80,12 @@ public class LapHoaDonCtrl {
 		});
 
 		gui.getCmbSanPham().addActionListener(e -> setComboxQuocGia());
+	}
+	
+	public void resetActionListener(AbstractButton btn) {
+	    for (ActionListener al : btn.getActionListeners()) {
+	        btn.removeActionListener(al);
+	    }
 	}
 
 	// ========== SETUP COMBOX ==========
@@ -214,7 +226,7 @@ public class LapHoaDonCtrl {
 		double donGiaSauKM = donGiaGoc;
 		double thanhTien = donGiaSauKM * sl;
 		double mucGiam;
-		String moTaKM = "Không có";
+		String moTaKM = "Không có KM";
 		String maKM = thuocDAO.layMaKMTheoMaThuoc(thuoc.getMaThuoc());
 		LocalDate homNay = LocalDate.now();
 
@@ -232,8 +244,8 @@ public class LapHoaDonCtrl {
 				case "mua tặng":
 					int soLuongTang = (sl / km.getSoLuongMua()) * km.getSoLuongTang();
 					if (soLuongTang > 0) {
-						moTaKM = String.format("Mua %d tặng %d (Tổng: %d)", km.getSoLuongMua(), km.getSoLuongTang(),
-								sl + soLuongTang);
+						moTaKM = String.format("Mua %d tặng %d (Tặng: %d)", km.getSoLuongMua(), km.getSoLuongTang(),
+								soLuongTang);
 						thanhTien = donGiaGoc * sl; // chỉ tính phần mua
 						sl += soLuongTang;
 					}
@@ -248,10 +260,10 @@ public class LapHoaDonCtrl {
 			if (model.getValueAt(i, 1).toString().equalsIgnoreCase(thuoc.getTenThuoc())) {
 				int soLuongCu = Integer.parseInt(model.getValueAt(i, 2).toString());
 				int soLuongMoi = soLuongCu + sl;
-				model.setValueAt(soLuongMoi, i, 2);
-				model.setValueAt(tool.dinhDangVND(donGiaSauKM), i, 4);
-				model.setValueAt(tool.dinhDangVND(donGiaSauKM * soLuongMoi), i, 5);
-				model.setValueAt(moTaKM, i, 6);
+				model.setValueAt(soLuongMoi, i, 3);
+				model.setValueAt(tool.dinhDangVND(donGiaSauKM), i, 5);
+				model.setValueAt(tool.dinhDangVND(donGiaSauKM * soLuongMoi), i, 6);
+				model.setValueAt(moTaKM, i, 7);
 				tinhTongTien();
 				resetFormNhap();
 				return;
@@ -335,7 +347,7 @@ public class LapHoaDonCtrl {
 
 			double tienThua = nhan - tong;
 			if (tienThua < 0)
-				tienThua = 0; // tránh âm
+				tienThua = 0; // tránh âm 
 
 			// Hiển thị lại bằng định dạng VND
 			gui.getLblTienThua().setText(tool.dinhDangVND(tienThua));
@@ -347,6 +359,7 @@ public class LapHoaDonCtrl {
 
 	// ========== LÀM MỚI ==========
 	public void lamMoi() {
+	    lapTuPhieuDatHang = false;
 		gui.getTxtSdt().setText("");
 		gui.getTxtTenKH().setText("");
 		gui.getTxtTuoi().setText("");
@@ -359,11 +372,13 @@ public class LapHoaDonCtrl {
 
 	// ========== XUẤT/LƯU HOÁ ĐƠN ==========
 	public void xuLyXuatHoaDon() {
+		if (daLapHoaDon) return; 
+		
 		try {
 			// ==== 1. Kiểm tra dữ liệu ====
 			if (tableModel.getRowCount() == 0) {
-				tool.hienThiThongBao("Thông báo", "Chưa có thuốc trong hóa đơn!", false);
-				return;
+			    tool.hienThiThongBao("Thông báo", "Chưa có thuốc trong hóa đơn!", false);
+			    return;
 			}
 
 			String tenKH = gui.getTxtTenKH().getText().trim();
@@ -428,8 +443,21 @@ public class LapHoaDonCtrl {
 			}
 			KhachHang khHD = khDAO.timKhachHangTheoMa(maKH);
 			NhanVien nv = nvDAO.timNhanVienTheoMa(maNV);
+			StringBuilder ghiChu = new StringBuilder();
+			for (int i = 0; i < tableModel.getRowCount(); i++) {
+			    Object tenThuoc = tableModel.getValueAt(i, 1
+			    		); // tên thuốc
+			    Object ghiChuKM = tableModel.getValueAt(i, 7); // ghi chú
 
-			HoaDon hd = new HoaDon(maHD, khHD, nv, hinhThucTT, LocalDate.now(), diaChiHT, tenHT, "", hotline, tienNhan,
+			    if (ghiChuKM != null && !ghiChuKM.toString().isBlank()) {
+			        ghiChu.append(tenThuoc)
+			              .append(" : ")
+			              .append(ghiChuKM)
+			              .append("; ");
+			    }
+			}
+
+			HoaDon hd = new HoaDon(maHD, khHD, nv, hinhThucTT, LocalDate.now(), diaChiHT, tenHT, ghiChu.toString(), hotline, tienNhan,
 					true);
 
 			if (!hdDAO.themHoaDon(hd)) {
@@ -457,8 +485,13 @@ public class LapHoaDonCtrl {
 
 			// ==== 5. Thông báo thành công & làm mới giao diện ====
 			tool.hienThiThongBao("Thành công", "Xuất hóa đơn thành công!", true);
-			tableModel.setRowCount(0);
+			
+
+			daLapHoaDon = true;     // khóa cứng
+			lapTuPhieuDatHang = false;
 			lamMoi();
+
+			return; 
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -467,6 +500,8 @@ public class LapHoaDonCtrl {
 	}
 
 	public void loadTuPhieuDatHang(String maPDH) {
+		lapTuPhieuDatHang = true;
+		
 		// ==== 1. Lấy thông tin phiếu đặt hàng ====
 		PhieuDatHang pdh = pdhDAO.timTheoMa(maPDH);
 		if (pdh == null) {
@@ -485,67 +520,57 @@ public class LapHoaDonCtrl {
 		DefaultTableModel model = (DefaultTableModel) gui.getTblThuoc().getModel();
 		model.setRowCount(0);
 
-		List<Object[]> chiTiet = pdhDAO.layChiTietPhieuDatHang(maPDH);
+		List<Object[]> chiTiet = pdhDAO.layDanhSachThuocTheoPDH(maPDH);
 
 		for (Object[] ct : chiTiet) {
 			
-			String maThuoc = thuocDAO.layMaThuocTheoTenVaQG(ct[0].toString(), ct[1].toString());
-			Thuoc thuoc = thuocDAO.timThuocTheoMa(maThuoc);
-			int sl = Integer.parseInt(ct[2].toString());
+			String maThuoc = ct[1].toString();
+			int sl = Integer.parseInt(ct[3].toString());
+			String tenQG = thuocDAO.timTenQGTheoMaThuoc(maThuoc);
+			String tenDVT = ct[5].toString();
+			double donGia = Double.parseDouble(ct[6].toString());
+			double thanhTien = Double.parseDouble(ct[7].toString());
 			
-			System.out.println(maThuoc + " - " + ct[0] + " - " + ct[1] + " - " + sl+ " - " + ct[3] + " - " + ct[4]  );
-
-			// ===== Lấy đơn vị tính & giá gốc =====
-			String tenQG = ct[1].toString();
-			String tenDVT = ct[3].toString();
-			DonViTinh dvt = dvtDAO.timTheoTen(tenDVT);
-			double donGiaGoc = (dvt != null) ? thuocDAO.layGiaBanTheoDVT(maThuoc, dvt.getMaDVT())
-					: thuoc.getGiaBan();
-
-			// ===== Tính khuyến mãi =====
-			double donGiaSauKM = donGiaGoc;
-			double thanhTien = donGiaSauKM * sl;
 			double mucGiam;
-			String moTaKM = "Không có";
-			String maKM = thuocDAO.layMaKMTheoMaThuoc(thuoc.getMaThuoc());
+			String moTaKM = "Không có KM";
+			String maKM = thuocDAO.layMaKMTheoMaThuoc(maThuoc);
 			LocalDate homNay = LocalDate.now();
 			
-
 			if (maKM != null && !maKM.isEmpty()) {
 				KhuyenMai km = kmDAO.layKhuyenMaiTheoMa(maKM);
 				if (km != null && !homNay.isBefore(km.getNgayBD()) && !homNay.isAfter(km.getNgayKT())) {
 					switch (km.getLoaiKM().toLowerCase()) {
 					case "giảm giá":
-						mucGiam = km.getMucKM();
-						donGiaSauKM *= (1 - mucGiam / 100.0);
-						thanhTien = donGiaSauKM * sl;
+						mucGiam = (double) km.getMucKM();
 						moTaKM = "Giảm " + mucGiam + "%";
 						break;
 
 					case "mua tặng":
 						int soLuongTang = (sl / km.getSoLuongMua()) * km.getSoLuongTang();
 						if (soLuongTang > 0) {
-							moTaKM = String.format("Mua %d tặng %d (Tổng: %d)", km.getSoLuongMua(), km.getSoLuongTang(),
-									sl + soLuongTang);
-							thanhTien = donGiaGoc * sl; // chỉ tính phần mua
-							sl += soLuongTang;
+							moTaKM = String.format("Mua %d tặng %d (Tặng: %d)", km.getSoLuongMua(), km.getSoLuongTang(),
+									soLuongTang);
 						}
 						break;
 					}
 				}
 			}
 			
-			System.out.print("Khuyến mãi: " + maKM + " Thành tiền: " + thanhTien + "\n\n");
-			model.addRow(new Object[] { model.getRowCount() + 1, ct[0], // tên thuốc
-					ct[1], // quốc gia
-					ct[2], // số lượng
-					ct[3], // đơn vị
-					tool.dinhDangVND((Double) ct[4]), // đơn giá
+			model.addRow(new Object[] { model.getRowCount() + 1, 
+					ct[2], // tên thuốc
+					tenQG, // quốc gia
+					sl, // số lượng
+					tenDVT, // đơn vị
+					tool.dinhDangVND(donGia), // đơn giá
 					tool.dinhDangVND(thanhTien), // thành tiền
-					"Không có", "Xóa" });
+					moTaKM,
+					"Xóa" });
+			
 		}
 
 		tinhTongTien();
+		String trangThai = "Đã giao";
+		pdhDAO.capNhatTrangThaiPhieu(maPDH, trangThai);
 	}
 
 }

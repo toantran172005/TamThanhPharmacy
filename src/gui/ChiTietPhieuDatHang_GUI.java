@@ -106,18 +106,42 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 
 		for (Object[] row : pdhDAO.layDanhSachThuocTheoPDH(pdh.getMaPDH())) {
 
+			String maThuoc = row[1].toString();
 			String tenThuoc = row[2].toString();
-			Thuoc thuoc = thDAO.timThuocTheoMa(thDAO.layMaThuocTheoTen(tenThuoc));
-
-			String noiSanXuat = thDAO.timTenQGTheoMaThuoc(row[1].toString());
-			int soLuong = (int) row[3];
+			String noiSanXuat = thDAO.timTenQGTheoMaThuoc(maThuoc);
+			int soLuong = Integer.parseInt(row[3].toString());
 			String tenDVT = row[5].toString();
 			double donGia = (double) row[6];
 
-			double thanhTien = layThanhTien(thuoc, soLuong);
+			double thanhTien = (double) row[7];
+			
+			double mucGiam;
+			String moTaKM = "Không có KM";
+			String maKM = thDAO.layMaKMTheoMaThuoc(maThuoc);
+			LocalDate homNay = LocalDate.now();
+			
+			if (maKM != null && !maKM.isEmpty()) {
+				KhuyenMai km = kmDAO.layKhuyenMaiTheoMa(maKM);
+				if (km != null && !homNay.isBefore(km.getNgayBD()) && !homNay.isAfter(km.getNgayKT())) {
+					switch (km.getLoaiKM().toLowerCase()) {
+					case "giảm giá":
+						mucGiam = (double) km.getMucKM();
+						moTaKM = "Giảm " + mucGiam + "%";
+						break;
+
+					case "mua tặng":
+						int soLuongTang = (soLuong / km.getSoLuongMua()) * km.getSoLuongTang();
+						if (soLuongTang > 0) {
+							moTaKM = String.format("Mua %d tặng %d (Tặng: %d)", km.getSoLuongMua(), km.getSoLuongTang(),
+									soLuongTang);
+						}
+						break;
+					}
+				}
+			}
 
 			modelThuoc.addRow(new Object[] { tenThuoc, noiSanXuat, soLuong, tenDVT, tool.dinhDangVND(donGia),
-					tool.dinhDangVND(thanhTien) });
+					tool.dinhDangVND(thanhTien), moTaKM });
 		}
 
 	}
@@ -127,37 +151,6 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 			return "";
 		return Normalizer.normalize(s, Normalizer.Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
 				.toLowerCase().trim();
-	}
-
-	public double layThanhTien(Thuoc thuoc, int sl) {
-
-		if (thuoc == null || sl <= 0)
-			return 0;
-
-		double donGia = thuoc.getGiaBan();
-		double giaGoc = donGia * sl;
-
-		String maKM = thDAO.layMaKMTheoMaThuoc(thuoc.getMaThuoc());
-		if (maKM == null || maKM.isEmpty())
-			return giaGoc;
-
-		KhuyenMai km = kmDAO.layKhuyenMaiTheoMa(maKM);
-		if (km == null)
-			return giaGoc;
-
-		if (!km.isTrangThai())
-			return giaGoc;
-
-		LocalDate homNay = LocalDate.now();
-		if (homNay.isBefore(km.getNgayBD()) || homNay.isAfter(km.getNgayKT()))
-			return giaGoc;
-
-		String loaiKM = boDau(km.getLoaiKM());
-		if (loaiKM.contains("giam")) {
-			return giaGoc * (1 - km.getMucKM() / 100.0);
-		}
-
-		return giaGoc;
 	}
 
 	public void initUI() {
@@ -193,7 +186,7 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 
 		JLabel lblChiTiet = new JLabel("CHI TIẾT PHIẾU ĐẶT THUỐC", SwingConstants.CENTER);
 		lblChiTiet.setFont(font1);
-		lblChiTiet.setBorder(new EmptyBorder(10, 0, 10, 0));
+		lblChiTiet.setAlignmentX(Component.CENTER_ALIGNMENT);
 		pnlTop.add(lblChiTiet);
 
 		pnlTop.add(taoDongThongTin("Mã phiếu:", lblMaPhieu = tool.taoLabel("")));
@@ -210,7 +203,7 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 		pnlCenter.setBorder(new EmptyBorder(10, 20, 10, 20));
 		pnlCenter.setBackground(Color.WHITE);
 
-		String[] columnNames = { "Tên thuốc", "Nơi sản xuất", "Số lượng", "Đơn vị", "Đơn giá", "Thành tiền" };
+		String[] columnNames = { "Tên thuốc", "Nơi sản xuất", "Số lượng", "Đơn vị", "Đơn giá", "Thành tiền", "Ghi chú"};
 		model = new DefaultTableModel(columnNames, 0);
 		tblThuoc = new JTable(model);
 		tblThuoc.setRowHeight(28);
@@ -256,37 +249,7 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 		trangThaiPanel.add(cmbTrangThai);
 		pnlLeft.add(trangThaiPanel);
 
-		JPanel pnlRight = new JPanel();
-		pnlRight.setLayout(new BoxLayout(pnlRight, BoxLayout.Y_AXIS));
-		pnlRight.setBackground(Color.WHITE);
-
-		JPanel row1 = taoHangTrai();
-		row1.add(tool.taoLabel("Phương thức thanh toán:"));
-		cmbPTThanhToan = tool.taoComboBox(new String[] { "Tiền mặt", "Chuyển khoản" });
-		cmbPTThanhToan.setEditable(false);
-		row1.add(cmbPTThanhToan);
-		pnlRight.add(row1);
-
-		JPanel row2 = taoHangTrai();
-		row2.add(tool.taoLabel("Tổng tiền:"));
-		lblTongTien = tool.taoLabel("0 VND");
-		row2.add(lblTongTien);
-		pnlRight.add(row2);
-
-		JPanel row3 = taoHangTrai();
-		row3.add(tool.taoLabel("Tiền nhận:"));
-		txtTienNhan = tool.taoTextField("Tiền nhận...");
-		row3.add(txtTienNhan);
-		pnlRight.add(row3);
-
-		JPanel row4 = taoHangTrai();
-		row4.add(tool.taoLabel("Tiền thừa:"));
-		lblTienThua = tool.taoLabel("0 VND");
-		row4.add(lblTienThua);
-		pnlRight.add(row4);
-
 		pnlThongTin.add(pnlLeft, BorderLayout.CENTER);
-		pnlThongTin.add(pnlRight, BorderLayout.EAST);
 
 		pnlCenter.add(pnlThongTin);
 		add(pnlCenter, BorderLayout.CENTER);

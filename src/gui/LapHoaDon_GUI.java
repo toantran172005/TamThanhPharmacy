@@ -81,11 +81,13 @@ public class LapHoaDon_GUI extends JPanel {
 		cmbSanPham.setEditable(true);
 		cmbSanPham.setPreferredSize(new Dimension(180, 28));
 		row2.add(cmbSanPham);
+		setFieldHeight(cmbSanPham);
 		row2.add(tool.taoLabel("Quốc gia sản xuất:"));
 		cmbQuocGia = tool.taoComboBox(new String[] {});
-		cmbQuocGia.setEditable(false);
+		cmbQuocGia.setEditable(true);
 		cmbQuocGia.setPreferredSize(new Dimension(180, 28));
 		row2.add(cmbQuocGia);
+		setFieldHeight(cmbQuocGia);
 		pnlTop.add(row2);
 
 		// ===== Số lượng, Đơn vị, nút Thêm, Xoá =====
@@ -96,10 +98,11 @@ public class LapHoaDon_GUI extends JPanel {
 
 		row3.add(tool.taoLabel("Đơn vị tính:"));
 		cmbDonVi = tool.taoComboBox(new String[] {});
-		cmbDonVi.setEditable(false);
+		cmbDonVi.setEditable(true);
 		cmbDonVi.setPreferredSize(new Dimension(150, 28));
+		cmbDonVi.setBackground(Color.white);
 		row3.add(cmbDonVi);
-
+		setFieldHeight(cmbDonVi);
 
 		btnThem = tool.taoButton("Thêm", "/picture/hoaDon/plus.png");
 		btnXoa = tool.taoButton("Xoá", "/picture/hoaDon/trash.png");
@@ -113,7 +116,7 @@ public class LapHoaDon_GUI extends JPanel {
 		String[] cols = { "STT", "Tên thuốc","Nơi sản xuất", "Số lượng", "Đơn vị", "Đơn giá", "Thành tiền", "Ghi chú"};
 		DefaultTableModel model = new DefaultTableModel(cols, 0);
 		tblThuoc = new JTable(model);
-		tblThuoc.setRowHeight(25);
+		tblThuoc.setRowHeight(30);
 		tblThuoc.setFont(font2);
 		tblThuoc.getTableHeader().setFont(font2);
 
@@ -136,8 +139,8 @@ public class LapHoaDon_GUI extends JPanel {
 
 		// ===== Căn giữa tiêu đề cột =====
 		JTableHeader header = tblThuoc.getTableHeader();
+		header.setFont(new Font("Times New Roman", Font.BOLD, 17));
 		header.setBackground(new Color(240, 240, 240));
-		header.setFont(font2);
 		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
 		add(scrollPane, BorderLayout.CENTER);
@@ -154,6 +157,7 @@ public class LapHoaDon_GUI extends JPanel {
 		cmbHTThanhToan = tool.taoComboBox(new String[] { "Tiền mặt", "Chuyển khoản" });
 		cmbHTThanhToan.setPreferredSize(new Dimension(150, 28));
 		row4.add(cmbHTThanhToan);
+		setFieldHeight(cmbHTThanhToan);
 		pnlBottom.add(row4);
 
 		// ===== Tổng tiền =====
@@ -201,6 +205,12 @@ public class LapHoaDon_GUI extends JPanel {
 		JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
 		p.setBackground(Color.WHITE);
 		return p;
+	}
+	
+	public void setFieldHeight(JComponent comp) {
+		Dimension d = comp.getPreferredSize();
+		d.height = 36;
+		comp.setPreferredSize(d);
 	}
 
 	 // ========== GETTER ==========
