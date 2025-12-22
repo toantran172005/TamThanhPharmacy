@@ -74,7 +74,20 @@ public class LapHoaDonCtrl {
 		gui.getBtnXoa().addActionListener(e -> xuLyXoaDong());
 		gui.getBtnLamMoi().addActionListener(e -> lamMoi());
 		gui.getBtnTaoHD().addActionListener(e -> xuLyXuatHoaDon());
-		gui.getCmbHTThanhToan().addActionListener(e -> tinhTienThua());
+		gui.getCmbHTThanhToan().addActionListener(e -> {
+			String hinhThuc = gui.getCmbHTThanhToan().getSelectedItem().toString();
+			
+			if(hinhThuc.equalsIgnoreCase("Tiền mặt")) {
+				gui.getTxtTienNhan().setEditable(true);
+				gui.getTxtTienNhan().setText("");
+				gui.getTxtTienNhan().requestFocus();
+				tinhTienThua();
+			} else {
+				gui.getTxtTienNhan().setEditable(false);
+				String tongTien = gui.getLblTongTien().getText().trim();
+	            gui.getTxtTienNhan().setText(tongTien);
+			}
+		});
 		gui.getTxtTienNhan().addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent e) {
 				tinhTienThua();
@@ -123,6 +136,7 @@ public class LapHoaDonCtrl {
 		dsThuoc = thuocDAO.layListThuoc();
 
 		gui.getCmbSanPham().removeAllItems();
+		gui.getCmbSanPham().addItem("");
 		for (Thuoc t : dsThuoc)
 			gui.getCmbSanPham().addItem(t.getTenThuoc());
 
@@ -195,96 +209,118 @@ public class LapHoaDonCtrl {
 
 	// ========== THÊM THUỐC XUỐNG BẢNG ==========
 	public void xuLyThemThuocVaoBang() {
+
 		String tenThuoc = gui.getCmbSanPham().getEditor().getItem().toString().trim();
 		if (tenThuoc.isEmpty()) {
 			tool.hienThiThongBao("Lỗi", "Vui lòng chọn thuốc!", false);
 			return;
 		}
-		
+
 		String tenQG = (String) gui.getCmbQuocGia().getSelectedItem();
-		if (tenThuoc.isEmpty()) {
-			tool.hienThiThongBao("Lỗi", "Vui lòng quốc gia!", false);
+		if (tenQG == null || tenQG.isEmpty()) {
+			tool.hienThiThongBao("Lỗi", "Vui lòng chọn quốc gia!", false);
 			return;
 		}
 
-		// ===== Lấy thông tin thuốc =====
 		String maThuoc = thuocDAO.layMaThuocTheoTenVaQG(tenThuoc, tenQG);
 		Thuoc thuoc = thuocDAO.timThuocTheoMa(maThuoc);
 		if (thuoc == null) {
-			tool.hienThiThongBao("Lỗi", "Không tìm thấy thuốc \"" + tenThuoc + "\" trong danh sách!", false);
+			tool.hienThiThongBao("Lỗi", "Không tìm thấy thuốc!", false);
 			return;
 		}
 
-		// ===== Kiểm tra số lượng =====
-		int tonKho = thuocDAO.laySoLuongTon(thuoc.getMaThuoc());
-		int sl;
+		int slNhap;
 		try {
-			sl = Integer.parseInt(gui.getTxtSoLuong().getText().trim());
-			if (sl <= 0 || sl > tonKho)
+			slNhap = Integer.parseInt(gui.getTxtSoLuong().getText().trim());
+			if (slNhap <= 0)
 				throw new NumberFormatException();
 		} catch (NumberFormatException e) {
-			tool.hienThiThongBao("Lỗi", "Số lượng phải lớn hơn 0 và bé hơn số lượng tồn (" + tonKho + ")!", false);
+			tool.hienThiThongBao("Lỗi", "Số lượng phải lớn hơn 0!", false);
 			return;
 		}
 
-		// ===== Lấy đơn vị tính & giá gốc =====
+		int tonKho = thuocDAO.laySoLuongTon(thuoc.getMaThuoc());
+		DefaultTableModel model = (DefaultTableModel) gui.getTblThuoc().getModel();
+		int slDangCoTrenBang = 0;
+		int rowIndex = -1;
+
+		for (int i = 0; i < model.getRowCount(); i++) {
+			if (model.getValueAt(i, 1).toString().equalsIgnoreCase(thuoc.getTenThuoc())) {
+				slDangCoTrenBang = Integer.parseInt(model.getValueAt(i, 3).toString());
+				rowIndex = i;
+				break;
+			}
+		}
+
+		if (slNhap + slDangCoTrenBang > tonKho) {
+			tool.hienThiThongBao("Lỗi", "Tồn kho không đủ! (Tồn: " + tonKho + ", Đã nhập: " + slDangCoTrenBang + ")",
+					false);
+			return;
+		}
+
 		String tenDVT = (String) gui.getCmbDonVi().getSelectedItem();
 		DonViTinh dvt = dvtDAO.timTheoTen(tenDVT);
 		double donGiaGoc = (dvt != null) ? thuocDAO.layGiaBanTheoDVT(thuoc.getMaThuoc(), dvt.getMaDVT())
 				: thuoc.getGiaBan();
 
-		// ===== Tính khuyến mãi =====
 		double donGiaSauKM = donGiaGoc;
-		double thanhTien = donGiaSauKM * sl;
-		double mucGiam;
+		double thanhTienDotNay = 0;
+		int slThucTeVaoBang = slNhap;
+
 		String moTaKM = "Không có KM";
 		String maKM = thuocDAO.layMaKMTheoMaThuoc(thuoc.getMaThuoc());
 		LocalDate homNay = LocalDate.now();
 
+		boolean coKM = false;
 		if (maKM != null && !maKM.isEmpty()) {
 			KhuyenMai km = kmDAO.layKhuyenMaiTheoMa(maKM);
 			if (km != null && !homNay.isBefore(km.getNgayBD()) && !homNay.isAfter(km.getNgayKT())) {
-				switch (km.getLoaiKM().toLowerCase()) {
-				case "giảm giá":
-					mucGiam = km.getMucKM();
-					donGiaSauKM *= (1 - mucGiam / 100.0);
-					thanhTien = donGiaSauKM * sl;
+				coKM = true;
+				if (km.getLoaiKM().equalsIgnoreCase("giảm giá")) {
+					double mucGiam = km.getMucKM();
+					donGiaSauKM = donGiaGoc * (1 - mucGiam / 100.0);
+					thanhTienDotNay = donGiaSauKM * slNhap;
 					moTaKM = "Giảm " + mucGiam + "%";
-					break;
+				} else if (km.getLoaiKM().equalsIgnoreCase("mua tặng")) {
 
-				case "mua tặng":
-					int soLuongTang = (sl / km.getSoLuongMua()) * km.getSoLuongTang();
+					int soLuongTang = (slNhap / km.getSoLuongMua()) * km.getSoLuongTang();
 					if (soLuongTang > 0) {
-						moTaKM = String.format("Mua %d tặng %d (Tặng: %d)", km.getSoLuongMua(), km.getSoLuongTang(),
-								soLuongTang);
-						thanhTien = donGiaGoc * sl; // chỉ tính phần mua
-						sl += soLuongTang;
+						slThucTeVaoBang = slNhap + soLuongTang;
+						moTaKM = String.format("Mua %d tặng %d (Tặng thêm: %d)", km.getSoLuongMua(),
+								km.getSoLuongTang(), soLuongTang);
 					}
-					break;
+
+					donGiaSauKM = donGiaGoc;
+					thanhTienDotNay = donGiaGoc * slNhap;
 				}
 			}
 		}
 
-		// ===== Kiểm tra trùng thuốc trong bảng =====
-		DefaultTableModel model = (DefaultTableModel) gui.getTblThuoc().getModel();
-		for (int i = 0; i < model.getRowCount(); i++) {
-			if (model.getValueAt(i, 1).toString().equalsIgnoreCase(thuoc.getTenThuoc())) {
-				int soLuongCu = Integer.parseInt(model.getValueAt(i, 2).toString());
-				int soLuongMoi = soLuongCu + sl;
-				model.setValueAt(soLuongMoi, i, 3);
-				model.setValueAt(tool.dinhDangVND(donGiaSauKM), i, 5);
-				model.setValueAt(tool.dinhDangVND(donGiaSauKM * soLuongMoi), i, 6);
-				model.setValueAt(moTaKM, i, 7);
-				tinhTongTien();
-				resetFormNhap();
-				return;
-			}
+		if (!coKM) {
+			thanhTienDotNay = donGiaGoc * slNhap;
 		}
+		if (rowIndex != -1) {
 
-		// ===== Thêm dòng mới =====
-		model.addRow(new Object[] { model.getRowCount() + 1, thuoc.getTenThuoc(), tenQG, sl,
-				dvt != null ? dvt.getTenDVT() : "", tool.dinhDangVND(donGiaGoc), tool.dinhDangVND(thanhTien), moTaKM,
-				"Xóa" });
+			int tongSoLuongMoi = slDangCoTrenBang + slThucTeVaoBang;
+
+			double tienCuTrongBang = tool.chuyenTienSangSo(model.getValueAt(rowIndex, 6).toString());
+			double tongTienMoi = tienCuTrongBang + thanhTienDotNay;
+
+			model.setValueAt(tongSoLuongMoi, rowIndex, 3);
+			model.setValueAt(tool.dinhDangVND(tongTienMoi), rowIndex, 6);
+
+			if (moTaKM.contains("Tặng thêm")) {
+
+				model.setValueAt(moTaKM, rowIndex, 7);
+			}
+
+		} else {
+
+			model.addRow(new Object[] { model.getRowCount() + 1, thuoc.getTenThuoc(), tenQG, slThucTeVaoBang,
+					dvt != null ? dvt.getTenDVT() : "", tool.dinhDangVND(donGiaSauKM),
+					tool.dinhDangVND(thanhTienDotNay),
+					moTaKM, "Xóa" });
+		}
 
 		tinhTongTien();
 		resetFormNhap();
@@ -377,8 +413,66 @@ public class LapHoaDonCtrl {
 		gui.getTxtTuoi().setEditable(true);
 		gui.getTxtSoLuong().setText("");
 		gui.getTxtTienNhan().setText("");
+		gui.getCmbSanPham().setSelectedItem("");
 		tableModel.setRowCount(0);
 		tinhTongTien();
+	}
+	
+	public boolean ktTenKhachHangHopLe() {
+		String ten = gui.txtTenKH.getText().trim();
+		String regex = "^[\\p{L}\\s]+$";
+
+		if (ten.isEmpty()) {
+			tool.hienThiThongBao("Tên khách hàng không hợp lệ!", "Tên không được để trống", false);
+			gui.txtTenKH.requestFocus();
+			return false;
+		} else if (!ten.matches(regex)) {
+			tool.hienThiThongBao("Tên khách hàng không hợp lệ!", "Tên không được chứa số hoặc ký tự đặc biệt", false);
+			gui.txtTenKH.requestFocus();
+			gui.txtTenKH.selectAll();
+			return false;
+		}
+		gui.txtSdt.requestFocus();
+		return true;
+	}
+
+	public boolean ktSoDienThoaiHopLe() {
+		String sdt = gui.txtSdt.getText().trim();
+		String regex = "^0\\d{9}$";
+
+		if (sdt.isEmpty()) {
+			tool.hienThiThongBao("Số điện thoại không hợp lệ!", "Không được để trống", false);
+			gui.txtSdt.requestFocus();
+			return false;
+		} else if (!sdt.matches(regex)) {
+			tool.hienThiThongBao("Số điện thoại không hợp lệ!", "Phải gồm 10 chữ số và bắt đầu bằng 0", false);
+			gui.txtSdt.requestFocus();
+			gui.txtSdt.selectAll();
+			return false;
+		}
+		gui.txtTuoi.requestFocus();
+		return true;
+	}
+
+	public boolean ktTuoiHopLe() {
+		String tuoiStr = gui.txtTuoi.getText().trim();
+
+		try {
+			int tuoi = Integer.parseInt(tuoiStr);
+
+			if (tuoi < 0) {
+				tool.hienThiThongBao("Tuổi không hợp lệ!", "Tuổi không được là số âm.", false);
+				gui.txtTuoi.requestFocus();
+				gui.txtTuoi.selectAll();
+				return false;
+			}
+		} catch (NumberFormatException e) {
+			tool.hienThiThongBao("Tuổi không hợp lệ!", "Tuổi phải là số nguyên.", false);
+			gui.txtTuoi.requestFocus();
+			gui.txtTuoi.selectAll();
+			return false;
+		}
+		return true;
 	}
 
 	// ========== XUẤT/LƯU HOÁ ĐƠN ==========
@@ -392,131 +486,137 @@ public class LapHoaDonCtrl {
 			    return;
 			}
 
-			String tenKH = gui.getTxtTenKH().getText().trim();
-			String sdt = gui.getTxtSdt().getText().trim();
-			String tuoiText = gui.getTxtTuoi().getText().trim();
-			String hinhThucTT = (String) gui.getCmbHTThanhToan().getSelectedItem();
+			if(ktSoDienThoaiHopLe() && ktTenKhachHangHopLe() && ktTuoiHopLe()) {
+				String tenKH = gui.getTxtTenKH().getText().trim();
+				String sdt = gui.getTxtSdt().getText().trim();
+				String tuoiText = gui.getTxtTuoi().getText().trim();
+				String hinhThucTT = (String) gui.getCmbHTThanhToan().getSelectedItem();
 
-			if (tenKH.isEmpty() || sdt.isEmpty()) {
-				tool.hienThiThongBao("Thông báo", "Vui lòng nhập đầy đủ thông tin khách hàng!", false);
-				return;
-			}
+				
 
-			int tuoi;
-			try {
-				tuoi = Integer.parseInt(tuoiText);
-				if (tuoi <= 0)
-					throw new NumberFormatException();
-			} catch (NumberFormatException e) {
-				tool.hienThiThongBao("Lỗi nhập liệu", "Tuổi không hợp lệ!", false);
-				return;
-			}
+				// ==== 2. Xử lý khách hàng ====
+				KhachHangDAO khDAO = new KhachHangDAO();
+				String sdtChuan = tool.chuyenSoDienThoai(sdt);
+				KhachHang kh = khDAO.timMaKhachHangTheoSDT(sdtChuan);
+				String maKH;
 
-			// ==== 2. Xử lý khách hàng ====
-			KhachHangDAO khDAO = new KhachHangDAO();
-			String sdtChuan = tool.chuyenSoDienThoai(sdt);
-			KhachHang kh = khDAO.timMaKhachHangTheoSDT(sdtChuan);
-			String maKH;
+				if (kh == null) {
+					maKH = tool.taoKhoaChinh("KH");
+					boolean themKH = khDAO.themKhachHangMoi(maKH, tenKH, sdtChuan, Integer.parseInt(tuoiText));
+					if (!themKH) {
+						tool.hienThiThongBao("Lỗi", "Không thể thêm khách hàng mới!", false);
+						return;
+					}
+				} else {
+					maKH = kh.getMaKH();
+				}
 
-			if (kh == null) {
-				maKH = tool.taoKhoaChinh("KH");
-				boolean themKH = khDAO.themKhachHangMoi(maKH, tenKH, sdtChuan, tuoi);
-				if (!themKH) {
-					tool.hienThiThongBao("Lỗi", "Không thể thêm khách hàng mới!", false);
+				// ==== 3. Tạo hóa đơn ====
+				String maHD = tool.taoKhoaChinh("HD");
+				String maNV;
+				if (trangChuNV != null) {
+					NhanVien nv = trangChuNV.layNhanVien();
+					maNV = nv.getMaNV();
+				} else {
+					NhanVien nv = trangChuQL.layNhanVien();
+					maNV = nv.getMaNV();
+				}
+				String diaChiHT = "456 Nguyễn Huệ, TP.HCM";
+				String tenHT = "Hiệu Thuốc Tâm Thanh";
+				String hotline = "+84-912345689";
+
+				String hinhThuc = gui.getCmbHTThanhToan().getSelectedItem().toString();
+				double tienNhan = 0;
+				double tienCanTra = tool.chuyenTienSangSo(gui.getLblTongTien().getText());
+				
+				if(hinhThuc.equalsIgnoreCase("Tiền mặt")) {
+					String tienNhanStr = gui.getTxtTienNhan().getText().trim().replace(",", "");
+					
+					if(tienNhanStr.isEmpty()) {
+						tool.hienThiThongBao("Lỗi", "Tiền nhận không được để trống", false);
+						return;
+					}
+					try {
+						tienNhan = Double.parseDouble(tienNhanStr);
+						if(tienNhan < tienCanTra) {
+							tool.hienThiThongBao("Lỗi", "Tiền nhận không đủ để thanh toán!", false);
+							return;
+						}
+					} catch (NumberFormatException e) {
+						tool.hienThiThongBao("Lỗi!", "Số tiền nhận không hợp lệ!", false);
+						return;
+					}
+						
+				} else {
+					tienNhan = tienCanTra;
+				}
+				
+				KhachHang khHD = khDAO.timKhachHangTheoMa(maKH);
+				NhanVien nv = nvDAO.timNhanVienTheoMa(maNV);
+				StringBuilder ghiChu = new StringBuilder();
+				for (int i = 0; i < tableModel.getRowCount(); i++) {
+				    Object tenThuoc = tableModel.getValueAt(i, 1
+				    		); // tên thuốc
+				    Object ghiChuKM = tableModel.getValueAt(i, 7); // ghi chú
+
+				    if (ghiChuKM != null && !ghiChuKM.toString().isBlank()) {
+				        ghiChu.append(tenThuoc)
+				              .append(" : ")
+				              .append(ghiChuKM)
+				              .append("; ");
+				    }
+				}
+
+				HoaDon hd = new HoaDon(maHD, khHD, nv, hinhThucTT, LocalDate.now(), diaChiHT, tenHT, ghiChu.toString(), hotline, tienNhan,
+						true);
+
+				if (!hdDAO.themHoaDon(hd)) {
+					tool.hienThiThongBao("Lỗi", "Không thể tạo hóa đơn!", false);
 					return;
 				}
-			} else {
-				maKH = kh.getMaKH();
-			}
 
-			// ==== 3. Tạo hóa đơn ====
-			String maHD = tool.taoKhoaChinh("HD");
-			String maNV;
-			if (trangChuNV != null) {
-				NhanVien nv = trangChuNV.layNhanVien();
-				maNV = nv.getMaNV();
-			} else {
-				NhanVien nv = trangChuQL.layNhanVien();
-				maNV = nv.getMaNV();
-			}
-			String diaChiHT = "456 Nguyễn Huệ, TP.HCM";
-			String tenHT = "Hiệu Thuốc Tâm Thanh";
-			String hotline = "+84-912345689";
+				// ==== 4. Thêm chi tiết hóa đơn ====
+				for (int i = 0; i < tableModel.getRowCount(); i++) {
+					String tenThuoc = tableModel.getValueAt(i, 1).toString();
+					Thuoc t = dsThuoc.stream().filter(x -> x.getTenThuoc().equals(tenThuoc)).findFirst().orElse(null);
 
-			double tienNhan = 0;
-			try {
-				if (!gui.getTxtTienNhan().getText().trim().isEmpty()) {
-					tienNhan = Double.parseDouble(gui.getTxtTienNhan().getText().trim().replace(",", ""));
+					if (t == null)
+						continue;
+
+					int soLuong = Integer.parseInt(tableModel.getValueAt(i, 3).toString());
+					double donGia = tool.chuyenTienSangSo(tableModel.getValueAt(i, 5).toString());
+
+					String tenDVT = tableModel.getValueAt(i, 4).toString();
+					String maDVT = dvtDAO.timMaDVTTheoTen(tenDVT); 
+
+					hdDAO.themChiTietHoaDon(maHD, t.getMaThuoc(), soLuong, maDVT, donGia);
+					thuocDAO.giamSoLuongTon(t.getMaThuoc(), maDVT, soLuong);
 				}
-			} catch (NumberFormatException e) {
-				tool.hienThiThongBao("Lỗi nhập liệu", "Số tiền nhận không hợp lệ!", false);
+
+				// ==== 5. Thông báo thành công & làm mới giao diện ====
+				tool.hienThiThongBao("Thành công", "Xuất hóa đơn thành công!", true);
+
+				daLapHoaDon = true;   
+				lapTuPhieuDatHang = false;
+				
+				HoaDon hoaDon = hdDAO.timHoaDonTheoMa(maHD);
+
+				ChiTietHoaDon_GUI chiTietPanel;
+				if (trangChuQL != null) {
+					chiTietPanel = new ChiTietHoaDon_GUI(trangChuQL);
+					trangChuQL.setUpNoiDung(chiTietPanel);
+				} else if (trangChuNV != null) {
+					chiTietPanel = new ChiTietHoaDon_GUI(trangChuNV);
+					trangChuNV.setUpNoiDung(chiTietPanel);
+				} else
+					return;
+
+				chiTietPanel.getCtrl().hienThiThongTinHoaDon(hoaDon);
+				
+				lamMoi();
+
 				return;
 			}
-			KhachHang khHD = khDAO.timKhachHangTheoMa(maKH);
-			NhanVien nv = nvDAO.timNhanVienTheoMa(maNV);
-			StringBuilder ghiChu = new StringBuilder();
-			for (int i = 0; i < tableModel.getRowCount(); i++) {
-			    Object tenThuoc = tableModel.getValueAt(i, 1
-			    		); // tên thuốc
-			    Object ghiChuKM = tableModel.getValueAt(i, 7); // ghi chú
-
-			    if (ghiChuKM != null && !ghiChuKM.toString().isBlank()) {
-			        ghiChu.append(tenThuoc)
-			              .append(" : ")
-			              .append(ghiChuKM)
-			              .append("; ");
-			    }
-			}
-
-			HoaDon hd = new HoaDon(maHD, khHD, nv, hinhThucTT, LocalDate.now(), diaChiHT, tenHT, ghiChu.toString(), hotline, tienNhan,
-					true);
-
-			if (!hdDAO.themHoaDon(hd)) {
-				tool.hienThiThongBao("Lỗi", "Không thể tạo hóa đơn!", false);
-				return;
-			}
-
-			// ==== 4. Thêm chi tiết hóa đơn ====
-			for (int i = 0; i < tableModel.getRowCount(); i++) {
-				String tenThuoc = tableModel.getValueAt(i, 1).toString();
-				Thuoc t = dsThuoc.stream().filter(x -> x.getTenThuoc().equals(tenThuoc)).findFirst().orElse(null);
-
-				if (t == null)
-					continue;
-
-				int soLuong = Integer.parseInt(tableModel.getValueAt(i, 3).toString());
-				double donGia = tool.chuyenTienSangSo(tableModel.getValueAt(i, 5).toString());
-
-				String tenDVT = (String) gui.getCmbDonVi().getSelectedItem();
-				String maDVT = dvtDAO.timMaDVTTheoTen(tenDVT); // hoặc lấy từ DAO nếu bạn có danh sách DVT
-
-				hdDAO.themChiTietHoaDon(maHD, t.getMaThuoc(), soLuong, maDVT, donGia);
-				thuocDAO.giamSoLuongTon(t.getMaThuoc(), maDVT, soLuong);
-			}
-
-			// ==== 5. Thông báo thành công & làm mới giao diện ====
-			tool.hienThiThongBao("Thành công", "Xuất hóa đơn thành công!", true);
-
-			daLapHoaDon = true;   
-			lapTuPhieuDatHang = false;
-			
-			HoaDon hoaDon = hdDAO.timHoaDonTheoMa(maHD);
-
-			ChiTietHoaDon_GUI chiTietPanel;
-			if (trangChuQL != null) {
-				chiTietPanel = new ChiTietHoaDon_GUI(trangChuQL);
-				trangChuQL.setUpNoiDung(chiTietPanel);
-			} else if (trangChuNV != null) {
-				chiTietPanel = new ChiTietHoaDon_GUI(trangChuNV);
-				trangChuNV.setUpNoiDung(chiTietPanel);
-			} else
-				return;
-
-			chiTietPanel.getCtrl().hienThiThongTinHoaDon(hoaDon);
-			
-			lamMoi();
-
-			return; 
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -582,12 +682,12 @@ public class LapHoaDonCtrl {
 			}
 			
 			model.addRow(new Object[] { model.getRowCount() + 1, 
-					ct[2], // tên thuốc
-					tenQG, // quốc gia
-					sl, // số lượng
-					tenDVT, // đơn vị
-					tool.dinhDangVND(donGia), // đơn giá
-					tool.dinhDangVND(thanhTien), // thành tiền
+					ct[2], 
+					tenQG, 
+					sl, 
+					tenDVT, 
+					tool.dinhDangVND(donGia), 
+					tool.dinhDangVND(thanhTien), 
 					moTaKM,
 					"Xóa" });
 			
@@ -597,12 +697,10 @@ public class LapHoaDonCtrl {
 	}
 	
 	public void goiYThuoc() {
-        // Lấy component soạn thảo (JTextField) bên trong JComboBox
         JTextField txtTimThuoc = (JTextField) gui.getCmbSanPham().getEditor().getEditorComponent();
 
         txtTimThuoc.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
-                // Bỏ qua các phím điều hướng để người dùng có thể chọn bằng phím mũi tên nếu muốn
                 if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_UP 
                         || e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_LEFT 
                         || e.getKeyCode() == KeyEvent.VK_RIGHT) {
@@ -610,13 +708,11 @@ public class LapHoaDonCtrl {
                 }
 
                 String input = txtTimThuoc.getText().trim().toLowerCase();
-                // Nếu chưa nhập gì thì không gợi ý
                 if (input.isEmpty()) return;
 
-                // Lọc danh sách thuốc theo tên (có chứa từ khóa)
                 List<Thuoc> ketQua = dsThuoc.stream()
                         .filter(t -> t.getTenThuoc().toLowerCase().contains(input))
-                        .limit(10) // Giới hạn 10 kết quả để bảng không quá dài
+                        .limit(10) 
                         .toList();
 
                 if (!ketQua.isEmpty()) {
@@ -634,27 +730,21 @@ public class LapHoaDonCtrl {
             JMenuItem item = new JMenuItem(t.getTenThuoc());
             
             item.addActionListener(e -> {
-                // 1. Set text cho ô nhập liệu
                 tf.setText(t.getTenThuoc());
                 
-                // 2. Set item được chọn cho ComboBox (để logic lấy dữ liệu hoạt động đúng)
                 gui.getCmbSanPham().setSelectedItem(t.getTenThuoc());
                 
-                // 3. Cập nhật ComboBox Quốc gia ngay lập tức
                 setComboxQuocGia();
                 
-                // 4. Ẩn popup
                 pop.setVisible(false);
             });
             
             pop.add(item);
         }
-        
-        // Hiển thị popup ngay dưới ô nhập liệu
-        // Dùng SwingUtilities để đảm bảo luồng giao diện mượt mà
+
         SwingUtilities.invokeLater(() -> {
             pop.show(tf, 0, tf.getHeight());
-            tf.requestFocus(); // Giữ focus lại vào ô nhập sau khi popup hiện
+            tf.requestFocus();
         });
     }
 

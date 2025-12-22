@@ -62,6 +62,7 @@ public class LapPhieuDoiTra_GUI extends JPanel {
 		tblHDThuoc = new JTable(modelHD);
 		tblHDThuoc.setFont(font2);
 		tblHDThuoc.getTableHeader().setFont(font2);
+		tblHDThuoc.setRowHeight(28);
 
 		tblHDThuoc.setBackground(Color.WHITE);
 		tblHDThuoc.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
@@ -156,6 +157,7 @@ public class LapPhieuDoiTra_GUI extends JPanel {
 		tblPhieuDTThuoc = new JTable(modelDT);
 		tblPhieuDTThuoc.setFont(font2);
 		tblPhieuDTThuoc.getTableHeader().setFont(font2);
+		tblPhieuDTThuoc.setRowHeight(28);
 
 		tblPhieuDTThuoc.setBackground(Color.WHITE);
 		tblPhieuDTThuoc.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
@@ -213,9 +215,10 @@ public class LapPhieuDoiTra_GUI extends JPanel {
 		btnQuayLai = toolCtrl.taoButton("Quay lại", "/picture/hoaDon/signOut.png");
 
 		// ===== Đặt kích thước nút =====
-		Dimension btnSize = new Dimension(160, 36);
+		Dimension btnSize = new Dimension(140, 36);
+		Dimension btnSize2 = new Dimension(190, 36);
 		btnLamMoi.setPreferredSize(btnSize);
-		btnTaoPhieuDT.setPreferredSize(btnSize);
+		btnTaoPhieuDT.setPreferredSize(btnSize2);
 		btnQuayLai.setPreferredSize(btnSize);
 
 		pnlButtons.add(btnLamMoi);

@@ -115,6 +115,56 @@ public class KhachHangDAO {
 		}
 	}
 
+	public Map<String, Integer> layTongDonHangTheoNgay(LocalDate ngayBD, LocalDate ngayKT) {
+		Map<String, Integer> map = new HashMap<>();
+
+		String sql = "SELECT maKH, COUNT(DISTINCT maHD) AS tongDonHang FROM HoaDon "
+				+ "WHERE ngayLap BETWEEN ? AND ? AND trangThai = 1 " +
+				"GROUP BY maKH";
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setDate(1, java.sql.Date.valueOf(ngayBD));
+			ps.setDate(2, java.sql.Date.valueOf(ngayKT));
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				map.put(rs.getString("maKH"), rs.getInt("tongDonHang"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+
+	public Map<String, Double> layTongTienTheoNgay(LocalDate ngayBD, LocalDate ngayKT) {
+		Map<String, Double> map = new HashMap<>();
+		String sql = """
+				    SELECT HD.maKH, SUM(
+				        CASE
+				            WHEN km.loaiKM = N'Giảm giá' THEN CT.soLuong * CT.donGia * (1 - km.mucKM / 100.0)
+				            WHEN km.loaiKM = N'Mua tặng' THEN
+				                (CT.soLuong - FLOOR(CT.soLuong / (km.soLuongMua + km.soLuongTang)) * km.soLuongTang) * CT.donGia
+				            ELSE CT.soLuong * CT.donGia
+				        END
+				    ) AS tongTien
+				    FROM HoaDon HD
+				    JOIN CT_HoaDon CT ON HD.maHD = CT.maHD
+				    JOIN Thuoc t ON CT.maThuoc = t.maThuoc
+				    LEFT JOIN KhuyenMai km ON t.maKM = km.maKM
+				    WHERE HD.ngayLap BETWEEN ? AND ? AND HD.trangThai = 1 -- Thêm điều kiện ngày và trạng thái
+				    GROUP BY HD.maKH
+				""";
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setDate(1, java.sql.Date.valueOf(ngayBD));
+			ps.setDate(2, java.sql.Date.valueOf(ngayKT));
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				map.put(rs.getString("maKH"), rs.getDouble("tongTien"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+
 	public boolean themKhachHang(String maKH, String tenKH, String sdt, String tuoi) {
 		String sql = "INSERT INTO KhachHang (maKH, tenKH, sdt, tuoi, trangThai) VALUES (?, ?, ?, ?, ?)";
 

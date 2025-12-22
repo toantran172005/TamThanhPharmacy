@@ -88,7 +88,7 @@ public class ChiTietHoaDon_GUI extends JPanel {
 		add(pnlTop, BorderLayout.NORTH);
 
 		// ========== BẢNG ==========
-		String[] columnNames = { "Tên thuốc", "Nơi sản xuất", "Số lượng", "Đơn vị", "Đơn giá", "Thành tiền" };
+		String[] columnNames = { "Tên thuốc", "Nơi sản xuất", "Số lượng", "Đơn vị", "Đơn giá(Đã áp dụng khuyến mãi)", "Thành tiền" };
 		DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
 			@Override
 			public boolean isCellEditable(int r, int c) {

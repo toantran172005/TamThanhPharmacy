@@ -75,7 +75,7 @@ public class ThongKeThuoc_GUI extends JPanel {
 
         btnThongKe = tool.taoButton("Thống kê", "/picture/hoaDon/statistic.png");
         btnLamMoi = tool.taoButton("Làm mới", "/picture/hoaDon/return.png");
-        btnLuu = tool.taoButton("Lưu tệp", "/picture/thuoc/diskette.png");
+        btnLuu = tool.taoButton("Xuất file", "/picture/khachHang/export.png");
 
         buttonPanel.add(btnThongKe);
         buttonPanel.add(btnLamMoi);
@@ -137,6 +137,7 @@ public class ThongKeThuoc_GUI extends JPanel {
     	});
     	
     	btnLamMoi.addActionListener(e -> thCtrl.onLamMoi());
+    	btnLuu.addActionListener(e -> thCtrl.xuatFileExcel());
     }
     
 

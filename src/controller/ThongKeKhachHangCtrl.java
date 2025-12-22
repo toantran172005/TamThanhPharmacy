@@ -196,7 +196,9 @@ public class ThongKeKhachHangCtrl {
 			return;
 		}
 
-		taoCache();
+		tongDonHangCache = khDAO.layTongDonHangTheoNgay(ngayBD, ngayKT);
+		tongTienCache = khDAO.layTongTienTheoNgay(ngayBD, ngayKT);
+
 		listKHTK = khDAO.layListKHThongKe(ngayBD, ngayKT);
 
 		int topN = 5;
@@ -239,12 +241,6 @@ public class ThongKeKhachHangCtrl {
 		thongKekhGUI.lblChiTieuTB.setText(tool.dinhDangVND((double) tongChiTieu / listKHTK.size()));
 	}
 
-	public void taoCache() {
-		if (tongDonHangCache == null || tongTienCache == null) {
-			tongDonHangCache = khDAO.layTatCaTongDonHang();
-			tongTienCache = khDAO.layTatCaTongTien();
-		}
-	}
 
 	public Map<String, Integer> getTongDonHangCache() {
 		return tongDonHangCache;

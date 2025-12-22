@@ -61,98 +61,153 @@ public class LapPhieuDatHangCtrl {
 		this.lpdhGUI = lpdhGUI;
 	}
 
+	public boolean ktTenKhachHangHopLe() {
+		String ten = lpdhGUI.txtTenKH.getText().trim();
+		String regex = "^[\\p{L}\\s]+$";
+
+		if (ten.isEmpty()) {
+			tool.hienThiThongBao("Tên khách hàng không hợp lệ!", "Tên không được để trống", false);
+			lpdhGUI.txtTenKH.requestFocus();
+			return false;
+		} else if (!ten.matches(regex)) {
+			tool.hienThiThongBao("Tên khách hàng không hợp lệ!", "Tên không được chứa số hoặc ký tự đặc biệt", false);
+			lpdhGUI.txtTenKH.requestFocus();
+			lpdhGUI.txtTenKH.selectAll();
+			return false;
+		}
+		lpdhGUI.txtSdt.requestFocus();
+		return true;
+	}
+
+	public boolean ktSoDienThoaiHopLe() {
+		String sdt = lpdhGUI.txtSdt.getText().trim();
+		String regex = "^0\\d{9}$";
+
+		if (sdt.isEmpty()) {
+			tool.hienThiThongBao("Số điện thoại không hợp lệ!", "Không được để trống", false);
+			lpdhGUI.txtSdt.requestFocus();
+			return false;
+		} else if (!sdt.matches(regex)) {
+			tool.hienThiThongBao("Số điện thoại không hợp lệ!", "Phải gồm 10 chữ số và bắt đầu bằng 0", false);
+			lpdhGUI.txtSdt.requestFocus();
+			lpdhGUI.txtSdt.selectAll();
+			return false;
+		}
+		lpdhGUI.txtTuoi.requestFocus();
+		return true;
+	}
+
+	public boolean ktTuoiHopLe() {
+		String tuoiStr = lpdhGUI.txtTuoi.getText().trim();
+
+		try {
+			int tuoi = Integer.parseInt(tuoiStr);
+
+			if (tuoi < 0) {
+				tool.hienThiThongBao("Tuổi không hợp lệ!", "Tuổi không được là số âm.", false);
+				lpdhGUI.txtTuoi.requestFocus();
+				lpdhGUI.txtTuoi.selectAll();
+				return false;
+			}
+		} catch (NumberFormatException e) {
+			tool.hienThiThongBao("Tuổi không hợp lệ!", "Tuổi phải là số nguyên.", false);
+			lpdhGUI.txtTuoi.requestFocus();
+			lpdhGUI.txtTuoi.selectAll();
+			return false;
+		}
+		return true;
+	}
+
 	public void taoPhieuDat() {
-		String maPDH = tool.taoKhoaChinh("PDH");
-		String maKH = null;
-		String sdtNhap = tool.chuyenSoDienThoai(lpdhGUI.txtSdt.getText());
-		for (KhachHang kh : listKH) {
-			if (sdtNhap.equals(kh.getSdt())) {
+		if (ktSoDienThoaiHopLe() && ktTenKhachHangHopLe() && ktTuoiHopLe()) {
+			String maPDH = tool.taoKhoaChinh("PDH");
+
+			KhachHangDAO khDAO = new KhachHangDAO();
+			String sdtChuan = tool.chuyenSoDienThoai(lpdhGUI.txtSdt.getText());
+			KhachHang kh = khDAO.timMaKhachHangTheoSDT(sdtChuan);
+			String maKH;
+
+			if (kh == null) {
+				maKH = tool.taoKhoaChinh("KH");
+				boolean themKH = khDAO.themKhachHangMoi(maKH, lpdhGUI.txtTenKH.getText().trim(), sdtChuan,
+						Integer.parseInt(lpdhGUI.txtTuoi.getText().trim()));
+				if (!themKH) {
+					tool.hienThiThongBao("Lỗi", "Không thể thêm khách hàng mới!", false);
+					return;
+				}
+			} else {
 				maKH = kh.getMaKH();
+			}
+
+			NhanVien nvDangNhap = null;
+			if (lpdhGUI.getTrangChuQL() != null) {
+				nvDangNhap = lpdhGUI.getTrangChuQL().layNhanVien();
+			} else if (lpdhGUI.getTrangChuNV() != null) {
+				nvDangNhap = lpdhGUI.getTrangChuNV().layNhanVien();
+			}
+
+			String maNV = nvDangNhap.getMaNV();
+			Date ngayDat = new Date();
+			Date ngayHen = lpdhGUI.ngayHen.getDate();
+			String ghiChu = lpdhGUI.txaGhiChu.getText().trim();
+
+			List<Object[]> dsChiTiet = new ArrayList<>();
+			DefaultTableModel model = (DefaultTableModel) lpdhGUI.tblThuoc.getModel();
+
+			if (model.getRowCount() == 0) {
+				tool.hienThiThongBao("Lỗi", "Danh sách thuốc trống!", false);
+				return;
+			}
+
+			for (int i = 0; i < model.getRowCount(); i++) {
+				String maThuoc = model.getValueAt(i, 0).toString();
+				int soLuong = Integer.parseInt(model.getValueAt(i, 4).toString());
+				String tenDVT = model.getValueAt(i, 5).toString();
+
+				String donGiaStr = model.getValueAt(i, 6).toString();
+				double donGia = tool.chuyenTienSangSo(donGiaStr);
+
+				String maDVT = dvtDAO.timMaDVTTheoTen(tenDVT);
+
+				if (maDVT == null) {
+					tool.hienThiThongBao("Chi tiết phiếu đặt", "Đơn vị tính '" + tenDVT + "' không hợp lệ!", false);
+					return;
+				}
+
+				dsChiTiet.add(new Object[] { maThuoc, soLuong, maDVT, donGia });
+			}
+
+			int ketQua = pdhDAO.taoPhieuDatHangVaChiTiet(maPDH, maKH, maNV, ngayDat, ngayHen, ghiChu, dsChiTiet);
+
+			switch (ketQua) {
+			case 1:
+				tool.hienThiThongBao("Thêm phiếu đặt thuốc", "Thêm phiếu đặt thuốc thành công!", true);
+
+				PhieuDatHang pdh = pdhDAO.timTheoMa(maPDH);
+				if (pdh == null) {
+					tool.hienThiThongBao("Lỗi", "Không tìm thấy thông tin phiếu đặt!", false);
+					return;
+				}
+
+				ChiTietPhieuDatHang_GUI chiTiet;
+				if (lpdhGUI.getTrangChuQL() != null) {
+					chiTiet = new ChiTietPhieuDatHang_GUI(lpdhGUI.getTrangChuQL(), pdh);
+					lpdhGUI.getTrangChuQL().setUpNoiDung(chiTiet);
+				} else {
+					chiTiet = new ChiTietPhieuDatHang_GUI(lpdhGUI.getTrangChuNV(), pdh);
+					lpdhGUI.getTrangChuNV().setUpNoiDung(chiTiet);
+				}
+
+				lamMoi();
+				break;
+			case 0:
+				tool.hienThiThongBao("Thêm phiếu đặt thuốc", "Không đủ tồn kho cho thuốc trong bảng!", false);
+				break;
+			case -1:
+			default:
+				tool.hienThiThongBao("Thêm phiếu đặt thuốc", "Đã xảy ra lỗi khi thêm phiếu đặt!", false);
 				break;
 			}
-		}
-
-		if (maKH == null) {
-			tool.hienThiThongBao("Thêm phiếu đặt thuốc", "Không tìm thấy khách hàng có số điện thoại này!", false);
-			return;
-		}
-
-		NhanVien nvDangNhap = null;
-
-		if (lpdhGUI.getTrangChuQL() != null) {
-			nvDangNhap = lpdhGUI.getTrangChuQL().layNhanVien();
-		} else if (lpdhGUI.getTrangChuNV() != null) {
-			nvDangNhap = lpdhGUI.getTrangChuNV().layNhanVien();
-		}
-
-		String maNV = nvDangNhap.getMaNV();
-		Date ngayDat = new Date();
-		Date ngayHen = lpdhGUI.ngayHen.getDate();
-		String ghiChu = lpdhGUI.txaGhiChu.getText().trim();
-
-		List<Object[]> dsChiTiet = new ArrayList<>();
-
-		for (int i = 0; i < lpdhGUI.model.getRowCount(); i++) {
-			String tenThuoc = lpdhGUI.model.getValueAt(i, 1).toString();
-			int soLuong = Integer.parseInt(lpdhGUI.model.getValueAt(i, 4).toString());
-			String tenDVT = lpdhGUI.model.getValueAt(i, 5).toString();
-
-			String maDVT = dvtDAO.timMaDVTTheoTen(tenDVT);
-
-			String maThuoc = null;
-			double donGia = 0;
-			maThuoc = lpdhGUI.model.getValueAt(i, 0).toString();
-			donGia = thDAO.layDonGiaTheoMaThuoc(maThuoc);
-
-			if (maThuoc == null) {
-				tool.hienThiThongBao("Chi tiết phiếu đặt", "Không tìm thấy thuốc: " + tenThuoc, false);
-				return;
-			}
-			if (maDVT == null) {
-				tool.hienThiThongBao("Chi tiết phiếu đặt", "Đơn vị tính '" + tenDVT + "' không hợp lệ!", false);
-				return;
-			}
-
-			dsChiTiet.add(new Object[] { maThuoc, soLuong, maDVT, donGia });
-		}
-
-		if (dsChiTiet.isEmpty()) {
-			tool.hienThiThongBao("Thêm phiếu đặt thuốc", "Danh sách thuốc trống!", false);
-			return;
-		}
-
-		int ketQua = pdhDAO.taoPhieuDatHangVaChiTiet(maPDH, maKH, maNV, ngayDat, ngayHen, ghiChu, dsChiTiet);
-
-		switch (ketQua) {
-		case 1:
-			tool.hienThiThongBao("Thêm phiếu đặt thuốc", "Thêm phiếu đặt thuốc thành công!", true);
-
-            PhieuDatHang pdh = pdhDAO.timTheoMa(maPDH);
-            if (pdh == null) {
-                tool.hienThiThongBao("Lỗi", "Không tìm thấy thông tin phiếu đặt!", false);
-                return;
-            }
-
-            ChiTietPhieuDatHang_GUI chiTiet;
-            if (lpdhGUI.getTrangChuQL() != null) {
-                chiTiet = new ChiTietPhieuDatHang_GUI(
-                        lpdhGUI.getTrangChuQL(), pdh);
-                lpdhGUI.getTrangChuQL().setUpNoiDung(chiTiet);
-            } else {
-                chiTiet = new ChiTietPhieuDatHang_GUI(
-                        lpdhGUI.getTrangChuNV(), pdh);
-                lpdhGUI.getTrangChuNV().setUpNoiDung(chiTiet);
-            }
-
-            lamMoi();
-            break;
-		case 0:
-			tool.hienThiThongBao("Thêm phiếu đặt thuốc", "Không đủ tồn kho cho thuốc trong bảng!", false);
-			break;
-		case -1:
-		default:
-			tool.hienThiThongBao("Thêm phiếu đặt thuốc", "Đã xảy ra lỗi khi thêm phiếu đặt!", false);
-			break;
 		}
 	}
 
@@ -187,25 +242,17 @@ public class LapPhieuDatHangCtrl {
 	}
 
 	public void themVaoTable() {
-
 		String sdt = lpdhGUI.txtSdt.getText().trim();
 		String tenKH = lpdhGUI.txtTenKH.getText().trim();
 		String tuoiStr = lpdhGUI.txtTuoi.getText().trim();
 		String tenThuoc = (String) lpdhGUI.cmbSanPham.getSelectedItem();
 		String donVi = (String) lpdhGUI.cmbDonVi.getSelectedItem();
 		String soLuongStr = lpdhGUI.txtSoLuong.getText().trim();
-
 		String tenQG = (String) lpdhGUI.getCmbQuocGia().getSelectedItem();
-		String maThuoc = thDAO.layMaThuocTheoTenVaQG(tenThuoc, tenQG);
-
-		double donGia = thDAO.layDonGiaTheoMaThuoc(maThuoc);
-
-		Thuoc thuoc = thDAO.timThuocTheoMa(maThuoc);
 		java.util.Date ngayUtil = lpdhGUI.ngayHen.getDate();
 
 		if (sdt.isEmpty() || tenKH.isEmpty() || tuoiStr.isEmpty() || tenThuoc == null || tenThuoc.isEmpty()
 				|| donVi == null || donVi.isEmpty() || soLuongStr.isEmpty() || ngayUtil == null) {
-
 			tool.hienThiThongBao("Lỗi nhập liệu", "Vui lòng nhập đầy đủ thông tin trước khi thêm!", false);
 			return;
 		}
@@ -220,10 +267,10 @@ public class LapPhieuDatHangCtrl {
 			return;
 		}
 
-		int soLuong;
+		int soLuongNhap;
 		try {
-			soLuong = Integer.parseInt(soLuongStr);
-			if (soLuong <= 0)
+			soLuongNhap = Integer.parseInt(soLuongStr);
+			if (soLuongNhap <= 0)
 				throw new NumberFormatException();
 		} catch (NumberFormatException e) {
 			tool.hienThiThongBao("Lỗi dữ liệu", "Số lượng phải là số nguyên dương!", false);
@@ -231,7 +278,6 @@ public class LapPhieuDatHangCtrl {
 		}
 
 		LocalDate ngayHen = ngayUtil.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
 		LocalDate today = LocalDate.now();
 
 		if (ngayHen.isBefore(today)) {
@@ -239,46 +285,87 @@ public class LapPhieuDatHangCtrl {
 			return;
 		}
 
-		// ===== Tính khuyến mãi =====
-		double donGiaSauKM = donGia;
-		double thanhTien = donGiaSauKM * soLuong;
-		double mucGiam;
+		String maThuoc = thDAO.layMaThuocTheoTenVaQG(tenThuoc, tenQG);
+		Thuoc thuoc = thDAO.timThuocTheoMa(maThuoc);
+
+		if (thuoc == null) {
+			tool.hienThiThongBao("Lỗi", "Không tìm thấy thông tin thuốc!", false);
+			return;
+		}
+
+		DefaultTableModel model = (DefaultTableModel) lpdhGUI.tblThuoc.getModel();
+		int slHienTaiTrenBang = 0;
+		int rowIndex = -1;
+
+		for (int i = 0; i < model.getRowCount(); i++) {
+			if (model.getValueAt(i, 0).toString().equals(maThuoc)) {
+				slHienTaiTrenBang = Integer.parseInt(model.getValueAt(i, 4).toString());
+				rowIndex = i;
+				break;
+			}
+		}
+
+		int tonKho = thDAO.laySoLuongTon(maThuoc);
+		if (soLuongNhap + slHienTaiTrenBang > tonKho) {
+			tool.hienThiThongBao("Lỗi",
+					"Tồn kho không đủ! (Tồn: " + tonKho + ", Đang có trong bảng: " + slHienTaiTrenBang + ")", false);
+			return;
+		}
+
+		double donGiaGoc = thuoc.getGiaBan();
+		double donGiaHienThi = donGiaGoc;
+		double thanhTien = 0;
+		int soLuongThucTe = soLuongNhap;
 		String moTaKM = "Không có";
-		String maKM = thDAO.layMaKMTheoMaThuoc(thuoc.getMaThuoc());
+		String maKM = thDAO.layMaKMTheoMaThuoc(maThuoc);
 		LocalDate homNay = LocalDate.now();
 
 		if (maKM != null && !maKM.isEmpty()) {
 			KhuyenMai km = kmDAO.layKhuyenMaiTheoMa(maKM);
 			if (km != null && !homNay.isBefore(km.getNgayBD()) && !homNay.isAfter(km.getNgayKT())) {
-				switch (km.getLoaiKM().toLowerCase()) {
-				case "giảm giá":
-					mucGiam = (double) km.getMucKM();
-					donGiaSauKM = donGiaSauKM * (1 - (mucGiam / 100.0));
-					System.out.println("mã Khuyến mãi: " + km.getMaKM() + " Loại khuyến mãi: " + km.getLoaiKM()
-							+ " Mức KM: " + km.getMucKM() + " Đơn giá: " + donGiaSauKM);
-					thanhTien = donGiaSauKM * soLuong;
+				String loaiKM = km.getLoaiKM().toLowerCase();
+				if (loaiKM.equals("giảm giá")) {
+					double mucGiam = km.getMucKM();
+					donGiaHienThi = donGiaGoc * (1 - mucGiam / 100.0);
+					thanhTien = donGiaHienThi * soLuongNhap;
 					moTaKM = "Giảm " + mucGiam + "%";
-					break;
-
-				case "mua tặng":
-					int soLuongTang = (soLuong / km.getSoLuongMua()) * km.getSoLuongTang();
+				} else if (loaiKM.equals("mua tặng")) {
+					int soLuongTang = (soLuongNhap / km.getSoLuongMua()) * km.getSoLuongTang();
 					if (soLuongTang > 0) {
+						soLuongThucTe = soLuongNhap + soLuongTang;
+						thanhTien = donGiaGoc * soLuongNhap;
 						moTaKM = String.format("Mua %d tặng %d (Tặng: %d)", km.getSoLuongMua(), km.getSoLuongTang(),
 								soLuongTang);
-						thanhTien = donGia * soLuong; // chỉ tính phần mua
-						soLuong += soLuongTang;
+					} else {
+						thanhTien = donGiaGoc * soLuongNhap;
 					}
-					break;
+				} else {
+					thanhTien = donGiaGoc * soLuongNhap;
 				}
+			} else {
+				thanhTien = donGiaGoc * soLuongNhap;
 			}
+		} else {
+			thanhTien = donGiaGoc * soLuongNhap;
 		}
 
-		DefaultTableModel model = (DefaultTableModel) lpdhGUI.tblThuoc.getModel();
-		int stt = model.getRowCount() + 1;
+		if (rowIndex != -1) {
+			int slMoi = slHienTaiTrenBang + soLuongThucTe;
+			double thanhTienCu = tool.chuyenTienSangSo(model.getValueAt(rowIndex, 7).toString());
 
-		Object[] row = { maThuoc, stt, tenThuoc, tenQG, soLuong, donVi, tool.dinhDangVND(donGia),
-				tool.dinhDangVND(thanhTien), moTaKM };
-		model.addRow(row);
+			model.setValueAt(slMoi, rowIndex, 4);
+			model.setValueAt(tool.dinhDangVND(donGiaHienThi), rowIndex, 6);
+			model.setValueAt(tool.dinhDangVND(thanhTienCu + thanhTien), rowIndex, 7);
+
+			if (!moTaKM.equals("Không có")) {
+				model.setValueAt(moTaKM, rowIndex, 8);
+			}
+		} else {
+			int stt = model.getRowCount() + 1;
+			Object[] row = { maThuoc, stt, tenThuoc, tenQG, soLuongThucTe, donVi, tool.dinhDangVND(donGiaHienThi),
+					tool.dinhDangVND(thanhTien), moTaKM };
+			model.addRow(row);
+		}
 
 		lpdhGUI.cmbSanPham.setSelectedIndex(-1);
 		lpdhGUI.cmbDonVi.setSelectedIndex(-1);

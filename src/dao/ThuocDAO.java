@@ -922,14 +922,30 @@ public class ThuocDAO {
 	}
 
 	// lấy danh sách top 10 thuốc bán chạy
-	public ArrayList<Thuoc> layListTHThongKe(LocalDate ngayBD, LocalDate ngayKT) {
-		ArrayList<Thuoc> list = new ArrayList<>();
+	public ArrayList<Object[]> layListTHThongKe(LocalDate ngayBD, LocalDate ngayKT) {
+		ArrayList<Object[]> list = new ArrayList<>();
 
-		String query = "SELECT TOP 10 \r\n" + "    t.maThuoc,\r\n" + "    t.tenThuoc,\r\n"
-				+ "    SUM(ct.soLuong) AS soLuongBan,\r\n" + "    SUM(ct.soLuong * ct.donGia) AS doanhThu\r\n"
-				+ "FROM CT_HoaDon ct\r\n" + "JOIN HoaDon hd ON ct.maHD = hd.maHD\r\n"
-				+ "JOIN Thuoc t ON ct.maThuoc = t.maThuoc\r\n" + "WHERE hd.ngayLap BETWEEN ? AND ?\r\n"
-				+ "GROUP BY t.maThuoc, t.tenThuoc\r\n" + "ORDER BY soLuongBan DESC;";
+		String query = """
+				    SELECT TOP 10
+				        t.maThuoc,
+				        t.tenThuoc,
+				        SUM(ct.soLuong) AS soLuongBan,
+				        SUM(
+				            CASE
+				                WHEN km.loaiKM = N'Giảm giá' THEN ct.soLuong * ct.donGia * (1 - km.mucKM / 100.0)
+				                WHEN km.loaiKM = N'Mua tặng' THEN
+				                    (ct.soLuong - FLOOR(ct.soLuong / (km.soLuongMua + km.soLuongTang)) * km.soLuongTang) * ct.donGia
+				                ELSE ct.soLuong * ct.donGia
+				            END
+				        ) AS doanhThu
+				    FROM CT_HoaDon ct
+				    JOIN HoaDon hd ON ct.maHD = hd.maHD
+				    JOIN Thuoc t ON ct.maThuoc = t.maThuoc
+				    LEFT JOIN KhuyenMai km ON t.maKM = km.maKM
+				    WHERE hd.trangThai = 1 AND hd.ngayLap BETWEEN ? AND ?
+				    GROUP BY t.maThuoc, t.tenThuoc
+				    ORDER BY soLuongBan DESC;
+				""";
 
 		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement pstmt = con.prepareStatement(query)) {
 
@@ -939,8 +955,13 @@ public class ThuocDAO {
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				list.add(new Thuoc(rs.getString("maThuoc"), rs.getString("tenThuoc"), rs.getInt("soLuongBan"),
-						rs.getInt("doanhThu")));
+				// Không map vào Entity Thuoc nữa, mà map vào Object[]
+				Object[] row = new Object[] { rs.getString("maThuoc"), // index 0
+						rs.getString("tenThuoc"), // index 1
+						rs.getInt("soLuongBan"), // index 2
+						rs.getDouble("doanhThu") // index 3
+				};
+				list.add(row);
 			}
 
 		} catch (Exception e) {

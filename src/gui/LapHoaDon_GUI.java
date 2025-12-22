@@ -98,7 +98,8 @@ public class LapHoaDon_GUI extends JPanel {
 
 		row3.add(tool.taoLabel("Đơn vị tính:"));
 		cmbDonVi = tool.taoComboBox(new String[] {});
-		cmbDonVi.setEditable(true);
+		cmbDonVi.setEditable(false);
+		cmbDonVi.setEnabled(false);
 		cmbDonVi.setPreferredSize(new Dimension(150, 28));
 		cmbDonVi.setBackground(Color.white);
 		row3.add(cmbDonVi);
@@ -113,7 +114,7 @@ public class LapHoaDon_GUI extends JPanel {
 		add(pnlTop, BorderLayout.NORTH);
 
 		// ========== BẢNG DỮ LIỆU ==========
-		String[] cols = { "STT", "Tên thuốc","Nơi sản xuất", "Số lượng", "Đơn vị", "Đơn giá", "Thành tiền", "Ghi chú"};
+		String[] cols = { "STT", "Tên thuốc","Nơi sản xuất", "Số lượng", "Đơn vị", "Đơn giá(Đã áp dụng khuyến mãi)", "Thành tiền", "Ghi chú"};
 		DefaultTableModel model = new DefaultTableModel(cols, 0);
 		tblThuoc = new JTable(model);
 		tblThuoc.setRowHeight(30);
@@ -158,6 +159,7 @@ public class LapHoaDon_GUI extends JPanel {
 		cmbHTThanhToan.setPreferredSize(new Dimension(150, 28));
 		row4.add(cmbHTThanhToan);
 		setFieldHeight(cmbHTThanhToan);
+		cmbHTThanhToan.setEditable(false);
 		pnlBottom.add(row4);
 
 		// ===== Tổng tiền =====

@@ -1,12 +1,28 @@
 package controller;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.Desktop;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+
 import dao.DonViTinhDAO;
 import dao.KeThuocDAO;
 import dao.ThueDAO;
@@ -19,39 +35,45 @@ import gui.ThongKeThuoc_GUI;
 import gui.TimKiemThuoc_GUI;
 
 public class ThuocCtrl {
-    
+
     public ThuocDAO thuocDAO = new ThuocDAO();
     public KeThuocDAO keThuocDao = new KeThuocDAO();
     public DonViTinhDAO dvtDao = new DonViTinhDAO();
     public ThueDAO thueDao = new ThueDAO();
     public ToolCtrl tool = new ToolCtrl();
+    
     public ThongKeThuoc_GUI tkThuoc;
     public TimKiemThuoc_GUI thuoc;
     public ChiTietThuoc_GUI ctThuoc;
     public ThemThuoc_GUI themThuoc;
-    public boolean isHienThi = true;
-    public int dangNhap = 1;
-    ArrayList<Thuoc> listThuoc = thuocDAO.layListThuocHoanChinh();
     
+    public boolean isHienThi = true;
+    public ArrayList<Thuoc> listThuoc;
+
     public ThuocCtrl(ThongKeThuoc_GUI tkThuoc) {
         this.tkThuoc = tkThuoc;
     }
-    
+
     public ThuocCtrl(ChiTietThuoc_GUI ctThuoc) {
         this.ctThuoc = ctThuoc;
     }
-    
+
     public ThuocCtrl(TimKiemThuoc_GUI thuoc) {
         this.thuoc = thuoc;
+        lamMoiDuLieu();
     }
-    
+
     public ThuocCtrl() {
         super();
     }
 
-    //chọn file 
+    public void lamMoiDuLieu() {
+        listThuoc = thuocDAO.layListThuocHoanChinh();
+    }
+
     public File chonFile() {
         JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Hình ảnh", "jpg", "png", "gif"));
         int option = fileChooser.showOpenDialog(null);
         if(option == JFileChooser.APPROVE_OPTION) {
             return fileChooser.getSelectedFile();
@@ -59,110 +81,92 @@ public class ThuocCtrl {
         return null;
     }
     
-    // set cmb kệ thuốc
     public void setCmbKeThuoc() {
         ArrayList<KeThuoc> listKT = keThuocDao.layListKeThuoc();
+        thuoc.cmbLoaiThuoc.removeAllItems();
         thuoc.cmbLoaiThuoc.addItem("Tất cả");
         for (KeThuoc kt : listKT) {
             thuoc.cmbLoaiThuoc.addItem(kt.getLoaiKe());
         }
     }
 
-    //Thống kê thuốc
-    public ArrayList<Thuoc> layListThongKe(LocalDate ngayBD, LocalDate ngayKT) {
-        ArrayList<Thuoc> listTK = new ArrayList<Thuoc>();
-        try {
-            listTK = thuocDAO.layListTHThongKe(ngayBD, ngayKT);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return listTK;
-    }
-    
-    //xoá thuốc
-    public void xoaThuoc() {
-        listThuoc = thuocDAO.layListThuocHoanChinh();
-        if (thuoc.btnXoa.getText().equalsIgnoreCase("Xoá")) {
-            if (tool.hienThiXacNhan("Xóa thuốc", "Xác nhận xóa thuốc?", null)) {
-                int viewRow = thuoc.tblThuoc.getSelectedRow();
-                if (viewRow != -1) {
-                    int modelRow = thuoc.tblThuoc.convertRowIndexToModel(viewRow);
-                    Object maObj = thuoc.tblThuoc.getModel().getValueAt(modelRow, 0);
-                    String maTh = maObj == null ? "" : maObj.toString();
-
-                    if (thuocDAO.xoaThuoc(maTh)) {
-                        tool.hienThiThongBao("Xóa thuốc", "Đã xóa thuốc thành công!", true);
-                    }
-                }
-                locTatCa(isHienThi);
-            }
-        } else {
-            if (tool.hienThiXacNhan("Khôi phục thuốc", "Xác nhận khôi phục thuốc?", null)) {
-                int viewRow = thuoc.tblThuoc.getSelectedRow();
-                if (viewRow != -1) {
-                    int modelRow = thuoc.tblThuoc.convertRowIndexToModel(viewRow);
-                    Object maObj = thuoc.tblThuoc.getModel().getValueAt(modelRow, 0);
-                    String maTh = maObj == null ? "" : maObj.toString();
-
-                    if (thuocDAO.khoiPhucTH(maTh)) {
-                        tool.hienThiThongBao("Khôi phục thuốc", "Đã khôi phục thuốc thành công!", true);
-                    }
-                }
-                locTatCa(isHienThi);
-            }
-        }
-    }
-    
-    //xử lý thống kê
     public void onThongKe() {
-         LocalDate bd = tool.utilDateSangLocalDate(tkThuoc.dpNgayBD.getDate());
-         LocalDate kt = tool.utilDateSangLocalDate(tkThuoc.dpNgayKT.getDate());
-         int stt = 1;
-         
-         if(bd == null) {
-             bd = LocalDate.of(2025, 01, 01);
-         } 
-         
-         if(kt == null) {
-             kt = LocalDate.now();
-         }
-         
-         if(bd == null && kt == null) {
-             bd = LocalDate.of(2025, 01, 01);
-             kt = LocalDate.now();
-         }
-          
-         
-        ArrayList<Thuoc> listTK = layListThongKe(bd, kt);
-        tkThuoc.pnlChart.repaint();
-         
-         
-        //Đưa dữ liệu cho dataset để vẽ biểu đồ
-        tkThuoc.dataset.clear();
-        for(Thuoc t : listTK) {
-            tkThuoc.dataset.addValue(t.getSoLuongBan(), "Số lượng bán", t.getTenThuoc());
+        java.util.Date dateBD = tkThuoc.dpNgayBD.getDate();
+        java.util.Date dateKT = tkThuoc.dpNgayKT.getDate();
+
+        LocalDate bd = tool.utilDateSangLocalDate(dateBD);
+        LocalDate kt = tool.utilDateSangLocalDate(dateKT);
+
+        if(kt == null) kt = LocalDate.now();
+        if(bd == null) bd = LocalDate.now().withDayOfMonth(1);
+        
+        if (bd.isAfter(kt)) {
+            tool.hienThiThongBao("Lỗi ngày", "Ngày bắt đầu phải trước ngày kết thúc", false);
+            return;
         }
-         
-        //Đổ dữ liệu lên bảng
-        for(Thuoc t : listTK) {
+
+        ArrayList<Object[]> listTK = thuocDAO.layListTHThongKe(bd, kt);
+        
+        tkThuoc.dataset.clear();
+        tkThuoc.model.setRowCount(0);
+        int stt = 1;
+
+        if (listTK.isEmpty()) {
+            tool.hienThiThongBao("Thông báo", "Không có dữ liệu trong khoảng thời gian này", false);
+        }
+
+        for(Object[] row : listTK) {
+            String maThuoc = (String) row[0];
+            String tenThuoc = (String) row[1];
+            int soLuongBan = (int) row[2];
+            double doanhThu = (double) row[3];
+
+            tkThuoc.dataset.addValue(soLuongBan, "Số lượng bán", tenThuoc);
+
             tkThuoc.model.addRow(new Object[] {
-                    stt++,
-                    t.getMaThuoc(),
-                    t.getTenThuoc(),
-                    t.getSoLuongBan(),
-                    tool.dinhDangVND(t.getDoanhThu())
+                stt++,
+                maThuoc,
+                tenThuoc,
+                soLuongBan,
+                tool.dinhDangVND(doanhThu)
             });
         }
+        // tkThuoc.pnlChart.repaint(); 
     }
     
-    //Làm mới thống kê
     public void onLamMoi() {
         tkThuoc.dpNgayBD.setDate(null);
         tkThuoc.dpNgayKT.setDate(null);
         ((DefaultTableModel) tkThuoc.tblThongKe.getModel()).setRowCount(0);
+        tkThuoc.dataset.clear();
     }
     
-    //xử lý xem chi tiết
+    public void xoaThuoc() {
+        if(listThuoc == null) lamMoiDuLieu();
+        
+        boolean isXoa = thuoc.btnXoa.getText().equalsIgnoreCase("Xoá");
+        String title = isXoa ? "Xóa thuốc" : "Khôi phục thuốc";
+
+        if (tool.hienThiXacNhan(title, "Xác nhận thực hiện?", null)) {
+            int viewRow = thuoc.tblThuoc.getSelectedRow();
+            if (viewRow != -1) {
+                int modelRow = thuoc.tblThuoc.convertRowIndexToModel(viewRow);
+                String maTh = thuoc.tblThuoc.getModel().getValueAt(modelRow, 0).toString();
+
+                boolean kq = isXoa ? thuocDAO.xoaThuoc(maTh) : thuocDAO.khoiPhucTH(maTh);
+                if (kq) {
+                    tool.hienThiThongBao(title, "Thành công!", true);
+                    lamMoiDuLieu();
+                    locTatCa(isHienThi);
+                } else {
+                     tool.hienThiThongBao("Lỗi", "Thất bại!", false);
+                }
+            } else {
+                 tool.hienThiThongBao("Lỗi", "Vui lòng chọn thuốc!", false);
+            }
+        }
+    }
+
     public void xemChiTiet() {
         int selectedRow = thuoc.tblThuoc.getSelectedRow();
         if(selectedRow == -1) {
@@ -171,35 +175,30 @@ public class ThuocCtrl {
         }
         
         int modelRow = thuoc.tblThuoc.convertRowIndexToModel(selectedRow);
-        String maThuoc = thuoc.tblThuoc.getModel().getValueAt(selectedRow, 0).toString();
+        String maThuoc = thuoc.tblThuoc.getModel().getValueAt(modelRow, 0).toString();
         
         ChiTietThuoc_GUI ctThuoc_GUI = new ChiTietThuoc_GUI(maThuoc);
         tool.doiPanel(thuoc, ctThuoc_GUI);
     }
     
-    //Lấy danh sách tên thuốc
     public ArrayList<String> layDSTenThuoc(){
+        if(listThuoc == null) lamMoiDuLieu();
         ArrayList<String> listTen = new ArrayList<>();
-        ArrayList<Thuoc> list = thuocDAO.layListThuocHoanChinh();
-        
-        for(Thuoc t : list) {
+        for(Thuoc t : listThuoc) {
             listTen.add(t.getTenThuoc());
         }
-        
         return listTen;
     }
     
-
     public void xuLyBtnLichSuXoa() {
         isHienThi = !isHienThi;
         thuoc.btnLichSuXoa.setText(!isHienThi ? "Danh sách hiện tại" : "Lịch sử xoá");
         thuoc.btnXoa.setText(!isHienThi ? "Khôi phục" : "Xoá");
         locTatCa(isHienThi);
     }
-    
-    // Cập nhật hàm lọc tất cả 
+
     public void locTatCa(boolean isHienThi) {
-        listThuoc = thuocDAO.layListThuocHoanChinh(); 
+        if(listThuoc == null) lamMoiDuLieu();
         ArrayList<Thuoc> ketQua = new ArrayList<>();
 
         String tuKhoaTen = thuoc.txtTenThuoc.getText().trim().toLowerCase(); 
@@ -210,17 +209,13 @@ public class ThuocCtrl {
             tuKhoaLoai = "";
         }
 
-        if (listThuoc != null) {
-            for (Thuoc t : listThuoc) {
-                boolean matchTen = tuKhoaTen.isEmpty() 
-                        || t.getTenThuoc().toLowerCase().contains(tuKhoaTen);
-                boolean matchLoai = tuKhoaLoai.isEmpty() 
-                        || (t.getKeThuoc() != null && t.getKeThuoc().getLoaiKe().toLowerCase().contains(tuKhoaLoai));
-                boolean matchTrangThai = (t.isTrangThai() == isHienThi);
+        for (Thuoc t : listThuoc) {
+            boolean matchTen = tuKhoaTen.isEmpty() || t.getTenThuoc().toLowerCase().contains(tuKhoaTen);
+            boolean matchLoai = tuKhoaLoai.isEmpty() || (t.getKeThuoc() != null && t.getKeThuoc().getLoaiKe().toLowerCase().contains(tuKhoaLoai));
+            boolean matchTrangThai = (t.isTrangThai() == isHienThi);
 
-                if (matchTen && matchLoai && matchTrangThai) {
-                    ketQua.add(t);
-                }
+            if (matchTen && matchLoai && matchTrangThai) {
+                ketQua.add(t);
             }
         }
         setDataChoTable(ketQua);
@@ -230,51 +225,142 @@ public class ThuocCtrl {
         thuoc.model.setRowCount(0);
         for(Thuoc t : list) {
             thuoc.model.addRow(new Object[] {
-                    t.getMaThuoc(),
-                    t.getTenThuoc(),
-                    t.getKeThuoc().getLoaiKe(),
-                    tool.dinhDangVND(t.getGiaBan()),
-                    t.getSoLuong(),
-                    t.getNoiSanXuat(),
-                    t.getDvt().getTenDVT(),
-                    t.getHanSuDung()
+                t.getMaThuoc(),
+                t.getTenThuoc(),
+                t.getKeThuoc().getLoaiKe(),
+                tool.dinhDangVND(t.getGiaBan()),
+                t.getSoLuong(),
+                t.getNoiSanXuat(),
+                t.getDvt().getTenDVT(),
+                t.getHanSuDung()
             });
         }
     }
     
-    //Tìm kiếm theo loại
-    public ArrayList<Thuoc> layThuocTheoLoai() {
-        ArrayList<Thuoc> listKQ = new ArrayList<Thuoc>();
-        ArrayList<Thuoc> list = thuocDAO.layListThuocHoanChinh();
-        String loai = thuoc.cmbLoaiThuoc.getSelectedItem().toString();
-        
-        if(loai == "Tất cả") {
-            return list;
+    public void xuatFileExcel() {
+        // 1. Kiểm tra xem bảng có dữ liệu không
+        if (tkThuoc.tblThongKe.getRowCount() == 0) {
+            tool.hienThiThongBao("Cảnh báo", "Không có dữ liệu để xuất file!", false);
+            return;
         }
-        for(Thuoc t : list) {
-            if(t.getKeThuoc().getLoaiKe().equalsIgnoreCase(loai)) {
-                listKQ.add(t);
+
+        // 2. Chọn nơi lưu file
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Chọn nơi lưu tệp Excel");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Excel Files (.xlsx)", "xlsx"));
+        fileChooser.setSelectedFile(new File("ThongKeThuocBanChay.xlsx")); // Tên mặc định
+
+        int userSelection = fileChooser.showSaveDialog(null);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            
+            // Đảm bảo đuôi file là .xlsx
+            if (!fileToSave.getAbsolutePath().endsWith(".xlsx")) {
+                fileToSave = new File(fileToSave.getAbsolutePath() + ".xlsx");
+            }
+
+            try (XSSFWorkbook workbook = new XSSFWorkbook()) {
+                XSSFSheet sheet = workbook.createSheet("Thống kê thuốc");
+                CellStyle titleStyle = workbook.createCellStyle();
+                XSSFFont titleFont = workbook.createFont();
+                titleFont.setFontName("Times New Roman");
+                titleFont.setBold(true);
+                titleFont.setFontHeightInPoints((short) 16);
+                titleStyle.setFont(titleFont);
+                titleStyle.setAlignment(HorizontalAlignment.CENTER);
+
+                // Style cho Header bảng
+                CellStyle headerStyle = workbook.createCellStyle();
+                XSSFFont headerFont = workbook.createFont();
+                headerFont.setFontName("Times New Roman");
+                headerFont.setBold(true);
+                headerFont.setFontHeightInPoints((short) 12);
+                headerStyle.setFont(headerFont);
+                headerStyle.setBorderBottom(BorderStyle.THIN);
+                headerStyle.setBorderTop(BorderStyle.THIN);
+                headerStyle.setBorderLeft(BorderStyle.THIN);
+                headerStyle.setBorderRight(BorderStyle.THIN);
+                headerStyle.setAlignment(HorizontalAlignment.CENTER);
+
+                // Style cho dữ liệu bình thường
+                CellStyle dataStyle = workbook.createCellStyle();
+                dataStyle.setBorderBottom(BorderStyle.THIN);
+                dataStyle.setBorderTop(BorderStyle.THIN);
+                dataStyle.setBorderLeft(BorderStyle.THIN);
+                dataStyle.setBorderRight(BorderStyle.THIN);
+                dataStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+
+                // --- DÒNG 1: TIÊU ĐỀ ---
+                XSSFRow rowTitle = sheet.createRow(0);
+                Cell cellTitle = rowTitle.createCell(0);
+                cellTitle.setCellValue("THỐNG KÊ TOP THUỐC BÁN CHẠY");
+                cellTitle.setCellStyle(titleStyle);
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 4));
+
+                // --- DÒNG 2: THỜI GIAN THỐNG KÊ ---
+                XSSFRow rowDate = sheet.createRow(1);
+                Cell cellDate = rowDate.createCell(0);
+                
+                String ngayBD = tkThuoc.dpNgayBD.getDate() != null ? 
+                        tool.dinhDangLocalDate(tool.utilDateSangLocalDate(tkThuoc.dpNgayBD.getDate())) : "...";
+                String ngayKT = tkThuoc.dpNgayKT.getDate() != null ? 
+                        tool.dinhDangLocalDate(tool.utilDateSangLocalDate(tkThuoc.dpNgayKT.getDate())) : "...";
+                
+                cellDate.setCellValue("Thời gian: Từ " + ngayBD + " đến " + ngayKT);
+                sheet.addMergedRegion(new CellRangeAddress(1, 1, 0, 4));
+                
+                // --- DÒNG 4: HEADER BẢNG ---
+                int rowNum = 3;
+                XSSFRow rowHeader = sheet.createRow(rowNum++);
+                String[] headers = { "STT", "Mã thuốc", "Tên thuốc", "Số lượng bán", "Doanh thu" };
+                
+                for (int i = 0; i < headers.length; i++) {
+                    Cell cell = rowHeader.createCell(i);
+                    cell.setCellValue(headers[i]);
+                    cell.setCellStyle(headerStyle);
+                }
+
+                // --- DỮ LIỆU TỪ TABLE ---
+                JTable table = tkThuoc.tblThongKe;
+                for (int i = 0; i < table.getRowCount(); i++) {
+                    XSSFRow row = sheet.createRow(rowNum++);
+                    createCell(row, 0, table.getValueAt(i, 0).toString(), dataStyle);
+                    createCell(row, 1, table.getValueAt(i, 1).toString(), dataStyle);
+                    createCell(row, 2, table.getValueAt(i, 2).toString(), dataStyle);
+                    Cell cellSL = row.createCell(3);
+                    cellSL.setCellValue(Integer.parseInt(table.getValueAt(i, 3).toString()));
+                    cellSL.setCellStyle(dataStyle);
+                    createCell(row, 4, table.getValueAt(i, 4).toString(), dataStyle);
+                }
+                for (int i = 0; i < 5; i++) {
+                    sheet.autoSizeColumn(i);
+                }
+
+                // --- GHI FILE ---
+                try (FileOutputStream out = new FileOutputStream(fileToSave)) {
+                    workbook.write(out);
+                    tool.hienThiThongBao("Thành công", "Xuất file Excel thành công!", true);
+                    
+                    int confirm = JOptionPane.showConfirmDialog(null, "Bạn có muốn mở file?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+                    
+                    if(confirm == JOptionPane.YES_OPTION) {
+                    	Desktop.getDesktop().open(fileToSave);
+                    }
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                tool.hienThiThongBao("Lỗi", "Đã xảy ra lỗi khi ghi file: " + e.getMessage(), false);
             }
         }
-        
-        return listKQ;
     }
     
-    public void timKiemThuocTheoLoai() {
-        
-        ArrayList<Thuoc> list = layThuocTheoLoai();
-        thuoc.model.setRowCount(0);
-        for(Thuoc t : list) {
-            thuoc.model.addRow(new Object[] {
-                    t.getMaThuoc(),
-                    t.getTenThuoc(),
-                    t.getKeThuoc().getLoaiKe(),
-                    tool.dinhDangVND(t.getGiaBan()),
-                    t.getSoLuong(),
-                    t.getNoiSanXuat(),
-                    t.getDvt().getTenDVT(),
-                    t.getHanSuDung()
-            });
-        }
+    // Hàm tạo cell nhanh
+    private void createCell(XSSFRow row, int colIndex, String value, CellStyle style) {
+        Cell cell = row.createCell(colIndex);
+        cell.setCellValue(value);
+        cell.setCellStyle(style);
     }
+    
 }

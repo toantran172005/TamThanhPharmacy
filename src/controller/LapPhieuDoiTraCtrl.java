@@ -10,6 +10,7 @@ import entity.HoaDon;
 import entity.NhanVien;
 import entity.PhieuDoiTra;
 import gui.ChiTietHoaDon_GUI;
+import gui.ChiTietPhieuDoiTra_GUI;
 import gui.LapPhieuDoiTra_GUI;
 import gui.TimKiemHD_GUI;
 import gui.TrangChuQL_GUI;
@@ -49,7 +50,7 @@ public class LapPhieuDoiTraCtrl {
 		gui.getBtnQuayLai().addActionListener(e -> quayLai());
 
 		gui.getTblHDThuoc().getSelectionModel().addListSelectionListener(event -> {
-			if (!event.getValueIsAdjusting()) { // tránh gọi 2 lần
+			if (!event.getValueIsAdjusting()) { 
 				int selectedRow = gui.getTblHDThuoc().getSelectedRow();
 				if (selectedRow != -1) {
 					String tenThuoc = gui.getTblHDThuoc().getValueAt(selectedRow, 1).toString();
@@ -144,7 +145,7 @@ public class LapPhieuDoiTraCtrl {
 		}
 
 		double donGia = tool.chuyenTienSangSo((String) tblHD.getValueAt(row, 5));
-		double thanhTien = donGia * soLuong;
+		double thanhTien = tool.chuyenTienSangSo((String) tblHD.getValueAt(row, 6));
 		double mucHoan = Double.parseDouble(mucHoanStr.replace("%", "")) / 100.0;
 		double tienHoan = thanhTien * mucHoan;
 
@@ -160,7 +161,7 @@ public class LapPhieuDoiTraCtrl {
 		lamMoiInput();
 	}
 
-	// ========== XOÁ 1 DÒNG TTRONG TABLE PHIẾU ĐỔI TRẢ ==========
+	// ========== XOÁ 1 DÒNG TRONG TABLE PHIẾU ĐỔI TRẢ ==========
 	public void xuLyXoaDong() {
 		JTable table = gui.getTblPhieuDTThuoc();
 		int row = table.getSelectedRow();
@@ -193,7 +194,7 @@ public class LapPhieuDoiTraCtrl {
 		double tong = 0;
 
 		for (int i = 0; i < model.getRowCount(); i++) {
-			Object tienHoanObj = model.getValueAt(i, 5); // cột [5] = tiền hoàn
+			Object tienHoanObj = model.getValueAt(i, 6); // cột [6] = tiền hoàn
 			if (tienHoanObj != null) {
 				try {
 					double tienHoan = tool.chuyenTienSangSo(tienHoanObj.toString());
@@ -204,7 +205,7 @@ public class LapPhieuDoiTraCtrl {
 			}
 		}
 
-		tongTienHoan = tong; // cập nhật biến tổng
+		tongTienHoan = tong; 
 		gui.getLblTongTienHoan().setText(tool.dinhDangVND(tongTienHoan));
 	}
 
@@ -294,15 +295,15 @@ public class LapPhieuDoiTraCtrl {
 				continue;
 			}
 
-			String tenDVT = tblDT.getValueAt(i, 2).toString();
+			String tenDVT = tblDT.getValueAt(i, 3).toString();
 			String maDVT = dvtDAO.timMaDVTTheoTen(tenDVT);
 
 			Object[] ct = new Object[] { pdt.getMaPhieuDT(), // [0] maPhieuDT
 					maThuoc, // [1] maThuoc (tên thuốc)
-					String.valueOf(tblDT.getValueAt(i, 1)), // [2] soLuong (String)
-					tblDT.getValueAt(i, 6).toString(), // [3] ghiChu
-					String.valueOf(tool.chuyenTienSangSo((String) tblDT.getValueAt(i, 5))), // [4] tienHoan
-					String.valueOf(Double.parseDouble(tblDT.getValueAt(i, 4).toString().replace("%", "")) / 100.0), // [5]
+					String.valueOf(tblDT.getValueAt(i, 2)), // [2] soLuong (String)
+					tblDT.getValueAt(i, 7).toString(), // [3] ghiChu
+					String.valueOf(tool.chuyenTienSangSo((String) tblDT.getValueAt(i, 6))), // [4] tienHoan
+					String.valueOf(Double.parseDouble(tblDT.getValueAt(i, 5).toString().replace("%", "")) / 100.0), // [5]
 																													// mucHoan
 					maDVT// [6] maDVT (đơn vị)
 			};
@@ -312,7 +313,7 @@ public class LapPhieuDoiTraCtrl {
 				System.err.println("Lỗi thêm chi tiết: " + ct[1]);
 			}
 
-			int soLuongTra = Integer.parseInt(tblDT.getValueAt(i, 1).toString());
+			int soLuongTra = Integer.parseInt(tblDT.getValueAt(i, 2).toString());
 			if (!thuocDAO.tangSoLuongTon(maThuoc, maDVT, soLuongTra)) {
 				tool.hienThiThongBao("Lỗi", "Cập nhật tồn kho thất bại cho thuốc: " + maThuoc, false);
 			}
@@ -322,6 +323,23 @@ public class LapPhieuDoiTraCtrl {
 		if (tatCaChiTietThanhCong) {
 			tool.hienThiThongBao("Thành công", "Tạo phiếu đổi trả thành công!", true);
 			quayLai();
+
+	        ChiTietPhieuDoiTra_GUI chiTietPanel;
+	        if (gui.getTrangChuQL() != null) {
+	            chiTietPanel = new ChiTietPhieuDoiTra_GUI(gui.getTrangChuQL());
+	            gui.getTrangChuQL().setUpNoiDung(chiTietPanel);
+
+	        } else if (gui.getTrangChuNV() != null) {
+	            chiTietPanel = new ChiTietPhieuDoiTra_GUI(gui.getTrangChuNV());
+	            gui.getTrangChuNV().setUpNoiDung(chiTietPanel);
+
+	        } else {
+	            tool.hienThiThongBao("Lỗi", "Không xác định được trang chủ!", false);
+	            return;
+	        }
+
+	        chiTietPanel.getCtrl().hienThiThongTinPhieuDT(pdt);
+			
 		} else {
 			tool.hienThiThongBao("Cảnh báo", "Phiếu đã tạo nhưng một số chi tiết thất bại!", false);
 		}
