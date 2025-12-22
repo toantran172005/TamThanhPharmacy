@@ -45,6 +45,7 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 	public JLabel lblTongTien;
 	public JTextField txtTienNhan;
 	public JLabel lblTienThua;
+	public boolean daChuyenHD = false;
 
 	public ChiTietPhieuDatHang_GUI(TrangChuQL_GUI mainFrame, PhieuDatHang pdh) {
 		this.mainFrameQL = mainFrame;
@@ -92,7 +93,12 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 		txaGhiChu.setText(pdh.getGhiChu());
 		lblDiaChi.setText(pdh.getDiaChiHT());
 		lblHotline.setText(tool.chuyenSoDienThoai(pdh.getHotline()));
-		cmbTrangThai.setSelectedItem(pdh.getTrangThai());
+		if(pdh.getTrangThai().equals("Đã giao")) {
+			cmbTrangThai.setSelectedItem("Đã giao");
+			daChuyenHD = true;
+		} else {
+			cmbTrangThai.setSelectedItem(pdh.getTrangThai());
+		}
 
 		DefaultTableModel modelThuoc = (DefaultTableModel) tblThuoc.getModel();
 		modelThuoc.setRowCount(0);
@@ -244,8 +250,9 @@ public class ChiTietPhieuDatHang_GUI extends JPanel {
 		JPanel trangThaiPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
 		trangThaiPanel.setBackground(Color.WHITE);
 		trangThaiPanel.add(tool.taoLabel("Trạng thái:"));
-		cmbTrangThai = tool.taoComboBox(new String[] { "Đã giao", "Chờ hàng", "Đã hủy" });
+		cmbTrangThai = tool.taoComboBox(new String[] {"Chờ hàng", "Đã hủy" });
 		cmbTrangThai.setPreferredSize(new Dimension(150, 30));
+		cmbTrangThai.setEditable(false);
 		trangThaiPanel.add(cmbTrangThai);
 		pnlLeft.add(trangThaiPanel);
 

@@ -128,7 +128,7 @@ public class LapPhieuDatHang_GUI extends JPanel {
 
 		row3.add(tool.taoLabel("Đơn vị:"));
 		cmbDonVi = tool.taoComboBox(new String[] {});
-		cmbDonVi.setEditable(true);
+		cmbDonVi.setEditable(false);
 		row3.add(cmbDonVi);
 
 		btnThem = tool.taoButton("Thêm", "/picture/hoaDon/plus.png");
