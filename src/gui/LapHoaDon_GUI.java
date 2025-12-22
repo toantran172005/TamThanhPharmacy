@@ -5,6 +5,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
 
 import controller.LapHoaDonCtrl;
 import controller.TimKiemHDCtrl;
@@ -21,26 +22,27 @@ public class LapHoaDon_GUI extends JPanel {
 	public TrangChuQL_GUI mainFrame;
 	public TrangChuNV_GUI mainFrameNV;
 	public LapHoaDonCtrl controller;
-    
+
 	Font font1 = new Font("Times New Roman", Font.BOLD, 18);
 	Font font2 = new Font("Times New Roman", Font.PLAIN, 15);
 	public ToolCtrl tool = new ToolCtrl();
-	
-    public LapHoaDon_GUI(TrangChuQL_GUI mainFrame) {
-        this.mainFrame = mainFrame;
-        initUI();
-        khoiTaoController();
-    }
+	public DefaultTableModel model;
 
-    public LapHoaDon_GUI(TrangChuNV_GUI mainFrameNV) {
-        this.mainFrameNV = mainFrameNV;
-        initUI();
-        khoiTaoController();
-    }
-    
-    public void khoiTaoController() {
-        this.controller = new LapHoaDonCtrl(this);
-    }
+	public LapHoaDon_GUI(TrangChuQL_GUI mainFrame) {
+		this.mainFrame = mainFrame;
+		initUI();
+		khoiTaoController();
+	}
+
+	public LapHoaDon_GUI(TrangChuNV_GUI mainFrameNV) {
+		this.mainFrameNV = mainFrameNV;
+		initUI();
+		khoiTaoController();
+	}
+
+	public void khoiTaoController() {
+		this.controller = new LapHoaDonCtrl(this);
+	}
 
 	public void initUI() {
 		setLayout(new BorderLayout(0, 15));
@@ -112,39 +114,49 @@ public class LapHoaDon_GUI extends JPanel {
 		pnlTop.add(row3);
 
 		add(pnlTop, BorderLayout.NORTH);
+		
+		// ========== BẢNG DỮ LIỆU THUỐC ==========
+        String[] cols = { "STT", "Tên thuốc", "Nơi sản xuất", "Số lượng", "Đơn vị", "Đơn giá gốc",
+                "Đơn giá (sau khuyến mãi)", "Thành tiền", "Ghi chú" };
+        
+        model = new DefaultTableModel(cols, 0) {
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return false;
+            }
+        };
 
-		// ========== BẢNG DỮ LIỆU ==========
-		String[] cols = { "STT", "Tên thuốc","Nơi sản xuất", "Số lượng", "Đơn vị", "Đơn giá(Đã áp dụng khuyến mãi)", "Thành tiền", "Ghi chú"};
-		DefaultTableModel model = new DefaultTableModel(cols, 0);
-		tblThuoc = new JTable(model);
-		tblThuoc.setRowHeight(30);
-		tblThuoc.setFont(font2);
-		tblThuoc.getTableHeader().setFont(font2);
+        tblThuoc = new JTable(model);
+        tblThuoc.setRowHeight(38);
+        tblThuoc.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+        
+        tblThuoc.setBackground(Color.WHITE);
+        tblThuoc.getTableHeader().setBackground(new Color(240, 240, 240));
+        tblThuoc.setGridColor(new Color(200, 200, 200));
+        tblThuoc.setShowGrid(true);
+        tblThuoc.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
+        
+        tblThuoc.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        tblThuoc.setForeground(new Color(0x33, 0x33, 0x33));
+        tblThuoc.getColumnModel().getColumn(6).setPreferredWidth(200);
 
-		tblThuoc.setBackground(Color.WHITE);
-		tblThuoc.getTableHeader().setBackground(new Color(240, 240, 240)); 
-		tblThuoc.setGridColor(new Color(200, 200, 200)); 
-		tblThuoc.setShowGrid(true); 
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        for (int i = 0; i < tblThuoc.getColumnCount(); i++) {
+            tblThuoc.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
 
-		tblThuoc.setBorder(BorderFactory.createLineBorder(new Color(180, 180, 180)));
+        JTableHeader header = tblThuoc.getTableHeader();
+        header.setBackground(new Color(240, 240, 240));
+        header.setFont(new Font("Times New Roman", Font.BOLD, 18));
+        ((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
 
-		JScrollPane scrollPane = new JScrollPane(tblThuoc);
-		scrollPane.getViewport().setBackground(Color.WHITE);
+        JScrollPane scrollTable = new JScrollPane(tblThuoc);
+        scrollTable.setBorder(BorderFactory.createLineBorder(new Color(0xCCCCCC)));
+        scrollTable.getViewport().setBackground(Color.WHITE);
+        scrollTable.setBackground(Color.WHITE);
 
-		// ===== Căn giữa nội dung các ô =====
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-		for (int i = 0; i < tblThuoc.getColumnCount(); i++) {
-			tblThuoc.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-		}
-
-		// ===== Căn giữa tiêu đề cột =====
-		JTableHeader header = tblThuoc.getTableHeader();
-		header.setFont(new Font("Times New Roman", Font.BOLD, 17));
-		header.setBackground(new Color(240, 240, 240));
-		((DefaultTableCellRenderer) header.getDefaultRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
-
-		add(scrollPane, BorderLayout.CENTER);
+        add(scrollTable, BorderLayout.CENTER);
 
 		// ========== PHẦN DƯỚI ==========
 		JPanel pnlBottom = new JPanel();
@@ -208,30 +220,83 @@ public class LapHoaDon_GUI extends JPanel {
 		p.setBackground(Color.WHITE);
 		return p;
 	}
-	
+
 	public void setFieldHeight(JComponent comp) {
 		Dimension d = comp.getPreferredSize();
 		d.height = 36;
 		comp.setPreferredSize(d);
 	}
 
-	 // ========== GETTER ==========
-    public JTextField getTxtSdt() { return txtSdt; }
-    public JTextField getTxtTenKH() { return txtTenKH; }
-    public JTextField getTxtTuoi() { return txtTuoi; }
-    public JTextField getTxtSoLuong() { return txtSoLuong; }
-    public JTextField getTxtTienNhan() { return txtTienNhan; }
-    public JComboBox<String> getCmbSanPham() { return cmbSanPham; }
-    public JComboBox<String> getCmbDonVi() { return cmbDonVi; }
-    public JComboBox<String> getCmbHTThanhToan() { return cmbHTThanhToan; }
-    public JComboBox<String> getCmbQuocGia() { return cmbQuocGia; }
-    public JLabel getLblTongTien() { return lblTongTien; }
-    public JLabel getLblTienThua() { return lblTienThua; }
-    public JTable getTblThuoc() { return tblThuoc; }
-    public JButton getBtnThem() { return btnThem; }
-    public JButton getBtnLamMoi() { return btnLamMoi; }
-    public JButton getBtnTaoHD() { return btnTaoHD; }
-    public JButton getBtnXoa() { return btnXoa; }
-    public TrangChuQL_GUI getMainFrame() {return mainFrame;}
-    public TrangChuNV_GUI getMainFrameNV() {return mainFrameNV;}
+	// ========== GETTER ==========
+	public JTextField getTxtSdt() {
+		return txtSdt;
+	}
+
+	public JTextField getTxtTenKH() {
+		return txtTenKH;
+	}
+
+	public JTextField getTxtTuoi() {
+		return txtTuoi;
+	}
+
+	public JTextField getTxtSoLuong() {
+		return txtSoLuong;
+	}
+
+	public JTextField getTxtTienNhan() {
+		return txtTienNhan;
+	}
+
+	public JComboBox<String> getCmbSanPham() {
+		return cmbSanPham;
+	}
+
+	public JComboBox<String> getCmbDonVi() {
+		return cmbDonVi;
+	}
+
+	public JComboBox<String> getCmbHTThanhToan() {
+		return cmbHTThanhToan;
+	}
+
+	public JComboBox<String> getCmbQuocGia() {
+		return cmbQuocGia;
+	}
+
+	public JLabel getLblTongTien() {
+		return lblTongTien;
+	}
+
+	public JLabel getLblTienThua() {
+		return lblTienThua;
+	}
+
+	public JTable getTblThuoc() {
+		return tblThuoc;
+	}
+
+	public JButton getBtnThem() {
+		return btnThem;
+	}
+
+	public JButton getBtnLamMoi() {
+		return btnLamMoi;
+	}
+
+	public JButton getBtnTaoHD() {
+		return btnTaoHD;
+	}
+
+	public JButton getBtnXoa() {
+		return btnXoa;
+	}
+
+	public TrangChuQL_GUI getMainFrame() {
+		return mainFrame;
+	}
+
+	public TrangChuNV_GUI getMainFrameNV() {
+		return mainFrameNV;
+	}
 }

@@ -1,8 +1,10 @@
 package controller;
 
 import dao.HoaDonDAO;
+import dao.PhieuDoiTraDAO;
 import dao.ThuocDAO;
 import entity.HoaDon;
+import entity.PhieuDoiTra;
 import gui.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -19,6 +21,8 @@ public class ChiTietHoaDonCtrl {
 	public HoaDonDAO hdDAO = new HoaDonDAO();
 	public ToolCtrl tool = new ToolCtrl();
 	public ThuocDAO thuocDao = new ThuocDAO();
+	public PhieuDoiTraDAO pdtDAO = new PhieuDoiTraDAO();
+	public HoaDon hd;
 
 	public ChiTietHoaDonCtrl(ChiTietHoaDon_GUI gui) {
 		this.gui = gui;
@@ -36,6 +40,7 @@ public class ChiTietHoaDonCtrl {
 	public void hienThiThongTinHoaDon(HoaDon hd) {
 		if (hd == null)
 			return;
+		this.hd = hd;
 
 		gui.getLblMaHD().setText(hd.getMaHD());
 		gui.getLblNgayLap().setText(tool.dinhDangLocalDate(hd.getNgayLap()));
@@ -75,77 +80,70 @@ public class ChiTietHoaDonCtrl {
 
 	// ========== IN HOÁ ĐƠN ==========
 	public void xuatHoaDonRaTXT() {
-	    String maHD = gui.getLblMaHD().getText();
-	    if (maHD == null || maHD.isEmpty()) {
-	        tool.hienThiThongBao("Lỗi", "Không có hóa đơn để xuất!", false);
-	        return;
-	    }
+		String maHD = gui.getLblMaHD().getText();
+		if (maHD == null || maHD.isEmpty()) {
+			tool.hienThiThongBao("Lỗi", "Không có hóa đơn để xuất!", false);
+			return;
+		}
 
-	    JFileChooser chooser = new JFileChooser();
-	    chooser.setDialogTitle("Lưu hóa đơn (.txt)");
-	    chooser.setSelectedFile(new File("HoaDon_" + maHD + ".txt"));
+		JFileChooser chooser = new JFileChooser();
+		chooser.setDialogTitle("Lưu hóa đơn (.txt)");
+		chooser.setSelectedFile(new File("HoaDon_" + maHD + ".txt"));
 
-	    if (chooser.showSaveDialog(gui) != JFileChooser.APPROVE_OPTION) {
-	        return;
-	    }
+		if (chooser.showSaveDialog(gui) != JFileChooser.APPROVE_OPTION) {
+			return;
+		}
 
-	    File file = chooser.getSelectedFile();
+		File file = chooser.getSelectedFile();
 
-	    try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
 
-	        // ===== TIÊU ĐỀ =====
-	        bw.write("=========================================\n");
-	        bw.write("         HÓA ĐƠN BÁN THUỐC TAM THANH       \n");
-	        bw.write("=========================================\n\n");
+			// ===== TIÊU ĐỀ =====
+			bw.write("=========================================\n");
+			bw.write("         HÓA ĐƠN BÁN THUỐC TAM THANH       \n");
+			bw.write("=========================================\n\n");
 
-	        // ===== THÔNG TIN CHUNG =====
-	        bw.write("Mã hóa đơn   : " + gui.getLblMaHD().getText() + "\n");
-	        bw.write("Ngày lập     : " + gui.getLblNgayLap().getText() + "\n");
-	        bw.write("Nhân viên    : " + gui.getLblNhanVien().getText() + "\n");
-	        bw.write("Khách hàng   : " + gui.getLblKhachHang().getText() + "\n");
-	        bw.write("Địa chỉ      : " + gui.getLblDiaChi().getText() + "\n");
-	        bw.write("Hotline      : " + gui.getLblHotline().getText() + "\n");
-	        bw.write("Ghi chú      : " + gui.getLblGhiChu().getText() + "\n\n");
+			// ===== THÔNG TIN CHUNG =====
+			bw.write("Mã hóa đơn   : " + gui.getLblMaHD().getText() + "\n");
+			bw.write("Ngày lập     : " + gui.getLblNgayLap().getText() + "\n");
+			bw.write("Nhân viên    : " + gui.getLblNhanVien().getText() + "\n");
+			bw.write("Khách hàng   : " + gui.getLblKhachHang().getText() + "\n");
+			bw.write("Địa chỉ      : " + gui.getLblDiaChi().getText() + "\n");
+			bw.write("Hotline      : " + gui.getLblHotline().getText() + "\n");
+			bw.write("Ghi chú      : " + gui.getLblGhiChu().getText() + "\n\n");
 
-	        // ===== BẢNG CHI TIẾT =====
-	        bw.write(String.format(
-	                "%-25s %-15s %-8s %-10s %-15s %-15s%n",
-	                "Tên thuốc", "Nơi SX", "SL", "Đơn vị", "Đơn giá", "Thành tiền"));
-	        bw.write("--------------------------------------------------------------------------\n");
+			// ===== BẢNG CHI TIẾT =====
+			bw.write(String.format("%-25s %-15s %-8s %-10s %-15s %-15s%n", "Tên thuốc", "Nơi SX", "SL", "Đơn vị",
+					"Đơn giá", "Thành tiền"));
+			bw.write("--------------------------------------------------------------------------\n");
 
-	        DefaultTableModel model = (DefaultTableModel) gui.getTblThuoc().getModel();
-	        for (int i = 0; i < model.getRowCount(); i++) {
-	            bw.write(String.format(
-	                    "%-25s %-15s %-8s %-10s %-15s %-15s%n",
-	                    model.getValueAt(i, 0),
-	                    model.getValueAt(i, 1),
-	                    model.getValueAt(i, 2),
-	                    model.getValueAt(i, 3),
-	                    model.getValueAt(i, 4),
-	                    model.getValueAt(i, 5)
-	            ));
-	        }
+			DefaultTableModel model = (DefaultTableModel) gui.getTblThuoc().getModel();
+			for (int i = 0; i < model.getRowCount(); i++) {
+				bw.write(String.format("%-25s %-15s %-8s %-10s %-15s %-15s%n", model.getValueAt(i, 0),
+						model.getValueAt(i, 1), model.getValueAt(i, 2), model.getValueAt(i, 3), model.getValueAt(i, 4),
+						model.getValueAt(i, 5)));
+			}
 
-	        bw.write("\n-----------------------------------------\n");
+			bw.write("\n-----------------------------------------\n");
 
-	     // ===== TỔNG TIỀN =====
-	        bw.write("Tổng tiền : " + gui.getLblTongTien().getText() + "\n");
-	        bw.write("Tiền nhận : " + gui.getLblTienNhan().getText() + "\n");
-	        bw.write("Tiền thừa : " + gui.getLblTienThua().getText() + "\n");
+			// ===== TỔNG TIỀN =====
+			bw.write("Tổng tiền : " + gui.getLblTongTien().getText() + "\n");
+			bw.write("Tiền nhận : " + gui.getLblTienNhan().getText() + "\n");
+			bw.write("Tiền thừa : " + gui.getLblTienThua().getText() + "\n");
 
-	        bw.write("\n-----------------------------------------\n");
-	        bw.write("(Giá trên đã bao gồm thuế GTGT)\n");
-	        
-	        bw.write("\n=========================================\n");
-	        bw.write("   CẢM ƠN QUÝ KHÁCH - HẸN GẶP LẠI!   \n");
-	        bw.write("=========================================\n");
+			bw.write("\n-----------------------------------------\n");
+			bw.write("(Giá trên đã bao gồm thuế GTGT)\n");
 
-	        tool.hienThiThongBao("Xuất hóa đơn", "Xuất file TXT thành công!", true);
+			bw.write("\n=========================================\n");
+			bw.write("   CẢM ƠN QUÝ KHÁCH - HẸN GẶP LẠI!   \n");
+			bw.write("=========================================\n");
 
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	        tool.hienThiThongBao("Lỗi", "Không thể ghi file TXT!", false);
-	    }
+			tool.hienThiThongBao("Xuất hóa đơn", "Xuất file TXT thành công!", true);
+
+		} catch (IOException e) {
+			e.printStackTrace();
+			tool.hienThiThongBao("Lỗi", "Không thể ghi file TXT!", false);
+		}
 	}
 
 	// ========== QUAY LẠI TRANG TÌM KIẾM HOÁ ĐƠN ==========
@@ -159,23 +157,28 @@ public class ChiTietHoaDonCtrl {
 
 	// ========== TẠO PHIẾU ĐỔI TRẢ ==========
 	public void taoPhieuDoiTra() {
-		String maHD = gui.getLblMaHD().getText();
-		if (maHD.isEmpty()) {
-			tool.hienThiThongBao("Lỗi", "Không có hóa đơn để đổi trả!", false);
+		if (pdtDAO.kiemTraHoaDonDaDoiTra(hd.getMaHD())) {
+			tool.hienThiThongBao("Tạo phiếu đổi trả", "Hóa đơn này đã tạo phiếu đổi trả", false);
 			return;
-		}
+		} else {
+			String maHD = gui.getLblMaHD().getText();
+			if (maHD.isEmpty()) {
+				tool.hienThiThongBao("Lỗi", "Không có hóa đơn để đổi trả!", false);
+				return;
+			}
 
-		LapPhieuDoiTra_GUI panel = new LapPhieuDoiTra_GUI();
-		panel.setTrangChuQL(gui.getMainFrameQL());
-		panel.setTrangChuNV(gui.getMainFrameNV());
+			LapPhieuDoiTra_GUI panel = new LapPhieuDoiTra_GUI();
+			panel.setTrangChuQL(gui.getMainFrameQL());
+			panel.setTrangChuNV(gui.getMainFrameNV());
 
-		LapPhieuDoiTraCtrl ctrl = new LapPhieuDoiTraCtrl(panel);
-		ctrl.setMaHD(maHD); // Truyền mã HD
+			LapPhieuDoiTraCtrl ctrl = new LapPhieuDoiTraCtrl(panel);
+			ctrl.setMaHD(maHD); // Truyền mã HD
 
-		if (gui.getMainFrameQL() != null) {
-			gui.getMainFrameQL().setUpNoiDung(panel);
-		} else if (gui.getMainFrameNV() != null) {
-			gui.getMainFrameNV().setUpNoiDung(panel);
+			if (gui.getMainFrameQL() != null) {
+				gui.getMainFrameQL().setUpNoiDung(panel);
+			} else if (gui.getMainFrameNV() != null) {
+				gui.getMainFrameNV().setUpNoiDung(panel);
+			}
 		}
 	}
 }
