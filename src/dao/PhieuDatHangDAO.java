@@ -93,9 +93,7 @@ public class PhieuDatHangDAO {
 		}
 	}
 
-	/**
-	 * @return 1 = Thành công 0 = Không đủ tồn kho -1 = Lỗi SQL hoặc lỗi khác
-	 */
+	// 1 = Thành công 0 = Không đủ tồn kho -1 = Lỗi SQL hoặc lỗi khác
 	public int taoPhieuDatHangVaChiTiet(String maPDH, String maKH, String maNV, Date ngayDat, Date ngayHen,
 			String ghiChu, List<Object[]> dsChiTiet) {
 
@@ -268,7 +266,8 @@ public class PhieuDatHangDAO {
 
 			while (rs.next()) {
 				Object[] row = { rs.getString("maPDH"), rs.getString("maThuoc"), rs.getString("tenThuoc"),
-						rs.getInt("soLuong"), rs.getString("maDVT"), rs.getString("tenDVT"), rs.getDouble("donGia"), rs.getDouble("thanhTien") };
+						rs.getInt("soLuong"), rs.getString("maDVT"), rs.getString("tenDVT"), rs.getDouble("donGia"),
+						rs.getDouble("thanhTien") };
 				list.add(row);
 			}
 
@@ -333,15 +332,118 @@ public class PhieuDatHangDAO {
 		return null;
 	}
 
-	public boolean capNhatTrangThaiPhieu(String maPhieu, String trangThaiMoi) {
-		String sql = "UPDATE PhieuDatHang SET trangThai = ? WHERE maPDH = ?";
-		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-			ps.setString(1, trangThaiMoi);
-			ps.setString(2, maPhieu);
-			return ps.executeUpdate() > 0;
-		} catch (SQLException e) {
+	// 0: Thành công | 1: Kho không đủ hàng | 2: Lỗi SQL | 3: Không thay đổi
+	public int capNhatTrangThaiPhieu(String maPhieu, String trangThaiMoi) {
+		Connection con = null;
+		PreparedStatement psGetOldStatus = null;
+		PreparedStatement psGetItems = null;
+		PreparedStatement psCheckKho = null;
+		PreparedStatement psUpdateKho = null;
+		PreparedStatement psUpdateStatus = null;
+		ResultSet rs = null;
+
+		String sqlGetOldStatus = "SELECT trangThai FROM PhieuDatHang WHERE maPDH = ?";
+		String sqlGetItems = "SELECT maThuoc, soLuong FROM CT_PhieuDatHang WHERE maPDH = ?";
+		String sqlCheckKho = "SELECT SUM(soLuongTon) as tongTon FROM CT_Kho WHERE maThuoc = ?";
+		String sqlUpdateKho = "UPDATE CT_Kho SET soLuongTon = soLuongTon + ? WHERE maThuoc = ?";
+		String sqlUpdateStatus = "UPDATE PhieuDatHang SET trangThai = ? WHERE maPDH = ?";
+
+		try {
+			con = KetNoiDatabase.getConnection();
+			con.setAutoCommit(false);
+
+			psGetOldStatus = con.prepareStatement(sqlGetOldStatus);
+			psGetOldStatus.setString(1, maPhieu);
+			rs = psGetOldStatus.executeQuery();
+
+			String trangThaiCu = "";
+			if (rs.next()) {
+				trangThaiCu = rs.getString("trangThai");
+			} else {
+				return 2;
+			}
+
+			if (trangThaiCu.equalsIgnoreCase(trangThaiMoi))
+				return 3;
+
+			psGetItems = con.prepareStatement(sqlGetItems);
+			psGetItems.setString(1, maPhieu);
+			ResultSet rsItems = psGetItems.executeQuery();
+
+			List<Object[]> listThuoc = new ArrayList<>();
+			while (rsItems.next()) {
+				listThuoc.add(new Object[] { rsItems.getString("maThuoc"), rsItems.getInt("soLuong") });
+			}
+
+			if (trangThaiMoi.equals("Chờ hàng") && trangThaiCu.equals("Đã hủy")) {
+
+				psCheckKho = con.prepareStatement(sqlCheckKho);
+				for (Object[] row : listThuoc) {
+					String maThuoc = (String) row[0];
+					int soLuongCan = (Integer) row[1];
+
+					psCheckKho.setString(1, maThuoc);
+					ResultSet rsKho = psCheckKho.executeQuery();
+
+					if (rsKho.next()) {
+						int tonKho = rsKho.getInt("tongTon");
+						if (tonKho < soLuongCan) {
+							con.rollback();
+							return 1;
+						}
+					} else {
+						con.rollback();
+						return 1;
+					}
+				}
+
+				psUpdateKho = con.prepareStatement(sqlUpdateKho);
+				for (Object[] row : listThuoc) {
+					psUpdateKho.setInt(1, -(Integer) row[1]);
+					psUpdateKho.setString(2, (String) row[0]);
+					psUpdateKho.executeUpdate();
+				}
+
+			}
+
+			else if (trangThaiMoi.equals("Đã hủy") && !trangThaiCu.equals("Đã hủy")) {
+
+				psUpdateKho = con.prepareStatement(sqlUpdateKho);
+				for (Object[] row : listThuoc) {
+					psUpdateKho.setInt(1, (Integer) row[1]);
+					psUpdateKho.setString(2, (String) row[0]);
+					psUpdateKho.executeUpdate();
+				}
+			}
+
+			psUpdateStatus = con.prepareStatement(sqlUpdateStatus);
+			psUpdateStatus.setString(1, trangThaiMoi);
+			psUpdateStatus.setString(2, maPhieu);
+
+			if (psUpdateStatus.executeUpdate() > 0) {
+				con.commit();
+				return 0;
+			} else {
+				con.rollback();
+				return 2;
+			}
+
+		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			try {
+				if (con != null)
+					con.rollback();
+			} catch (SQLException ex) {
+			}
+			return 2;
+		} finally {
+			try {
+				if (con != null) {
+					con.setAutoCommit(true);
+					con.close();
+				}
+			} catch (SQLException e) {
+			}
 		}
 	}
 

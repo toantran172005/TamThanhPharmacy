@@ -594,8 +594,6 @@ public class LapHoaDonCtrl {
 		}
 
 		tinhTongTien();
-		String trangThai = "Đã giao";
-		pdhDAO.capNhatTrangThaiPhieu(maPDH, trangThai);
 	}
 	
 	public void goiYThuoc() {
