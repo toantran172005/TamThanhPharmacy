@@ -577,21 +577,12 @@ public class TrangChuQL_GUI extends JFrame {
 		lblAnh.setHorizontalAlignment(JLabel.CENTER);
 		panel.add(lblAnh, BorderLayout.CENTER);
 
-		JButton btnThemKH = tool.taoButton("Thêm khách hàng", "/picture/trangChu/addCustomer.png");
-		JButton btnThemHD = tool.taoButton("Thêm hoá đơn", "/picture/trangChu/addOrder.png");
-		JButton btnThemThuoc = tool.taoButton("Thêm thuốc", "/picture/trangChu/addMedicine.png");
 		JPanel pnThaoTac = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 20));
 		pnThaoTac.setBackground(Color.WHITE);
-		pnThaoTac.add(btnThemKH);
-		pnThaoTac.add(btnThemHD);
-		pnThaoTac.add(btnThemThuoc);
 
 		JPanel pnBottom = new JPanel(new BorderLayout());
 		pnBottom.setBackground(Color.WHITE);
-		JLabel lblTitle = new JLabel("Thao tác nhanh:", JLabel.CENTER);
-		lblTitle.setFont(font2);
-		lblTitle.setBorder(new EmptyBorder(5, 0, 5, 0));
-		pnBottom.add(lblTitle, BorderLayout.NORTH);
+
 		pnBottom.add(pnThaoTac, BorderLayout.CENTER);
 		panel.add(pnBottom, BorderLayout.SOUTH);
 		return panel;
