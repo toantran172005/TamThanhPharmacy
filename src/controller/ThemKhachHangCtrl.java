@@ -23,9 +23,15 @@ public class ThemKhachHangCtrl {
 
 	public void themKhachHang() {
 		if (tool.hienThiXacNhan("Thêm khách hàng", "Xác nhận thêm khách hàng?", null)) {
-			if (khDAO.themKhachHang(tool.taoKhoaChinh("KH"), tkhGUI.txtTenKH.getText().trim(),
-					tool.chuyenSoDienThoai(tkhGUI.txtSdt.getText().trim()), tkhGUI.txtTuoi.getText().trim())) {
-				lamMoi();
+			if (khDAO.timMaKhachHangTheoSDT(tool.chuyenSoDienThoai(tkhGUI.txtSdt.getText().trim())).getSdt()
+					.equals(tool.chuyenSoDienThoai(tkhGUI.txtSdt.getText().trim()))) {
+				tool.hienThiThongBao("Thêm khách hàng", "Đã có số điện thoại này!", false);
+
+			} else {
+				if (khDAO.themKhachHang(tool.taoKhoaChinh("KH"), tkhGUI.txtTenKH.getText().trim(),
+						tool.chuyenSoDienThoai(tkhGUI.txtSdt.getText().trim()), tkhGUI.txtTuoi.getText().trim())) {
+					lamMoi();
+				}
 			}
 		}
 

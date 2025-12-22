@@ -3,103 +3,84 @@ package gui;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+
+import controller.ThemKeThuocCtrl;
 import controller.ToolCtrl;
 
 public class ThemKeThuoc_GUI extends JPanel {
 
-	public JComboBox<String> cmbLoaiKe;
+	public JTextField txtLoaiKe;
 	public JTextField txtSucChua, txtMoTa;
 	public JButton btnLamMoi, btnThem;
 	public ToolCtrl tool = new ToolCtrl();
+	public ThemKeThuocCtrl tktCtrl = new ThemKeThuocCtrl(this);
 
-    public ThemKeThuoc_GUI() {
-        setLayout(new BorderLayout());
-        setBackground(Color.WHITE);
-        setBorder(new EmptyBorder(20, 40, 20, 40));
+	public ThemKeThuoc_GUI() {
+		initUI();
+		ganHoatDong();
+	}
 
-        // ======= TIÊU ĐỀ =======
-        JLabel lblTitle = tool.taoLabel("THÊM KỆ THUỐC");
-        lblTitle.setFont(new Font("Times New Roman", Font.BOLD, 20));
-        lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-        add(lblTitle, BorderLayout.NORTH);
+	public void ganHoatDong() {
+		txtSucChua.addActionListener(event -> tktCtrl.kiemTraSucChua());
+		txtMoTa.addActionListener(event -> tktCtrl.kiemTraTatCa());
+		btnLamMoi.addActionListener(event -> tktCtrl.lamMoi());
+		btnThem.addActionListener(event -> tktCtrl.kiemTraTatCa());
+	}
 
-        // ======= CENTER =======
-        JPanel pnlCenter = new JPanel();
-        pnlCenter.setLayout(new BoxLayout(pnlCenter, BoxLayout.Y_AXIS));
-        pnlCenter.setBackground(Color.WHITE);
-        pnlCenter.setBorder(new EmptyBorder(40, 100, 40, 100));
+	public void initUI() {
+		setLayout(new BorderLayout());
+		setBackground(Color.WHITE);
+		setBorder(new EmptyBorder(20, 40, 20, 40));
 
-        pnlCenter.add(createInputRow("Loại kệ:", cmbLoaiKe = new JComboBox<>(new String[]{"Kệ A", "Kệ B", "Kệ C"}), "Chọn kệ hoặc nhập mới..."));
-        pnlCenter.add(Box.createVerticalStrut(25));
-        pnlCenter.add(createInputRow("Sức chứa:", txtSucChua = tool.taoTextField("Sức chứa dưới 900..."), null));
-        pnlCenter.add(Box.createVerticalStrut(25));
-        pnlCenter.add(createInputRow("Mô tả:", txtMoTa = tool.taoTextField("Mô tả..."), null));
+		JLabel lblTitle = tool.taoLabel("THÊM KỆ THUỐC");
+		lblTitle.setFont(new Font("Times New Roman", Font.BOLD, 20));
+		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		add(lblTitle, BorderLayout.NORTH);
 
-        add(pnlCenter, BorderLayout.CENTER);
+		JPanel pnlCenter = new JPanel();
+		pnlCenter.setLayout(new BoxLayout(pnlCenter, BoxLayout.Y_AXIS));
+		pnlCenter.setBackground(Color.WHITE);
+		pnlCenter.setBorder(new EmptyBorder(40, 100, 40, 100));
 
-        // ======= BUTTONS =======
-        JPanel pnlBottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 100, 10));
-        pnlBottom.setBackground(Color.WHITE);
+		pnlCenter.add(createInputRow("Loại kệ:", txtLoaiKe = tool.taoTextField("Nhập tên kệ mới..."), null));
+		pnlCenter.add(Box.createVerticalStrut(25));
+		pnlCenter.add(createInputRow("Sức chứa:", txtSucChua = tool.taoTextField("Sức chứa dưới 900..."), null));
+		pnlCenter.add(Box.createVerticalStrut(25));
+		pnlCenter.add(createInputRow("Mô tả:", txtMoTa = tool.taoTextField("Mô tả..."), null));
 
-        btnLamMoi = tool.taoButton("Làm mới", "/picture/keThuoc/refresh.png");
-        btnThem = tool.taoButton("Thêm", "/picture/keThuoc/edit.png");
+		add(pnlCenter, BorderLayout.CENTER);
 
-        pnlBottom.add(btnLamMoi);
-        pnlBottom.add(btnThem);
-        add(pnlBottom, BorderLayout.SOUTH);
+		JPanel pnlBottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 100, 10));
+		pnlBottom.setBackground(Color.WHITE);
 
-        // ======= SỰ KIỆN =======
-        btnLamMoi.addActionListener(e -> lamMoi());
-        btnThem.addActionListener(e -> themKeThuoc());
-    }
+		btnLamMoi = tool.taoButton("Làm mới", "/picture/keThuoc/refresh.png");
+		btnThem = tool.taoButton("Thêm", "/picture/keThuoc/edit.png");
 
-    // ======= Hàm tạo từng hàng Label + Input =======
-    public JPanel createInputRow(String label, JComponent input, String comboPrompt) {
-        JPanel row = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
-        row.setBackground(Color.WHITE);
+		pnlBottom.add(btnLamMoi);
+		pnlBottom.add(btnThem);
+		add(pnlBottom, BorderLayout.SOUTH);
+	}
 
-        JLabel lbl = tool.taoLabel(label);
-        lbl.setFont(new Font("Times New Roman", Font.BOLD, 15));
-        lbl.setPreferredSize(new Dimension(100, 30));
+	public JPanel createInputRow(String label, JComponent input, String comboPrompt) {
+		JPanel row = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
+		row.setBackground(Color.WHITE);
 
-        input.setPreferredSize(new Dimension(250, 35));
-        input.setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		JLabel lbl = tool.taoLabel(label);
+		lbl.setFont(new Font("Times New Roman", Font.BOLD, 15));
+		lbl.setPreferredSize(new Dimension(100, 30));
 
-        // Nếu là combo thì cho editable
-        if (input instanceof JComboBox) {
-            ((JComboBox<?>) input).setEditable(true);
-            ((JComboBox<?>) input).setSelectedItem("");
-            ((JComboBox<?>) input).setToolTipText(comboPrompt);
-        }
+		input.setPreferredSize(new Dimension(250, 35));
+		input.setFont(new Font("Times New Roman", Font.PLAIN, 14));
 
-        row.add(lbl);
-        row.add(input);
-        return row;
-    }
+		if (input instanceof JComboBox) {
+			((JComboBox<?>) input).setEditable(true);
+			((JComboBox<?>) input).setSelectedItem("");
+			((JComboBox<?>) input).setToolTipText(comboPrompt);
+		}
 
-    public void lamMoi() {
-        cmbLoaiKe.setSelectedIndex(-1);
-        txtSucChua.setText("");
-        txtMoTa.setText("");
-    }
-
-    public void themKeThuoc() {
-        String loaiKe = (String) cmbLoaiKe.getSelectedItem();
-        String sucChua = txtSucChua.getText().trim();
-        String moTa = txtMoTa.getText().trim();
-
-        if (loaiKe == null || loaiKe.isEmpty() || sucChua.isEmpty() || moTa.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        JOptionPane.showMessageDialog(this,
-                "✅ Thêm kệ thuốc thành công!\n• Loại kệ: " + loaiKe +
-                        "\n• Sức chứa: " + sucChua +
-                        "\n• Mô tả: " + moTa,
-                "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-
-        lamMoi();
-    }
+		row.add(lbl);
+		row.add(input);
+		return row;
+	}
 
 }

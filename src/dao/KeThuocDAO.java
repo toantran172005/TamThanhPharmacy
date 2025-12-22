@@ -143,28 +143,21 @@ public class KeThuocDAO {
 		return dsThuoc;
 	}
 
-	
 	public KeThuoc timTheoTen(String tenKe) {
-	    String sql = "SELECT * FROM KeThuoc WHERE loaiKe = ?";
-	    try (Connection con = KetNoiDatabase.getConnection();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
+		String sql = "SELECT * FROM KeThuoc WHERE loaiKe = ?";
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-	        ps.setString(1, tenKe);
-	        ResultSet rs = ps.executeQuery();
-	        if (rs.next()) {
-	            return new KeThuoc(
-	                rs.getString("maKe"),
-	                rs.getString("loaiKe"),
-	                rs.getInt("sucChua"),
-	                rs.getString("moTa"),
-	                rs.getBoolean("trangThai")
-	            );
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return null;
+			ps.setString(1, tenKe);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return new KeThuoc(rs.getString("maKe"), rs.getString("loaiKe"), rs.getInt("sucChua"),
+							rs.getString("moTa"), rs.getBoolean("trangThai"));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	
 }
