@@ -63,29 +63,29 @@ public class HoaDonDAO {
 		}
 		return listHDDaXoa;
 	}
-	
+
 	// ========== LẤY DOANH THU HOÁ ĐƠN THEO NGÀY ==========
 	public Map<LocalDate, Double> layDoanhThuTheoNgay(LocalDate ngayBD, LocalDate ngayKT) {
-	    Map<LocalDate, Double> map = new LinkedHashMap<>();
-	    String sql = """
-	            SELECT hd.ngayLap, SUM(cthd.soLuong * cthd.donGia) AS tongTien
-	            FROM HoaDon hd
-	            JOIN CT_HoaDon cthd ON hd.maHD = cthd.maHD
-	            WHERE hd.ngayLap BETWEEN ? AND ? AND hd.trangThai = 1
-	            GROUP BY hd.ngayLap
-	            ORDER BY hd.ngayLap
-	            """;
-	    try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
-	        pstmt.setDate(1, java.sql.Date.valueOf(ngayBD));
-	        pstmt.setDate(2, java.sql.Date.valueOf(ngayKT));
-	        ResultSet rs = pstmt.executeQuery();
-	        while (rs.next()) {
-	            map.put(rs.getDate("ngayLap").toLocalDate(), rs.getDouble("tongTien"));
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return map;
+		Map<LocalDate, Double> map = new LinkedHashMap<>();
+		String sql = """
+				SELECT hd.ngayLap, SUM(cthd.soLuong * cthd.donGia) AS tongTien
+				FROM HoaDon hd
+				JOIN CT_HoaDon cthd ON hd.maHD = cthd.maHD
+				WHERE hd.ngayLap BETWEEN ? AND ? AND hd.trangThai = 1
+				GROUP BY hd.ngayLap
+				ORDER BY hd.ngayLap
+				""";
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement pstmt = con.prepareStatement(sql)) {
+			pstmt.setDate(1, java.sql.Date.valueOf(ngayBD));
+			pstmt.setDate(2, java.sql.Date.valueOf(ngayKT));
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				map.put(rs.getDate("ngayLap").toLocalDate(), rs.getDouble("tongTien"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
 	}
 
 	// ========== LẤY LIST KHÁCH HÀNG THỐNG KÊ ==========
@@ -122,7 +122,6 @@ public class HoaDonDAO {
 
 		return list;
 	}
-
 
 	// ========= CHUYỂN ResultSet → HoaDon ==========
 	public HoaDon mapResultSetToHoaDon(ResultSet rs) throws SQLException {
@@ -234,21 +233,21 @@ public class HoaDonDAO {
 
 	// ========= TÍNH TỔNG TIỀN CỦA CÁC HOÁ ĐƠN CỦA KHÁCH HÀNG =========
 	public double layTongTien(String maKH) {
-	    String sql = """
-	            SELECT SUM(cthd.soLuong * cthd.donGia)
-	            FROM HoaDon HD
-	            JOIN CT_HoaDon cthd ON HD.maHD = cthd.maHD
-	            WHERE HD.maKH = ? AND HD.trangThai = 1
-	            """;
-	    try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-	        ps.setString(1, maKH);
-	        ResultSet rs = ps.executeQuery();
-	        if (rs.next())
-	            return rs.getDouble(1);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return 0;
+		String sql = """
+				SELECT SUM(cthd.soLuong * cthd.donGia)
+				FROM HoaDon HD
+				JOIN CT_HoaDon cthd ON HD.maHD = cthd.maHD
+				WHERE HD.maKH = ? AND HD.trangThai = 1
+				""";
+		try (Connection con = KetNoiDatabase.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, maKH);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next())
+				return rs.getDouble(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 	// ========= TÍNH TỔNG TIỀN THEO SẢN PHẨM =========
@@ -281,53 +280,61 @@ public class HoaDonDAO {
 
 	// ========= TÍNH TỔNG TIỀN THEO HÓA ĐƠN =========
 	public double tinhTongTienTheoHoaDon(String maHD) {
-	    String sql = """
-	            SELECT SUM(soLuong * donGia) AS tongTien
-	            FROM CT_HoaDon
-	            WHERE maHD = ?
-	            """;
-	    try (PreparedStatement ps = con.prepareStatement(sql)) {
-	        ps.setString(1, maHD);
-	        ResultSet rs = ps.executeQuery();
-	        if (rs.next()) {
-	            return rs.getDouble("tongTien");
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return 0.0;
+		String sql = """
+				SELECT SUM(
+				    CASE
+				        WHEN km.loaiKM = N'Giảm giá' THEN cthd.soLuong * cthd.donGia * (1 - km.mucKM / 100.0)
+				        WHEN km.loaiKM = N'Mua tặng' THEN
+				            (cthd.soLuong - FLOOR(cthd.soLuong / (km.soLuongMua + km.soLuongTang)) * km.soLuongTang) * cthd.donGia
+				        ELSE cthd.soLuong * cthd.donGia
+				    END
+				) AS tongTien
+				FROM CT_HoaDon cthd
+				JOIN Thuoc t ON cthd.maThuoc = t.maThuoc
+				LEFT JOIN KhuyenMai km ON t.maKM = km.maKM
+				WHERE cthd.maHD = ?
+				""";
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, maHD);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getDouble("tongTien");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0.0;
 	}
 
 	// ========= LẤY CHI TIẾT HÓA ĐƠN (DÙNG CHO BẢNG THUỐC) =========
 	public List<Object[]> layChiTietHoaDon(String maHD) {
-	    List<Object[]> list = new ArrayList<>();
-	    String sql = """
-	            SELECT ct.maHD, t.maThuoc, t.tenThuoc, ct.soLuong, ct.maDVT, dvt.tenDVT, ct.donGia,
-	                   (ct.soLuong * ct.donGia) AS thanhTien
-	            FROM CT_HoaDon ct
-	            JOIN Thuoc t ON ct.maThuoc = t.maThuoc
-	            JOIN DonViTinh dvt ON ct.maDVT = dvt.maDVT
-	            WHERE ct.maHD = ?
-	            """;
-	    try (PreparedStatement ps = con.prepareStatement(sql)) {
-	        ps.setString(1, maHD);
-	        ResultSet rs = ps.executeQuery();
-	        while (rs.next()) {
-	            list.add(new Object[] { 
-	                rs.getString("maHD"), 
-	                rs.getString("maThuoc"), 
-	                rs.getString("tenThuoc"),
-	                rs.getInt("soLuong"), 
-	                rs.getString("maDVT"), 
-	                rs.getString("tenDVT"), 
-	                rs.getDouble("donGia"), 
-	                rs.getDouble("thanhTien") 
-	            });
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return list;
+		List<Object[]> list = new ArrayList<>();
+		String sql = """
+				      SELECT ct.maHD, t.maThuoc, t.tenThuoc, ct.soLuong, ct.maDVT, dvt.tenDVT, ct.donGia,
+				CASE
+				    WHEN km.loaiKM = N'Giảm giá' THEN ct.soLuong * ct.donGia * (1 - km.mucKM / 100.0)
+				    WHEN km.loaiKM = N'Mua tặng' THEN
+				        (ct.soLuong - FLOOR(ct.soLuong / (km.soLuongMua + km.soLuongTang)) * km.soLuongTang) * ct.donGia
+				    ELSE
+				        (ct.soLuong * ct.donGia) END AS thanhTien
+				FROM CT_HoaDon ct
+				JOIN Thuoc t ON ct.maThuoc = t.maThuoc
+				JOIN DonViTinh dvt ON ct.maDVT = dvt.maDVT
+				LEFT JOIN KhuyenMai km ON t.maKM = km.maKM
+				WHERE ct.maHD = ?
+				      """;
+		try (PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, maHD);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				list.add(new Object[] { rs.getString("maHD"), rs.getString("maThuoc"), rs.getString("tenThuoc"),
+						rs.getInt("soLuong"), rs.getString("maDVT"), rs.getString("tenDVT"), rs.getDouble("donGia"),
+						rs.getDouble("thanhTien") });
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 
 	// ========= LẤY MÃ HOÁ ĐƠN MỚI NHẤT =========

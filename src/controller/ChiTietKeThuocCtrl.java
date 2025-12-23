@@ -45,6 +45,7 @@ public class ChiTietKeThuocCtrl {
 	}
 
 	public KeThuoc kiemTraThongTin() {
+		
 		if (kiemTraCmb() && kiemTraSucChua()) {
 			String maKe = ctktGUI.txtMaKe.getText().trim();
 			String loaiKe = ctktGUI.cmbLoaiKe.getSelectedItem().toString();

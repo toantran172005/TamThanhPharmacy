@@ -25,322 +25,339 @@ import gui.TimKiemThuoc_GUI;
 
 public class ChiTietThuocCtrl {
 
-    public ToolCtrl tool = new ToolCtrl();
-    public ThuocDAO thDAO = new ThuocDAO();
-    public KeThuocDAO keDAO = new KeThuocDAO();
-    public ThueDAO thueDAO = new ThueDAO();
-    public DonViTinhDAO dvtDAO = new DonViTinhDAO();
-    public ChiTietThuoc_GUI ctThuoc;
-    public String duongDanAnhHienTai = null;
-    public ArrayList<Thue> dsThue;
+	public ToolCtrl tool = new ToolCtrl();
+	public ThuocDAO thDAO = new ThuocDAO();
+	public KeThuocDAO keDAO = new KeThuocDAO();
+	public ThueDAO thueDAO = new ThueDAO();
+	public DonViTinhDAO dvtDAO = new DonViTinhDAO();
+	public ChiTietThuoc_GUI ctThuoc;
+	public String duongDanAnhHienTai = null;
+	public ArrayList<Thue> dsThue;
 
-    public ChiTietThuocCtrl(ChiTietThuoc_GUI ctThuoc) {
-        this.ctThuoc = ctThuoc;
-    }
-    
- // set cmb quốc gia
- 	public void setCmbQuocGia() {
- 		ArrayList<QuocGia> listQG = thDAO.layListQG();
- 		for (QuocGia qg : listQG) {
- 			ctThuoc.cmbQuocGia.addItem(qg.getTenQG());
- 		}
- 	}
+	public ChiTietThuocCtrl(ChiTietThuoc_GUI ctThuoc) {
+		this.ctThuoc = ctThuoc;
+	}
 
- 	// set cmb kệ thuốc
- 	public void setCmbKeThuoc() {
- 		ArrayList<KeThuoc> listKT = keDAO.layListKeThuoc();
- 		for (KeThuoc kt : listKT) {
- 			ctThuoc.cmbKeThuoc.addItem(kt.getLoaiKe());
- 		}
- 	}
+	// set cmb quốc gia
+	public void setCmbQuocGia() {
+		ArrayList<QuocGia> listQG = thDAO.layListQG();
+		for (QuocGia qg : listQG) {
+			ctThuoc.cmbQuocGia.addItem(qg.getTenQG());
+		}
+	}
 
- 	// set cmb đơn vị
- 	public void setCmbDonVi() {
- 		ArrayList<DonViTinh> listDV = dvtDAO.layListDVT();
- 		for (DonViTinh dvt : listDV) {
- 			ctThuoc.cmbDonViTinh.addItem(dvt.getTenDVT());
- 		}
- 	}
+	// set cmb kệ thuốc
+	public void setCmbKeThuoc() {
+		ArrayList<KeThuoc> listKT = keDAO.layListKeThuoc();
+		for (KeThuoc kt : listKT) {
+			ctThuoc.cmbKeThuoc.addItem(kt.getLoaiKe());
+		}
+	}
 
- 	private String taoChuoiHienThiThue(Thue t) {
- 	    double tyLe = t.getTiLeThue() * 100;
- 	    if (tyLe == (long) tyLe) {
- 	        return String.format("%s %d%%", t.getLoaiThue(), (long) tyLe);
- 	    } else {
- 	        return String.format("%s %s%%", t.getLoaiThue(), tyLe);
- 	    }
- 	}
+	// set cmb đơn vị
+	public void setCmbDonVi() {
+		ArrayList<DonViTinh> listDV = dvtDAO.layListDVT();
+		for (DonViTinh dvt : listDV) {
+			ctThuoc.cmbDonViTinh.addItem(dvt.getTenDVT());
+		}
+	}
 
- 	//set cmb thuế
- 	public void setCmbThue() {
- 	    dsThue = thueDAO.layListThue();
- 	    ctThuoc.cmbThue.removeAllItems();
+	private String taoChuoiHienThiThue(Thue t) {
+		double tyLe = t.getTiLeThue() * 100;
+		if (tyLe == (long) tyLe) {
+			return String.format("%s %d%%", t.getLoaiThue(), (long) tyLe);
+		} else {
+			return String.format("%s %s%%", t.getLoaiThue(), tyLe);
+		}
+	}
 
- 	    for (Thue th : dsThue) {
- 	        if (!th.getLoaiThue().equalsIgnoreCase("Thuế TNCN")) {
- 	            ctThuoc.cmbThue.addItem(taoChuoiHienThiThue(th));
- 	        }
- 	    }
- 	}
+	// set cmb thuế
+	public void setCmbThue() {
+		dsThue = thueDAO.layListThue();
+		ctThuoc.cmbThue.removeAllItems();
 
- 	public Thue getThueDangChon() {
- 	    String selected = (String) ctThuoc.cmbThue.getSelectedItem();
- 	    if (selected == null) return null;
+		for (Thue th : dsThue) {
+			if (!th.getLoaiThue().equalsIgnoreCase("Thuế TNCN")) {
+				ctThuoc.cmbThue.addItem(taoChuoiHienThiThue(th));
+			}
+		}
+	}
 
- 	    for (Thue th : dsThue) {
- 	        if (taoChuoiHienThiThue(th).equals(selected)) {
- 	            return th;
- 	        }
- 	    }
- 	    return null;
- 	}
+	public Thue getThueDangChon() {
+		String selected = (String) ctThuoc.cmbThue.getSelectedItem();
+		if (selected == null)
+			return null;
 
-    // Hiển thị chi tiết thuốc
- 	public void xemChiTietThuoc(String maThuoc) {
- 	    if (maThuoc == null) {
- 	        tool.hienThiThongBao("Lỗi!", "Mã thuốc không hợp lệ", false);
- 	        return;
- 	    }
+		for (Thue th : dsThue) {
+			if (taoChuoiHienThiThue(th).equals(selected)) {
+				return th;
+			}
+		}
+		return null;
+	}
 
- 	    try {
- 	        ArrayList<Thuoc> list = thDAO.layListThuocHoanChinh();
- 	        for (Thuoc t : list) {
- 	            if (maThuoc.equalsIgnoreCase(t.getMaThuoc())) {
- 	                duongDanAnhHienTai = t.getAnh();          
- 	                hienThiAnhLenLabel(duongDanAnhHienTai);
- 	                
- 	                ctThuoc.txtMaSP.setText(maThuoc);
- 	                ctThuoc.txtTenSP.setText(t.getTenThuoc());
- 	                ctThuoc.txtDangThuoc.setText(t.getDangThuoc());
- 	                ctThuoc.txtGiaBan.setText(tool.dinhDangVND(t.getGiaBan()));
- 	                ctThuoc.dpHanSuDung.setDate(tool.localDateSangUtilDate(t.getHanSuDung()));
+	// Hiển thị chi tiết thuốc
+	public void xemChiTietThuoc(String maThuoc) {
+		if (maThuoc == null) {
+			tool.hienThiThongBao("Lỗi!", "Mã thuốc không hợp lệ", false);
+			return;
+		}
 
- 	               if (t.getDvt() != null) {
- 	                    ctThuoc.cmbDonViTinh.setSelectedItem(t.getDvt().getTenDVT());
- 	                }
+		try {
+			ArrayList<Thuoc> list = thDAO.layListThuocHoanChinh();
+			for (Thuoc t : list) {
+				if (maThuoc.equalsIgnoreCase(t.getMaThuoc())) {
+					duongDanAnhHienTai = t.getAnh();
+					hienThiAnhLenLabel(duongDanAnhHienTai);
 
- 	                if (t.getThue() != null) {
- 	                    String textHienThi = taoChuoiHienThiThue(t.getThue());
- 	                    ctThuoc.cmbThue.setSelectedItem(textHienThi);
- 	                }
+					ctThuoc.txtMaSP.setText(maThuoc);
+					ctThuoc.txtTenSP.setText(t.getTenThuoc());
+					ctThuoc.txtDangThuoc.setText(t.getDangThuoc());
+					ctThuoc.txtGiaBan.setText(tool.dinhDangVND(t.getGiaBan()));
+					ctThuoc.dpHanSuDung.setDate(tool.localDateSangUtilDate(t.getHanSuDung()));
 
- 	                if (t.getKeThuoc() != null) {
- 	                    ctThuoc.cmbKeThuoc.setSelectedItem(t.getKeThuoc().getLoaiKe());
- 	                }
+					if (t.getDvt() != null) {
+						ctThuoc.cmbDonViTinh.setSelectedItem(t.getDvt().getTenDVT());
+					}
 
- 	                if (t.getQuocGia() != null && t.getQuocGia().getTenQG() != null) {
- 	                    ctThuoc.cmbQuocGia.setSelectedItem(t.getQuocGia().getTenQG()); 
- 	                } 
- 	                
- 	                break;
- 	            }
- 	        }
- 	    } catch (Exception e) {
- 	        e.printStackTrace();
- 	    }
- 	}
+					if (t.getThue() != null) {
+						String textHienThi = taoChuoiHienThiThue(t.getThue());
+						ctThuoc.cmbThue.setSelectedItem(textHienThi);
+					}
 
-    // Chọn ảnh và Copy vào thư mục dự án
-    public void chonAnh() {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Chọn ảnh thuốc");
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Hình ảnh (JPG, PNG)", "jpg", "png", "jpeg"));
+					if (t.getKeThuoc() != null) {
+						ctThuoc.cmbKeThuoc.setSelectedItem(t.getKeThuoc().getLoaiKe());
+					}
 
-        int result = fileChooser.showOpenDialog(null);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
+					if (t.getQuocGia() != null && t.getQuocGia().getTenQG() != null) {
+						ctThuoc.cmbQuocGia.setSelectedItem(t.getQuocGia().getTenQG());
+					}
 
-            try {
-                //Xác định thư mục đích
-                String projectPath = System.getProperty("user.dir");
-                String folderPath = projectPath + File.separator + "resource" + File.separator + "picture" + File.separator + "thuoc";
+					break;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-                File folder = new File(folderPath);
-                if (!folder.exists()) {
-                    folder.mkdirs();
-                }
+	// Chọn ảnh và Copy vào thư mục dự án
+	public void chonAnh() {
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setDialogTitle("Chọn ảnh thuốc");
+		fileChooser.setFileFilter(new FileNameExtensionFilter("Hình ảnh (JPG, PNG)", "jpg", "png", "jpeg"));
 
-                String fileName = selectedFile.getName();
-                File destFile = new File(folderPath + File.separator + fileName);
+		int result = fileChooser.showOpenDialog(null);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			File selectedFile = fileChooser.getSelectedFile();
 
-                //Copy file (Ghi đè nếu đã tồn tại)
-                Files.copy(selectedFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			try {
+				// Xác định thư mục đích
+				String projectPath = System.getProperty("user.dir");
+				String folderPath = projectPath + File.separator + "resource" + File.separator + "picture"
+						+ File.separator + "thuoc";
 
-                //Cập nhật đường dẫn tương đối để lưu vào DB
-                duongDanAnhHienTai = "/picture/thuoc/" + fileName;
+				File folder = new File(folderPath);
+				if (!folder.exists()) {
+					folder.mkdirs();
+				}
 
-                //Hiển thị ngay lập tức từ file vừa copy 
-                ImageIcon icon = new ImageIcon(destFile.getAbsolutePath());
-                Image img = icon.getImage().getScaledInstance(240, 240, Image.SCALE_SMOOTH);
-                ctThuoc.lblAnh.setIcon(new ImageIcon(img));
-                ctThuoc.lblAnh.setText("");
+				String fileName = selectedFile.getName();
+				File destFile = new File(folderPath + File.separator + fileName);
 
-            } catch (Exception e) {
-                e.printStackTrace();
-                tool.hienThiThongBao("Lỗi", "Lỗi khi lưu ảnh: " + e.getMessage(), false);
-            }
-        }
-    }
+				// Copy file (Ghi đè nếu đã tồn tại)
+				Files.copy(selectedFile.toPath(), destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-    // Hàm hiển thị ảnh 
-    public void hienThiAnhLenLabel(String pathRel) {
-        try {
-            ctThuoc.lblAnh.setIcon(null);
-            ctThuoc.lblAnh.setText("Đang tải...");
+				// Cập nhật đường dẫn tương đối để lưu vào DB
+				duongDanAnhHienTai = "/picture/thuoc/" + fileName;
 
-            if (pathRel == null || pathRel.isEmpty()) {
-                ctThuoc.lblAnh.setText("Không có ảnh");
-                return;
-            }
+				// Hiển thị ngay lập tức từ file vừa copy
+				ImageIcon icon = new ImageIcon(destFile.getAbsolutePath());
+				Image img = icon.getImage().getScaledInstance(240, 240, Image.SCALE_SMOOTH);
+				ctThuoc.lblAnh.setIcon(new ImageIcon(img));
+				ctThuoc.lblAnh.setText("");
 
-            ImageIcon icon = null;
+			} catch (Exception e) {
+				e.printStackTrace();
+				tool.hienThiThongBao("Lỗi", "Lỗi khi lưu ảnh: " + e.getMessage(), false);
+			}
+		}
+	}
 
-            // Thử load từ Resource 
-            java.net.URL imgURL = getClass().getResource(pathRel);
-            if (imgURL != null) {
-                icon = new ImageIcon(imgURL);
-            } 
-            
-            //Nếu Resource null load bằng đường dẫn tuyệt đối
-            if (icon == null) {
-                String projectPath = System.getProperty("user.dir");
-                String absolutePath = projectPath + "/resource" + pathRel;
-                File file = new File(absolutePath);
-                if (file.exists()) {
-                    icon = new ImageIcon(absolutePath);
-                }
-            }
+	// Hàm hiển thị ảnh
+	public void hienThiAnhLenLabel(String pathRel) {
+		try {
+			ctThuoc.lblAnh.setIcon(null);
+			ctThuoc.lblAnh.setText("Đang tải...");
 
-            // Hiển thị
-            if (icon != null) {
-                Image img = icon.getImage().getScaledInstance(240, 240, Image.SCALE_SMOOTH);
-                ctThuoc.lblAnh.setIcon(new ImageIcon(img));
-                ctThuoc.lblAnh.setText("");
-            } else {
-                ctThuoc.lblAnh.setText("Ảnh lỗi");
-            }
+			if (pathRel == null || pathRel.isEmpty()) {
+				ctThuoc.lblAnh.setText("Không có ảnh");
+				return;
+			}
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            ctThuoc.lblAnh.setText("Lỗi ảnh");
-        }
-    }
+			ImageIcon icon = null;
 
-    // Cập nhật thuốc
-    public void xuLyCapNhat() {
-        String trangThaiHienTai = ctThuoc.btnCapNhat.getText();
+			// Thử load từ Resource
+			java.net.URL imgURL = getClass().getResource(pathRel);
+			if (imgURL != null) {
+				icon = new ImageIcon(imgURL);
+			}
 
-        if (trangThaiHienTai.equalsIgnoreCase("Cập nhật")) {
-            ctThuoc.thietLapKhoaChinhSua(true);
-            ctThuoc.btnCapNhat.setText("Lưu");
-     
-            String giaHienTai = ctThuoc.txtGiaBan.getText();
-            try {
-                String giaSo = giaHienTai.replaceAll("[^0-9]", "");
-                ctThuoc.txtGiaBan.setText(giaSo);
-            } catch (Exception e) {
-                ctThuoc.txtGiaBan.setText("0");
-            }
-            ctThuoc.txtTenSP.requestFocus();
+			// Nếu Resource null load bằng đường dẫn tuyệt đối
+			if (icon == null) {
+				String projectPath = System.getProperty("user.dir");
+				String absolutePath = projectPath + "/resource" + pathRel;
+				File file = new File(absolutePath);
+				if (file.exists()) {
+					icon = new ImageIcon(absolutePath);
+				}
+			}
 
-        } else {
-            if (kiemTraDuLieuDauVao()) {
-                Thuoc t = layThuocTuGiaoDien();
-                if (t == null) return;
+			// Hiển thị
+			if (icon != null) {
+				Image img = icon.getImage().getScaledInstance(240, 240, Image.SCALE_SMOOTH);
+				ctThuoc.lblAnh.setIcon(new ImageIcon(img));
+				ctThuoc.lblAnh.setText("");
+			} else {
+				ctThuoc.lblAnh.setText("Ảnh lỗi");
+			}
 
-                boolean ketQua = thDAO.capNhatThuoc(t);
+		} catch (Exception e) {
+			e.printStackTrace();
+			ctThuoc.lblAnh.setText("Lỗi ảnh");
+		}
+	}
 
-                if (ketQua) {
-                    tool.hienThiThongBao("Thành công", "Cập nhật thông tin thuốc thành công!", true);
-                    ctThuoc.thietLapKhoaChinhSua(false);
-                    ctThuoc.btnCapNhat.setText("Cập nhật");
-                    ctThuoc.txtGiaBan.setText(tool.dinhDangVND(t.getGiaBan()));
-                   
-                    xemChiTietThuoc(t.getMaThuoc());
-                } else {
-                    tool.hienThiThongBao("Thất bại", "Cập nhật thất bại, vui lòng kiểm tra lại!", false);
-                }
-            }
-        }
-    }
+	// Cập nhật thuốc
+	public void xuLyCapNhat() {
+		String trangThaiHienTai = ctThuoc.btnCapNhat.getText();
 
-    // Hàm lấy dữ liệu từ Form
-    public Thuoc layThuocTuGiaoDien() {
-        try {
-            String maThuoc = ctThuoc.txtMaSP.getText();
-            String tenThuoc = ctThuoc.txtTenSP.getText().trim();
-            String dangThuoc = ctThuoc.txtDangThuoc.getText().trim();
-            
-            String giaBanStr = ctThuoc.txtGiaBan.getText().trim().replaceAll("[^0-9]", ""); 
-            
-            double giaBan = 0;
-            try {
-                giaBan = giaBanStr.isEmpty() ? 0 : Double.parseDouble(giaBanStr);
-            } catch (NumberFormatException e) {
-                tool.hienThiThongBao("Lỗi nhập liệu", "Giá bán chứa ký tự không hợp lệ!", false);
-                return null;
-            }
+		if (trangThaiHienTai.equalsIgnoreCase("Cập nhật")) {
+			ctThuoc.thietLapKhoaChinhSua(true);
+			ctThuoc.btnCapNhat.setText("Lưu");
 
-            java.util.Date date = ctThuoc.dpHanSuDung.getDate();
-            LocalDate hanSuDung = tool.utilDateSangLocalDate(date);
-            String tenDVT = ctThuoc.cmbDonViTinh.getSelectedItem().toString();
-            DonViTinh dvt = dvtDAO.timTheoTen(tenDVT);
-            Thue thue = getThueDangChon();
-            if (thue == null) {
-                tool.hienThiThongBao("Lỗi", "Vui lòng chọn loại thuế!", false);
-                return null;
-            }
+			String giaHienTai = ctThuoc.txtGiaBan.getText();
+			try {
+				String giaSo = giaHienTai.replaceAll("[^0-9]", "");
+				ctThuoc.txtGiaBan.setText(giaSo);
+			} catch (Exception e) {
+				ctThuoc.txtGiaBan.setText("0");
+			}
+			ctThuoc.txtTenSP.requestFocus();
 
-            String tenKe = ctThuoc.cmbKeThuoc.getSelectedItem().toString();
-            KeThuoc ke = keDAO.timTheoTen(tenKe);
-            String tenQG = null;
-            if(ctThuoc.cmbQuocGia.getSelectedItem() != null) {
-                tenQG = ctThuoc.cmbQuocGia.getSelectedItem().toString();
-            }
-            String maQG = thDAO.layMaQuocGiaTheoTen(tenQG); 
-            QuocGia qg = thDAO.layQuocGiaTheoMa(maQG);
+		} else {
+			if (kiemTraDuLieuDauVao()) {
+				Thuoc t = layThuocTuGiaoDien();
+				if (t == null)
+					return;
 
-            Thuoc t = new Thuoc();
-            t.setMaThuoc(maThuoc);
-            t.setTenThuoc(tenThuoc);
-            t.setDangThuoc(dangThuoc);
-            t.setGiaBan(giaBan);
-            t.setHanSuDung(hanSuDung);
-            t.setDvt(dvt);
-            t.setThue(thue);
-            t.setKeThuoc(ke);
-            t.setQuocGia(qg);
-            t.setTrangThai(true);
-            t.setAnh(duongDanAnhHienTai); 
+				boolean ketQua = thDAO.capNhatThuoc(t);
 
-            return t;
+				if (ketQua) {
+					tool.hienThiThongBao("Thành công", "Cập nhật thông tin thuốc thành công!", true);
+					ctThuoc.thietLapKhoaChinhSua(false);
+					ctThuoc.btnCapNhat.setText("Cập nhật");
+					ctThuoc.txtGiaBan.setText(tool.dinhDangVND(t.getGiaBan()));
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            tool.hienThiThongBao("Lỗi", "Lỗi xử lý dữ liệu: " + e.getMessage(), false);
-            return null;
-        }
-    }
+					xemChiTietThuoc(t.getMaThuoc());
+				} else {
+					tool.hienThiThongBao("Thất bại", "Cập nhật thất bại, vui lòng kiểm tra lại!", false);
+				}
+			}
+		}
+	}
 
-    public boolean kiemTraDuLieuDauVao() {
-        if (ctThuoc.txtTenSP.getText().trim().isEmpty()) {
-            tool.hienThiThongBao("Lỗi", "Tên thuốc không được để trống", false);
-            ctThuoc.txtTenSP.requestFocus();
-            return false;
-        }
-        if (ctThuoc.txtGiaBan.getText().trim().isEmpty()) {
-            tool.hienThiThongBao("Lỗi", "Giá bán không được để trống", false);
-            ctThuoc.txtGiaBan.requestFocus();
-            return false;
-        }
-        if (ctThuoc.dpHanSuDung.getDate() == null) {
-            tool.hienThiThongBao("Lỗi", "Vui lòng chọn hạn sử dụng", false);
-            return false;
-        }
-        return true;
-    }
+	// Hàm lấy dữ liệu từ Form
+	public Thuoc layThuocTuGiaoDien() {
+		try {
+			String maThuoc = ctThuoc.txtMaSP.getText();
+			String tenThuoc = ctThuoc.txtTenSP.getText().trim();
+			String dangThuoc = ctThuoc.txtDangThuoc.getText().trim();
 
-    public void quayLaiTrangTimKiem() {
-        tool.doiPanel(ctThuoc, new TimKiemThuoc_GUI());
-    }
+			String giaBanStr = ctThuoc.txtGiaBan.getText().trim().replaceAll("[^0-9]", "");
+
+			double giaBan = 0;
+			try {
+				giaBan = giaBanStr.isEmpty() ? 0 : Double.parseDouble(giaBanStr);
+			} catch (NumberFormatException e) {
+				tool.hienThiThongBao("Lỗi nhập liệu", "Giá bán chứa ký tự không hợp lệ!", false);
+				return null;
+			}
+
+			java.util.Date date = ctThuoc.dpHanSuDung.getDate();
+			LocalDate hanSuDung = tool.utilDateSangLocalDate(date);
+			String tenDVT = ctThuoc.cmbDonViTinh.getSelectedItem().toString();
+			DonViTinh dvt = dvtDAO.timTheoTen(tenDVT);
+			Thue thue = getThueDangChon();
+			if (thue == null) {
+				tool.hienThiThongBao("Lỗi", "Vui lòng chọn loại thuế!", false);
+				return null;
+			}
+
+			String tenKe = ctThuoc.cmbKeThuoc.getSelectedItem().toString();
+			KeThuoc ke = keDAO.timTheoTen(tenKe);
+			String tenQG = null;
+			if (ctThuoc.cmbQuocGia.getSelectedItem() != null) {
+				tenQG = ctThuoc.cmbQuocGia.getSelectedItem().toString();
+			}
+			String maQG = thDAO.layMaQuocGiaTheoTen(tenQG);
+			QuocGia qg = thDAO.layQuocGiaTheoMa(maQG);
+
+			Thuoc t = new Thuoc();
+			t.setMaThuoc(maThuoc);
+			t.setTenThuoc(tenThuoc);
+			t.setDangThuoc(dangThuoc);
+			t.setGiaBan(giaBan);
+			t.setHanSuDung(hanSuDung);
+			t.setDvt(dvt);
+			t.setThue(thue);
+			t.setKeThuoc(ke);
+			t.setQuocGia(qg);
+			t.setTrangThai(true);
+			t.setAnh(duongDanAnhHienTai);
+
+			return t;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			tool.hienThiThongBao("Lỗi", "Lỗi xử lý dữ liệu: " + e.getMessage(), false);
+			return null;
+		}
+	}
+
+	public boolean kiemTraDuLieuDauVao() {
+		ArrayList<KeThuoc> listKe = keDAO.layListKeThuoc();
+		int sucChuaHienTai = 0;
+
+		for (KeThuoc ke : listKe) {
+			ArrayList<Thuoc> listThuocTrongKe = keDAO.layListThuocTrongKe(ke.getMaKe());
+			sucChuaHienTai = ke.getSucChua() - listThuocTrongKe.size();
+			if (sucChuaHienTai <= 0) {
+				tool.hienThiThongBao("Cập nhật",
+						"Kệ thuốc " + ctThuoc.cmbKeThuoc.getSelectedItem().toString() + " đã đầy!", false);
+				return false;
+			}
+		}
+
+		if (ctThuoc.txtTenSP.getText().trim().isEmpty()) {
+			tool.hienThiThongBao("Lỗi", "Tên thuốc không được để trống", false);
+			ctThuoc.txtTenSP.requestFocus();
+			return false;
+		}
+		if (ctThuoc.txtGiaBan.getText().trim().isEmpty()) {
+			tool.hienThiThongBao("Lỗi", "Giá bán không được để trống", false);
+			ctThuoc.txtGiaBan.requestFocus();
+			return false;
+		}
+
+		if (ctThuoc.dpHanSuDung.getDate() == null) {
+			tool.hienThiThongBao("Lỗi", "Vui lòng chọn hạn sử dụng", false);
+			return false;
+		}
+		return true;
+	}
+
+	public void quayLaiTrangTimKiem() {
+		tool.doiPanel(ctThuoc, new TimKiemThuoc_GUI());
+	}
 }

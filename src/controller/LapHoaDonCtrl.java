@@ -298,15 +298,15 @@ public class LapHoaDonCtrl {
 
 			int tongSoLuongMoi = slDangCoTrenBang + slThucTeVaoBang;
 
-			double tienCuTrongBang = tool.chuyenTienSangSo(model.getValueAt(rowIndex, 6).toString());
+			double tienCuTrongBang = tool.chuyenTienSangSo(model.getValueAt(rowIndex, 7).toString());
 			double tongTienMoi = tienCuTrongBang + thanhTienDotNay;
 
 			model.setValueAt(tongSoLuongMoi, rowIndex, 3);
-			model.setValueAt(tool.dinhDangVND(tongTienMoi), rowIndex, 6);
+			model.setValueAt(tool.dinhDangVND(tongTienMoi), rowIndex, 7);
 
+			
 			if (moTaKM.contains("Tặng thêm")) {
-
-				model.setValueAt(moTaKM, rowIndex, 7);
+				model.setValueAt(moTaKM, rowIndex, 8);
 			}
 
 		} else {
@@ -363,7 +363,7 @@ public class LapHoaDonCtrl {
 		double tong = 0;
 
 		for (int i = 0; i < tableModel.getRowCount(); i++) {
-			Object giaTri = tableModel.getValueAt(i, 6); // Cột chứa giá tiền
+			Object giaTri = tableModel.getValueAt(i, 7); // Cột chứa giá tiền
 			if (giaTri != null) {
 				String text = giaTri.toString().trim();
 				double gia = tool.chuyenTienSangSo(text);
@@ -388,9 +388,8 @@ public class LapHoaDonCtrl {
 
 			double tienThua = nhan - tong;
 			if (tienThua < 0)
-				tienThua = 0; // tránh âm
+				tienThua = 0; 
 
-			// Hiển thị lại bằng định dạng VND
 			gui.getLblTienThua().setText(tool.dinhDangVND(tienThua));
 
 		} catch (Exception e) {
@@ -549,7 +548,7 @@ public class LapHoaDonCtrl {
 				StringBuilder ghiChu = new StringBuilder();
 				for (int i = 0; i < tableModel.getRowCount(); i++) {
 					Object tenThuoc = tableModel.getValueAt(i, 1); // tên thuốc
-					Object ghiChuKM = tableModel.getValueAt(i, 7); // ghi chú
+					Object ghiChuKM = tableModel.getValueAt(i, 8); // ghi chú
 
 					if (ghiChuKM != null && !ghiChuKM.toString().isBlank()) {
 						ghiChu.append(tenThuoc).append(" : ").append(ghiChuKM).append("; ");
@@ -645,6 +644,8 @@ public class LapHoaDonCtrl {
 			double donGia = Double.parseDouble(ct[6].toString());
 			double thanhTien = Double.parseDouble(ct[7].toString());
 
+			double donGiaGoc = donGia;
+			double donGiaSauKM = donGiaGoc;
 			double mucGiam;
 			String moTaKM = "Không có KM";
 			String maKM = thuocDAO.layMaKMTheoMaThuoc(maThuoc);
@@ -656,6 +657,7 @@ public class LapHoaDonCtrl {
 					switch (km.getLoaiKM().toLowerCase()) {
 					case "giảm giá":
 						mucGiam = (double) km.getMucKM();
+						donGiaSauKM = donGiaGoc * (1 - mucGiam / 100.0);
 						moTaKM = "Giảm " + mucGiam + "%";
 						break;
 
@@ -665,13 +667,14 @@ public class LapHoaDonCtrl {
 							moTaKM = String.format("Mua %d tặng %d (Tặng: %d)", km.getSoLuongMua(), km.getSoLuongTang(),
 									soLuongTang);
 						}
+						donGiaSauKM = donGiaGoc;
 						break;
 					}
 				}
 			}
 
 			model.addRow(new Object[] { model.getRowCount() + 1, ct[2], tenQG, sl, tenDVT, tool.dinhDangVND(donGia),
-					tool.dinhDangVND(thanhTien), moTaKM, "Xóa" });
+					tool.dinhDangVND(donGiaSauKM), tool.dinhDangVND(thanhTien), moTaKM, "Xóa" });
 
 		}
 

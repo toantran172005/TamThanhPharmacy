@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import dao.KeThuocDAO;
 import entity.KeThuoc;
+import entity.Thuoc;
 import gui.ChiTietKeThuoc_GUI;
 import gui.DanhSachKeThuoc_GUI;
 
@@ -141,9 +142,12 @@ public class DanhSachKeThuocCtrl {
 
 	public void setDataChoTable(ArrayList<KeThuoc> list) {
 		ktGUI.model.setRowCount(0);
+		int sucChuaHienTai = 0;
 
 		for (KeThuoc ke : list) {
-			Object[] row = { ke.getMaKe(), ke.getLoaiKe(), ke.getSucChua(), ke.getMoTa(),
+			ArrayList<Thuoc> listThuocTrongKe = keDAO.layListThuocTrongKe(ke.getMaKe());
+			sucChuaHienTai = ke.getSucChua() - listThuocTrongKe.size();
+			Object[] row = { ke.getMaKe(), ke.getLoaiKe(), ke.getSucChua(), sucChuaHienTai, ke.getMoTa(),
 					ke.isTrangThai() ? "Hoạt động" : "Đã xóa" };
 			ktGUI.model.addRow(row);
 		}

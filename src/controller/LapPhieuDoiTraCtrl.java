@@ -1,4 +1,3 @@
-// package controller;
 package controller;
 
 import dao.DonViTinhDAO;
@@ -100,76 +99,6 @@ public class LapPhieuDoiTraCtrl {
 		gui.getTblHDThuoc().getColumnModel().getColumn(0).setMaxWidth(0);
 	}
 
-	// ========== THÊM THUỐC VÀO PHIẾU ĐỔI TRẢ ==========
-//	public void themThuocVaoPhieu() {
-//		String tenThuoc = gui.getTxtTenThuoc().getText().trim();
-//		String soLuongStr = gui.getTxtSoLuong().getText().trim();
-//		String mucHoanStr = (String) gui.getCmbMucHoan().getSelectedItem();
-//		String ghiChu = gui.getTxaGhiChu().getText().trim();
-//
-//		if (tenThuoc.isEmpty() || soLuongStr.isEmpty()) {
-//			tool.hienThiThongBao("Lỗi", "Vui lòng nhập tên thuốc và số lượng!", false);
-//			return;
-//		}
-//
-//		int soLuong;
-//		try {
-//			soLuong = Integer.parseInt(soLuongStr);
-//			if (soLuong <= 0)
-//				throw new NumberFormatException();
-//		} catch (NumberFormatException ex) {
-//			tool.hienThiThongBao("Lỗi", "Số lượng phải là số nguyên dương!", false);
-//			return;
-//		}
-//
-//		// Tìm thuốc trong bảng hóa đơn
-//		JTable tblHD = gui.getTblHDThuoc();
-//		int row = -1;
-//		for (int i = 0; i < tblHD.getRowCount(); i++) {
-//			if (tblHD.getValueAt(i, 1).toString().equalsIgnoreCase(tenThuoc)) {
-//				row = i;
-//				break;
-//			}
-//		}
-//
-//		if (row == -1) {
-//			tool.hienThiThongBao("Lỗi", "Thuốc không tồn tại trong hóa đơn!", false);
-//			return;
-//		}
-//
-//		int slMua = Integer.parseInt(tblHD.getValueAt(row, 3).toString().replaceAll("[^0-9]", ""));
-//
-//		String maThuoc = tblHD.getValueAt(row, 0).toString();
-//		String tenDVT = tblHD.getValueAt(row, 4).toString();
-//		String maDVT = dvtDAO.timMaDVTTheoTen(tenDVT);
-//
-//		int daDoiTra = pdtDAO.tongSoLuongDaDoiTra(maHD, maThuoc, maDVT);
-//
-//		int soLuongConLai = slMua - daDoiTra;
-//
-//		if (soLuong > soLuongConLai) {
-//		    tool.hienThiThongBao("Lỗi", "Số lượng đổi trả vượt quá số lượng còn lại!\n" + "Đã mua: " + slMua + " | Đã đổi trả: " + daDoiTra + " | Còn lại: " + soLuongConLai, false);
-//		    return;
-//		}
-//
-//
-//		double donGia = tool.chuyenTienSangSo((String) tblHD.getValueAt(row, 5));
-//		double thanhTien = tool.chuyenTienSangSo((String) tblHD.getValueAt(row, 6));
-//		double mucHoan = Double.parseDouble(mucHoanStr.replace("%", "")) / 100.0;
-//		double tienHoan = thanhTien * mucHoan;
-//
-//		tongTienHoan += tienHoan;
-//
-//		// Thêm vào bảng phiếu đổi trả
-//		DefaultTableModel modelDT = (DefaultTableModel) gui.getTblPhieuDTThuoc().getModel();
-//		modelDT.addRow(new Object[] { tenThuoc, tblHD.getValueAt(row, 2), soLuong, tblHD.getValueAt(row, 4), // đơn vị
-//				tblHD.getValueAt(row, 5), // đơn giá
-//				mucHoanStr, tool.dinhDangVND(tienHoan), ghiChu.isEmpty() ? "Không" : ghiChu, "Xóa" });
-//
-//		tinhTongTienHoan();
-//		lamMoiInput();
-//	}
-
 	public void themThuocVaoPhieu() {
 		String tenThuoc = gui.getTxtTenThuoc().getText().trim();
 		String soLuongStr = gui.getTxtSoLuong().getText().trim();
@@ -218,8 +147,9 @@ public class LapPhieuDoiTraCtrl {
 					+ " | Đã đổi trả: " + daDoiTra + " | Còn lại: " + soLuongConLai, false);
 			return;
 		}
-
-		double donGia = tool.chuyenTienSangSo(tblHD.getValueAt(row, 5).toString());
+		
+		double thanhTien = tool.chuyenTienSangSo(tblHD.getValueAt(row, 6).toString());
+		double donGia = thanhTien / slMua;
 		double tyLeHoan = Double.parseDouble(mucHoanStr.replace("%", "")) / 100.0;
 		double tienHoan = (donGia * soLuong) * tyLeHoan;
 

@@ -138,7 +138,9 @@ public class LapHoaDon_GUI extends JPanel {
         
         tblThuoc.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         tblThuoc.setForeground(new Color(0x33, 0x33, 0x33));
+        tblThuoc.getColumnModel().getColumn(0).setPreferredWidth(15);
         tblThuoc.getColumnModel().getColumn(6).setPreferredWidth(200);
+        tblThuoc.getColumnModel().getColumn(8).setPreferredWidth(130);
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);

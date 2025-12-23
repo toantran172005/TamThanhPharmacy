@@ -141,7 +141,7 @@ public class DanhSachKeThuoc_GUI extends JPanel {
 		topPanel.add(rightVBox, BorderLayout.EAST);
 
 		// ====================== CENTER: TALL TABLE ======================
-		String[] cols = { "Mã kệ", "Loại kệ", "Sức chứa", "Mô tả", "Trạng thái" };
+		String[] cols = { "Mã kệ", "Loại kệ", "Sức chứa gốc", "Sức chứa hiện tại", "Mô tả", "Trạng thái" };
 		model = new DefaultTableModel(cols, 0) {
 			@Override
 			public boolean isCellEditable(int row, int col) {

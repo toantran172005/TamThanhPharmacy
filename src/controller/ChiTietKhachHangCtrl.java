@@ -41,10 +41,14 @@ public class ChiTietKhachHangCtrl {
 	}
 
 	public KhachHang kiemTraThongTin() {
+		String sdt = tool.chuyenSoDienThoai(ctkhGUI.txtSdt.getText().trim());
+		if (khDAO.timMaKhachHangTheoSDT(sdt).getSdt().equals(sdt)) {
+			tool.hienThiThongBao("Cập nhật", "Đã có số điện thoại này!", false);
+			return null;
+		}
 		if (ktTenKhachHangHopLe() && ktSoDienThoaiHopLe() && ktTuoiHopLe()) {
 			String maKH = ctkhGUI.txtMaKH.getText().trim();
 			String tenKH = ctkhGUI.txtTenKH.getText().trim();
-			String sdt = tool.chuyenSoDienThoai(ctkhGUI.txtSdt.getText().trim());
 			String tuoi = ctkhGUI.txtTuoi.getText().trim();
 			String trangThai = ctkhGUI.cmbTrangThai.getSelectedItem().toString();
 			if (trangThai.equals("Hoạt động")) {
